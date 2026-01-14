@@ -1,71 +1,49 @@
-
 import { PortfolioData } from './types';
 
-/**
- * PORTFOLIO DATA CONFIGURATION
- * ----------------------------
- * To add your own projects:
- * 1. Replace the 'title', 'description', and 'longDescription'.
- * 2. Update 'imageUrl' with a direct link to a screenshot or high-quality image.
- * 3. Set 'demoUrl' to your live website (e.g., https://yourproduct.com).
- * 4. Set 'githubUrl' to your repository or '#' if it's a private project.
- */
-
 export const PORTFOLIO_DATA: PortfolioData = {
-  name: "Jordan Rivera",
-  role: "Education Technology Developer",
-  bio: "I design and build intuitive education applications that engage students, empower teachers, and democratize access to knowledge. My work focuses on the intersection of cognitive science and full-stack development.",
+  name: "Jason Benjamin",
+  role: "Education Software Architect",
+  bio: "I build the modern tools that power schools and universities. By combining smart automation, institutional data, and complex logic, I create systems that give time back to teachers and provide clear paths for student success.",
   skills: [
-    { name: "React & Next.js", level: 95, category: "Frontend" },
-    { name: "TypeScript", level: 90, category: "Frontend" },
-    { name: "GenAI & LLMs", level: 85, category: "AI/ML" },
-    { name: "Node.js & Python", level: 85, category: "Backend" },
-    { name: "LMS Integration (LTI 1.3)", level: 90, category: "Backend" },
+    { name: "Language Technology", level: 95, category: "AI/ML" },
+    { name: "Resource Management", level: 90, category: "Backend" },
+    { name: "Data Visualization", level: 92, category: "Frontend" },
+    { name: "Full-Stack Development", level: 95, category: "Frontend" },
+    { name: "School Systems (LMS)", level: 88, category: "Backend" },
   ],
   projects: [
     {
-      id: "scholarsync-lms",
-      title: "ScholarSync LMS",
+      id: "chekki",
+      title: "Chekki",
       category: "Tools",
-      description: "A modular Learning Management System designed for modern micro-schools.",
-      longDescription: "ScholarSync features real-time grade synchronization, automated attendance tracking via QR codes, and a React-based interactive assignment builder. It streamlines the connection between student activity and institutional data.",
-      tags: ["Next.js", "PostgreSQL", "Socket.io", "LTI 1.3"],
-      imageUrl: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=800&auto=format&fit=crop",
-      demoUrl: "https://scholarsync-demo.vercel.app", // REPLACE WITH YOUR ACTUAL URL
-      githubUrl: "https://github.com/jrivera/scholarsync" // REPLACE WITH YOUR GITHUB
-    },
-    {
-      id: "lingua-ai",
-      title: "LinguaAI Tutor",
-      category: "Tools",
-      description: "Adaptive AI-powered language tutor with speech-to-text feedback.",
-      longDescription: "An AI tutor that generates personalized quizzes based on student weak points. Integrates advanced Speech-to-Text for pronunciation scoring and real-time formative feedback loops.",
-      tags: ["Python", "OpenAI Whisper", "FastAPI", "React"],
-      imageUrl: "https://images.unsplash.com/photo-1543269664-76bc3997d9ea?q=80&w=800&auto=format&fit=crop",
-      demoUrl: "https://lingua-ai-tutor.com", // REPLACE WITH YOUR ACTUAL URL
-      githubUrl: "#" // Set to '#' if private
-    },
-    {
-      id: "edumetrics-dash",
-      title: "EduMetrics Dash",
-      category: "Higher Ed",
-      description: "Centralized analytics dashboard for university retention prediction.",
-      longDescription: "Aggregates data from multiple sources (LMS, SIS, Library systems) to predict at-risk students. Features D3.js powered visualizations for institutional decision making.",
-      tags: ["React", "D3.js", "Firebase", "BigQuery"],
-      imageUrl: "https://images.unsplash.com/photo-1551288049-bb8c803ef776?q=80&w=800&auto=format&fit=crop",
-      demoUrl: "https://edumetrics-portal.edu", // REPLACE WITH YOUR ACTUAL URL
+      description: "Automated student feedback and progress assistant.",
+      longDescription: "Chekki changes how teachers give feedback. Using smart analysis, it allows educators to provide personalized guidance to every student instantly. It identifies where students are stuck and provides the right hint at the right time, making daily learning more interactive.",
+      tags: ["Smart Feedback", "Modern Web", "Learning Design", "Automation"],
+      imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop",
+      demoUrl: "https://chekki.ai",
       githubUrl: "#"
     },
     {
-      id: "custom-product-x",
-      title: "Your Next Big Product",
-      category: "K-12",
-      description: "Describe your fourth product here to expand your portfolio showcase.",
-      longDescription: "This is a great place to showcase your deep expertise in a specific area, like Gamification or Accessibility. Talk about the 'Why' behind the product.",
-      tags: ["Tech A", "Tech B", "Tech C"],
-      imageUrl: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800&auto=format&fit=crop",
-      demoUrl: "https://yourwebsite.com",
-      githubUrl: "https://github.com/yourusername"
+      id: "benchmark-system",
+      title: "Benchmark Explorer",
+      category: "Higher Ed",
+      description: "Performance tracking and school intelligence platform.",
+      longDescription: "A powerful tool for academic leaders. This system brings together student scores to show how a school is performing compared to global standards. It turns complex data into simple strategies for improving graduation rates and course quality.",
+      tags: ["Dashboards", "Analytics", "Interactive Data", "Reporting"],
+      imageUrl: "https://images.unsplash.com/photo-1551288049-bb8c803ef776?q=80&w=800&auto=format&fit=crop",
+      demoUrl: "https://education-benchmark-system.vercel.app/",
+      githubUrl: "#"
+    },
+    {
+      id: "intelli-schedule",
+      title: "Intelligent Scheduler",
+      category: "Corporate",
+      description: "Smart course and classroom management.",
+      longDescription: "Simplifying the puzzle of school scheduling. This system automatically manages teacher availability, room sizes, and student requests. It removes the stress of manual planning, ensuring every class has a space and every student has a seat.",
+      tags: ["Logic Engines", "Server Systems", "Optimization", "Web App"],
+      imageUrl: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=800&auto=format&fit=crop",
+      demoUrl: "mailto:hello@jasonbenjamin.edu?subject=Intelligent Scheduler Demo Request",
+      githubUrl: "#"
     }
   ]
 };

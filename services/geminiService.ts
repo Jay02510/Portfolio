@@ -2,75 +2,85 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { PORTFOLIO_DATA } from '../constants';
 
-// Initializing the Gemini API client directly with process.env.API_KEY as per guidelines.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+/**
+ * Types for structured pedagogical objects.
+ */
+export interface QuizQuestion {
+  question: string;
+  options: string[];
+  correctAnswer: string;
+}
 
-// Construct a system prompt based on the portfolio data
+export interface LearningPathStep {
+  stepNumber: number;
+  title: string;
+  description: string;
+  duration: string;
+  keyTopics: string[];
+}
+
+/**
+ * Creates a fresh AI client instance.
+ * Always initialized with the API_KEY from the environment.
+ */
+const getAIClient = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
+
 const SYSTEM_INSTRUCTION = `
-You are the AI Assistant for ${PORTFOLIO_DATA.name}'s portfolio website. 
-Your role is to act as a knowledgeable representative of ${PORTFOLIO_DATA.name}, who is a ${PORTFOLIO_DATA.role}.
+You are the Executive Concierge for Jason Benjamin's professional portfolio. 
+Jason is a Software Architect specializing in EdTech Infrastructure.
 
-Here is the context about ${PORTFOLIO_DATA.name}:
-Bio: ${PORTFOLIO_DATA.bio}
+Your voice should be:
+- Professional, efficient, and sophisticated.
+- Outcome-oriented (focus on institutional ROI, teacher efficiency, and student success).
+- Technical but clear.
 
-Top Skills:
-${PORTFOLIO_DATA.skills.map(s => `- ${s.name} (${s.level}%)`).join('\n')}
-
-Projects:
-${PORTFOLIO_DATA.projects.map(p => `
-- Title: ${p.title}
-  Category: ${p.category}
-  Description: ${p.description}
-  Tech Stack: ${p.tags.join(', ')}
-`).join('\n')}
+Key Systems to discuss:
+1. Chekki: A smart feedback tool. It reduces teacher feedback time by 80% while increasing student engagement.
+2. Benchmark Explorer: An analytics powerhouse. It helps Higher Ed leaders predict student retention and curriculum gaps.
+3. Intelligent Scheduler: A logistics engine. It uses complex constraint solving to manage campus scheduling with zero manual friction.
 
 Guidelines:
-1. Be professional, enthusiastic, and concise.
-2. If asked about contact info, suggest using the contact form or email (but don't make up an email address unless provided).
-3. Emphasize the "Edtech" focus.
-4. If asked about something not in the data, politely say you don't have that specific information but emphasize the adaptability of ${PORTFOLIO_DATA.name}.
-5. Keep responses under 100 words unless asked for detail.
+- If asked about "AI", refer to it as "Smart Systems" or "Automation".
+- If asked about hiring or a demo, tell them to use the "Consultation" button or the contact section at the bottom.
+- Be concise. Educational leaders have little time.
+- Refer to Jason as a "Product Architect" or "System Designer".
 `;
 
 /**
- * Sends a chat message to Gemini and returns the generated text response.
- * Using gemini-3-flash-preview for efficient chat-based communication.
+ * Handles general portfolio chat inquiries using Gemini 3 Flash.
  */
 export const sendMessageToGemini = async (message: string): Promise<string> => {
   try {
+    const ai = getAIClient();
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: message,
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
+        temperature: 0.7,
+        topP: 0.9,
       }
     });
 
-    return response.text || "I'm not sure how to respond to that.";
+    // Access text property directly as per latest SDK guidelines
+    return response.text || "I'm here to provide architectural insights on Jason's work. How can I assist?";
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    return "I encountered a temporary error while thinking. Please try again.";
+    console.error("Assistant Error:", error);
+    return "The system is currently undergoing maintenance. Please reach out to Jason via email.";
   }
 };
 
-// --- New Feature: Structured Quiz Generation ---
-
-export interface QuizQuestion {
-  question: string;
-  options: string[];
-  correctAnswerIndex: number;
-  explanation: string;
-}
-
 /**
- * Generates a structured 3-question quiz using Gemini.
- * Using gemini-3-pro-preview for high-quality structured JSON output and pedagogical reasoning.
+ * Generates a quiz from a topic using Gemini structured output.
+ * Implementation for the InteractiveDemo component.
  */
-export const generateQuizFromTopic = async (topic: string): Promise<QuizQuestion[] | null> => {
+export const generateQuizFromTopic = async (topic: string): Promise<QuizQuestion[]> => {
   try {
+    const ai = getAIClient();
     const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview',
-      contents: `Create a short, engaging 3-question quiz about: ${topic}. The audience is a student learning this concept.`,
+      model: 'gemini-3-flash-preview',
+      contents: `Generate a pedagogical 3-question multiple-choice quiz about: ${topic}. 
+      Each question must have 4 options and one clearly identifiable correct answer.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -78,53 +88,46 @@ export const generateQuizFromTopic = async (topic: string): Promise<QuizQuestion
           items: {
             type: Type.OBJECT,
             properties: {
-              question: { type: Type.STRING },
-              options: { 
+              question: {
+                type: Type.STRING,
+                description: 'The quiz question text.',
+              },
+              options: {
                 type: Type.ARRAY,
-                items: { type: Type.STRING }
+                items: { type: Type.STRING },
+                description: 'A list of four possible answers.',
               },
-              correctAnswerIndex: { 
-                type: Type.INTEGER,
-                description: "The zero-based index of the correct option"
+              correctAnswer: {
+                type: Type.STRING,
+                description: 'The correct answer string.',
               },
-              explanation: { type: Type.STRING, description: "A brief pedagogical explanation of why the answer is correct." }
             },
-            required: ["question", "options", "correctAnswerIndex", "explanation"]
-          }
-        }
-      }
+            required: ["question", "options", "correctAnswer"],
+          },
+        },
+      },
     });
 
     const jsonStr = response.text?.trim();
-    if (jsonStr) {
-      return JSON.parse(jsonStr) as QuizQuestion[];
-    }
-    return null;
+    if (!jsonStr) return [];
+    return JSON.parse(jsonStr);
   } catch (error) {
     console.error("Quiz Generation Error:", error);
-    return null;
+    return [];
   }
 };
 
-// --- New Feature: Learning Path Generation ---
-
-export interface LearningPathStep {
-  stepNumber: number;
-  title: string;
-  duration: string;
-  description: string;
-  keyTopics: string[];
-}
-
 /**
- * Generates a 5-step structured learning path using Gemini.
- * Using gemini-3-pro-preview for better curriculum design and reasoning capabilities.
+ * Generates a structured learning path for a topic using Gemini structured output.
+ * Implementation for the InteractiveDemo component.
  */
-export const generateLearningPath = async (goal: string): Promise<LearningPathStep[] | null> => {
+export const generateLearningPath = async (topic: string): Promise<LearningPathStep[]> => {
   try {
+    const ai = getAIClient();
     const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview',
-      contents: `Design a 5-step learning path for a student who wants to learn: "${goal}". Assume a beginner to intermediate audience.`,
+      model: 'gemini-3-flash-preview',
+      contents: `Synthesize a structured 4-step professional learning path for: ${topic}. 
+      Include estimated durations and key pedagogical focus areas for each step.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -134,26 +137,24 @@ export const generateLearningPath = async (goal: string): Promise<LearningPathSt
             properties: {
               stepNumber: { type: Type.INTEGER },
               title: { type: Type.STRING },
-              duration: { type: Type.STRING, description: "e.g. '2 weeks' or '4 hours'" },
               description: { type: Type.STRING },
-              keyTopics: { 
+              duration: { type: Type.STRING },
+              keyTopics: {
                 type: Type.ARRAY,
                 items: { type: Type.STRING }
-              }
+              },
             },
-            required: ["stepNumber", "title", "duration", "description", "keyTopics"]
-          }
-        }
-      }
+            required: ["stepNumber", "title", "description", "duration", "keyTopics"],
+          },
+        },
+      },
     });
 
     const jsonStr = response.text?.trim();
-    if (jsonStr) {
-      return JSON.parse(jsonStr) as LearningPathStep[];
-    }
-    return null;
+    if (!jsonStr) return [];
+    return JSON.parse(jsonStr);
   } catch (error) {
-    console.error("Learning Path Generation Error:", error);
-    return null;
+    console.error("Learning Path Synthesis Error:", error);
+    return [];
   }
 };

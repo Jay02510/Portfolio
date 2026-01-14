@@ -4,13 +4,8 @@ import ProjectCard from './components/ProjectCard';
 import AIChat from './components/AIChat';
 import InteractiveDemo from './components/InteractiveDemo';
 import { 
-  CodeIcon, 
-  MailIcon, 
-  GithubIcon, 
-  SendIcon, 
-  SparklesIcon, 
   BookOpenIcon, 
-  ExternalLinkIcon 
+  MailIcon
 } from './components/Icons';
 
 function App() {
@@ -22,212 +17,136 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (id: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen selection:bg-white/20 selection:text-white">
       {/* HEADER */}
-      <header className={`fixed top-0 w-full z-50 border-b border-white/5 transition-all duration-300 ${
-        isScrolled ? 'bg-[#030712]/90 backdrop-blur-xl h-16' : 'bg-transparent h-20'
+      <header className={`fixed top-0 w-full z-50 transition-all duration-700 ${
+        isScrolled ? 'bg-alpine-950/60 backdrop-blur-2xl h-16 border-b border-white/5' : 'bg-transparent h-24'
       }`}>
-        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-            <div className="flex items-center gap-2 text-white">
-                <span className="p-1.5 bg-slate-800/50 border border-white/10 rounded-lg">
-                    <BookOpenIcon className="w-4 h-4 text-indigo-300" />
-                </span>
-                <span className="font-medium tracking-tight text-sm text-slate-100 uppercase tracking-widest">
+        <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
+            <div className="flex items-center gap-3">
+                <span className="font-display font-light text-xs tracking-[0.5em] text-white uppercase">
                   {PORTFOLIO_DATA.name}
                 </span>
             </div>
 
-            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
-                <a href="#portfolio" className="hover:text-white transition-colors">Portfolio</a>
-                <a href="#expertise" className="hover:text-white transition-colors">Expertise</a>
-                <a href="#about" className="hover:text-white transition-colors">About</a>
-                <a href="#demo" className="hover:text-indigo-300 transition-colors">AI Lab</a>
+            <nav className="hidden md:flex items-center gap-12 text-[10px] font-medium uppercase tracking-[0.3em] text-white/50">
+                <a href="#portfolio" onClick={scrollToSection('portfolio')} className="hover:text-white transition-colors">Solutions</a>
+                <a href="#lab" onClick={scrollToSection('lab')} className="hover:text-white transition-colors">Digital Lab</a>
+                <a href="#about" onClick={scrollToSection('about')} className="hover:text-white transition-colors">Philosophy</a>
+                <a href="#contact" onClick={scrollToSection('contact')} className="hover:text-white transition-colors">Contact</a>
             </nav>
-
-            <a href="#contact" className="hidden md:flex items-center gap-2 text-xs font-semibold bg-slate-100 text-black px-4 py-2 rounded-full hover:bg-white hover:scale-105 transition-all duration-300">
-                Let's Talk
-                <ExternalLinkIcon className="w-3 h-3" />
-            </a>
         </div>
       </header>
 
       <main>
         {/* HERO SECTION */}
-        <section className="relative pt-40 pb-20 md:pt-48 md:pb-32 px-6 overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-gradient-to-b from-indigo-900/20 to-transparent blur-[100px] -z-10"></div>
-
-            <div className="max-w-4xl mx-auto text-center space-y-8">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-950/30 text-indigo-200 text-xs font-semibold tracking-wide shadow-lg">
-                    <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-                    </span>
-                    AVAILABLE FOR NEW PROJECTS
+        <section className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center">
+            <div className="max-w-4xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-12 duration-1000">
+                <div className="text-white/40 text-[9px] font-bold tracking-[0.6em] uppercase">
+                  Institutional Architecture
                 </div>
-
-                <h1 className="text-5xl md:text-7xl font-semibold tracking-tighter text-white leading-[1.1]">
-                    Bridging Pedagogy <br /> 
-                    <span className="text-slate-500 font-light">&amp;</span> <span className="text-gradient-accent">Technology.</span>
+                
+                <h1 className="text-6xl md:text-9xl font-light tracking-tighter text-white leading-none font-display text-gradient-white">
+                  Modernize <br />
+                  <span>The Campus.</span>
                 </h1>
 
-                <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed font-light">
-                    {PORTFOLIO_DATA.bio}
+                <p className="text-sm md:text-base text-white/60 max-w-xl mx-auto leading-relaxed tracking-wide font-light">
+                  I design invisible infrastructure for modern schools. Simple tools that manage your scheduling, insights, and feedback automatically.
                 </p>
 
-                <div className="flex flex-col md:flex-row items-center justify-center gap-5 pt-8">
-                    <a href="#portfolio" className="shiny-cta">
-                        View Products
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                <div className="pt-10 flex flex-col sm:flex-row items-center justify-center gap-6">
+                    <a href="#portfolio" onClick={scrollToSection('portfolio')} className="shiny-cta">
+                        Explore Solutions
                     </a>
-                    <a href="#about" className="px-6 py-3 rounded-full border border-slate-700 bg-slate-900/50 text-slate-200 text-sm font-medium hover:bg-slate-800 hover:text-white hover:border-slate-500 transition-all flex items-center gap-2">
-                        My Philosophy
-                    </a>
+                    <button onClick={scrollToSection('contact')} className="text-white/40 hover:text-white text-[9px] font-bold uppercase tracking-[0.3em] transition-colors border-b border-white/10 pb-1">
+                      Start Deployment
+                    </button>
                 </div>
+            </div>
+
+            {/* Scroll Indicator */}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+              <div className="w-[1px] h-12 bg-gradient-to-bottom from-transparent via-white/40 to-transparent"></div>
             </div>
         </section>
 
-        {/* TECH STACK */}
-        <section className="py-12 border-y border-white/5 bg-slate-950/50 backdrop-blur-sm">
-            <div className="max-w-7xl mx-auto px-6">
-                <p className="text-xs text-center text-slate-400 uppercase tracking-widest mb-10 font-semibold">Powering Next-Gen Education</p>
-                <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-80">
-                    {['React', 'Next.js', 'TypeScript', 'Python', 'Canvas API', 'Gemini 3'].map((tech) => (
-                      <div key={tech} className="flex items-center gap-2 text-lg font-medium text-slate-400 hover:text-indigo-300 transition-colors cursor-default">
-                          {tech}
-                      </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-
-        {/* FEATURED PRODUCTS */}
-        <section id="portfolio" className="py-32 px-6 max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-6">
-                <div className="space-y-4">
-                    <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-white">Featured Applications</h2>
-                    <p className="text-slate-300 max-w-md font-light text-lg">Deploying scalable solutions for the modern classroom.</p>
-                </div>
-                <a href="https://github.com" target="_blank" className="group flex items-center gap-2 text-sm text-indigo-300 hover:text-indigo-200 transition-colors">
-                    View Code on GitHub 
-                    <ExternalLinkIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
+        {/* PROJECTS SECTION - THE "ACCOMMODATIONS" FLOW */}
+        <section id="portfolio" className="py-40 px-6 max-w-6xl mx-auto">
+            <div className="mb-32 text-center space-y-6">
+                <div className="text-white/30 text-[9px] font-bold tracking-[0.5em] uppercase">The Portfolio</div>
+                <h2 className="text-4xl md:text-5xl font-light tracking-tight text-white font-display">School Suites</h2>
             </div>
 
-            <div className="space-y-24">
+            <div className="space-y-64">
                 {PORTFOLIO_DATA.projects.map((project, idx) => (
                   <ProjectCard key={project.id} project={project} index={idx} />
                 ))}
             </div>
         </section>
 
-        {/* EXPERTISE */}
-        <section id="expertise" className="py-24 px-6 max-w-7xl mx-auto border-t border-white/5">
-            <div className="mb-16">
-                <h2 className="text-3xl md:text-5xl font-medium tracking-tight mb-4 text-white">Core Competencies</h2>
-                <p className="text-slate-300 max-w-xl font-light text-lg">Technical skills tailored specifically for the educational ecosystem.</p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="glass-card p-8 rounded-2xl group relative overflow-hidden">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-900/30 border border-indigo-500/20 flex items-center justify-center text-indigo-300 mb-6 group-hover:scale-110 transition-all duration-300">
-                        <CodeIcon className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-xl font-medium mb-3 text-white">LMS Integration (LTI)</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed">
-                        Seamlessly connecting external tools into Canvas, Blackboard, and Moodle using LTI 1.3 standards.
-                    </p>
-                </div>
-                <div className="glass-card p-8 rounded-2xl group relative overflow-hidden">
-                    <div className="w-12 h-12 rounded-xl bg-purple-900/30 border border-purple-500/20 flex items-center justify-center text-purple-300 mb-6 group-hover:scale-110 transition-all duration-300">
-                        <SparklesIcon className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-xl font-medium mb-3 text-white">Gamification Logic</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed">
-                        Designing point systems, leaderboards, and badging architectures that intrinsically motivate learners.
-                    </p>
-                </div>
-                <div className="glass-card p-8 rounded-2xl group relative overflow-hidden">
-                    <div className="w-12 h-12 rounded-xl bg-cyan-900/30 border border-cyan-500/20 flex items-center justify-center text-cyan-300 mb-6 group-hover:scale-110 transition-all duration-300">
-                        <MailIcon className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-xl font-medium mb-3 text-white">WCAG Accessibility</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed">
-                        Ensuring every application is fully navigable via keyboard and screen readers for inclusive education.
-                    </p>
-                </div>
-            </div>
+        {/* INTERACTIVE LAB SECTION */}
+        <section id="lab" className="py-40">
+           <div className="max-w-6xl mx-auto px-6 mb-20">
+              <div className="text-white/30 text-[9px] font-bold tracking-[0.5em] uppercase mb-4 text-center">Experimental</div>
+              <h2 className="text-4xl font-light tracking-tight text-white font-display text-center">Digital Lab</h2>
+           </div>
+           <InteractiveDemo />
         </section>
 
-        {/* AI LAB */}
-        <section id="demo" className="py-12">
-          <InteractiveDemo />
-        </section>
-
-        {/* ABOUT */}
-        <section className="bg-[#030712] border-y border-white/5 py-32 relative" id="about">
-            <div className="max-w-5xl mx-auto px-6 relative z-10">
-                <div className="flex flex-col md:flex-row gap-16 items-start">
-                    <div className="w-full md:w-1/3">
-                        <div className="aspect-square rounded-2xl bg-gradient-to-br from-slate-800 to-slate-950 border border-white/10 flex items-center justify-center overflow-hidden group">
-                           <div className="w-32 h-32 bg-slate-800/50 rounded-full flex items-center justify-center border border-white/5 text-slate-500">
-                             <BookOpenIcon className="w-16 h-16 opacity-50" />
-                           </div>
-                        </div>
-                    </div>
-                    <div className="w-full md:w-2/3 space-y-8">
-                        <div>
-                            <h2 className="text-3xl md:text-4xl font-medium tracking-tight text-white mb-2">Hello, I'm {PORTFOLIO_DATA.name.split(' ')[0]}.</h2>
-                            <h3 className="text-xl text-indigo-300 font-light">Developer. Educator. Problem Solver.</h3>
-                        </div>
-                        <p className="text-slate-300 leading-relaxed font-light text-lg">
-                            Before writing code, I wrote lesson plans. My background in curriculum design gives me a unique advantage: I don't just build software that works; <strong className="text-white font-medium">I build software that teaches.</strong>
-                        </p>
-                        <div className="pt-8 flex gap-10 border-t border-white/5 mt-4">
-                            <div>
-                                <p className="text-3xl font-bold text-white">5+</p>
-                                <p className="text-xs text-slate-500 uppercase tracking-wide mt-1 font-semibold">Years in EdTech</p>
-                            </div>
-                             <div>
-                                <p className="text-3xl font-bold text-white">12</p>
-                                <p className="text-xs text-slate-500 uppercase tracking-wide mt-1 font-semibold">Apps Deployed</p>
-                            </div>
-                        </div>
-                    </div>
+        {/* PHILOSOPHY SECTION */}
+        <section id="about" className="py-60 px-6 relative overflow-hidden">
+            <div className="absolute inset-0 bg-white/[0.02] -z-10"></div>
+            <div className="max-w-4xl mx-auto text-center space-y-16">
+                <div className="inline-block p-4 border border-white/10 rounded-full">
+                  <BookOpenIcon className="w-5 h-5 text-white/60" />
                 </div>
-            </div>
-        </section>
-
-        {/* CONTACT CTA */}
-        <section id="contact" class="py-40 px-6 text-center relative overflow-hidden">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-indigo-900/10 to-blue-900/10 blur-[100px] rounded-full -z-10 pointer-events-none"></div>
-
-            <div class="max-w-2xl mx-auto space-y-10">
-                <h2 class="text-4xl md:text-6xl font-medium tracking-tighter text-white leading-tight">
-                    Have an idea for the <br /><span class="text-indigo-300">classroom?</span>
+                <h2 className="text-4xl md:text-6xl font-light text-white font-display leading-tight">
+                  Design that <span className="text-white/30 italic">fades away.</span>
                 </h2>
-                <p class="text-lg text-slate-300 font-light max-w-xl mx-auto">
-                    I am currently accepting new contracts for Q4. Let's discuss how we can bring your educational vision to life.
+                <p className="text-lg text-white/50 font-light leading-relaxed max-w-2xl mx-auto tracking-wide">
+                  True educational technology shouldn't demand a teacher's attention. It should be a silent partner that handles the complexity of scheduling and data, allowing educators to focus on their students.
                 </p>
-                <div class="flex justify-center pt-4">
-                    <button class="shiny-cta text-base">
-                        <span>Book a Free Consultation</span>
-                    </button>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-10">
+                   {PORTFOLIO_DATA.skills.slice(0, 4).map(skill => (
+                     <div key={skill.name} className="space-y-3">
+                        <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/30">{skill.name}</div>
+                        <div className="h-[1px] bg-white/10 w-full relative">
+                           <div className="absolute h-full bg-white/60" style={{width: `${skill.level}%`}}></div>
+                        </div>
+                     </div>
+                   ))}
+                </div>
+            </div>
+        </section>
+
+        {/* CONTACT SECTION */}
+        <section id="contact" className="py-64 px-6 text-center">
+            <div className="max-w-3xl mx-auto space-y-16">
+                <h2 className="text-6xl md:text-8xl font-light tracking-tighter text-white font-display">
+                  Let's <span className="text-white/30 italic">Consult.</span>
+                </h2>
+                <p className="text-lg text-white/40 font-light max-w-md mx-auto leading-relaxed">
+                  Available for select partnerships with K-12 and Higher Ed institutions looking to modernize their infrastructure.
+                </p>
+                <div className="flex justify-center pt-10">
+                    <a href="mailto:hello@jasonbenjamin.edu" className="shiny-cta px-12 py-5">
+                        <MailIcon className="w-4 h-4 mr-3" />
+                        Send Inquiry
+                    </a>
                 </div>
             </div>
         </section>
       </main>
 
-      <footer className="border-t border-white/5 py-12 bg-[#030712]">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-sm text-slate-500">
-                © 2024 {PORTFOLIO_DATA.name}. Built with Gemini & Passion.
-            </div>
-            <div className="flex gap-8 text-sm font-medium text-slate-500">
-                <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
-                <a href="#" className="hover:text-white transition-colors">GitHub</a>
-            </div>
-        </div>
+      <footer className="py-20 border-t border-white/5 text-center bg-alpine-950">
+          <p className="text-[9px] text-white/20 font-medium uppercase tracking-[0.6em]">© 2024 — Modern Institutional Architecture</p>
       </footer>
 
       <AIChat />
