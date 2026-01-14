@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Project } from '../types';
-import { ExternalLinkIcon } from './Icons';
+import { ExternalLinkIcon, GithubIcon } from './Icons';
 
 interface ProjectCardProps {
   project: Project;
@@ -48,9 +49,21 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               {project.category}
           </div>
           <div className="space-y-4">
-              <h3 className="text-3xl font-medium tracking-tight text-white group-hover:text-indigo-300 transition-colors">
-                {project.title}
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-3xl font-medium tracking-tight text-white group-hover:text-indigo-300 transition-colors">
+                  {project.title}
+                </h3>
+                {project.githubUrl && project.githubUrl !== "#" && (
+                  <a 
+                    href={project.githubUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-slate-500 hover:text-white transition-colors"
+                  >
+                    <GithubIcon className="w-5 h-5" />
+                  </a>
+                )}
+              </div>
               <p className="text-slate-300 leading-relaxed font-light text-lg">
                 {project.longDescription}
               </p>
@@ -63,7 +76,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               ))}
           </div>
           <div className="pt-2">
-              <a href={project.demoUrl} target="_blank" className="text-white text-sm font-medium flex items-center gap-2 hover:gap-3 hover:text-indigo-300 transition-all group/link">
+              <a 
+                href={project.demoUrl || "#"} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white text-sm font-medium flex items-center gap-2 hover:gap-3 hover:text-indigo-300 transition-all group/link"
+              >
                   Launch Application 
                   <ExternalLinkIcon className="w-4 h-4" />
               </a>

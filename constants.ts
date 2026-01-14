@@ -1,4 +1,15 @@
+
 import { PortfolioData } from './types';
+
+/**
+ * PORTFOLIO DATA CONFIGURATION
+ * ----------------------------
+ * To add your own projects:
+ * 1. Replace the 'title', 'description', and 'longDescription'.
+ * 2. Update 'imageUrl' with a direct link to a screenshot or high-quality image.
+ * 3. Set 'demoUrl' to your live website (e.g., https://yourproduct.com).
+ * 4. Set 'githubUrl' to your repository or '#' if it's a private project.
+ */
 
 export const PORTFOLIO_DATA: PortfolioData = {
   name: "Jordan Rivera",
@@ -13,15 +24,15 @@ export const PORTFOLIO_DATA: PortfolioData = {
   ],
   projects: [
     {
-      id: "chekki-ai",
+      id: "scholarsync-lms",
       title: "ScholarSync LMS",
       category: "Tools",
-      description: "A modular Learning Management System designed for micro-schools.",
+      description: "A modular Learning Management System designed for modern micro-schools.",
       longDescription: "ScholarSync features real-time grade synchronization, automated attendance tracking via QR codes, and a React-based interactive assignment builder. It streamlines the connection between student activity and institutional data.",
       tags: ["Next.js", "PostgreSQL", "Socket.io", "LTI 1.3"],
       imageUrl: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=800&auto=format&fit=crop",
-      demoUrl: "https://chekki-ai.vercel.app",
-      githubUrl: "#"
+      demoUrl: "https://scholarsync-demo.vercel.app", // REPLACE WITH YOUR ACTUAL URL
+      githubUrl: "https://github.com/jrivera/scholarsync" // REPLACE WITH YOUR GITHUB
     },
     {
       id: "lingua-ai",
@@ -31,19 +42,30 @@ export const PORTFOLIO_DATA: PortfolioData = {
       longDescription: "An AI tutor that generates personalized quizzes based on student weak points. Integrates advanced Speech-to-Text for pronunciation scoring and real-time formative feedback loops.",
       tags: ["Python", "OpenAI Whisper", "FastAPI", "React"],
       imageUrl: "https://images.unsplash.com/photo-1543269664-76bc3997d9ea?q=80&w=800&auto=format&fit=crop",
-      demoUrl: "#",
-      githubUrl: "#"
+      demoUrl: "https://lingua-ai-tutor.com", // REPLACE WITH YOUR ACTUAL URL
+      githubUrl: "#" // Set to '#' if private
     },
     {
-      id: "edu-metrics",
+      id: "edumetrics-dash",
       title: "EduMetrics Dash",
       category: "Higher Ed",
       description: "Centralized analytics dashboard for university retention prediction.",
       longDescription: "Aggregates data from multiple sources (LMS, SIS, Library systems) to predict at-risk students. Features D3.js powered visualizations for institutional decision making.",
       tags: ["React", "D3.js", "Firebase", "BigQuery"],
       imageUrl: "https://images.unsplash.com/photo-1551288049-bb8c803ef776?q=80&w=800&auto=format&fit=crop",
-      demoUrl: "https://education-benchmark-system.vercel.app/",
+      demoUrl: "https://edumetrics-portal.edu", // REPLACE WITH YOUR ACTUAL URL
       githubUrl: "#"
+    },
+    {
+      id: "custom-product-x",
+      title: "Your Next Big Product",
+      category: "K-12",
+      description: "Describe your fourth product here to expand your portfolio showcase.",
+      longDescription: "This is a great place to showcase your deep expertise in a specific area, like Gamification or Accessibility. Talk about the 'Why' behind the product.",
+      tags: ["Tech A", "Tech B", "Tech C"],
+      imageUrl: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800&auto=format&fit=crop",
+      demoUrl: "https://yourwebsite.com",
+      githubUrl: "https://github.com/yourusername"
     }
   ]
 };
