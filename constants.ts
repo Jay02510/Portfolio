@@ -2,48 +2,44 @@ import { PortfolioData } from './types';
 
 export const PORTFOLIO_DATA: PortfolioData = {
   name: "Jason Benjamin",
-  role: "Education Software Architect",
-  bio: "I build the modern tools that power schools and universities. By combining smart automation, institutional data, and complex logic, I create systems that give time back to teachers and provide clear paths for student success.",
+  role: "Education System Designer",
+  bio: "With over a decade of experience in South Korean classrooms, I build tools that solve the human problems of education. My work isn't about software; it's about giving time back to teachers and ensuring no student is left behind by a rigid system.",
   skills: [
-    { name: "Language Technology", level: 95, category: "AI/ML" },
-    { name: "Resource Management", level: 90, category: "Backend" },
-    { name: "Data Visualization", level: 92, category: "Frontend" },
-    { name: "Full-Stack Development", level: 95, category: "Frontend" },
-    { name: "School Systems (LMS)", level: 88, category: "Backend" },
+    { name: "Curriculum Design", level: 95, category: "Design" },
+    { name: "Automation Pipelines", level: 90, category: "AI/ML" },
+    { name: "Educational Data", level: 92, category: "Backend" },
+    { name: "User Experience", level: 95, category: "Frontend" },
   ],
   projects: [
     {
-      id: "chekki",
-      title: "Chekki",
-      category: "Tools",
-      description: "Automated student feedback and progress assistant.",
-      longDescription: "Chekki changes how teachers give feedback. Using smart analysis, it allows educators to provide personalized guidance to every student instantly. It identifies where students are stuck and provides the right hint at the right time, making daily learning more interactive.",
-      tags: ["Smart Feedback", "Modern Web", "Learning Design", "Automation"],
-      imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop",
-      demoUrl: "https://chekki.ai",
-      githubUrl: "#"
-    },
-    {
       id: "benchmark-system",
       title: "Benchmark Explorer",
-      category: "Higher Ed",
-      description: "Performance tracking and school intelligence platform.",
-      longDescription: "A powerful tool for academic leaders. This system brings together student scores to show how a school is performing compared to global standards. It turns complex data into simple strategies for improving graduation rates and course quality.",
-      tags: ["Dashboards", "Analytics", "Interactive Data", "Reporting"],
-      imageUrl: "https://images.unsplash.com/photo-1551288049-bb8c803ef776?q=80&w=800&auto=format&fit=crop",
+      category: "K-12",
+      description: "A safety net for fast-paced learning.",
+      longDescription: "I saw too many students struggling because the system moved faster than they could keep up. I built the Benchmark Explorer to identify exactly where a student is falling behind before the curriculum leaves them behind. It turns complex scores into a clear map for intervention.",
+      tags: ["Student Tracking", "Curriculum Alignment", "Safety Nets"],
+      imageUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2000&auto=format&fit=crop",
       demoUrl: "https://education-benchmark-system.vercel.app/",
-      githubUrl: "#"
+    },
+    {
+      id: "chekki",
+      title: "Chekki AI",
+      category: "Tools",
+      description: "Empowering every household.",
+      longDescription: "In my years teaching, I realized students couldn't take books home because their parents were either too busy or didn't speak English themselves. I designed Chekki to be the bridge—an AI assistant that explains English tasks in the parents' native language, allowing learning to continue at home.",
+      tags: ["Parent Support", "Translation AI", "Home Learning"],
+      imageUrl: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?q=80&w=2000&auto=format&fit=crop",
+      demoUrl: "https://chekki.ai",
     },
     {
       id: "intelli-schedule",
-      title: "Intelligent Scheduler",
+      title: "The Scheduler",
       category: "Corporate",
-      description: "Smart course and classroom management.",
-      longDescription: "Simplifying the puzzle of school scheduling. This system automatically manages teacher availability, room sizes, and student requests. It removes the stress of manual planning, ensuring every class has a space and every student has a seat.",
-      tags: ["Logic Engines", "Server Systems", "Optimization", "Web App"],
-      imageUrl: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=800&auto=format&fit=crop",
-      demoUrl: "mailto:hello@jasonbenjamin.edu?subject=Intelligent Scheduler Demo Request",
-      githubUrl: "#"
+      description: "Unraveling the scheduling maze.",
+      longDescription: "My school director spent days every month trapped in a maze of Excel sheets because 'nobody else could do the job.' I built this app to prove that even the most complex human constraints can be solved with smart logic, giving her back the time to focus on leading our school.",
+      tags: ["Solving Mazes", "Staff Efficiency", "Time Management"],
+      imageUrl: "https://images.unsplash.com/photo-1454165833767-131435bb429f?q=80&w=2000&auto=format&fit=crop",
+      demoUrl: "mailto:jsn.benjamin@gmail.com?subject=Scheduling App Demo",
     }
   ]
 };

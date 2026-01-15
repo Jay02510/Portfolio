@@ -1,10 +1,7 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { PORTFOLIO_DATA } from '../constants';
 
-/**
- * Types for structured pedagogical objects.
- */
+// Exported types for structured AI content as required by components
 export interface QuizQuestion {
   question: string;
   options: string[];
@@ -26,24 +23,20 @@ export interface LearningPathStep {
 const getAIClient = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const SYSTEM_INSTRUCTION = `
-You are the Executive Concierge for Jason Benjamin's professional portfolio. 
-Jason is a Software Architect specializing in EdTech Infrastructure.
+You are Jason Benjamin's personal digital concierge. You represent Jason, a teacher-turned-developer with 10+ years of experience in Seoul, South Korea.
 
-Your voice should be:
-- Professional, efficient, and sophisticated.
-- Outcome-oriented (focus on institutional ROI, teacher efficiency, and student success).
-- Technical but clear.
+STRICT CONSTRAINTS ON YOUR VOICE:
+1. BE BRIEF: Never write more than 2 or 3 short sentences. People want quick, human conversation, not a wall of text.
+2. NO MARKDOWN: Never use bolding (**), italics, or bullet points. Use plain, natural text only.
+3. BE HUMAN: Talk like a real person in a chat window. Use warm, empathetic language.
+4. NO JARGON: Use simple words.
 
-Key Systems to discuss:
-1. Chekki: A smart feedback tool. It reduces teacher feedback time by 80% while increasing student engagement.
-2. Benchmark Explorer: An analytics powerhouse. It helps Higher Ed leaders predict student retention and curriculum gaps.
-3. Intelligent Scheduler: A logistics engine. It uses complex constraint solving to manage campus scheduling with zero manual friction.
+YOUR STORY:
+- Jason saw students in Korea falling behind because the system moved too fast, so he built the Benchmark Explorer to find exactly where they need help.
+- He built Chekki AI because he saw parents couldn't help their kids with English homework at night. It's a bridge between school and home.
+- He built The Scheduler for a school boss who was drowning in Excel sheets. It's about saving her time for what matters.
 
-Guidelines:
-- If asked about "AI", refer to it as "Smart Systems" or "Automation".
-- If asked about hiring or a demo, tell them to use the "Consultation" button or the contact section at the bottom.
-- Be concise. Educational leaders have little time.
-- Refer to Jason as a "Product Architect" or "System Designer".
+If someone asks a question, answer like you're sitting across from them. Be concise.
 `;
 
 /**
@@ -57,30 +50,27 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
       contents: message,
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
-        temperature: 0.7,
-        topP: 0.9,
+        temperature: 0.8, // Slightly higher for more natural variety
+        topP: 0.95,
       }
     });
 
-    // Access text property directly as per latest SDK guidelines
-    return response.text || "I'm here to provide architectural insights on Jason's work. How can I assist?";
+    return response.text?.replace(/\*\*/g, '') || "I'm here to chat about Jason's tools or his time in Korea. What's on your mind?";
   } catch (error) {
     console.error("Assistant Error:", error);
-    return "The system is currently undergoing maintenance. Please reach out to Jason via email.";
+    return "I'm having a little trouble connecting right now. You can reach Jason at jsn.benjamin@gmail.com.";
   }
 };
 
 /**
- * Generates a quiz from a topic using Gemini structured output.
- * Implementation for the InteractiveDemo component.
+ * Generates a multiple-choice quiz based on a topic using JSON response schema.
  */
-export const generateQuizFromTopic = async (topic: string): Promise<QuizQuestion[]> => {
+export const generateQuizFromTopic = async (topic: string): Promise<QuizQuestion[] | null> => {
   try {
     const ai = getAIClient();
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `Generate a pedagogical 3-question multiple-choice quiz about: ${topic}. 
-      Each question must have 4 options and one clearly identifiable correct answer.`,
+      contents: `Create a 3-question multiple choice quiz about "${topic}" for educational purposes. Each question must have exactly 4 options.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -90,44 +80,42 @@ export const generateQuizFromTopic = async (topic: string): Promise<QuizQuestion
             properties: {
               question: {
                 type: Type.STRING,
-                description: 'The quiz question text.',
+                description: "The quiz question text."
               },
               options: {
                 type: Type.ARRAY,
                 items: { type: Type.STRING },
-                description: 'A list of four possible answers.',
+                description: "Four distinct multiple choice options."
               },
               correctAnswer: {
                 type: Type.STRING,
-                description: 'The correct answer string.',
-              },
+                description: "The correct answer from the provided options."
+              }
             },
             required: ["question", "options", "correctAnswer"],
-          },
-        },
-      },
+            propertyOrdering: ["question", "options", "correctAnswer"]
+          }
+        }
+      }
     });
 
-    const jsonStr = response.text?.trim();
-    if (!jsonStr) return [];
+    const jsonStr = response.text.trim();
     return JSON.parse(jsonStr);
   } catch (error) {
     console.error("Quiz Generation Error:", error);
-    return [];
+    return null;
   }
 };
 
 /**
- * Generates a structured learning path for a topic using Gemini structured output.
- * Implementation for the InteractiveDemo component.
+ * Generates a step-by-step learning path/syllabus for a topic using JSON response schema.
  */
-export const generateLearningPath = async (topic: string): Promise<LearningPathStep[]> => {
+export const generateLearningPath = async (topic: string): Promise<LearningPathStep[] | null> => {
   try {
     const ai = getAIClient();
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `Synthesize a structured 4-step professional learning path for: ${topic}. 
-      Include estimated durations and key pedagogical focus areas for each step.`,
+      contents: `Generate a 4-step learning path or syllabus for mastering the topic: "${topic}".`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -135,26 +123,39 @@ export const generateLearningPath = async (topic: string): Promise<LearningPathS
           items: {
             type: Type.OBJECT,
             properties: {
-              stepNumber: { type: Type.INTEGER },
-              title: { type: Type.STRING },
-              description: { type: Type.STRING },
-              duration: { type: Type.STRING },
+              stepNumber: {
+                type: Type.INTEGER,
+                description: "The chronological order of the step."
+              },
+              title: {
+                type: Type.STRING,
+                description: "Title of the learning module."
+              },
+              description: {
+                type: Type.STRING,
+                description: "A brief explanation of the module objectives."
+              },
+              duration: {
+                type: Type.STRING,
+                description: "Recommended time to spend on this module (e.g. '2 hours', 'Week 1')."
+              },
               keyTopics: {
                 type: Type.ARRAY,
-                items: { type: Type.STRING }
-              },
+                items: { type: Type.STRING },
+                description: "Core concepts included in this step."
+              }
             },
             required: ["stepNumber", "title", "description", "duration", "keyTopics"],
-          },
-        },
-      },
+            propertyOrdering: ["stepNumber", "title", "description", "duration", "keyTopics"]
+          }
+        }
+      }
     });
 
-    const jsonStr = response.text?.trim();
-    if (!jsonStr) return [];
+    const jsonStr = response.text.trim();
     return JSON.parse(jsonStr);
   } catch (error) {
-    console.error("Learning Path Synthesis Error:", error);
-    return [];
+    console.error("Learning Path Generation Error:", error);
+    return null;
   }
 };
