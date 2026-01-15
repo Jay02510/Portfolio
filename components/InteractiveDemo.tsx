@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { SparklesIcon, SendIcon, MailIcon } from './Icons';
 import { generateSolutionsForProblem, SolutionSuggestion } from '../services/geminiService';
@@ -44,7 +43,7 @@ const InteractiveDemo: React.FC = () => {
                 <div className="w-1.5 h-1.5 bg-accent-gold rounded-full"></div>
                 Solution Lab
               </div>
-              <h2 className="text-3xl font-light text-white tracking-tight mb-4 font-display leading-tight">Your <br/><span className="italic text-white/30">Problem.</span></h2>
+              <h2 className="text-3xl font-light text-white tracking-tight mb-4 font-display leading-tight text-gradient-white">Your <br/><span className="italic text-white/30">Problem.</span></h2>
               <p className="text-white/20 text-xs font-light leading-relaxed">
                 Describe a boring or hard task at school. I'll show you three tools I can build to fix it.
               </p>
@@ -89,7 +88,7 @@ const InteractiveDemo: React.FC = () => {
              {solutions && (
                <div className="space-y-10 animate-in fade-in duration-700 flex-1 overflow-y-auto pr-2">
                   <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/5 pb-8 gap-4">
-                    <h3 className="text-4xl font-light font-display text-white tracking-tight">Tools I can build</h3>
+                    <h3 className="text-4xl font-light font-display text-white tracking-tight text-gradient-white">Tools I can build</h3>
                     <div className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20">3 Ideas Ready</div>
                   </div>
 
@@ -105,7 +104,7 @@ const InteractiveDemo: React.FC = () => {
                         onClick={() => handleSelect(i)}
                       >
                         <div className="flex justify-between items-start mb-4 gap-4">
-                          <h5 className={`text-2xl font-light font-display ${selectedSolution === i ? 'text-alpine-950' : 'text-white'}`}>
+                          <h5 className={`text-2xl font-light font-display ${selectedSolution === i ? 'text-alpine-950' : 'text-white text-gradient-white'}`}>
                             {sol.title}
                           </h5>
                           <span className={`text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border ${

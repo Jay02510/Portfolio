@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ExternalLinkIcon } from './Icons';
 
@@ -26,7 +25,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       <div className={`mt-[-100px] md:mt-0 md:absolute ${isEven ? 'md:right-12' : 'md:left-12'} md:top-1/2 md:-translate-y-1/2 w-full max-w-lg glass-panel rounded-[2rem] p-10 md:p-12 space-y-8 z-20`}>
           <div className="space-y-4">
               <span className="text-white/30 font-bold uppercase tracking-[0.4em] text-[8px]">Project 0{index + 1}</span>
-              <h3 className="text-4xl font-light text-white font-display tracking-tight leading-none">
+              <h3 className="text-4xl font-light text-white font-display tracking-tight leading-none text-gradient-white">
                 {project.title}
               </h3>
               <p className="text-sm text-white/60 font-light leading-relaxed">
