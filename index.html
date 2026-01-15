@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
   <head>
@@ -18,15 +19,12 @@
             },
             colors: {
               alpine: {
-                // Moving from cold black to a warmer "Midnight Ink"
                 950: '#0d0f14', 
                 900: '#161920',
                 800: '#232834',
-                // Moving from pure white to a "Gallery White" (warm ivory)
                 50: '#faf9f6' 
               },
               accent: {
-                // A warm ember/gold for human touchpoints
                 gold: '#e2b87d',
                 clay: '#a87c5c'
               }
@@ -49,7 +47,6 @@
             position: relative;
         }
 
-        /* Subtle Grain Overlay for a physical, human feel */
         body::before {
             content: "";
             position: fixed;
@@ -74,20 +71,19 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 120%;
+            height: 130%;
             z-index: -2;
-            background-image: linear-gradient(to bottom, rgba(13, 15, 20, 0.6), rgba(13, 15, 20, 0.95)), url('https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=2560&auto=format&fit=crop');
+            background-image: linear-gradient(to bottom, rgba(13, 15, 20, 0.7), rgba(13, 15, 20, 0.98)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2560&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            transform: translateY(0);
-            transition: transform 0.1s ease-out;
+            opacity: 0.4;
         }
 
         .glass-panel {
-            background: rgba(22, 25, 32, 0.5);
-            backdrop-filter: blur(50px);
+            background: rgba(22, 25, 32, 0.4);
+            backdrop-filter: blur(40px);
             border: 1px solid rgba(250, 249, 246, 0.05);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .shiny-cta {
@@ -96,40 +92,44 @@
             border-radius: 12px;
             font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.25em;
             color: #faf9f6;
-            background: rgba(250, 249, 246, 0.03);
-            border: 1px solid rgba(250, 249, 246, 0.1);
+            background: rgba(250, 249, 246, 0.02);
+            border: 1px solid rgba(250, 249, 246, 0.08);
             backdrop-filter: blur(10px);
-            transition: all 0.4s ease;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 1.25rem 3rem;
-            font-size: 0.7rem;
+            padding: 1.5rem 3.5rem;
+            font-size: 0.65rem;
         }
         .shiny-cta:hover { 
             background: #faf9f6;
             color: #0d0f14;
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
         }
 
         .text-gradient-white {
-            background: linear-gradient(to bottom, #faf9f6, #a87c5c);
+            background: linear-gradient(to bottom, #faf9f6 0%, #a87c5c 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
+        .lab-blueprint-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(226, 184, 125, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
         #root { position: relative; z-index: 10; }
 
-        /* Animation for human elements */
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-15px); }
             100% { transform: translateY(0px); }
         }
-        .float-anim { animation: float 6s ease-in-out infinite; }
+        .float-anim { animation: float 8s ease-in-out infinite; }
     </style>
   <script type="importmap">
 {
@@ -149,7 +149,7 @@
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
             const bg = document.getElementById('parallaxBg');
-            bg.style.transform = `translateY(${scrolled * 0.2}px)`;
+            bg.style.transform = `translateY(${scrolled * 0.15}px)`;
         });
     </script>
   </body>
