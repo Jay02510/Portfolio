@@ -7,7 +7,8 @@ import InteractiveDemo from './components/InteractiveDemo';
 import { 
   BookOpenIcon, 
   MailIcon,
-  SparklesIcon
+  SparklesIcon,
+  CodeIcon
 } from './components/Icons';
 
 function App() {
@@ -38,10 +39,10 @@ function App() {
             </div>
 
             <nav className="hidden md:flex items-center gap-12 text-[9px] font-bold uppercase tracking-[0.4em] text-white/40">
-                <a href="#story" onClick={scrollToSection('story')} className="hover:text-white transition-colors">Origins</a>
-                <a href="#portfolio" onClick={scrollToSection('portfolio')} className="hover:text-white transition-colors">Case Studies</a>
-                <a href="#lab" onClick={scrollToSection('lab')} className="hover:text-white transition-colors">Lab</a>
-                <a href="#contact" onClick={scrollToSection('contact')} className="hover:text-white transition-colors">Connect</a>
+                <a href="#about" onClick={scrollToSection('about')} className="hover:text-white transition-colors">About Me</a>
+                <a href="#portfolio" onClick={scrollToSection('portfolio')} className="hover:text-white transition-colors">Portfolio</a>
+                <a href="#lab" onClick={scrollToSection('lab')} className="hover:text-white transition-colors">MVP Sandbox</a>
+                <a href="#contact" onClick={scrollToSection('contact')} className="hover:text-white transition-colors">Fix a Friction</a>
             </nav>
         </div>
       </header>
@@ -69,17 +70,17 @@ function App() {
 
                 <div className="pt-12 flex flex-col sm:flex-row items-center justify-center gap-8">
                     <a href="#portfolio" onClick={scrollToSection('portfolio')} className="shiny-cta min-w-[240px]">
-                        View Solutions
+                        The Portfolio
                     </a>
                     <button onClick={scrollToSection('lab')} className="text-white/40 hover:text-accent-gold text-[9px] font-bold uppercase tracking-[0.4em] transition-all flex items-center gap-3">
                       <SparklesIcon className="w-3 h-3" />
-                      Try the Systems Lab
+                      Architect an MVP
                     </button>
                 </div>
             </div>
         </section>
 
-        {/* IMPACT LEDGER (NEW SECTION) */}
+        {/* IMPACT LEDGER */}
         <section className="py-20 border-y border-white/5 bg-white/[0.01]">
           <div className="max-w-6xl mx-auto px-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-24">
@@ -93,40 +94,50 @@ function App() {
           </div>
         </section>
 
-        {/* ORIGIN STORY */}
-        <section id="story" className="py-48 px-6">
-          <div className="max-w-5xl mx-auto glass-panel rounded-[4rem] p-12 md:p-32 space-y-32 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-20 opacity-5 pointer-events-none">
-              <BookOpenIcon className="w-64 h-64 text-white" />
-            </div>
-            
-            <div className="space-y-10 max-w-2xl relative z-10">
-              <div className="text-accent-gold text-[9px] font-bold tracking-[0.6em] uppercase">Philosophy</div>
-              <h2 className="text-5xl md:text-7xl font-light tracking-tight text-white font-display leading-[0.9]">Empathy is the <br /><span className="text-white/30">first feature.</span></h2>
-              <p className="text-xl text-white/50 font-light leading-relaxed tracking-wide">
-                Every tool I build comes from a specific 'I wish this existed' moment in a school hallway. I taught myself to code not to leave education, but to empower it.
-              </p>
+        {/* ABOUT ME SECTION (RESTORED & REDESIGNED) */}
+        <section id="about" className="py-48 px-6">
+          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-24 items-start">
+            <div className="lg:w-1/3 space-y-12">
+               <div className="text-accent-gold text-[10px] font-bold tracking-[0.6em] uppercase">The Architect</div>
+               <h2 className="text-6xl font-light text-white font-display leading-[0.9]">Teacher. <br /><span className="text-white/30">Developer.</span> <br />Problem Solver.</h2>
+               <div className="h-1 w-20 bg-accent-gold/20"></div>
+               <p className="text-lg text-white/50 font-light leading-relaxed">
+                 I spent ten years in the classrooms of Seoul watching teachers drown in spreadsheets and students fall through systemic gaps. I didn't learn to code to leave education; I learned to code to save it.
+               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-20 relative z-10">
-              <div className="space-y-8 p-10 rounded-[2rem] bg-white/[0.02] border border-white/5">
-                <div className="w-12 h-12 rounded-2xl bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center">
-                  <BookOpenIcon className="w-5 h-5 text-accent-gold" />
-                </div>
-                <h3 className="text-2xl font-light text-white font-display tracking-wide">Bridging the Gap</h3>
-                <p className="text-sm text-white/40 font-light leading-relaxed">
-                  I saw parents who wanted to help their kids but felt excluded by language barriers. Chekki was built to give them their voice back.
-                </p>
-              </div>
-              <div className="space-y-8 p-10 rounded-[2rem] bg-white/[0.02] border border-white/5">
-                <div className="w-12 h-12 rounded-2xl bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center">
-                  <SparklesIcon className="w-5 h-5 text-accent-gold" />
-                </div>
-                <h3 className="text-2xl font-light text-white font-display tracking-wide">Digital Allies</h3>
-                <p className="text-sm text-white/40 font-light leading-relaxed">
-                  I believe AI should be a quiet assistant, not a loud replacement. My tools automate the data so teachers can focus on the humans.
-                </p>
-              </div>
+            <div className="lg:w-2/3 grid md:grid-cols-2 gap-8">
+               <div className="glass-panel rounded-[2rem] p-10 space-y-6">
+                  <BookOpenIcon className="w-8 h-8 text-accent-gold opacity-50" />
+                  <h3 className="text-2xl font-light text-white font-display">Deep Pedagogy</h3>
+                  <p className="text-sm text-white/40 font-light leading-relaxed">
+                    With a Master of Education, I understand the psychology of learning. My tools aren't just technical; they are pedagogical.
+                  </p>
+               </div>
+               <div className="glass-panel rounded-[2rem] p-10 space-y-6">
+                  <CodeIcon className="w-8 h-8 text-accent-gold opacity-50" />
+                  <h3 className="text-2xl font-light text-white font-display">Custom Logic</h3>
+                  <p className="text-sm text-white/40 font-light leading-relaxed">
+                    I specialize in "glue-code"—connecting LLMs to real-world workflows to automate the 80% of tasks that shouldn't require a human brain.
+                  </p>
+               </div>
+               <div className="md:col-span-2 glass-panel rounded-[2rem] p-10 grid md:grid-cols-2 gap-10 items-center">
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-light text-white font-display">Technical Toolkit</h3>
+                    <p className="text-[9px] text-white/20 font-bold uppercase tracking-[0.4em]">Core Competencies</p>
+                    <div className="flex flex-wrap gap-2">
+                      {['React', 'Gemini API', 'N8N', 'Node.js', 'PostgreSQL', 'Python'].map(t => (
+                        <span key={t} className="px-3 py-1 border border-white/5 rounded text-[10px] text-white/40 uppercase tracking-widest">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="text-white/60 text-xs font-light italic leading-relaxed">
+                      "Jason understands the classroom because he lived in it. His tools don't just work; they feel right to teachers."
+                    </div>
+                    <div className="text-[9px] font-bold uppercase tracking-[0.4em] text-accent-gold">— School Director, Seoul</div>
+                  </div>
+               </div>
             </div>
           </div>
         </section>
@@ -145,17 +156,20 @@ function App() {
             </div>
         </section>
 
-        {/* LAB SECTION */}
+        {/* LAB SECTION - REDESIGNED */}
         <section id="lab" className="py-60">
-            <div className="text-center mb-24 space-y-6">
-                <div className="text-accent-gold text-[10px] font-bold tracking-[0.6em] uppercase">Interactive</div>
-                <h2 className="text-5xl font-light text-white font-display tracking-tight">Systems Lab</h2>
+            <div className="text-center mb-24 space-y-6 px-6">
+                <div className="text-accent-gold text-[10px] font-bold tracking-[0.6em] uppercase">MVP Architect</div>
+                <h2 className="text-5xl font-light text-white font-display tracking-tight">The Systems Lab</h2>
+                <p className="text-white/40 text-sm max-w-lg mx-auto font-light leading-relaxed">
+                  Share a problem you face in your educational system. I'll architect three technical ways to fix it. Select one to start a project proposal.
+                </p>
             </div>
             <InteractiveDemo />
         </section>
 
-        {/* ABOUT / CREDENTIALS */}
-        <section id="about" className="py-60 px-6 relative overflow-hidden bg-white/[0.01]">
+        {/* CREDENTIALS */}
+        <section id="credentials" className="py-60 px-6 bg-white/[0.01]">
             <div className="max-w-5xl mx-auto">
               <div className="grid md:grid-cols-2 gap-32 items-start">
                 <div className="space-y-12">
@@ -188,30 +202,29 @@ function App() {
                          </div>
                       </div>
                     ))}
-                    <div className="pt-10">
-                      <p className="text-xs text-white/30 font-light leading-relaxed tracking-widest uppercase">
-                        Spec: Google AI • N8N • React • LMM Alignment
-                      </p>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
         </section>
 
-        {/* CONTACT */}
+        {/* CONTACT SECTION */}
         <section id="contact" className="py-64 px-6 text-center">
             <div className="max-w-4xl mx-auto space-y-20">
-                <h2 className="text-7xl md:text-[12rem] font-light tracking-tighter text-white font-display leading-[0.8]">
-                  Speak to <br /><span className="text-accent-gold italic">Jason.</span>
-                </h2>
-                <p className="text-lg md:text-xl text-white/30 font-light max-w-lg mx-auto leading-relaxed">
-                  Whether you're looking for a system architect or a classroom ally, let's start the conversation.
-                </p>
+                <div className="space-y-6">
+                  <div className="text-accent-gold text-[10px] font-bold tracking-[0.6em] uppercase">Share Your Friction</div>
+                  <h2 className="text-6xl md:text-9xl font-light tracking-tighter text-white font-display leading-[0.8] mb-12">
+                    What's <span className="text-white/20 italic">Broken?</span>
+                  </h2>
+                  <p className="text-lg md:text-xl text-white/40 font-light max-w-2xl mx-auto leading-relaxed">
+                    If you have a manual process that's draining your energy or a student group falling through the cracks, <span className="text-white">tell me the problem</span>. I'll build the system to fix it.
+                  </p>
+                </div>
+
                 <div className="flex justify-center pt-10">
-                    <a href="mailto:jsn.benjamin@gmail.com" className="shiny-cta px-16 py-6 text-[10px]">
+                    <a href="mailto:jsn.benjamin@gmail.com?subject=I have a friction point to fix" className="shiny-cta px-16 py-6 text-[10px]">
                         <MailIcon className="w-4 h-4 mr-4" />
-                        jsn.benjamin@gmail.com
+                        Fix my friction
                     </a>
                 </div>
             </div>

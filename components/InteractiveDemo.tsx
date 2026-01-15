@@ -1,201 +1,139 @@
 
 import React, { useState } from 'react';
-import { SparklesIcon, SendIcon, BookOpenIcon } from './Icons';
-import { 
-  generateQuizFromTopic, 
-  generateLearningPath, 
-  QuizQuestion, 
-  LearningPathStep 
-} from '../services/geminiService';
-
-type DemoMode = 'quiz' | 'path';
+import { SparklesIcon, SendIcon, MailIcon } from './Icons';
+import { generateSolutionsForProblem, SolutionSuggestion } from '../services/geminiService';
 
 const InteractiveDemo: React.FC = () => {
-  const [mode, setMode] = useState<DemoMode>('quiz');
-  const [topic, setTopic] = useState('');
+  const [problem, setProblem] = useState('');
   const [loading, setLoading] = useState(false);
-  const [previewMode, setPreviewMode] = useState<'raw' | 'classroom'>('raw');
-  
-  const [quiz, setQuiz] = useState<QuizQuestion[] | null>(null);
-  const [learningPath, setLearningPath] = useState<LearningPathStep[] | null>(null);
+  const [solutions, setSolutions] = useState<SolutionSuggestion[] | null>(null);
+  const [selectedSolution, setSelectedSolution] = useState<number | null>(null);
 
   const handleGenerate = async () => {
-    if (!topic.trim()) return;
+    if (!problem.trim()) return;
     setLoading(true);
-    if (mode === 'quiz') {
-      setLearningPath(null);
-      const data = await generateQuizFromTopic(topic);
-      setQuiz(data);
-    } else {
-      setQuiz(null);
-      const data = await generateLearningPath(topic);
-      setLearningPath(data);
-    }
+    setSolutions(null);
+    setSelectedSolution(null);
+    const data = await generateSolutionsForProblem(problem);
+    setSolutions(data);
     setLoading(false);
+  };
+
+  const handleSelect = (index: number) => {
+    setSelectedSolution(index);
+    if (solutions) {
+      const sol = solutions[index];
+      const subject = encodeURIComponent(`MVP Proposal: ${sol.title}`);
+      const body = encodeURIComponent(
+        `Hi Jason,\n\nI used your Systems Lab and I'm interested in building an MVP for: "${sol.title}"\n\nProblem context: ${problem}\n\nProposed Solution: ${sol.description}\n\nStack: ${sol.technicalStack.join(', ')}\n\nExpected Impact: ${sol.impact}\n\nLet's talk about how to make this real.`
+      );
+      window.location.href = `mailto:jsn.benjamin@gmail.com?subject=${subject}&body=${body}`;
+    }
   };
 
   return (
     <div className="max-w-7xl mx-auto px-6">
       <div className="glass-panel rounded-[3rem] overflow-hidden border-white/5 shadow-2xl">
         <div className="grid lg:grid-cols-12">
-          {/* Controls */}
-          <div className="lg:col-span-4 p-12 md:p-16 border-r border-white/5 space-y-16">
+          {/* Input Side */}
+          <div className="lg:col-span-4 p-12 md:p-16 border-r border-white/5 space-y-12">
             <div>
-              <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-accent-gold/5 border border-accent-gold/10 text-accent-gold text-[9px] font-bold uppercase tracking-[0.3em] mb-10">
+              <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-accent-gold/5 border border-accent-gold/10 text-accent-gold text-[9px] font-bold uppercase tracking-[0.3em] mb-8">
                 <SparklesIcon className="w-3.5 h-3.5" />
-                Laboratory v1.2
+                Architect Sandbox v2.0
               </div>
-              <h2 className="text-4xl font-light text-white tracking-tight mb-6 font-display">Systems Lab</h2>
+              <h2 className="text-4xl font-light text-white tracking-tight mb-6 font-display">Fix a System.</h2>
               <p className="text-white/40 text-sm font-light leading-relaxed tracking-wide">
-                Experience how our AI engines transform raw topics into pedagogical structure in seconds.
+                Describe a bottleneck, a friction point, or a manual task in your classroom or office. I'll architect the solution.
               </p>
             </div>
 
-            <div className="space-y-10">
-              <div className="flex bg-white/5 p-1.5 rounded-2xl border border-white/5">
-                <button 
-                  onClick={() => setMode('quiz')}
-                  className={`flex-1 py-4 rounded-xl text-[10px] font-bold transition-all uppercase tracking-[0.3em] ${
-                    mode === 'quiz' ? 'bg-white text-alpine-950' : 'text-white/30 hover:text-white'
-                  }`}
-                >
-                  Generation
-                </button>
-                <button 
-                  onClick={() => setMode('path')}
-                  className={`flex-1 py-4 rounded-xl text-[10px] font-bold transition-all uppercase tracking-[0.3em] ${
-                    mode === 'path' ? 'bg-white text-alpine-950' : 'text-white/30 hover:text-white'
-                  }`}
-                >
-                  Syllabus
-                </button>
-              </div>
-
-              <div className="space-y-6">
-                <div className="relative">
-                  <input 
-                    type="text" 
-                    value={topic}
-                    onChange={(e) => setTopic(e.target.value)}
-                    placeholder="Enter curriculum topic..."
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-white text-sm placeholder-white/20 focus:outline-none focus:border-accent-gold/30 transition-all font-light"
-                  />
-                </div>
-                
-                <button 
-                  onClick={handleGenerate}
-                  disabled={loading || !topic.trim()}
-                  className="w-full shiny-cta disabled:opacity-50 py-6"
-                >
-                  {loading ? 'Processing Logic...' : 'Synthesize Resource'}
-                </button>
-              </div>
+            <div className="space-y-6">
+              <textarea 
+                value={problem}
+                onChange={(e) => setProblem(e.target.value)}
+                placeholder="Ex: My teachers spend 4 hours a week manually translating reports for parents..."
+                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white text-sm placeholder-white/20 focus:outline-none focus:border-accent-gold/30 transition-all font-light min-h-[180px] resize-none"
+              />
+              
+              <button 
+                onClick={handleGenerate}
+                disabled={loading || !problem.trim()}
+                className="w-full shiny-cta disabled:opacity-50 py-6"
+              >
+                {loading ? 'Designing Solutions...' : 'Generate MVP Concepts'}
+              </button>
             </div>
           </div>
 
-          {/* Results Display */}
-          <div className={`lg:col-span-8 p-12 md:p-20 min-h-[700px] relative overflow-y-auto transition-all duration-700 ${previewMode === 'classroom' ? 'bg-[#faf9f6]' : 'bg-black/20'}`}>
-             
-             {/* Preview Toggle */}
-             {(quiz || learningPath) && (
-               <div className="absolute top-10 right-10 flex gap-4 z-20">
-                  <button 
-                    onClick={() => setPreviewMode('raw')}
-                    className={`px-4 py-2 rounded-full text-[9px] font-bold uppercase tracking-widest border transition-all ${previewMode === 'raw' ? 'bg-white text-black border-white' : 'text-white/30 border-white/10'}`}
-                  >
-                    Raw Output
-                  </button>
-                  <button 
-                    onClick={() => setPreviewMode('classroom')}
-                    className={`px-4 py-2 rounded-full text-[9px] font-bold uppercase tracking-widest border transition-all ${previewMode === 'classroom' ? 'bg-accent-gold text-white border-accent-gold' : 'text-white/30 border-white/10'}`}
-                  >
-                    Classroom Mode
-                  </button>
-               </div>
-             )}
-
-             {!quiz && !learningPath && !loading && (
+          {/* Output Side */}
+          <div className="lg:col-span-8 p-12 md:p-16 min-h-[600px] relative bg-black/20 overflow-y-auto">
+             {!solutions && !loading && (
                <div className="h-full flex flex-col items-center justify-center text-center opacity-20">
-                  <BookOpenIcon className="w-16 h-16 text-white mb-8" />
-                  <p className="text-white font-bold text-[10px] uppercase tracking-[0.6em]">Awaiting System Input</p>
+                  <div className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center mb-8">
+                    <SendIcon className="w-6 h-6 text-white" />
+                  </div>
+                  <p className="text-white font-bold text-[10px] uppercase tracking-[0.6em]">Awaiting Input Analysis</p>
                </div>
              )}
 
              {loading && (
-               <div className="absolute inset-0 flex flex-col items-center justify-center bg-alpine-950/60 backdrop-blur-md z-50">
+               <div className="absolute inset-0 flex flex-col items-center justify-center bg-alpine-950/40 backdrop-blur-md z-50">
                   <div className="w-12 h-12 border-2 border-accent-gold/10 border-t-accent-gold rounded-full animate-spin mb-8"></div>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-accent-gold">Synthesizing Educational Context</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-accent-gold">Mapping Logic for {problem.substring(0, 20)}...</span>
                </div>
              )}
 
-             {quiz && (
-               <div className={`space-y-12 animate-in fade-in duration-700 ${previewMode === 'classroom' ? 'text-[#161920]' : ''}`}>
-                  <div className="border-b border-current/10 pb-8 flex justify-between items-end">
+             {solutions && (
+               <div className="space-y-10 animate-in fade-in duration-700 pb-10">
+                  <div className="flex justify-between items-end border-b border-white/5 pb-8">
                     <div>
-                      <h3 className="text-[10px] font-bold uppercase tracking-[0.4em] mb-2 opacity-40">System_Output / Resource_Quiz</h3>
-                      <h4 className="text-4xl font-light font-display tracking-tight">{topic} Assessment</h4>
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.4em] mb-2 text-accent-gold">Proposed Solutions</h3>
+                      <h4 className="text-3xl font-light font-display text-white">System Architecture</h4>
                     </div>
                   </div>
 
-                  <div className="space-y-10">
-                    {quiz.map((q, i) => (
-                      <div key={i} className={`rounded-3xl p-10 space-y-8 border ${previewMode === 'classroom' ? 'bg-white shadow-xl border-black/5' : 'bg-white/5 border-white/5'}`}>
-                        <div className="flex justify-between items-center opacity-40">
-                          <span className="font-bold text-[9px] uppercase tracking-[0.4em]">Item 0{i+1}</span>
+                  <div className="grid md:grid-cols-1 gap-6">
+                    {solutions.map((sol, i) => (
+                      <div 
+                        key={i} 
+                        className={`group p-8 rounded-3xl border transition-all cursor-pointer ${
+                          selectedSolution === i 
+                          ? 'bg-accent-gold border-accent-gold' 
+                          : 'bg-white/[0.03] border-white/5 hover:border-white/20'
+                        }`}
+                        onClick={() => handleSelect(i)}
+                      >
+                        <div className="flex justify-between items-start mb-6">
+                          <h5 className={`text-2xl font-light font-display ${selectedSolution === i ? 'text-alpine-950' : 'text-white'}`}>
+                            {sol.title}
+                          </h5>
+                          <span className={`text-[8px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border ${
+                            selectedSolution === i ? 'border-black/20 text-black/60' : 'border-white/10 text-white/30'
+                          }`}>
+                            {sol.impact}
+                          </span>
                         </div>
-                        <h4 className="text-2xl font-light tracking-wide font-display leading-snug">{q.question}</h4>
-                        <div className="grid gap-4">
-                          {q.options.map((opt, oIdx) => (
-                            <div key={oIdx} className={`p-5 rounded-2xl text-sm font-light border transition-all ${
-                              previewMode === 'classroom' 
-                                ? 'bg-gray-50 border-black/5 hover:border-black/20' 
-                                : 'bg-white/[0.02] border-white/5 hover:border-white/20 text-white/50'
+                        
+                        <p className={`text-sm font-light leading-relaxed mb-8 ${selectedSolution === i ? 'text-alpine-950/80' : 'text-white/50'}`}>
+                          {sol.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-2 mb-8">
+                          {sol.technicalStack.map(stack => (
+                            <span key={stack} className={`text-[8px] font-bold uppercase tracking-tighter px-2 py-1 rounded border ${
+                              selectedSolution === i ? 'bg-black/5 border-black/10 text-black/40' : 'bg-white/5 border-white/5 text-white/20'
                             }`}>
-                              {opt}
-                            </div>
+                              {stack}
+                            </span>
                           ))}
                         </div>
-                      </div>
-                    ))}
-                  </div>
-               </div>
-             )}
 
-             {learningPath && (
-               <div className={`space-y-16 animate-in fade-in duration-700 ${previewMode === 'classroom' ? 'text-[#161920]' : ''}`}>
-                  <div className="border-b border-current/10 pb-8">
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.4em] mb-2 opacity-40">System_Output / Resource_Syllabus</h3>
-                    <h4 className="text-4xl font-light font-display tracking-tight">{topic} Learning Path</h4>
-                  </div>
-                  
-                  <div className="space-y-12">
-                    {learningPath.map((step, i) => (
-                      <div key={i} className="flex gap-12 group">
-                        <div className="flex flex-col items-center">
-                          <div className={`w-14 h-14 rounded-full border flex items-center justify-center font-display text-lg font-light transition-all ${
-                            previewMode === 'classroom' ? 'border-black/10 bg-white shadow-lg' : 'border-white/10 bg-white/5 text-white/60'
-                          }`}>
-                            {step.stepNumber}
-                          </div>
-                          {i < learningPath.length - 1 && <div className={`w-[1px] flex-1 my-4 ${previewMode === 'classroom' ? 'bg-black/10' : 'bg-white/5'}`}></div>}
-                        </div>
-                        <div className={`rounded-3xl p-10 flex-1 border transition-all ${
-                          previewMode === 'classroom' ? 'bg-white shadow-xl border-black/5' : 'bg-white/5 border-white/5'
+                        <div className={`flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] transition-all ${
+                          selectedSolution === i ? 'text-alpine-950' : 'text-accent-gold opacity-0 group-hover:opacity-100'
                         }`}>
-                          <div className="flex justify-between items-start mb-6">
-                            <h4 className="text-2xl font-light tracking-tight font-display">{step.title}</h4>
-                            <span className={`text-[9px] px-4 py-2 rounded-full font-bold uppercase tracking-widest border ${
-                              previewMode === 'classroom' ? 'bg-gray-50 border-black/5' : 'bg-white/5 border-white/5 text-white/30'
-                            }`}>{step.duration}</span>
-                          </div>
-                          <p className={`text-sm font-light mb-10 leading-relaxed tracking-wide opacity-70`}>{step.description}</p>
-                          <div className="flex flex-wrap gap-3">
-                            {step.keyTopics.map(t => (
-                              <span key={t} className={`text-[9px] px-4 py-1.5 rounded-full border uppercase tracking-widest font-bold ${
-                                previewMode === 'classroom' ? 'bg-gray-50 border-black/5 text-black/40' : 'bg-white/5 border-white/5 text-white/20'
-                              }`}>#{t}</span>
-                            ))}
-                          </div>
+                          <MailIcon className="w-3.5 h-3.5" />
+                          {selectedSolution === i ? 'Opening Proposal...' : 'Select this MVP Solution'}
                         </div>
                       </div>
                     ))}
