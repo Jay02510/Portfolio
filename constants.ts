@@ -1,4 +1,3 @@
-
 import { PortfolioData, Project } from './types';
 
 export interface ProjectExtended extends Project {
@@ -51,7 +50,7 @@ export const PORTFOLIO_DATA = {
       impactValue: "75% More parent replies",
       tags: ["Translation", "AI Support"],
       imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2576&auto=format&fit=crop",
-      demoUrl: "https://chekki.ai",
+      demoUrl: "https://chekki-ai.vercel.app/",
     },
     {
       id: "intelli-schedule",
@@ -65,7 +64,7 @@ export const PORTFOLIO_DATA = {
       impactValue: "120 Hours saved yearly",
       tags: ["Automation", "School Admin"],
       imageUrl: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2670&auto=format&fit=crop",
-      demoUrl: "mailto:jsn.benjamin@gmail.com?subject=Scheduling App Demo",
+      demoUrl: "https://scheduling-app-five.vercel.app/",
     }
   ]
 };
