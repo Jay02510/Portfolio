@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
-import { SparklesIcon, SendIcon, MailIcon } from './Icons';
-import { generateSolutionsForProblem, SolutionSuggestion } from '../services/geminiService';
+import { SparklesIcon, SendIcon, MailIcon } from './Icons.tsx';
+import { generateSolutionsForProblem, SolutionSuggestion } from '../services/geminiService.ts';
 
 const InteractiveDemo: React.FC = () => {
   const [problem, setProblem] = useState('');

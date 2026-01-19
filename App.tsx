@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
-import { PORTFOLIO_DATA } from './constants';
-import ProjectCard from './components/ProjectCard';
-import AIChat from './components/AIChat';
-import InteractiveDemo from './components/InteractiveDemo';
-import { MailIcon, SparklesIcon } from './components/Icons';
+import { PORTFOLIO_DATA } from './constants.ts';
+import ProjectCard from './components/ProjectCard.tsx';
+import AIChat from './components/AIChat.tsx';
+import InteractiveDemo from './components/InteractiveDemo.tsx';
+import { MailIcon, SparklesIcon } from './components/Icons.tsx';
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,17 +46,17 @@ function App() {
       <main>
         {/* HERO */}
         <section className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-32 pb-12">
-            {/* 3D Background Visual - Adds depth behind text */}
             <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center">
                 <div className="absolute w-full h-full bg-[#0d0f14] z-[-2]"></div>
                 <img 
                   src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2560&auto=format&fit=crop" 
                   className="absolute w-full h-full object-cover opacity-[0.06] mix-blend-screen scale-125 animate-drift"
                   alt=""
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-alpine-950 via-transparent to-alpine-950"></div>
                 
-                {/* Floating Glows */}
                 <div className="absolute top-1/4 left-1/4 w-[40rem] h-[40rem] bg-accent-gold/5 rounded-full blur-[140px] animate-float-slow opacity-20"></div>
                 <div className="absolute bottom-1/4 right-1/4 w-[35rem] h-[35rem] bg-white/5 rounded-full blur-[120px] animate-drift opacity-15"></div>
             </div>
@@ -67,7 +68,6 @@ function App() {
                     </div>
                     
                     <div className="relative">
-                      {/* pb-6 and leading-[1.2] added to prevent clipping of descenders like 'y' in gradient text */}
                       <h1 className="text-5xl md:text-8xl lg:text-9xl font-light tracking-tighter text-white leading-[1.2] font-display text-gradient-white pb-6">
                         Tools for you, <br />
                         <span className="italic text-white/40 block tracking-tighter pt-2 md:pt-4">
@@ -93,7 +93,6 @@ function App() {
                 </div>
             </div>
 
-            {/* Scroll Indicator */}
             <div className="relative z-10 opacity-20 flex flex-col items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-1000 delay-500 mt-12 md:mt-20">
               <span className="text-[7px] uppercase tracking-[1em] font-bold leading-none">Scroll Down</span>
               <div className="w-[1px] h-8 md:h-12 bg-gradient-to-b from-white/40 to-transparent"></div>
