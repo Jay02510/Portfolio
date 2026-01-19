@@ -35,10 +35,10 @@ function App() {
               J. BENJAMIN
             </span>
             <nav className="hidden md:flex items-center gap-12 text-[9px] font-bold uppercase tracking-[0.5em] text-white/30">
-                <a href="#portfolio" onClick={scrollToSection('portfolio')} className="hover:text-white transition-colors">Portfolio</a>
-                <a href="#lab" onClick={scrollToSection('lab')} className="hover:text-white transition-colors">The Lab</a>
-                <a href="#about" onClick={scrollToSection('about')} className="hover:text-white transition-colors">Profile</a>
-                <a href="#contact" onClick={scrollToSection('contact')} className="hover:text-white transition-colors">Contact</a>
+                <a href="#portfolio" onClick={scrollToSection('portfolio')} className="hover:text-white transition-colors">Examples</a>
+                <a href="#lab" onClick={scrollToSection('lab')} className="hover:text-white transition-colors">Explore Ideas</a>
+                <a href="#about" onClick={scrollToSection('about')} className="hover:text-white transition-colors">My Story</a>
+                <a href="#contact" onClick={scrollToSection('contact')} className="hover:text-white transition-colors">Connect</a>
             </nav>
         </div>
       </header>
@@ -64,39 +64,49 @@ function App() {
             <div className="max-w-7xl mx-auto flex flex-col items-center gap-10 md:gap-16 animate-in fade-in slide-in-from-bottom-12 duration-1000 relative z-10">
                 <div className="space-y-6 md:space-y-8">
                     <div className="flex items-center justify-center gap-4 text-white/30 text-[9px] md:text-[10px] font-bold tracking-[0.8em] uppercase">
-                      TEACHER <span className="text-accent-gold/30">•</span> DEVELOPER <span className="text-accent-gold/30">•</span> APP BUILDER
+                      BUILDING HELPERS FOR SCHOOLS
                     </div>
                     
                     <div className="relative">
                       <h1 className="text-5xl md:text-8xl lg:text-9xl font-light tracking-tighter text-white leading-[1.2] font-display text-gradient-white pb-6">
-                        Tools for you, <br />
+                        Real tools for <br />
                         <span className="italic text-white/40 block tracking-tighter pt-2 md:pt-4">
-                          by you.
+                          real people.
                         </span>
                       </h1>
                     </div>
 
                     <p className="text-[9px] md:text-xs text-white/30 max-w-sm mx-auto leading-relaxed font-light tracking-[0.4em] uppercase">
-                      Simple tools for smarter schools.
+                      Simple tools that help parents and teachers solve everyday learning problems.
                     </p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-10">
                     <a href="#portfolio" onClick={scrollToSection('portfolio')} className="shiny-cta min-w-[260px] md:min-w-[300px] group">
-                        Browse My Tools
+                        See how they work
                         <div className="absolute right-8 opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">→</div>
                     </a>
                     <button onClick={scrollToSection('lab')} className="text-white/15 hover:text-white text-[9px] font-bold uppercase tracking-[0.7em] transition-all flex items-center gap-5 group">
                       <SparklesIcon className="w-5 h-5 group-hover:text-accent-gold group-hover:rotate-[20deg] transition-all duration-700 ease-out" /> 
-                      Solution Lab
+                      Idea Explorer
                     </button>
                 </div>
             </div>
 
             <div className="relative z-10 opacity-20 flex flex-col items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-1000 delay-500 mt-12 md:mt-20">
-              <span className="text-[7px] uppercase tracking-[1em] font-bold leading-none">Scroll Down</span>
+              <span className="text-[7px] uppercase tracking-[1em] font-bold leading-none">Scroll to explore</span>
               <div className="w-[1px] h-8 md:h-12 bg-gradient-to-b from-white/40 to-transparent"></div>
             </div>
+        </section>
+
+        {/* EXPLANATION SECTION */}
+        <section className="py-20 bg-alpine-950/50">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <h2 className="text-2xl md:text-3xl font-light text-white font-display mb-6">These are not just pictures.</h2>
+            <p className="text-white/40 text-sm leading-relaxed max-w-2xl mx-auto font-light tracking-wide">
+              Every item on this site is a working tool I built to solve a problem I saw while teaching. You can launch the live previews to see them in action. This is about showing you what is possible when we focus on simple solutions.
+            </p>
+          </div>
         </section>
 
         {/* IMPACT */}
@@ -116,8 +126,8 @@ function App() {
         {/* PORTFOLIO */}
         <section id="portfolio" className="py-24 md:py-32 px-6 max-w-6xl mx-auto">
             <div className="mb-20 md:mb-32 text-center space-y-6">
-                <div className="text-accent-gold/40 text-[10px] font-bold tracking-[1em] uppercase">01 / Selection</div>
-                <h2 className="text-5xl md:text-6xl font-light tracking-tight text-white font-display text-gradient-white">Featured Projects</h2>
+                <div className="text-accent-gold/40 text-[10px] font-bold tracking-[1em] uppercase">01 / Examples</div>
+                <h2 className="text-5xl md:text-6xl font-light tracking-tight text-white font-display text-gradient-white">Helpful Tools</h2>
                 <div className="w-16 h-[1px] bg-white/5 mx-auto"></div>
             </div>
             <div className="space-y-[10rem] md:space-y-[15rem]">
@@ -130,10 +140,10 @@ function App() {
         {/* LAB */}
         <section id="lab" className="py-24 md:py-32 relative overflow-hidden bg-white/[0.01]">
             <div className="text-center mb-10 md:mb-16 px-6 space-y-6 relative z-10">
-                <div className="text-white/20 text-[10px] font-bold tracking-[1em] uppercase">02 / Lab</div>
-                <h2 className="text-5xl md:text-6xl font-light text-white font-display tracking-tight text-gradient-white">The Solution Lab</h2>
+                <div className="text-white/20 text-[10px] font-bold tracking-[1em] uppercase">02 / Explorer</div>
+                <h2 className="text-5xl md:text-6xl font-light text-white font-display tracking-tight text-gradient-white">The Idea Explorer</h2>
                 <p className="text-white/30 text-xs max-w-sm mx-auto font-light leading-relaxed tracking-widest uppercase">
-                  Tell me your problem, I'll design the app.
+                  Tell me about a task that takes too long. I'll show you how a helper could fix it.
                 </p>
             </div>
             <InteractiveDemo />
@@ -143,25 +153,25 @@ function App() {
         <section id="about" className="py-16 md:py-24 px-6 max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 md:gap-32">
             <div className="space-y-10 md:space-y-14">
-               <div className="text-accent-gold text-[10px] font-bold tracking-[0.8em] uppercase leading-none">03 / Profile</div>
-               <h2 className="text-5xl md:text-7xl font-light text-white font-display leading-[1.05] tracking-tighter text-gradient-white">Teacher turned <br /><span className="text-white/20 italic">developer.</span></h2>
+               <div className="text-accent-gold text-[10px] font-bold tracking-[0.8em] uppercase leading-none">03 / My Story</div>
+               <h2 className="text-5xl md:text-7xl font-light text-white font-display leading-[1.05] tracking-tighter text-gradient-white">A teacher who <br /><span className="text-white/20 italic">builds things.</span></h2>
                <p className="text-lg md:text-xl text-white/40 font-light leading-relaxed max-w-lg">
                  After ten years in the classroom, I learned that the best tools are the ones that just work. I build simple apps that give teachers more time for their students.
                </p>
                <div className="space-y-8 md:space-y-10 pt-4">
                   <div className="border-l border-white/10 pl-8 md:pl-10 py-2 group hover:border-accent-gold/60 transition-all duration-700">
-                    <div className="text-white/90 font-medium text-lg tracking-tight">Master of Education</div>
-                    <div className="text-white/15 text-[10px] tracking-[0.4em] uppercase mt-2">Curriculum Design</div>
+                    <div className="text-white/90 font-medium text-lg tracking-tight">Focus on Results</div>
+                    <div className="text-white/15 text-[10px] tracking-[0.4em] uppercase mt-2">Helping people, not just building tech</div>
                   </div>
                   <div className="border-l border-white/10 pl-8 md:pl-10 py-2 group hover:border-accent-gold/60 transition-all duration-700">
-                    <div className="text-white/90 font-medium text-lg tracking-tight">Bachelor of Commercial Law</div>
-                    <div className="text-white/15 text-[10px] tracking-[0.4em] uppercase mt-2">Legal Logic</div>
+                    <div className="text-white/90 font-medium text-lg tracking-tight">Korean Classrooms</div>
+                    <div className="text-white/15 text-[10px] tracking-[0.4em] uppercase mt-2">A decade of learning what schools need</div>
                   </div>
                </div>
             </div>
 
             <div className="grid grid-cols-1 gap-10 md:gap-14 glass-panel p-8 md:p-16 rounded-[2.5rem] md:rounded-[3.5rem] bg-white/[0.01]">
-               <div className="text-white/20 text-[10px] font-bold uppercase tracking-[0.8em] mb-2 leading-none">My Skills</div>
+               <div className="text-white/20 text-[10px] font-bold uppercase tracking-[0.8em] mb-2 leading-none">What I do best</div>
                <div className="space-y-8 md:space-y-10">
                 {PORTFOLIO_DATA.skills.map(skill => (
                     <div key={skill.name} className="space-y-4 md:space-y-6">
@@ -183,9 +193,9 @@ function App() {
         <section id="contact" className="py-40 md:py-52 px-6 text-center border-t border-white/5 bg-gradient-to-b from-transparent to-black/40">
             <div className="max-w-4xl mx-auto space-y-12 md:space-y-16">
                 <div className="text-accent-gold text-[10px] font-bold tracking-[1.2em] uppercase leading-none">Get In Touch</div>
-                <h2 className="text-6xl md:text-8xl lg:text-9xl font-light text-white font-display tracking-tighter leading-none opacity-90 text-gradient-white">Let's build.</h2>
+                <h2 className="text-6xl md:text-8xl lg:text-9xl font-light text-white font-display tracking-tighter leading-none opacity-90 text-gradient-white">Let's chat.</h2>
                 <p className="text-white/30 font-light text-base md:text-lg leading-relaxed max-w-md mx-auto tracking-wide">
-                  I'm ready to build your next tool. Send me a message and let's get started.
+                  I'm always looking for new problems to solve. Send me a message if you have an idea or just want to say hi.
                 </p>
                 <div className="flex justify-center pt-8 md:pt-12">
                     <a href="mailto:jsn.benjamin@gmail.com" className="shiny-cta px-12 md:px-20 py-6 md:py-8 text-[11px] md:text-[12px] tracking-[0.5em]">

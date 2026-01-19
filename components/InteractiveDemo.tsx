@@ -23,9 +23,9 @@ const InteractiveDemo: React.FC = () => {
     setSelectedSolution(index);
     if (solutions) {
       const sol = solutions[index];
-      const subject = encodeURIComponent(`Let's build: ${sol.title}`);
+      const subject = encodeURIComponent(`Let's talk about: ${sol.title}`);
       const body = encodeURIComponent(
-        `Hi Jason,\n\nI used your Lab and I'd like to talk about building this tool: "${sol.title}"\n\nProblem: ${problem}\n\nMy Idea: ${sol.description}\n\nCan we chat about this?`
+        `Hi Jason,\n\nI used your Idea Explorer and I'd like to talk about this helper: "${sol.title}"\n\nProblem: ${problem}\n\nMy Idea: ${sol.description}\n\nCan we chat?`
       );
       window.location.href = `mailto:jsn.benjamin@gmail.com?subject=${subject}&body=${body}`;
     }
@@ -42,11 +42,11 @@ const InteractiveDemo: React.FC = () => {
             <div>
               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-accent-gold/5 border border-accent-gold/10 text-accent-gold text-[9px] font-bold uppercase tracking-[0.4em] mb-8">
                 <div className="w-1.5 h-1.5 bg-accent-gold rounded-full"></div>
-                Solution Lab
+                Idea Explorer
               </div>
-              <h2 className="text-3xl font-light text-white tracking-tight mb-4 font-display leading-tight text-gradient-white">Your <br/><span className="italic text-white/30">Problem.</span></h2>
+              <h2 className="text-3xl font-light text-white tracking-tight mb-4 font-display leading-tight text-gradient-white">Describe a <br/><span className="italic text-white/30">problem.</span></h2>
               <p className="text-white/20 text-xs font-light leading-relaxed">
-                Describe a boring or hard task at school. I'll show you three tools I can build to fix it.
+                Tell me about a task at school that is boring or hard. I'll show you three ways we could build a helper to fix it. This is just for exploring ideas.
               </p>
             </div>
 
@@ -54,7 +54,7 @@ const InteractiveDemo: React.FC = () => {
               <textarea 
                 value={problem}
                 onChange={(e) => setProblem(e.target.value)}
-                placeholder="Ex: I spend too long tracking student reading progress..."
+                placeholder="Example: It takes me too long to check if every student has handed in their permission slips..."
                 className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-6 py-5 text-white text-sm placeholder-white/10 focus:outline-none focus:border-accent-gold/30 transition-all font-light min-h-[200px] resize-none"
               />
               
@@ -63,7 +63,7 @@ const InteractiveDemo: React.FC = () => {
                 disabled={loading || !problem.trim()}
                 className="w-full shiny-cta disabled:opacity-20 py-5"
               >
-                {loading ? 'Thinking...' : 'Find a Solution'}
+                {loading ? 'Thinking...' : 'Find a Helper'}
               </button>
             </div>
           </div>
@@ -75,22 +75,22 @@ const InteractiveDemo: React.FC = () => {
                   <div className="w-16 h-16 rounded-full border border-white/5 flex items-center justify-center bg-white/[0.01]">
                       <SendIcon className="w-6 h-6 text-white/10" />
                   </div>
-                  <p className="text-white/20 font-bold text-[10px] uppercase tracking-[0.6em]">Awaiting Input</p>
+                  <p className="text-white/20 font-bold text-[10px] uppercase tracking-[0.6em]">Waiting for your idea</p>
                </div>
              )}
 
              {loading && (
                <div className="absolute inset-0 flex flex-col items-center justify-center bg-alpine-950/80 backdrop-blur-3xl z-50">
                   <div className="w-12 h-12 border-t-2 border-accent-gold rounded-full animate-spin mb-6"></div>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-accent-gold animate-pulse">Designing tools...</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-accent-gold animate-pulse">Sketching ideas...</span>
                </div>
              )}
 
              {solutions && (
                <div className="space-y-10 animate-in fade-in duration-700 flex-1 overflow-y-auto pr-2">
                   <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/5 pb-8 gap-4">
-                    <h3 className="text-4xl font-light font-display text-white tracking-tight text-gradient-white">Tools I can build</h3>
-                    <div className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20">3 Ideas Ready</div>
+                    <h3 className="text-4xl font-light font-display text-white tracking-tight text-gradient-white">Ways I can help</h3>
+                    <div className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20">3 Examples Ready</div>
                   </div>
 
                   <div className="space-y-6">
@@ -123,7 +123,7 @@ const InteractiveDemo: React.FC = () => {
                           selectedSolution === i ? 'text-alpine-950' : 'text-accent-gold'
                         }`}>
                           <MailIcon className="w-4 h-4" />
-                          Let's talk about this build
+                          See how we can build this together
                         </div>
                       </div>
                     ))}

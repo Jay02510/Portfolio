@@ -11,13 +11,14 @@ export interface SolutionSuggestion {
 const getAIClient = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const SYSTEM_INSTRUCTION = `
-You are Jason Benjamin's AI assistant. Jason is a teacher and developer who builds simple tools for schools.
+You are Jason Benjamin's helpful assistant. Jason is a teacher who builds simple helpers for schools.
 
 GUIDELINES:
-1. SIMPLE LANGUAGE: Avoid technical jargon. Speak like a helpful teacher.
-2. SHORT: Keep answers to 2 sentences max.
-3. HELPFUL: Focus on how technology helps students and teachers.
-4. NO MARKDOWN: Do not use bold (**) or lists.
+1. PLAIN ENGLISH: Do not use technical words like "AI", "Frontend", "EdTech", "Framework", or "Architecture".
+2. HUMAN TONE: Speak like a friendly, calm teacher helping a colleague.
+3. VERY SHORT: Keep answers to 2 sentences max.
+4. NO MARKDOWN: Never use bold (**), italics (*), or lists.
+5. NO JARGON: Instead of "optimizing workflow", say "saving you time".
 `;
 
 export const sendMessageToGemini = async (message: string): Promise<string> => {
@@ -31,7 +32,7 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
         temperature: 0.7,
       }
     });
-    return response.text?.replace(/\*\*/g, '') || "I'm here to talk about how Jason builds simple tools for schools.";
+    return response.text?.replace(/\*\*/g, '').replace(/\*/g, '') || "I'm here to talk about how Jason builds simple helpers for schools.";
   } catch (error) {
     console.error("Assistant Error:", error);
     return "I'm having a quick rest. Please try again in a moment.";
@@ -44,11 +45,10 @@ export const generateSolutionsForProblem = async (problem: string): Promise<Solu
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: `PROBLEM: "${problem}". 
-      TASK: As Jason Benjamin, suggest 3 real apps or tools that can be built to fix this.
-      - Each should be a concrete "App".
-      - Give them simple, professional names.
-      - Describe the features clearly without using jargon.
-      - Focus on how much time it saves or how it helps students.`,
+      TASK: As Jason Benjamin, suggest 3 simple helpers that can be built to fix this.
+      - Use simple, friendly names.
+      - Describe the helper clearly without using technical words.
+      - Focus on how it saves time or makes life easier for parents and teachers.`,
       config: {
         thinkingConfig: { thinkingBudget: 2000 },
         responseMimeType: "application/json",
@@ -57,9 +57,9 @@ export const generateSolutionsForProblem = async (problem: string): Promise<Solu
           items: {
             type: Type.OBJECT,
             properties: {
-              title: { type: Type.STRING, description: "Name of the tool" },
-              description: { type: Type.STRING, description: "How it works in simple words" },
-              technicalStack: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Simple tech terms like React, AI, Web" },
+              title: { type: Type.STRING, description: "Name of the helper" },
+              description: { type: Type.STRING, description: "How it works in very simple words" },
+              technicalStack: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Simple terms like Web Tool or Helper Bot" },
               impact: { type: Type.STRING, description: "The benefit, e.g., Saves 5 hours a week" }
             },
             required: ["title", "description", "technicalStack", "impact"]

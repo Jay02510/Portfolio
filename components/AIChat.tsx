@@ -12,7 +12,7 @@ const AIChat: React.FC = () => {
     {
       id: 'welcome',
       role: 'model',
-      text: "Hi there. I'm here to share the stories behind Jason's tools and his time in Korea. What would you like to know?",
+      text: "Hi there. I'm here to help you understand the tools Jason builds and how they help schools. What would you like to know?",
       timestamp: new Date()
     }
   ]);
@@ -45,8 +45,8 @@ const AIChat: React.FC = () => {
                 <SparklesIcon className="w-4 h-4 text-accent-gold" />
               </div>
               <div>
-                <h3 className="text-white font-display font-light text-sm tracking-widest uppercase">Concierge</h3>
-                <p className="text-[8px] text-white/30 font-bold uppercase tracking-[0.3em] mt-1">Personal Assistant</p>
+                <h3 className="text-white font-display font-light text-sm tracking-widest uppercase">Chat Helper</h3>
+                <p className="text-[8px] text-white/30 font-bold uppercase tracking-[0.3em] mt-1">Ready to guide you</p>
               </div>
             </div>
             <button onClick={() => setIsOpen(false)} className="w-8 h-8 rounded-full hover:bg-white/5 flex items-center justify-center text-white/30 hover:text-white transition-all">
@@ -87,7 +87,7 @@ const AIChat: React.FC = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Ask me about the tools..."
+                placeholder="Ask a question..."
                 className="w-full pl-5 pr-14 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-accent-gold/30 text-xs text-white placeholder-white/20 transition-all font-light"
               />
               <button 
