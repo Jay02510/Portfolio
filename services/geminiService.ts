@@ -50,6 +50,7 @@ export const generateSolutionsForProblem = async (problem: string): Promise<Solu
       - Describe the features clearly without using jargon.
       - Focus on how much time it saves or how it helps students.`,
       config: {
+        thinkingConfig: { thinkingBudget: 2000 },
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.ARRAY,

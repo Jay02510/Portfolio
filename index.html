@@ -1,9 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jason Benjamin | Educational Architect</title>
+    <title>Jason Benjamin | EdTech Architect & Developer</title>
+    <meta name="description" content="Portfolio of Jason Benjamin, a teacher and developer building high-impact tools for schools. Specializing in AI integration and curriculum design." />
+    <meta property="og:title" content="Jason Benjamin | EdTech Architect" />
+    <meta property="og:description" content="Tools for you, by you. Simple tools for smarter schools." />
+    <meta property="og:type" content="website" />
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,7 +78,6 @@
             width: 100%;
             height: 130%;
             z-index: -2;
-            /* Updated background for a more subtle 'architectural' classroom feel */
             background-image: linear-gradient(to bottom, rgba(13, 15, 20, 0.9), rgba(13, 15, 20, 1)), url('https://images.unsplash.com/photo-1510070112810-d4e9a46d9e91?q=80&w=2560&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
@@ -151,7 +156,7 @@
 </script>
 </head>
   <body>
-    <div class="parallax-bg" id="parallaxBg"></div>
+    <div class="parallax-bg" id="parallaxBg" aria-hidden="true"></div>
     <div id="root"></div>
     <script>
         window.addEventListener('scroll', () => {
