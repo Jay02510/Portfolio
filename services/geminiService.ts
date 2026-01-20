@@ -11,14 +11,14 @@ export interface SolutionSuggestion {
 const getAIClient = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const SYSTEM_INSTRUCTION = `
-You are Jason Benjamin's helpful assistant. Jason is a teacher who builds simple helpers for schools.
+You are Jason Benjamin's helpful personal assistant. Jason is a teacher who builds simple helpers for schools.
 
-GUIDELINES:
-1. PLAIN ENGLISH: Do not use technical words like "AI", "Frontend", "EdTech", "Framework", or "Architecture".
-2. HUMAN TONE: Speak like a friendly, calm teacher helping a colleague.
-3. VERY SHORT: Keep answers to 2 sentences max.
-4. NO MARKDOWN: Never use bold (**), italics (*), or lists.
-5. NO JARGON: Instead of "optimizing workflow", say "saving you time".
+STRICT GUIDELINES:
+1. ONLY PLAIN ENGLISH: Absolutely no technical words. Instead of "UI/UX", say "how it looks". Instead of "API", say "connection". 
+2. BE A TEACHER: Speak like a friendly colleague in a school breakroom.
+3. CONCISE: Exactly 2 sentences. No more, no less.
+4. NO MARKDOWN: Never use bold (**), italics (*), or bullet points.
+5. NO SALES PITCH: Be honest, humble, and helpful.
 `;
 
 export const sendMessageToGemini = async (message: string): Promise<string> => {
@@ -29,10 +29,11 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
       contents: message,
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
-        temperature: 0.7,
+        temperature: 0.6,
       }
     });
-    return response.text?.replace(/\*\*/g, '').replace(/\*/g, '') || "I'm here to talk about how Jason builds simple helpers for schools.";
+    // Final safety check to strip any leaked markdown
+    return response.text?.replace(/\*\*/g, '').replace(/\*/g, '').replace(/#/g, '') || "I am here to help you learn about Jason's tools for schools.";
   } catch (error) {
     console.error("Assistant Error:", error);
     return "I'm having a quick rest. Please try again in a moment.";
@@ -44,11 +45,11 @@ export const generateSolutionsForProblem = async (problem: string): Promise<Solu
     const ai = getAIClient();
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `PROBLEM: "${problem}". 
-      TASK: As Jason Benjamin, suggest 3 simple helpers that can be built to fix this.
-      - Use simple, friendly names.
-      - Describe the helper clearly without using technical words.
-      - Focus on how it saves time or makes life easier for parents and teachers.`,
+      contents: `Someone described this school problem: "${problem}". 
+      TASK: Suggest 3 simple helpers that can be built to fix this.
+      - Use friendly, everyday names.
+      - Describe the helper in one clear sentence.
+      - Explain the benefit simply (e.g., Saves 2 hours every day).`,
       config: {
         thinkingConfig: { thinkingBudget: 2000 },
         responseMimeType: "application/json",
@@ -57,10 +58,10 @@ export const generateSolutionsForProblem = async (problem: string): Promise<Solu
           items: {
             type: Type.OBJECT,
             properties: {
-              title: { type: Type.STRING, description: "Name of the helper" },
-              description: { type: Type.STRING, description: "How it works in very simple words" },
-              technicalStack: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Simple terms like Web Tool or Helper Bot" },
-              impact: { type: Type.STRING, description: "The benefit, e.g., Saves 5 hours a week" }
+              title: { type: Type.STRING, description: "Simple name of the helper" },
+              description: { type: Type.STRING, description: "What it does in plain English" },
+              technicalStack: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Simple terms like Web Tool" },
+              impact: { type: Type.STRING, description: "The benefit in human terms" }
             },
             required: ["title", "description", "technicalStack", "impact"]
           }

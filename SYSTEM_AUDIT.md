@@ -1,33 +1,30 @@
-# System Audit: Jason Benjamin EdTech Portfolio
+# System Audit: Jason Benjamin Portfolio
 
 ## 1. Executive Summary
-This application is a high-performance, AI-integrated portfolio designed for an Educational Technology Architect. It emphasizes "Alpine Minimalism"—a design language characterized by dark aesthetics, high-contrast typography, and fluid, motion-driven user interfaces.
+This application is a live demonstration of simple tools built for schools. It is designed to bridge the gap between complex technology and everyday classroom needs. The primary audience is parents, teachers, and school leaders who value clear, working solutions over technical hype.
 
-## 2. Technical Stack
-- **Framework**: React 19 (ESM via esm.sh)
-- **Styling**: Tailwind CSS (Utility-first)
-- **AI Engine**: Google Gemini API (@google/genai)
-  - **Models**: `gemini-3-flash-preview` (Primary for both Chat and Structured Lab)
-- **Deployment**: Single-page architecture with dynamic module loading.
+## 2. Positioning & Identity
+- **Role**: Teacher & Builder (Transitioned from 10 years in the classroom).
+- **Core Philosophy**: "Human-First." Every tool must solve a friction point identifiable by a non-technical user.
+- **Design Language**: "Alpine Minimalism." High-contrast, focused, and free of clutter to allow the tools to speak for themselves.
 
-## 3. Core Features & AI Orchestration
-### A. The Solution Lab (`InteractiveDemo.tsx`)
-- **Pattern**: Zero-shot prompting with Forced JSON Schema.
-- **Goal**: Takes raw educational pain points and transforms them into 3 distinct application architectures.
-- **Optimization**: Uses a structured response schema to ensure predictable UI rendering.
+## 3. Feature Audit
+### A. The Idea Explorer (`InteractiveDemo.tsx`)
+- **Function**: A conceptual bridge. It converts plain-English problems into three concrete "Helper" ideas.
+- **AI Logic**: Uses `gemini-3-flash-preview` with a JSON schema to provide structured, predictable results without technical jargon.
+- **Status**: Active and optimized for low-latency ideation.
 
-### B. AI Concierge (`AIChat.tsx`)
-- **Pattern**: System-instructed conversational agent.
-- **Goal**: Acts as a first-person representative for the developer, providing context on projects and philosophy.
-- **Constraint**: strictly limited to 2-sentence responses to maintain "Executive Summary" vibes.
+### B. Chat Helper (`AIChat.tsx`)
+- **Function**: A concierge that answers questions about the tools and Jason's history in Korea.
+- **Tone**: Friendly, calm, and professional. Strictly limited to 2-sentence responses to ensure clarity.
+- **Constraint**: Prohibited from using engineering terminology.
 
-## 4. UI/UX Philosophy
-- **Typography**: `Space Grotesk` for high-impact headlines; `Inter` for functional body text.
-- **Motion**: Parallax backgrounds, scroll-triggered fade-ins, and "shiny-cta" glassmorphism effects.
-- **Accessibility**: High contrast ratios (Gold on Alpine Dark) and responsive scaling for mobile/tablet.
+## 4. Technical Architecture
+- **Framework**: React 19 (ESM-only for performance).
+- **Styling**: Tailwind CSS for a lean, utility-first UI.
+- **Intelligence**: Google Gemini API integration using high-reasoning tokens for creative "Helper" generation.
 
-## 5. Potential Optimization Points (For Analysis)
-1. **Model Selection**: Evaluate if `gemini-3-pro-preview` should be used for the Lab to provide deeper technical stacks vs the current latency-optimized Flash model.
-2. **State Management**: Currently uses localized `useState`. For a growing portfolio, a more robust context or store might be required.
-3. **Asset Loading**: Heavy reliance on Unsplash external assets. Potential for local WebP conversion or BlurHash placeholders.
-4. **Offline Capability**: Implementation of a Service Worker for PWA support in low-connectivity school environments.
+## 5. Potential Improvements (For ChatGPT Analysis)
+1. **Interactive Previews**: Currently, "Launch App" links to external demos. Integrating a small "Live Sandbox" for one tool could increase trust.
+2. **Contextual Awareness**: The Chat Helper could be updated to know which section of the page the user is currently viewing.
+3. **Localisation**: Given the Seoul, Korea background, a toggle for simple Korean translations would reinforce the "Chekki AI" project story.
