@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ExternalLinkIcon } from './Icons';
+import { ExternalLinkIcon } from './Icons.tsx';
 
 interface ProjectCardProps {
   project: any;
