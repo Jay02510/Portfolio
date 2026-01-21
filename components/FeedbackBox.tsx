@@ -25,19 +25,19 @@ const FeedbackBox: React.FC = () => {
   return (
     <section className="py-24 px-6">
       <div className="max-w-3xl mx-auto">
-        <div className="glass-panel rounded-[2.5rem] p-10 md:p-16 border-white/5 relative overflow-hidden group">
+        <div className="glass-panel rounded-[2.5rem] p-10 md:p-16 border-white/10 relative overflow-hidden group">
           {/* Decorative background element */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-accent-gold/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:bg-accent-gold/10 transition-all duration-1000"></div>
 
           {!isSent ? (
             <div className="space-y-10 relative z-10">
               <div className="space-y-4">
-                <div className="text-accent-gold/40 text-[9px] font-bold tracking-[0.8em] uppercase">Quick Feedback</div>
+                <div className="text-accent-gold/40 text-[9px] font-bold tracking-[0.8em] uppercase">Honest Feedback</div>
                 <h3 className="text-4xl font-light text-white font-display tracking-tight text-gradient-white">
-                  Have a suggestion?
+                  See a gap?
                 </h3>
-                <p className="text-white/30 text-xs font-light leading-relaxed max-w-md">
-                  I'm always refining these tools. If you have an idea for an improvement or just a general thought, I'd love to hear it.
+                <p className="text-white/40 text-xs font-light leading-relaxed max-w-md">
+                  I'm always refining these tools. If you have an idea for an improvement or just want to call out a bug, I'm all ears.
                 </p>
               </div>
 
@@ -45,8 +45,8 @@ const FeedbackBox: React.FC = () => {
                 <textarea
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
-                  placeholder="Your thoughts..."
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-8 py-6 text-white text-sm placeholder-white/10 focus:outline-none focus:border-accent-gold/30 transition-all font-light min-h-[140px] resize-none"
+                  placeholder="Tell it to me straight..."
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-8 py-6 text-white text-sm placeholder-white/20 focus:outline-none focus:border-accent-gold/30 transition-all font-light min-h-[140px] resize-none"
                   required
                 />
                 <button
@@ -54,7 +54,7 @@ const FeedbackBox: React.FC = () => {
                   className="shiny-cta w-full md:w-auto px-12 py-5"
                 >
                   <SendIcon className="w-4 h-4 mr-4 opacity-50" />
-                  Send to Jason
+                  Send a note
                 </button>
               </form>
             </div>
@@ -64,9 +64,9 @@ const FeedbackBox: React.FC = () => {
                 <MailIcon className="w-8 h-8 text-accent-gold" />
               </div>
               <div className="space-y-2">
-                <h4 className="text-2xl font-light text-white font-display">Message Prepared!</h4>
+                <h4 className="text-2xl font-light text-white font-display">Ready to send.</h4>
                 <p className="text-white/30 text-sm font-light">
-                  Your email client should open now. Thanks for helping me build better tools.
+                  Your mail app should be open now. Thanks for being honest.
                 </p>
               </div>
             </div>

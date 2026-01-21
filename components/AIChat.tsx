@@ -12,7 +12,7 @@ const AIChat: React.FC = () => {
     {
       id: 'welcome',
       role: 'model',
-      text: "Hi there. I'm here to help you understand the tools Jason builds and how they help schools. What would you like to know?",
+      text: "Hi there. I'm Jason's digital helper. If you have questions about how these tools work or what Jason did while teaching in Seoul, just ask.",
       timestamp: new Date()
     }
   ]);
@@ -45,8 +45,8 @@ const AIChat: React.FC = () => {
                 <SparklesIcon className="w-4 h-4 text-accent-gold" />
               </div>
               <div>
-                <h3 className="text-white font-display font-light text-sm tracking-widest uppercase">Chat Helper</h3>
-                <p className="text-[8px] text-white/30 font-bold uppercase tracking-[0.3em] mt-1">Ready to guide you</p>
+                <h3 className="text-white font-display font-light text-sm tracking-widest uppercase">Assistant</h3>
+                <p className="text-[8px] text-white/30 font-bold uppercase tracking-[0.3em] mt-1">Direct Answers</p>
               </div>
             </div>
             <button onClick={() => setIsOpen(false)} className="w-8 h-8 rounded-full hover:bg-white/5 flex items-center justify-center text-white/30 hover:text-white transition-all">

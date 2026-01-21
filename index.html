@@ -103,43 +103,69 @@
         .glass-panel {
             background: rgba(22, 25, 32, 0.4);
             backdrop-filter: blur(40px);
-            border: 1px solid rgba(250, 249, 246, 0.05);
+            border: 1px solid rgba(250, 249, 246, 0.12); /* Brighter border */
+            border-top: 1px solid rgba(250, 249, 246, 0.25); /* Accent top edge */
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
         }
 
         .shiny-cta {
             position: relative;
             overflow: hidden;
             border-radius: 12px;
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.25em;
+            letter-spacing: 0.3em;
             color: #faf9f6;
-            background: rgba(250, 249, 246, 0.02);
-            border: 1px solid rgba(250, 249, 246, 0.08);
+            background: rgba(250, 249, 246, 0.05);
+            border: 1px solid rgba(250, 249, 246, 0.2);
             backdrop-filter: blur(10px);
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             padding: 1.5rem 3.5rem;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .shiny-cta:hover { 
             background: #faf9f6;
             color: #0d0f14;
-            transform: translateY(-5px);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(226, 184, 125, 0.2), 0 0 20px rgba(250,249,246,0.1);
+        }
+
+        .ghost-cta {
+            position: relative;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: rgba(250, 249, 246, 0.6);
+            background: transparent;
+            border: 1px solid rgba(250, 249, 246, 0.15);
+            transition: all 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 3.5rem;
+            font-size: 0.7rem;
+        }
+        .ghost-cta:hover {
+            color: #faf9f6;
+            border-color: rgba(250, 249, 246, 0.4);
+            background: rgba(250, 249, 246, 0.03);
+            transform: translateY(-2px);
         }
 
         .text-gradient-white {
-            background: linear-gradient(to bottom, #faf9f6 0%, #a87c5c 100%);
+            background: linear-gradient(to bottom, #faf9f6 0%, #e2b87d 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .lab-blueprint-bg {
-            background-image: radial-gradient(circle at 2px 2px, rgba(226, 184, 125, 0.05) 1px, transparent 0);
+            background-image: radial-gradient(circle at 2px 2px, rgba(226, 184, 125, 0.08) 1.5px, transparent 0);
             background-size: 40px 40px;
         }
 
