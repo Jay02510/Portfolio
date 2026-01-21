@@ -4,8 +4,7 @@ import { PORTFOLIO_DATA } from './constants.ts';
 import ProjectCard from './components/ProjectCard.tsx';
 import AIChat from './components/AIChat.tsx';
 import InteractiveDemo from './components/InteractiveDemo.tsx';
-import FeedbackBox from './components/FeedbackBox.tsx';
-import { MailIcon, SparklesIcon } from './components/Icons.tsx';
+import { MailIcon, SparklesIcon, SendIcon } from './components/Icons.tsx';
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,6 +23,12 @@ function App() {
     }
   };
 
+  const handleFeedback = () => {
+    const subject = encodeURIComponent("Portfolio Feedback / Improvement for Jason Benjamin");
+    const body = encodeURIComponent("Hi Jason,\n\nI was looking at your portfolio and had an idea for an improvement or found a gap:\n\n[Your thoughts here]");
+    window.location.href = `mailto:jsn.benjamin@gmail.com?subject=${subject}&body=${body}`;
+  };
+
   return (
     <div className="min-h-screen selection:bg-accent-gold/30 selection:text-white font-sans">
       <header className={`fixed top-0 w-full z-50 transition-all duration-500 flex items-center ${
@@ -36,10 +41,10 @@ function App() {
               J. BENJAMIN
             </span>
             <nav className="hidden md:flex items-center gap-12 text-[9px] font-bold uppercase tracking-[0.5em] text-white/40">
-                <a href="#portfolio" onClick={scrollToSection('portfolio')} className="hover:text-white transition-colors">Tools</a>
-                <a href="#lab" onClick={scrollToSection('lab')} className="hover:text-white transition-colors">Idea Lab</a>
+                <a href="#portfolio" onClick={scrollToSection('portfolio')} className="hover:text-white transition-colors">Examples</a>
+                <a href="#lab" onClick={scrollToSection('lab')} className="hover:text-white transition-colors">Idea Explorer</a>
                 <a href="#about" onClick={scrollToSection('about')} className="hover:text-white transition-colors">My Story</a>
-                <a href="#contact" onClick={scrollToSection('contact')} className="hover:text-white transition-colors">Contact</a>
+                <a href="#contact" onClick={scrollToSection('contact')} className="hover:text-white transition-colors">Connect</a>
             </nav>
         </div>
       </header>
@@ -65,31 +70,31 @@ function App() {
             <div className="max-w-7xl mx-auto flex flex-col items-center gap-10 md:gap-16 animate-in fade-in slide-in-from-bottom-12 duration-1000 relative z-10">
                 <div className="space-y-6 md:space-y-8">
                     <div className="flex items-center justify-center gap-4 text-white/40 text-[9px] md:text-[10px] font-bold tracking-[0.8em] uppercase">
-                      BUILDING FOR THE CLASSROOM
+                      BUILDING HELPERS FOR SCHOOLS
                     </div>
                     
                     <div className="relative">
                       <h1 className="text-5xl md:text-8xl lg:text-9xl font-light tracking-tighter text-white leading-[1.2] font-display text-gradient-white pb-6">
-                        Real-world tools <br />
+                        Real tools for <br />
                         <span className="italic text-white/40 block tracking-tighter pt-2 md:pt-4">
-                          for real schools.
+                          real people.
                         </span>
                       </h1>
                     </div>
 
-                    <p className="text-[9px] md:text-xs text-white/30 max-w-sm mx-auto leading-relaxed font-light tracking-[0.4em] uppercase">
-                      Practical helpers built to fix the specific headaches parents and teachers face every day.
+                    <p className="text-[10px] md:text-xs text-white/50 max-w-lg mx-auto leading-relaxed font-light tracking-wide uppercase">
+                      Teacher turned EdTech creator — solving real pain points for teachers, students, and parents.
                     </p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8">
                     <a href="#portfolio" onClick={scrollToSection('portfolio')} className="shiny-cta min-w-[260px] md:min-w-[300px] group">
-                        See the tools
+                        See how they work
                         <div className="absolute right-8 opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">→</div>
                     </a>
                     <button onClick={scrollToSection('lab')} className="ghost-cta min-w-[260px] md:min-w-[300px] flex items-center gap-5 group">
                       <SparklesIcon className="w-5 h-5 group-hover:text-accent-gold group-hover:rotate-[20deg] transition-all duration-700 ease-out" /> 
-                      Try an Idea
+                      Idea Explorer
                     </button>
                 </div>
             </div>
@@ -103,9 +108,9 @@ function App() {
         {/* EXPLANATION SECTION */}
         <section className="py-24 bg-alpine-950/50 border-y border-white/[0.08]">
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-3xl md:text-4xl font-light text-white font-display mb-8">No mockups. No vaporware.</h2>
+            <h2 className="text-3xl md:text-4xl font-light text-white font-display mb-8">Tools for you.</h2>
             <p className="text-white/50 text-base md:text-lg leading-relaxed max-w-3xl mx-auto font-light tracking-wide">
-              Every project on this page is a live, working tool built to handle a specific struggle I saw while teaching. I didn't build these to look pretty in a portfolio—I built them to be used. Go ahead and launch the previews to see how they handle real work.
+              Every thing on this site is built to solve a problem that I saw while teaching. You can launch the live previews to see them in action. This is about showing you what is possible when we focus on simple solutions.
             </p>
           </div>
         </section>
@@ -127,8 +132,8 @@ function App() {
         {/* PORTFOLIO */}
         <section id="portfolio" className="py-24 md:py-32 px-6 max-w-6xl mx-auto">
             <div className="mb-20 md:mb-32 text-center space-y-6">
-                <div className="text-accent-gold/50 text-[10px] font-bold tracking-[1em] uppercase">01 / The Tools</div>
-                <h2 className="text-5xl md:text-6xl font-light tracking-tight text-white font-display text-gradient-white">Living Proof</h2>
+                <div className="text-accent-gold/50 text-[10px] font-bold tracking-[1em] uppercase">01 / Examples</div>
+                <h2 className="text-5xl md:text-6xl font-light tracking-tight text-white font-display text-gradient-white">Helpful Tools</h2>
                 <div className="w-16 h-[1px] bg-white/10 mx-auto"></div>
             </div>
             <div className="space-y-[10rem] md:space-y-[15rem]">
@@ -138,16 +143,13 @@ function App() {
             </div>
         </section>
 
-        {/* FEEDBACK SECTION */}
-        <FeedbackBox />
-
         {/* LAB */}
         <section id="lab" className="py-24 md:py-32 relative overflow-hidden bg-white/[0.01]">
             <div className="text-center mb-10 md:mb-16 px-6 space-y-6 relative z-10">
-                <div className="text-white/30 text-[10px] font-bold tracking-[1em] uppercase">02 / The Lab</div>
+                <div className="text-white/30 text-[10px] font-bold tracking-[1em] uppercase">02 / Explorer</div>
                 <h2 className="text-5xl md:text-6xl font-light text-white font-display tracking-tight text-gradient-white">Idea Explorer</h2>
                 <p className="text-white/40 text-xs max-w-sm mx-auto font-light leading-relaxed tracking-widest uppercase">
-                  Tell me about a task that takes you way too long. I'll show you how we could automate it.
+                  Tell me about a task that takes too long. I'll show you how a helper could fix it.
                 </p>
             </div>
             <InteractiveDemo />
@@ -157,19 +159,19 @@ function App() {
         <section id="about" className="py-16 md:py-24 px-6 max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 md:gap-32">
             <div className="space-y-10 md:space-y-14">
-               <div className="text-accent-gold text-[10px] font-bold tracking-[0.8em] uppercase leading-none">03 / The Story</div>
-               <h2 className="text-5xl md:text-7xl font-light text-white font-display leading-[1.05] tracking-tighter text-gradient-white">A teacher who <br /><span className="text-white/20 italic">got tired of waiting.</span></h2>
+               <div className="text-accent-gold text-[10px] font-bold tracking-[0.8em] uppercase leading-none">03 / My Story</div>
+               <h2 className="text-5xl md:text-7xl font-light text-white font-display leading-[1.05] tracking-tighter text-gradient-white">A teacher who <br /><span className="text-white/20 italic">builds things.</span></h2>
                <p className="text-lg md:text-xl text-white/50 font-light leading-relaxed max-w-lg">
-                 I spent ten years in the classroom seeing exactly where the school day gets stuck. Now, I build the helpers I wished I had back then—tools that stay out of the way so teachers can focus on their kids.
+                 After ten years in the classroom, I learned that the best tools are the ones that work as they promise. My goal is to continue to build and solve problems for everyone associated with the classroom.
                </p>
                <div className="space-y-8 md:space-y-10 pt-4">
                   <div className="border-l border-white/20 pl-8 md:pl-10 py-2 group hover:border-accent-gold transition-all duration-700">
-                    <div className="text-white/90 font-medium text-lg tracking-tight">Outcome Driven</div>
-                    <div className="text-white/30 text-[10px] tracking-[0.4em] uppercase mt-2">Tools that actually solve the problem</div>
+                    <div className="text-white/90 font-medium text-lg tracking-tight">Focus on Results</div>
+                    <div className="text-white/30 text-[10px] tracking-[0.4em] uppercase mt-2">Helping people, not just building tech</div>
                   </div>
                   <div className="border-l border-white/20 pl-8 md:pl-10 py-2 group hover:border-accent-gold transition-all duration-700">
-                    <div className="text-white/90 font-medium text-lg tracking-tight">Built in Seoul</div>
-                    <div className="text-white/30 text-[10px] tracking-[0.4em] uppercase mt-2">Tested in the toughest educational environments</div>
+                    <div className="text-white/90 font-medium text-lg tracking-tight">Korean Classrooms</div>
+                    <div className="text-white/30 text-[10px] tracking-[0.4em] uppercase mt-2">A decade of learning what schools need</div>
                   </div>
                </div>
             </div>
@@ -195,17 +197,21 @@ function App() {
 
         {/* CONTACT */}
         <section id="contact" className="py-40 md:py-52 px-6 text-center border-t border-white/[0.08] bg-gradient-to-b from-transparent to-black/40">
-            <div className="max-w-4xl mx-auto space-y-12 md:space-y-16">
-                <div className="text-accent-gold text-[10px] font-bold tracking-[1.2em] uppercase leading-none">Connection</div>
-                <h2 className="text-6xl md:text-8xl lg:text-9xl font-light text-white font-display tracking-tighter leading-none opacity-90 text-gradient-white">Let's talk.</h2>
+            <div className="max-w-5xl mx-auto space-y-12 md:space-y-16">
+                <div className="text-accent-gold text-[10px] font-bold tracking-[1.2em] uppercase leading-none">Get In Touch</div>
+                <h2 className="text-6xl md:text-8xl lg:text-9xl font-light text-white font-display tracking-tighter leading-none opacity-90 text-gradient-white">Let's chat.</h2>
                 <p className="text-white/40 font-light text-base md:text-lg leading-relaxed max-w-md mx-auto tracking-wide">
-                  I'm always looking for new problems to solve. Send me a message if you're stuck on something or just want to chat.
+                  I'm always looking for new problems to solve. Send me a message if you have an idea or just want to say hi.
                 </p>
-                <div className="flex justify-center pt-8 md:pt-12">
-                    <a href="mailto:jsn.benjamin@gmail.com" className="shiny-cta px-12 md:px-20 py-6 md:py-8 text-[11px] md:text-[12px] tracking-[0.5em]">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-6 pt-8 md:pt-12">
+                    <a href="mailto:jsn.benjamin@gmail.com" className="shiny-cta min-w-[280px] md:min-w-[320px] px-12 py-6 text-[11px] tracking-[0.5em]">
                         <MailIcon className="w-5 h-5 mr-5 opacity-40" />
-                        Send Jason a Message
+                        Send a Message
                     </a>
+                    <button onClick={handleFeedback} className="ghost-cta min-w-[280px] md:min-w-[320px] px-12 py-6 text-[11px] tracking-[0.5em] flex items-center justify-center gap-4 group">
+                        <SendIcon className="w-5 h-5 opacity-40 group-hover:text-accent-gold transition-colors" />
+                        Share an Improvement
+                    </button>
                 </div>
             </div>
         </section>
@@ -213,7 +219,7 @@ function App() {
 
       <footer className="py-20 md:py-24 text-center bg-black/80 border-t border-white/[0.08]">
           <p className="text-[10px] md:text-[11px] text-white/20 font-bold uppercase tracking-[1em] leading-none">
-            © 2024 Jason Benjamin — Built for schools
+            © 2024 Jason Benjamin — Handcrafted in Seoul, Korea
           </p>
       </footer>
 

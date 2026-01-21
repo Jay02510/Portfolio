@@ -42,11 +42,11 @@ const InteractiveDemo: React.FC = () => {
             <div>
               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-[9px] font-bold uppercase tracking-[0.4em] mb-8">
                 <div className="w-1.5 h-1.5 bg-accent-gold rounded-full shadow-[0_0_8px_rgba(226,184,125,0.8)]"></div>
-                The Idea Lab
+                Idea Explorer
               </div>
-              <h2 className="text-3xl font-light text-white tracking-tight mb-4 font-display leading-tight text-gradient-white">What's your biggest <br/><span className="italic text-white/30">headache?</span></h2>
+              <h2 className="text-3xl font-light text-white tracking-tight mb-4 font-display leading-tight text-gradient-white">Describe a <br/><span className="italic text-white/30">problem.</span></h2>
               <p className="text-white/40 text-xs font-light leading-relaxed">
-                Describe a task that takes you way too long. I'll sketch out three ways we can build a simple tool to handle it for you.
+                Tell me about a task at school that is boring or hard. I'll show you three ways we could build a helper to fix it.
               </p>
             </div>
 
@@ -54,7 +54,7 @@ const InteractiveDemo: React.FC = () => {
               <textarea 
                 value={problem}
                 onChange={(e) => setProblem(e.target.value)}
-                placeholder="Example: It takes me three hours to file these reports every Friday..."
+                placeholder="Example: It takes me too long to check if every student has handed in their permission slips..."
                 className="w-full bg-white/[0.05] border border-white/20 rounded-xl px-6 py-5 text-white text-sm placeholder-white/20 focus:outline-none focus:border-accent-gold/40 transition-all font-light min-h-[200px] resize-none"
               />
               
@@ -63,7 +63,7 @@ const InteractiveDemo: React.FC = () => {
                 disabled={loading || !problem.trim()}
                 className="w-full shiny-cta disabled:opacity-20 py-5"
               >
-                {loading ? 'Thinking...' : 'Sketch some ideas'}
+                {loading ? 'Thinking...' : 'Find a Helper'}
               </button>
             </div>
           </div>
@@ -75,22 +75,22 @@ const InteractiveDemo: React.FC = () => {
                   <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02]">
                       <SendIcon className="w-6 h-6 text-white/20" />
                   </div>
-                  <p className="text-white/30 font-bold text-[10px] uppercase tracking-[0.6em]">Awaiting a problem to solve</p>
+                  <p className="text-white/30 font-bold text-[10px] uppercase tracking-[0.6em]">Waiting for your idea</p>
                </div>
              )}
 
              {loading && (
                <div className="absolute inset-0 flex flex-col items-center justify-center bg-alpine-950/80 backdrop-blur-3xl z-50">
                   <div className="w-12 h-12 border-t-2 border-accent-gold rounded-full animate-spin mb-6 shadow-[0_0_15px_rgba(226,184,125,0.3)]"></div>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-accent-gold animate-pulse">Building helpers...</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-accent-gold animate-pulse">Sketching ideas...</span>
                </div>
              )}
 
              {solutions && (
                <div className="space-y-10 animate-in fade-in duration-700 flex-1 overflow-y-auto pr-2">
                   <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-8 gap-4">
-                    <h3 className="text-4xl font-light font-display text-white tracking-tight text-gradient-white">Possible Fixes</h3>
-                    <div className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/30">Choose one to discuss</div>
+                    <h3 className="text-4xl font-light font-display text-white tracking-tight text-gradient-white">Ways I can help</h3>
+                    <div className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/30">3 Examples Ready</div>
                   </div>
 
                   <div className="space-y-6">
@@ -123,7 +123,7 @@ const InteractiveDemo: React.FC = () => {
                           selectedSolution === i ? 'text-alpine-950' : 'text-accent-gold'
                         }`}>
                           <MailIcon className="w-4 h-4" />
-                          Let's talk about building this
+                          See how we can build this together
                         </div>
                       </div>
                     ))}
