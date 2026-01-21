@@ -4,6 +4,7 @@ import { PORTFOLIO_DATA } from './constants.ts';
 import ProjectCard from './components/ProjectCard.tsx';
 import AIChat from './components/AIChat.tsx';
 import InteractiveDemo from './components/InteractiveDemo.tsx';
+import FeedbackBox from './components/FeedbackBox.tsx';
 import { MailIcon, SparklesIcon } from './components/Icons.tsx';
 
 function App() {
@@ -136,6 +137,9 @@ function App() {
                 ))}
             </div>
         </section>
+
+        {/* FEEDBACK SECTION */}
+        <FeedbackBox />
 
         {/* LAB */}
         <section id="lab" className="py-24 md:py-32 relative overflow-hidden bg-white/[0.01]">
