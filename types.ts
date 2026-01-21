@@ -5,6 +5,7 @@ export interface Project {
   longDescription: string;
   tags: string[];
   imageUrl: string;
+  imagePosition?: string; // New field for object-position classes
   demoUrl?: string;
   githubUrl?: string;
   category: 'K-12' | 'Higher Ed' | 'Corporate' | 'Tools';

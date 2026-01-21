@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ExternalLinkIcon } from './Icons.tsx';
 
@@ -16,7 +15,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       <div className="w-full h-[500px] md:h-[650px] rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl relative">
           <img 
             src={project.imageUrl} 
-            className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700" 
+            className={`w-full h-full object-cover ${project.imagePosition || 'object-center'} grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700`} 
             alt={`Screenshot or representation of ${project.title}`}
             loading="lazy"
             decoding="async"

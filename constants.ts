@@ -1,4 +1,3 @@
-
 import { PortfolioData, Project } from './types.ts';
 
 export interface ProjectExtended extends Project {
@@ -50,7 +49,8 @@ export const PORTFOLIO_DATA = {
       impactLabel: "Confidence",
       impactValue: "Zero frustration",
       tags: ["Home Support", "English Homework"],
-      imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2576&auto=format&fit=crop",
+      imageUrl: "https://res.cloudinary.com/dginphpy4/image/upload/v1765770525/Chekki_Futuristic_Background_i8foqe.png",
+      imagePosition: "object-right",
       demoUrl: "https://chekki-ai.vercel.app/",
     },
     {
