@@ -4,10 +4,12 @@ import { PORTFOLIO_DATA } from './constants.ts';
 import ProjectCard from './components/ProjectCard.tsx';
 import AIChat from './components/AIChat.tsx';
 import InteractiveDemo from './components/InteractiveDemo.tsx';
+import ComplianceModal from './components/ComplianceModal.tsx';
 import { MailIcon, SparklesIcon, SendIcon } from './components/Icons.tsx';
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [modalType, setModalType] = useState<'privacy' | 'terms' | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -223,11 +225,32 @@ function App() {
       </main>
 
       <footer className="py-20 md:py-24 text-center bg-black/80 border-t border-white/[0.08]">
-          <p className="text-[10px] md:text-[11px] text-white/20 font-bold uppercase tracking-[1em] leading-none">
-            © 2024 Jason Benjamin — Handcrafted in Seoul, Korea
-          </p>
+          <div className="max-w-6xl mx-auto px-6 space-y-8">
+            <p className="text-[10px] md:text-[11px] text-white/20 font-bold uppercase tracking-[1em] leading-none">
+              © 2024 Jason Benjamin — Handcrafted in Seoul, Korea
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+               <button 
+                 onClick={() => setModalType('privacy')}
+                 className="text-[8px] font-bold uppercase tracking-[0.4em] text-white/30 hover:text-accent-gold transition-all"
+               >
+                 Privacy Policy / 개인정보 처리방침
+               </button>
+               <button 
+                 onClick={() => setModalType('terms')}
+                 className="text-[8px] font-bold uppercase tracking-[0.4em] text-white/30 hover:text-accent-gold transition-all"
+               >
+                 Terms of Service / 이용 약관
+               </button>
+            </div>
+          </div>
       </footer>
 
+      <ComplianceModal 
+        isOpen={!!modalType} 
+        onClose={() => setModalType(null)} 
+        type={modalType || 'privacy'} 
+      />
       <AIChat />
     </div>
   );
