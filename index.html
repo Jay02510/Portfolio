@@ -49,6 +49,15 @@
                 gold: '#e2b87d',
                 clay: '#a87c5c'
               }
+            },
+            animation: {
+              'pulse-slow': 'pulse-custom 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              'pulse-custom': {
+                '0%, 100%': { opacity: 1, backgroundColor: 'rgba(226, 184, 125, 1)' },
+                '50%': { opacity: 0.85, backgroundColor: 'rgba(226, 184, 125, 0.7)' },
+              }
             }
           },
         },
@@ -185,6 +194,14 @@
             100% { transform: translate(-10%, -10%); }
         }
         .animate-drift { animation: drift 30s ease-in-out infinite; }
+
+        @keyframes banner-flash {
+            0%, 100% { background-color: #e2b87d; color: #0d0f14; }
+            50% { background-color: #faf9f6; color: #0d0f14; }
+        }
+        .banner-flash-animation {
+            animation: banner-flash 4s ease-in-out infinite;
+        }
     </style>
   <script type="importmap">
 {

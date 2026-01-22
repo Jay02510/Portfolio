@@ -31,9 +31,14 @@ function App() {
 
   return (
     <div className="min-h-screen selection:bg-accent-gold/30 selection:text-white font-sans">
-      <header className={`fixed top-0 w-full z-50 transition-all duration-500 flex items-center ${
+      {/* FLASHING MVP BANNER */}
+      <div className="banner-flash-animation py-2 px-4 text-center text-[9px] md:text-[10px] font-bold tracking-[0.3em] uppercase sticky top-0 z-[60] shadow-md">
+        MVP PREVIEW: These tools are in active development. I am looking for your feedback!
+      </div>
+
+      <header className={`fixed top-10 w-full z-50 transition-all duration-500 flex items-center ${
         isScrolled 
-          ? 'bg-alpine-950/98 backdrop-blur-3xl py-4 border-b border-white/10 shadow-2xl' 
+          ? 'bg-alpine-950/98 backdrop-blur-3xl py-4 border-b border-white/10 shadow-2xl translate-y-[-40px]' 
           : 'bg-transparent py-8 md:py-12'
       }`}>
         <div className="max-w-6xl mx-auto px-6 w-full flex items-center justify-between h-full">
@@ -82,7 +87,7 @@ function App() {
                       </h1>
                     </div>
 
-                    <p className="text-[10px] md:text-xs text-white/50 max-w-lg mx-auto leading-relaxed font-light tracking-wide uppercase">
+                    <p className="text-[10px] md:text-xs text-white/50 max-w-xl mx-auto leading-relaxed font-light tracking-wide uppercase px-4">
                       Teacher turned EdTech creator — solving real pain points for teachers, students, and parents.
                     </p>
                 </div>
