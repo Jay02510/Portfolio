@@ -5,6 +5,7 @@ import ProjectCard from './components/ProjectCard.tsx';
 import AIChat from './components/AIChat.tsx';
 import InteractiveDemo from './components/InteractiveDemo.tsx';
 import ComplianceModal from './components/ComplianceModal.tsx';
+import FeedbackBox from './components/FeedbackBox.tsx';
 import { MailIcon, SparklesIcon, SendIcon } from './components/Icons.tsx';
 
 function App() {
@@ -14,8 +15,8 @@ function App() {
 
   const banners = [
     "MVP PREVIEW: Active development. Looking for your feedback!",
-    "PREMIUM BETA: Use codes on project cards to unlock Pro features.",
-    "LIMITED ACCESS: Only 50 spots per tool available for early testers. Sign up fast!"
+    "PREMIUM BETA: Use the codes on project cards to unlock Pro features.",
+    "URGENT: Limited spots remaining for early 2024 testing cycle."
   ];
 
   useEffect(() => {
@@ -24,7 +25,7 @@ function App() {
     
     const bannerTimer = setInterval(() => {
       setActiveBanner(prev => (prev + 1) % banners.length);
-    }, 5000);
+    }, 4500);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -134,30 +135,16 @@ function App() {
           <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-light text-white font-display mb-8">Tools for you.</h2>
             <p className="text-white/50 text-base md:text-lg leading-relaxed max-w-3xl mx-auto font-light tracking-wide">
-              Every thing on this site is built to solve a problem that I saw while teaching. You can launch the live previews to see them in action. This is about showing you what is possible when we focus on simple solutions.
+              Every tool on this site was built to solve a personal pain point from my ten years in the classroom. No corporate fluff—just working helpers for busy teachers.
             </p>
-          </div>
-        </section>
-
-        {/* IMPACT */}
-        <section className="py-20 md:py-24 bg-white/[0.01]">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-20">
-              {PORTFOLIO_DATA.impactMetrics.map((metric, i) => (
-                <div key={i} className="text-center md:text-left space-y-4 group">
-                  <div className="text-4xl md:text-5xl font-light text-white font-display tracking-tight leading-none group-hover:text-accent-gold transition-colors duration-700 text-gradient-white">{metric.value}</div>
-                  <div className="text-[9px] font-bold uppercase tracking-[0.5em] text-white/20">{metric.label}</div>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
         {/* PORTFOLIO */}
         <section id="portfolio" className="py-24 md:py-32 px-6 max-w-6xl mx-auto">
             <div className="mb-20 md:mb-32 text-center space-y-6">
-                <div className="text-accent-gold/50 text-[10px] font-bold tracking-[1em] uppercase">01 / Examples</div>
-                <h2 className="text-5xl md:text-6xl font-light tracking-tight text-white font-display text-gradient-white">Helpful Tools</h2>
+                <div className="text-accent-gold/50 text-[10px] font-bold tracking-[1em] uppercase">01 / Live Tools</div>
+                <h2 className="text-5xl md:text-6xl font-light tracking-tight text-white font-display text-gradient-white text-center">The Collection</h2>
                 <div className="w-16 h-[1px] bg-white/10 mx-auto"></div>
             </div>
             <div className="space-y-[10rem] md:space-y-[15rem]">
@@ -179,45 +166,50 @@ function App() {
             <InteractiveDemo />
         </section>
 
-        {/* PROFILE */}
-        <section id="about" className="py-16 md:py-24 px-6 max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 md:gap-32">
-            <div className="space-y-10 md:space-y-14">
-               <div className="text-accent-gold text-[10px] font-bold tracking-[0.8em] uppercase leading-none">03 / My Story</div>
-               <h2 className="text-5xl md:text-7xl font-light text-white font-display leading-[1.05] tracking-tighter text-gradient-white">A teacher who <br /><span className="text-white/20 italic">builds things.</span></h2>
-               <p className="text-lg md:text-xl text-white/50 font-light leading-relaxed max-w-lg">
-                 After ten years in the classroom, I learned that the best tools are the ones that work as they promise. My goal is to continue to build and solve problems for everyone associated with the classroom.
-               </p>
-               <div className="space-y-8 md:space-y-10 pt-4">
-                  <div className="border-l border-white/20 pl-8 md:pl-10 py-2 group hover:border-accent-gold transition-all duration-700">
-                    <div className="text-white/90 font-medium text-lg tracking-tight">Focus on Results</div>
-                    <div className="text-white/30 text-[10px] tracking-[0.4em] uppercase mt-2">Helping people, not just building tech</div>
-                  </div>
-                  <div className="border-l border-white/20 pl-8 md:pl-10 py-2 group hover:border-accent-gold transition-all duration-700">
-                    <div className="text-white/90 font-medium text-lg tracking-tight">Korean Classrooms</div>
-                    <div className="text-white/30 text-[10px] tracking-[0.4em] uppercase mt-2">A decade of learning what schools need</div>
-                  </div>
+        {/* PROFILE - UPDATED WITH USER PHOTO */}
+        <section id="about" className="py-24 md:py-40 px-6 max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 md:gap-32 items-center">
+            <div className="relative order-2 lg:order-1 group">
+               {/* Portrait Frame */}
+               <div className="relative z-10 rounded-[3rem] overflow-hidden aspect-[4/5] border border-white/10 shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000">
+                  <img 
+                    src={PORTFOLIO_DATA.profileImageUrl} 
+                    className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000" 
+                    alt="Jason Benjamin" 
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-alpine-950 via-transparent to-transparent opacity-60"></div>
                </div>
+               {/* Decorative Element behind photo */}
+               <div className="absolute -top-10 -left-10 w-40 h-40 border-t border-l border-accent-gold/20 rounded-tl-[4rem] z-0"></div>
+               <div className="absolute -bottom-10 -right-10 w-40 h-40 border-b border-r border-accent-gold/20 rounded-br-[4rem] z-0"></div>
             </div>
 
-            <div className="grid grid-cols-1 gap-10 md:gap-14 glass-panel p-8 md:p-16 rounded-[2.5rem] md:rounded-[3.5rem] bg-white/[0.01]">
-               <div className="text-white/30 text-[10px] font-bold uppercase tracking-[0.8em] mb-2 leading-none">Core Strengths</div>
-               <div className="space-y-8 md:space-y-10">
-                {PORTFOLIO_DATA.skills.map(skill => (
-                    <div key={skill.name} className="space-y-4 md:space-y-6">
-                      <div className="flex justify-between items-center text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-white/50">
-                          <span>{skill.name}</span>
-                          <span className="text-accent-gold font-mono tracking-normal">{skill.level}%</span>
-                      </div>
-                      <div className="h-[1px] bg-white/10 w-full relative">
-                          <div className="absolute h-full bg-accent-gold transition-all duration-1000 ease-out" style={{width: `${skill.level}%`}}></div>
-                      </div>
-                    </div>
-                  ))}
+            <div className="space-y-12 md:space-y-16 order-1 lg:order-2">
+               <div className="space-y-6">
+                 <div className="text-accent-gold text-[10px] font-bold tracking-[0.8em] uppercase leading-none">03 / The Story</div>
+                 <h2 className="text-5xl md:text-7xl font-light text-white font-display leading-[1.05] tracking-tighter text-gradient-white">A teacher who <br /><span className="text-white/20 italic">builds things.</span></h2>
+                 <p className="text-lg md:text-xl text-white/50 font-light leading-relaxed max-w-lg">
+                   I spent ten years in Seoul's classrooms watching brilliant teachers get bogged down by messy spreadsheets and broken workflows. I started building these helpers because I believe technology should actually <em>help</em>—not just exist.
+                 </p>
+               </div>
+
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+                  <div className="glass-panel p-8 rounded-3xl border border-white/5 bg-white/[0.01]">
+                    <div className="text-white/90 font-medium text-lg tracking-tight mb-2">Classroom DNA</div>
+                    <div className="text-white/30 text-[9px] tracking-[0.3em] uppercase leading-relaxed">Built on 10,000+ hours of teaching experience.</div>
+                  </div>
+                  <div className="glass-panel p-8 rounded-3xl border border-white/5 bg-white/[0.01]">
+                    <div className="text-white/90 font-medium text-lg tracking-tight mb-2">Clean Code</div>
+                    <div className="text-white/30 text-[9px] tracking-[0.3em] uppercase leading-relaxed">Modern engineering with a minimal footprint.</div>
+                  </div>
                </div>
             </div>
           </div>
         </section>
+
+        {/* FEEDBACK BOX - INTEGRATED FOR ROLLOUT */}
+        <FeedbackBox />
 
         {/* CONTACT */}
         <section id="contact" className="py-40 md:py-52 px-6 text-center border-t border-white/[0.08] bg-gradient-to-b from-transparent to-black/40">
@@ -225,7 +217,7 @@ function App() {
                 <div className="text-accent-gold text-[10px] font-bold tracking-[1.2em] uppercase leading-none">Get In Touch</div>
                 <h2 className="text-6xl md:text-8xl lg:text-9xl font-light text-white font-display tracking-tighter leading-none opacity-90 text-gradient-white">Let's chat.</h2>
                 <p className="text-white/40 font-light text-base md:text-lg leading-relaxed max-w-md mx-auto tracking-wide">
-                  I'm always looking for new problems to solve. Send me a message if you have an idea or just want to say hi.
+                  I'm currently opening beta spots for specific schools and individuals. If you have a problem that needs a helper, let's talk.
                 </p>
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6 pt-8 md:pt-12">
                     <a href="mailto:jsn.benjamin@gmail.com" className="shiny-cta min-w-[280px] md:min-w-[320px] px-12 py-6 text-[11px] tracking-[0.5em]">
