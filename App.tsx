@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { PORTFOLIO_DATA } from './constants.ts';
+import { PORTFOLIO_DATA, BETA_CODES } from './constants.ts';
 import ProjectCard from './components/ProjectCard.tsx';
 import AIChat from './components/AIChat.tsx';
 import InteractiveDemo from './components/InteractiveDemo.tsx';
@@ -10,11 +10,26 @@ import { MailIcon, SparklesIcon, SendIcon } from './components/Icons.tsx';
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [modalType, setModalType] = useState<'privacy' | 'terms' | null>(null);
+  const [activeBanner, setActiveBanner] = useState(0);
+
+  const banners = [
+    "MVP PREVIEW: Active development. Looking for your feedback!",
+    "PREMIUM BETA: Use codes on project cards to unlock Pro features.",
+    "LIMITED ACCESS: Only 50 spots per tool available for early testers. Sign up fast!"
+  ];
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    const bannerTimer = setInterval(() => {
+      setActiveBanner(prev => (prev + 1) % banners.length);
+    }, 5000);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(bannerTimer);
+    };
   }, []);
 
   const scrollToSection = (id: string) => (e: React.MouseEvent) => {
@@ -33,9 +48,11 @@ function App() {
 
   return (
     <div className="min-h-screen selection:bg-accent-gold/30 selection:text-white font-sans">
-      {/* FLASHING MVP BANNER */}
-      <div className="banner-flash-animation py-2 px-4 text-center text-[9px] md:text-[10px] font-bold tracking-[0.3em] uppercase sticky top-0 z-[60] shadow-md">
-        MVP PREVIEW: These tools are in active development. I am looking for your feedback!
+      {/* FLASHING CYCLING BANNER */}
+      <div className="banner-flash-animation py-2 px-4 text-center text-[9px] md:text-[10px] font-bold tracking-[0.3em] uppercase sticky top-0 z-[60] shadow-md transition-all duration-500 min-h-[34px] flex items-center justify-center">
+        <span key={activeBanner} className="animate-in fade-in slide-in-from-top-1 duration-500 text-alpine-950">
+          {banners[activeBanner]}
+        </span>
       </div>
 
       <header className={`fixed top-10 w-full z-50 transition-all duration-500 flex items-center ${

@@ -6,7 +6,16 @@ export interface ProjectExtended extends Project {
   flow: string;
   impactLabel: string;
   impactValue: string;
+  betaCode?: string;
+  spotsRemaining?: number;
+  premiumFeatures?: string[];
 }
+
+export const BETA_CODES = [
+  { code: "CHEKKI40", label: "Chekki AI" },
+  { code: "GUARDIAN-2025", label: "EduPlanner" },
+  { code: "BENCHMARK40", label: "Benchmark Explorer" }
+];
 
 export const PORTFOLIO_DATA = {
   name: "Jason Benjamin",
@@ -35,6 +44,8 @@ export const PORTFOLIO_DATA = {
       flow: "Automatically transforms raw test scores into visual skill-maps and individual learning plans.",
       impactLabel: "Actionable",
       impactValue: "Zero guesswork",
+      betaCode: "BENCHMARK40",
+      spotsRemaining: 14,
       tags: ["Data Visualization", "Classroom Strategy"],
       imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
       demoUrl: "https://education-benchmark-system.vercel.app/",
@@ -49,6 +60,8 @@ export const PORTFOLIO_DATA = {
       flow: "A bilingual interface that simplifies homework tasks and provides guided explanations for parents.",
       impactLabel: "Confidence",
       impactValue: "Calm evenings",
+      betaCode: "CHEKKI40",
+      spotsRemaining: 8,
       tags: ["AI Assistant", "Bilingual Support"],
       imageUrl: "https://res.cloudinary.com/dginphpy4/image/upload/v1765770525/Chekki_Futuristic_Background_i8foqe.png",
       imagePosition: "object-right",
@@ -64,6 +77,8 @@ export const PORTFOLIO_DATA = {
       flow: "Intelligent conflict-resolution algorithms that suggest the best possible layout for your school's unique needs.",
       impactLabel: "Stability",
       impactValue: "Zero conflicts",
+      betaCode: "GUARDIAN-2025",
+      spotsRemaining: 21,
       tags: ["Operations", "Productivity"],
       imageUrl: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2670&auto=format&fit=crop",
       demoUrl: "https://scheduling-app-five.vercel.app/",
