@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { SparklesIcon, SendIcon, MailIcon } from './Icons.tsx';
+import { SparklesIcon, SendIcon, MailIcon, FileTextIcon } from './Icons.tsx';
 import { generateSolutionsForProblem, SolutionSuggestion } from '../services/geminiService.ts';
 
 const InteractiveDemo: React.FC = () => {
@@ -8,15 +8,27 @@ const InteractiveDemo: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [solutions, setSolutions] = useState<SolutionSuggestion[] | null>(null);
   const [selectedSolution, setSelectedSolution] = useState<number | null>(null);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   const handleGenerate = async () => {
     if (!problem.trim()) return;
     setLoading(true);
     setSolutions(null);
     setSelectedSolution(null);
+    setCopiedIndex(null);
     const data = await generateSolutionsForProblem(problem);
     setSolutions(data);
     setLoading(false);
+  };
+
+  const handleCopySummary = (index: number, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering the selection email
+    if (!solutions) return;
+    const sol = solutions[index];
+    const text = `Problem: ${problem}\nProposed Solution: ${sol.title}\nDescription: ${sol.description}\nImpact: ${sol.impact}`;
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 3000);
   };
 
   const handleSelect = (index: number) => {
@@ -55,7 +67,7 @@ const InteractiveDemo: React.FC = () => {
                 value={problem}
                 onChange={(e) => setProblem(e.target.value)}
                 placeholder="Example: It takes me too long to check if every student has handed in their permission slips..."
-                className="w-full bg-white/[0.05] border border-white/20 rounded-xl px-6 py-5 text-white text-sm placeholder-white/20 focus:outline-none focus:border-accent-gold/40 transition-all font-light min-h-[200px] resize-none"
+                className="w-full bg-white/[0.05] border border-white/20 rounded-xl px-6 py-5 text-white text-sm placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-accent-gold/20 transition-all font-light min-h-[200px] resize-none"
               />
               
               <button 
@@ -108,12 +120,31 @@ const InteractiveDemo: React.FC = () => {
                           <h5 className={`text-2xl font-light font-display ${selectedSolution === i ? 'text-alpine-950 font-bold' : 'text-white text-gradient-white'}`}>
                             {sol.title}
                           </h5>
-                          <span className={`text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border ${
-                            selectedSolution === i ? 'border-black/30 text-black/80' : 'border-white/10 text-white/30'
-                          }`}>
-                            {sol.impact}
-                          </span>
+                          <div className="flex items-center gap-3">
+                            <button 
+                              onClick={(e) => handleCopySummary(i, e)}
+                              className={`p-2 rounded-lg border transition-all ${
+                                selectedSolution === i 
+                                ? 'border-alpine-950/20 hover:bg-alpine-950/10 text-alpine-950' 
+                                : 'border-white/5 hover:bg-white/5 text-white/30'
+                              }`}
+                              title="Copy to clipboard"
+                            >
+                              <FileTextIcon className="w-4 h-4" />
+                            </button>
+                            <span className={`hidden sm:inline-block text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border ${
+                              selectedSolution === i ? 'border-black/30 text-black/80' : 'border-white/10 text-white/30'
+                            }`}>
+                              {sol.impact}
+                            </span>
+                          </div>
                         </div>
+
+                        {copiedIndex === i && (
+                          <div className="absolute top-4 right-20 animate-in fade-in zoom-in duration-300">
+                             <span className="text-[7px] font-bold uppercase bg-black text-white px-3 py-1 rounded-full">Saved to Snapshot</span>
+                          </div>
+                        )}
                         
                         <p className={`text-sm font-light leading-relaxed mb-6 ${selectedSolution === i ? 'text-alpine-950 font-medium' : 'text-white/50'}`}>
                           {sol.description}

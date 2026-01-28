@@ -6,7 +6,7 @@ import AIChat from './components/AIChat.tsx';
 import InteractiveDemo from './components/InteractiveDemo.tsx';
 import ComplianceModal from './components/ComplianceModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
-import { MailIcon, SparklesIcon, SendIcon } from './components/Icons.tsx';
+import { MailIcon, SparklesIcon, SendIcon, BookOpenIcon, MapIcon, CodeIcon } from './components/Icons.tsx';
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,13 +48,29 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen selection:bg-accent-gold/30 selection:text-white font-sans">
+    <div className="min-h-screen selection:bg-accent-gold/30 selection:text-white font-sans bg-alpine-950">
       {/* FLASHING CYCLING BANNER */}
       <div className="banner-flash-animation py-2 px-4 text-center text-[9px] md:text-[10px] font-bold tracking-[0.3em] uppercase sticky top-0 z-[60] shadow-md transition-all duration-500 min-h-[34px] flex items-center justify-center">
         <span key={activeBanner} className="animate-in fade-in slide-in-from-top-1 duration-500 text-alpine-950">
           {banners[activeBanner]}
         </span>
       </div>
+
+      {/* MOBILE NAVIGATION BAR (Bottom Sticky) */}
+      <nav className="md:hidden fixed bottom-6 left-6 right-6 z-[90] glass-panel rounded-full px-6 py-4 border-white/20 flex items-center justify-around shadow-2xl">
+          <button onClick={scrollToSection('portfolio')} className="p-2 text-white/40 hover:text-white transition-colors" aria-label="Examples">
+            <BookOpenIcon className="w-5 h-5" />
+          </button>
+          <button onClick={scrollToSection('lab')} className="p-2 text-white/40 hover:text-white transition-colors" aria-label="Idea Explorer">
+            <CodeIcon className="w-5 h-5" />
+          </button>
+          <button onClick={scrollToSection('about')} className="p-2 text-white/40 hover:text-white transition-colors" aria-label="About Me">
+            <MapIcon className="w-5 h-5" />
+          </button>
+          <button onClick={scrollToSection('contact')} className="p-2 text-white/40 hover:text-white transition-colors" aria-label="Contact">
+            <MailIcon className="w-5 h-5" />
+          </button>
+      </nav>
 
       <header className={`fixed top-10 w-full z-50 transition-all duration-500 flex items-center ${
         isScrolled 
@@ -75,7 +91,7 @@ function App() {
       </header>
 
       <main>
-        {/* HERO */}
+        {/* HERO - Fluid Typography Fix */}
         <section className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-32 pb-12">
             <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center">
                 <div className="absolute w-full h-full bg-[#0d0f14] z-[-2]"></div>
@@ -84,7 +100,6 @@ function App() {
                   className="absolute w-full h-full object-cover opacity-[0.06] mix-blend-screen scale-125 animate-drift"
                   alt=""
                   loading="lazy"
-                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-alpine-950 via-transparent to-alpine-950"></div>
                 
@@ -93,13 +108,13 @@ function App() {
             </div>
 
             <div className="max-w-7xl mx-auto flex flex-col items-center gap-10 md:gap-16 animate-in fade-in slide-in-from-bottom-12 duration-1000 relative z-10">
-                <div className="space-y-6 md:space-y-8">
+                <div className="space-y-6 md:space-y-8 w-full">
                     <div className="flex items-center justify-center gap-4 text-white/40 text-[9px] md:text-[10px] font-bold tracking-[0.8em] uppercase">
                       BUILDING HELPERS FOR SCHOOLS
                     </div>
                     
                     <div className="relative">
-                      <h1 className="text-5xl md:text-8xl lg:text-9xl font-light tracking-tighter text-white leading-[1.2] font-display text-gradient-white pb-6">
+                      <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter text-white leading-[1.1] font-display text-gradient-white pb-6 px-4">
                         Real tools for <br />
                         <span className="italic text-white/40 block tracking-tighter pt-2 md:pt-4">
                           real people.
@@ -112,12 +127,12 @@ function App() {
                     </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8">
-                    <a href="#portfolio" onClick={scrollToSection('portfolio')} className="shiny-cta min-w-[260px] md:min-w-[300px] group">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8 w-full max-w-lg px-6">
+                    <a href="#portfolio" onClick={scrollToSection('portfolio')} className="shiny-cta w-full sm:min-w-[260px] group">
                         See how they work
                         <div className="absolute right-8 opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">→</div>
                     </a>
-                    <button onClick={scrollToSection('lab')} className="ghost-cta min-w-[260px] md:min-w-[300px] flex items-center gap-5 group">
+                    <button onClick={scrollToSection('lab')} className="ghost-cta w-full sm:min-w-[260px] flex items-center gap-5 group">
                       <SparklesIcon className="w-5 h-5 group-hover:text-accent-gold group-hover:rotate-[20deg] transition-all duration-700 ease-out" /> 
                       Idea Explorer
                     </button>
@@ -166,11 +181,10 @@ function App() {
             <InteractiveDemo />
         </section>
 
-        {/* PROFILE - UPDATED WITH USER PHOTO */}
+        {/* PROFILE */}
         <section id="about" className="py-24 md:py-40 px-6 max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 md:gap-32 items-center">
             <div className="relative order-2 lg:order-1 group">
-               {/* Portrait Frame */}
                <div className="relative z-10 rounded-[3rem] overflow-hidden aspect-[4/5] border border-white/10 shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000">
                   <img 
                     src={PORTFOLIO_DATA.profileImageUrl} 
@@ -180,7 +194,6 @@ function App() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-alpine-950 via-transparent to-transparent opacity-60"></div>
                </div>
-               {/* Decorative Element behind photo */}
                <div className="absolute -top-10 -left-10 w-40 h-40 border-t border-l border-accent-gold/20 rounded-tl-[4rem] z-0"></div>
                <div className="absolute -bottom-10 -right-10 w-40 h-40 border-b border-r border-accent-gold/20 rounded-br-[4rem] z-0"></div>
             </div>
@@ -208,10 +221,8 @@ function App() {
           </div>
         </section>
 
-        {/* FEEDBACK BOX - INTEGRATED FOR ROLLOUT */}
         <FeedbackBox />
 
-        {/* CONTACT */}
         <section id="contact" className="py-40 md:py-52 px-6 text-center border-t border-white/[0.08] bg-gradient-to-b from-transparent to-black/40">
             <div className="max-w-5xl mx-auto space-y-12 md:space-y-16">
                 <div className="text-accent-gold text-[10px] font-bold tracking-[1.2em] uppercase leading-none">Get In Touch</div>
@@ -238,7 +249,7 @@ function App() {
             <p className="text-[10px] md:text-[11px] text-white/20 font-bold uppercase tracking-[1em] leading-none">
               © 2024 Jason Benjamin — Handcrafted in Seoul, Korea
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 pb-24 md:pb-0">
                <button 
                  onClick={() => setModalType('privacy')}
                  className="text-[8px] font-bold uppercase tracking-[0.4em] text-white/30 hover:text-accent-gold transition-all"
