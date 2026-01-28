@@ -1,6 +1,11 @@
 
 import { PortfolioData, Project } from './types.ts';
 
+export interface ProjectMedia {
+  label: string;
+  url: string;
+}
+
 export interface ProjectExtended extends Project {
   friction: string;
   flow: string;
@@ -9,6 +14,7 @@ export interface ProjectExtended extends Project {
   betaCode?: string;
   spotsRemaining?: number;
   premiumFeatures?: string[];
+  media?: ProjectMedia[];
 }
 
 export const BETA_CODES = [
@@ -36,22 +42,6 @@ export const PORTFOLIO_DATA = {
   ],
   projects: [
     {
-      id: "benchmark-explorer",
-      title: "Benchmark Explorer",
-      category: "K-12",
-      description: "Stop guessing what they missed.",
-      longDescription: "A professional-grade system for tracking student growth and benchmarking. It provides teachers with clear, actionable data to identify learning gaps and personalize instruction.",
-      friction: "Teachers often struggle with massive spreadsheets that don't clearly communicate student progress or specific needs.",
-      flow: "Automatically transforms raw test scores into visual skill-maps and individual learning plans.",
-      impactLabel: "Actionable",
-      impactValue: "Zero guesswork",
-      betaCode: "BENCHMARK40",
-      spotsRemaining: 12,
-      tags: ["Data Visualization", "Classroom Strategy"],
-      imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
-      demoUrl: "https://education-benchmark-system.vercel.app/",
-    },
-    {
       id: "chekki",
       title: "Chekki AI",
       category: "Tools",
@@ -67,6 +57,26 @@ export const PORTFOLIO_DATA = {
       imageUrl: "https://res.cloudinary.com/dginphpy4/image/upload/v1765770525/Chekki_Futuristic_Background_i8foqe.png",
       imagePosition: "object-right",
       demoUrl: "https://chekki-ai.vercel.app/",
+      media: [
+        { label: "English Poster", url: "https://res.cloudinary.com/dginphpy4/image/upload/Chekki_English_Poster_r2x0au.pdf" },
+        { label: "Korean Poster", url: "https://res.cloudinary.com/dginphpy4/image/upload/Chekki_Korean_Poster_z2ylof.pdf" }
+      ]
+    },
+    {
+      id: "benchmark-explorer",
+      title: "Benchmark Explorer",
+      category: "K-12",
+      description: "Stop guessing what they missed.",
+      longDescription: "A professional-grade system for tracking student growth and benchmarking. It provides teachers with clear, actionable data to identify learning gaps and personalize instruction.",
+      friction: "Teachers often struggle with massive spreadsheets that don't clearly communicate student progress or specific needs.",
+      flow: "Automatically transforms raw test scores into visual skill-maps and individual learning plans.",
+      impactLabel: "Actionable",
+      impactValue: "Zero guesswork",
+      betaCode: "BENCHMARK40",
+      spotsRemaining: 12,
+      tags: ["Data Visualization", "Classroom Strategy"],
+      imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
+      demoUrl: "https://education-benchmark-system.vercel.app/",
     },
     {
       id: "eduplanner",

@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { ExternalLinkIcon } from './Icons.tsx';
+import React, { useState, useRef, useEffect } from 'react';
+import { ExternalLinkIcon, FileTextIcon, ChevronDownIcon } from './Icons.tsx';
 
 interface ProjectCardProps {
   project: any;
@@ -10,6 +10,8 @@ interface ProjectCardProps {
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
   const isEven = index % 2 === 0;
   const [copied, setCopied] = useState(false);
+  const [mediaOpen, setMediaOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleCopy = () => {
     if (!project.betaCode) return;
@@ -17,6 +19,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setMediaOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <article className="relative group flex flex-col items-center" aria-labelledby={`project-title-${project.id}`}>
@@ -81,17 +94,52 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
             </div>
           )}
 
-          <div className="pt-4 flex items-center justify-between">
-              <a 
-                href={project.demoUrl || "#"} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="group/link inline-flex items-center gap-3 text-[9px] font-bold uppercase tracking-[0.3em] text-white hover:text-accent-gold transition-all"
-                aria-label={`Launch demo for ${project.title}`}
-              >
-                  Launch App
-                  <ExternalLinkIcon className="w-3 h-3 opacity-50 group-hover/link:opacity-100" />
-              </a>
+          <div className="pt-4 flex items-center justify-between relative">
+              <div className="flex items-center gap-6">
+                  <a 
+                    href={project.demoUrl || "#"} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="group/link inline-flex items-center gap-3 text-[9px] font-bold uppercase tracking-[0.3em] text-white hover:text-accent-gold transition-all"
+                    aria-label={`Launch demo for ${project.title}`}
+                  >
+                      Launch App
+                      <ExternalLinkIcon className="w-3 h-3 opacity-50 group-hover/link:opacity-100" />
+                  </a>
+
+                  {/* MEDIA BUTTON */}
+                  {project.media && project.media.length > 0 && (
+                    <div className="relative" ref={dropdownRef}>
+                      <button 
+                        onClick={() => setMediaOpen(!mediaOpen)}
+                        className={`group/media inline-flex items-center gap-3 text-[9px] font-bold uppercase tracking-[0.3em] transition-all ${mediaOpen ? 'text-accent-gold' : 'text-white/50 hover:text-white'}`}
+                      >
+                        <FileTextIcon className="w-3 h-3" />
+                        Media Center
+                        <ChevronDownIcon className={`w-3 h-3 transition-transform duration-300 ${mediaOpen ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {/* MEDIA DROPDOWN */}
+                      {mediaOpen && (
+                        <div className="absolute bottom-full left-0 mb-4 w-48 bg-alpine-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-2xl animate-in fade-in slide-in-from-bottom-2 z-50">
+                           {project.media.map((item: any, i: number) => (
+                             <a 
+                               key={i}
+                               href={item.url}
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               className="flex items-center gap-3 w-full p-3 text-[8px] font-bold uppercase tracking-[0.2em] text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                             >
+                               <div className="w-1.5 h-1.5 rounded-full bg-accent-gold/40"></div>
+                               {item.label}
+                             </a>
+                           ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+              </div>
+
               <div className="flex gap-2">
                  <span className="text-[8px] text-accent-gold border border-accent-gold/30 px-3 py-1 rounded-full uppercase tracking-tighter">
                    Limited Slots
