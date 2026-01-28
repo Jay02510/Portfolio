@@ -4,6 +4,7 @@ import { PortfolioData, Project } from './types.ts';
 export interface ProjectMedia {
   label: string;
   url: string;
+  type: 'pdf' | 'video';
 }
 
 export interface ProjectExtended extends Project {
@@ -58,9 +59,9 @@ export const PORTFOLIO_DATA = {
       imagePosition: "object-right",
       demoUrl: "https://chekki-ai.vercel.app/",
       media: [
-        { label: "English Poster", url: "https://res.cloudinary.com/dginphpy4/image/upload/Chekki_English_Poster_bx9vig.pdf" },
-        { label: "한국어 포스터", url: "https://res.cloudinary.com/dginphpy4/image/upload/Chekki_Korean_Poster_vlhfzj.pdf" },
-        { label: "한국어 시연 영상", url: "https://res.cloudinary.com/dginphpy4/video/upload/v1769504113/Chekki_AI_V0_fkdlyx.mov" }
+        { label: "English Poster", url: "https://res.cloudinary.com/dginphpy4/image/upload/Chekki_English_Poster_bx9vig.pdf", type: 'pdf' },
+        { label: "한국어 포스터", url: "https://res.cloudinary.com/dginphpy4/image/upload/Chekki_Korean_Poster_vlhfzj.pdf", type: 'pdf' },
+        { label: "한국어 시연 영상", url: "https://res.cloudinary.com/dginphpy4/video/upload/v1769504113/Chekki_AI_V0_fkdlyx.mp4", type: 'video' }
       ]
     },
     {

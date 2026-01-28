@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { ExternalLinkIcon, FileTextIcon, ChevronDownIcon } from './Icons.tsx';
+import { ExternalLinkIcon, FileTextIcon, ChevronDownIcon, XIcon } from './Icons.tsx';
 
 interface ProjectCardProps {
   project: any;
@@ -11,6 +11,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
   const isEven = index % 2 === 0;
   const [copied, setCopied] = useState(false);
   const [mediaOpen, setMediaOpen] = useState(false);
+  const [activeMedia, setActiveMedia] = useState<any | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleCopy = () => {
@@ -31,8 +32,54 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Prevent scroll when modal is open
+  useEffect(() => {
+    if (activeMedia) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [activeMedia]);
+
   return (
     <article className="relative group flex flex-col items-center" aria-labelledby={`project-title-${project.id}`}>
+      {/* Media Viewer Modal (Hides Public URL from address bar) */}
+      {activeMedia && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-10">
+          <div className="absolute inset-0 bg-alpine-950/95 backdrop-blur-xl animate-in fade-in duration-300" onClick={() => setActiveMedia(null)}></div>
+          <div className="relative w-full max-w-5xl aspect-video md:aspect-[4/3] glass-panel rounded-[2rem] overflow-hidden flex flex-col animate-in zoom-in duration-300 shadow-2xl border-white/20">
+            <div className="absolute top-6 right-6 z-10">
+              <button 
+                onClick={() => setActiveMedia(null)}
+                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all backdrop-blur-md border border-white/10"
+              >
+                <XIcon className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex-1 bg-black">
+              {activeMedia.type === 'video' ? (
+                <video 
+                  src={activeMedia.url} 
+                  controls 
+                  autoPlay 
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <iframe 
+                  src={`${activeMedia.url}#toolbar=0`} 
+                  className="w-full h-full border-none"
+                  title={activeMedia.label}
+                />
+              )}
+            </div>
+            <div className="p-6 bg-alpine-900/80 backdrop-blur-md flex justify-between items-center border-t border-white/10">
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50">{activeMedia.label}</span>
+              <span className="text-[9px] font-medium text-accent-gold uppercase tracking-widest">Media Preview</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Background Image */}
       <div className="w-full h-[500px] md:h-[650px] rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl relative">
           <img 
@@ -121,18 +168,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
                       {/* MEDIA DROPDOWN */}
                       {mediaOpen && (
-                        <div className="absolute bottom-full left-0 mb-4 w-48 bg-alpine-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-2xl animate-in fade-in slide-in-from-bottom-2 z-50">
+                        <div className="absolute bottom-full left-0 mb-4 w-52 bg-alpine-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-2 shadow-2xl animate-in fade-in slide-in-from-bottom-2 z-50">
                            {project.media.map((item: any, i: number) => (
-                             <a 
+                             <button 
                                key={i}
-                               href={item.url}
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               className="flex items-center gap-3 w-full p-3 text-[8px] font-bold uppercase tracking-[0.2em] text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                               onClick={() => {
+                                 setActiveMedia(item);
+                                 setMediaOpen(false);
+                               }}
+                               className="flex items-center gap-3 w-full text-left p-3 text-[8px] font-bold uppercase tracking-[0.2em] text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all"
                              >
                                <div className="w-1.5 h-1.5 rounded-full bg-accent-gold/40"></div>
                                {item.label}
-                             </a>
+                             </button>
                            ))}
                         </div>
                       )}
