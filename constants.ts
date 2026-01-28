@@ -59,7 +59,8 @@ export const PORTFOLIO_DATA = {
       demoUrl: "https://chekki-ai.vercel.app/",
       media: [
         { label: "English Poster", url: "https://res.cloudinary.com/dginphpy4/image/upload/Chekki_English_Poster_r2x0au.pdf" },
-        { label: "Korean Poster", url: "https://res.cloudinary.com/dginphpy4/image/upload/Chekki_Korean_Poster_z2ylof.pdf" }
+        { label: "한국어 포스터", url: "https://res.cloudinary.com/dginphpy4/image/upload/Chekki_Korean_Poster_z2ylof.pdf" },
+        { label: "한국어 시연 영상", url: "https://res.cloudinary.com/dginphpy4/video/upload/v1769504113/Chekki_AI_V0_fkdlyx.mov" }
       ]
     },
     {
