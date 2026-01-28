@@ -3,7 +3,11 @@ import React, { useState } from 'react';
 import { SparklesIcon, SendIcon, MailIcon, FileTextIcon } from './Icons.tsx';
 import { generateSolutionsForProblem, SolutionSuggestion } from '../services/geminiService.ts';
 
-const InteractiveDemo: React.FC = () => {
+interface InteractiveDemoProps {
+  theme?: 'light' | 'dark';
+}
+
+const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => {
   const [problem, setProblem] = useState('');
   const [loading, setLoading] = useState(false);
   const [solutions, setSolutions] = useState<SolutionSuggestion[] | null>(null);
@@ -22,7 +26,7 @@ const InteractiveDemo: React.FC = () => {
   };
 
   const handleCopySummary = (index: number, e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent triggering the selection email
+    e.stopPropagation();
     if (!solutions) return;
     const sol = solutions[index];
     const text = `Problem: ${problem}\nProposed Solution: ${sol.title}\nDescription: ${sol.description}\nImpact: ${sol.impact}`;
@@ -44,117 +48,132 @@ const InteractiveDemo: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 relative">
-      <div className="absolute inset-0 bg-gradient-to-r from-accent-gold/10 to-transparent rounded-[3rem] blur-3xl opacity-30"></div>
+    <div className="max-w-7xl mx-auto px-4 md:px-8 relative">
+      <div className={`absolute inset-0 rounded-[3rem] blur-[120px] opacity-20 pointer-events-none transition-all duration-1000 ${theme === 'dark' ? 'bg-accent-gold/10' : 'bg-accent-clay/10'}`}></div>
       
-      <div className="glass-panel rounded-[3rem] overflow-hidden border-white/10 shadow-2xl relative z-10 lab-blueprint-bg min-h-[600px]">
+      <div className={`glass-panel rounded-[2rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl relative z-10 lab-blueprint-bg min-h-[650px] border transition-all duration-500 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
         <div className="grid lg:grid-cols-12 min-h-[inherit]">
           {/* Input Panel */}
-          <div className="lg:col-span-4 p-8 md:p-12 border-r border-white/10 space-y-10 bg-alpine-950/60">
-            <div>
-              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-[9px] font-bold uppercase tracking-[0.4em] mb-8">
-                <div className="w-1.5 h-1.5 bg-accent-gold rounded-full shadow-[0_0_8px_rgba(226,184,125,0.8)]"></div>
+          <div className={`lg:col-span-5 p-8 md:p-16 border-r flex flex-col justify-between transition-colors duration-500 ${theme === 'dark' ? 'bg-alpine-950/80 border-white/10' : 'bg-white/95 border-black/10'}`}>
+            <div className="space-y-8">
+              <div className={`inline-flex items-center gap-3 px-5 py-2.5 rounded-full border text-[11px] font-bold uppercase tracking-[0.4em] transition-colors ${theme === 'dark' ? 'bg-accent-gold/10 border-accent-gold/20 text-accent-gold' : 'bg-accent-clay/10 border-accent-clay/20 text-accent-clay'}`}>
+                <div className={`w-2.5 h-2.5 rounded-full shadow-lg ${theme === 'dark' ? 'bg-accent-gold shadow-accent-gold/50' : 'bg-accent-clay shadow-accent-clay/50'}`}></div>
                 Idea Explorer
               </div>
-              <h2 className="text-3xl font-light text-white tracking-tight mb-4 font-display leading-tight text-gradient-white">Describe a <br/><span className="italic text-white/30">problem.</span></h2>
-              <p className="text-white/40 text-xs font-light leading-relaxed">
-                Tell me about a task at school that is boring or hard. I'll show you three ways we could build a helper to fix it.
+              
+              <h2 className="text-4xl md:text-6xl font-medium tracking-tighter font-display leading-[1.1] text-gradient-white">
+                Describe a <br/><span className={`italic font-light ${theme === 'dark' ? 'text-white/30' : 'text-black/30'}`}>problem.</span>
+              </h2>
+              
+              <p className={`text-base md:text-lg font-normal leading-relaxed max-w-sm ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/70'}`}>
+                Tell me about a task at school that is boring, hard, or repetitive. I'll show you three ways we could build a digital helper to fix it.
               </p>
             </div>
 
-            <div className="space-y-4">
-              <textarea 
-                value={problem}
-                onChange={(e) => setProblem(e.target.value)}
-                placeholder="Example: It takes me too long to check if every student has handed in their permission slips..."
-                className="w-full bg-white/[0.05] border border-white/20 rounded-xl px-6 py-5 text-white text-sm placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-accent-gold/20 transition-all font-light min-h-[200px] resize-none"
-              />
+            <div className="space-y-6 mt-12">
+              <div className="relative group">
+                <textarea 
+                  value={problem}
+                  onChange={(e) => setProblem(e.target.value)}
+                  placeholder="Example: It takes me too long to check if every student has handed in their permission slips..."
+                  className={`w-full rounded-2xl px-8 py-8 text-base placeholder-current focus:outline-none focus:ring-4 transition-all font-medium min-h-[220px] resize-none border ${
+                    theme === 'dark' 
+                      ? 'bg-white/[0.04] border-white/10 text-white placeholder-white/20 focus:ring-accent-gold/20' 
+                      : 'bg-black/[0.05] border-black/10 text-alpine-950 placeholder-alpine-950/40 focus:ring-accent-clay/20'
+                  }`}
+                />
+              </div>
               
               <button 
                 onClick={handleGenerate}
                 disabled={loading || !problem.trim()}
-                className="w-full shiny-cta disabled:opacity-20 py-5"
+                className="w-full shiny-cta disabled:opacity-40 transition-all shadow-xl py-6"
               >
-                {loading ? 'Thinking...' : 'Find a Helper'}
+                {loading ? 'Consulting the Model...' : 'Find a Helper'}
               </button>
             </div>
           </div>
 
           {/* Results Panel */}
-          <div className="lg:col-span-8 p-8 md:p-12 relative bg-black/40 flex flex-col">
+          <div className={`lg:col-span-7 p-8 md:p-16 relative flex flex-col transition-colors duration-500 ${theme === 'dark' ? 'bg-black/30' : 'bg-alpine-100/40'}`}>
              {!solutions && !loading && (
-               <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6">
-                  <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02]">
-                      <SendIcon className="w-6 h-6 text-white/20" />
+               <div className="flex-1 flex flex-col items-center justify-center text-center space-y-10 animate-in fade-in duration-1000">
+                  <div className={`w-24 h-24 rounded-[2rem] border flex items-center justify-center transition-all ${theme === 'dark' ? 'border-white/10 bg-white/[0.02]' : 'border-black/5 bg-white shadow-xl'}`}>
+                      <SparklesIcon className={`w-10 h-10 ${theme === 'dark' ? 'text-white/10' : 'text-black/10'}`} />
                   </div>
-                  <p className="text-white/30 font-bold text-[10px] uppercase tracking-[0.6em]">Waiting for your idea</p>
+                  <div className="space-y-4">
+                    <p className={`text-[12px] font-bold uppercase tracking-[0.7em] ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/40'}`}>Ready to Assist</p>
+                    <p className={`text-[11px] font-semibold uppercase tracking-[0.2em] max-w-[240px] mx-auto leading-relaxed ${theme === 'dark' ? 'text-white/20' : 'text-alpine-950/30'}`}>Enter your challenge to generate 3 custom solutions</p>
+                  </div>
                </div>
              )}
 
              {loading && (
-               <div className="absolute inset-0 flex flex-col items-center justify-center bg-alpine-950/80 backdrop-blur-3xl z-50">
-                  <div className="w-12 h-12 border-t-2 border-accent-gold rounded-full animate-spin mb-6 shadow-[0_0_15px_rgba(226,184,125,0.3)]"></div>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-accent-gold animate-pulse">Sketching ideas...</span>
+               <div className="absolute inset-0 flex flex-col items-center justify-center bg-alpine-950/5 backdrop-blur-2xl z-50">
+                  <div className={`w-16 h-16 border-t-2 rounded-full animate-spin mb-8 transition-colors ${theme === 'dark' ? 'border-accent-gold' : 'border-accent-clay'}`}></div>
+                  <span className={`text-[12px] font-bold uppercase tracking-[0.6em] animate-pulse ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'}`}>Architecting Ideas</span>
                </div>
              )}
 
              {solutions && (
-               <div className="space-y-10 animate-in fade-in duration-700 flex-1 overflow-y-auto pr-2">
-                  <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-8 gap-4">
-                    <h3 className="text-4xl font-light font-display text-white tracking-tight text-gradient-white">Ways I can help</h3>
-                    <div className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/30">3 Examples Ready</div>
+               <div className="space-y-12 animate-in fade-in slide-in-from-right-8 duration-700 flex-1 overflow-y-auto pr-4 custom-scrollbar">
+                  <div className={`flex flex-col md:flex-row md:items-end justify-between border-b pb-10 gap-6 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+                    <h3 className="text-4xl md:text-5xl font-medium font-display tracking-tight text-gradient-white">Ways I can help</h3>
+                    <div className={`text-[11px] font-bold uppercase tracking-[0.5em] ${theme === 'dark' ? 'text-white/30' : 'text-black/40'}`}>Tailored Concept</div>
                   </div>
 
-                  <div className="space-y-6">
+                  <div className="grid gap-8">
                     {solutions.map((sol, i) => (
                       <div 
                         key={i} 
-                        className={`group p-8 rounded-3xl border transition-all duration-500 cursor-pointer relative ${
+                        className={`group p-8 md:p-10 rounded-[2.5rem] border transition-all duration-500 cursor-pointer relative overflow-hidden ${
                           selectedSolution === i 
-                          ? 'bg-accent-gold border-accent-gold shadow-2xl scale-[1.01]' 
-                          : 'bg-white/[0.03] border-white/10 hover:border-white/20'
+                          ? (theme === 'dark' ? 'bg-accent-gold border-accent-gold shadow-2xl scale-[1.02]' : 'bg-accent-clay border-accent-clay shadow-2xl scale-[1.02] text-white') 
+                          : (theme === 'dark' ? 'bg-white/[0.04] border-white/5 hover:border-white/20' : 'bg-white border-black/10 hover:border-black/20 shadow-lg')
                         }`}
                         onClick={() => handleSelect(i)}
                       >
-                        <div className="flex justify-between items-start mb-4 gap-4">
-                          <h5 className={`text-2xl font-light font-display ${selectedSolution === i ? 'text-alpine-950 font-bold' : 'text-white text-gradient-white'}`}>
+                        {selectedSolution === i && (
+                          <div className="absolute top-0 right-0 w-48 h-48 bg-white/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+                        )}
+
+                        <div className="flex justify-between items-start mb-6 gap-6 relative z-10">
+                          <h5 className={`text-2xl md:text-3xl font-medium font-display transition-colors ${selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950' : 'text-white') : 'text-gradient-white'}`}>
                             {sol.title}
                           </h5>
-                          <div className="flex items-center gap-3">
-                            <button 
-                              onClick={(e) => handleCopySummary(i, e)}
-                              className={`p-2 rounded-lg border transition-all ${
-                                selectedSolution === i 
-                                ? 'border-alpine-950/20 hover:bg-alpine-950/10 text-alpine-950' 
-                                : 'border-white/5 hover:bg-white/5 text-white/30'
-                              }`}
-                              title="Copy to clipboard"
-                            >
-                              <FileTextIcon className="w-4 h-4" />
-                            </button>
-                            <span className={`hidden sm:inline-block text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border ${
-                              selectedSolution === i ? 'border-black/30 text-black/80' : 'border-white/10 text-white/30'
-                            }`}>
-                              {sol.impact}
-                            </span>
-                          </div>
+                          <button 
+                            onClick={(e) => handleCopySummary(i, e)}
+                            className={`p-3 rounded-xl border transition-all ${
+                              selectedSolution === i 
+                              ? (theme === 'dark' ? 'border-black/10 hover:bg-black/10 text-black' : 'border-white/20 hover:bg-white/10 text-white') 
+                              : (theme === 'dark' ? 'border-white/10 hover:bg-white/10 text-white/40' : 'border-black/10 hover:bg-black/5 text-black/40')
+                            }`}
+                            title="Copy Summary"
+                          >
+                            <FileTextIcon className="w-5 h-5" />
+                          </button>
                         </div>
 
                         {copiedIndex === i && (
-                          <div className="absolute top-4 right-20 animate-in fade-in zoom-in duration-300">
-                             <span className="text-[7px] font-bold uppercase bg-black text-white px-3 py-1 rounded-full">Saved to Snapshot</span>
+                          <div className="absolute top-6 right-20 animate-in fade-in zoom-in duration-300 z-20">
+                             <span className={`text-[10px] font-bold uppercase px-4 py-1.5 rounded-full shadow-2xl ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}>Copied to Clipboard</span>
                           </div>
                         )}
                         
-                        <p className={`text-sm font-light leading-relaxed mb-6 ${selectedSolution === i ? 'text-alpine-950 font-medium' : 'text-white/50'}`}>
+                        <p className={`text-base md:text-lg font-normal leading-relaxed mb-10 relative z-10 transition-colors ${selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950/90' : 'text-white/95') : (theme === 'dark' ? 'text-white/60' : 'text-alpine-950/80')}`}>
                           {sol.description}
                         </p>
 
-                        <div className={`flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.4em] transition-all duration-500 ${
-                          selectedSolution === i ? 'text-alpine-950' : 'text-accent-gold'
+                        <div className={`flex items-center gap-6 text-[11px] font-bold uppercase tracking-[0.4em] transition-all duration-500 relative z-10 ${
+                          selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950' : 'text-white') : (theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay')
                         }`}>
-                          <MailIcon className="w-4 h-4" />
-                          See how we can build this together
+                          <div className={`px-5 py-3 rounded-xl border flex items-center gap-4 ${selectedSolution === i ? 'border-current' : (theme === 'dark' ? 'border-white/10' : 'border-black/10')}`}>
+                             <MailIcon className="w-5 h-5" />
+                             <span>Discuss build details</span>
+                          </div>
+                          <span className={`ml-auto hidden sm:inline-block px-4 py-1.5 rounded-full border text-[10px] font-bold ${selectedSolution === i ? 'border-current' : 'border-current opacity-40'}`}>
+                             {sol.impact}
+                          </span>
                         </div>
                       </div>
                     ))}

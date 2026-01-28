@@ -4,8 +4,13 @@ import { SparklesIcon, SendIcon, XIcon } from './Icons.tsx';
 import { sendMessageToGemini } from '../services/geminiService.ts';
 import { ChatMessage } from '../types.ts';
 
-const AIChat: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface AIChatProps {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  theme: 'light' | 'dark';
+}
+
+const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -19,7 +24,12 @@ const AIChat: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (isOpen) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
   }, [messages, isOpen]);
 
   const handleSend = async () => {
@@ -34,79 +44,87 @@ const AIChat: React.FC = () => {
     setIsLoading(false);
   };
 
+  if (!isOpen) {
+    return (
+      <div className="hidden md:block fixed bottom-10 right-10 z-[100]">
+        <button
+          onClick={() => setIsOpen(true)}
+          className={`w-16 h-16 rounded-full glass-panel flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all group ${theme === 'dark' ? 'border-white/10' : 'border-black/5'}`}
+        >
+          <SparklesIcon className="w-5 h-5 group-hover:rotate-12 transition-transform text-accent-gold" />
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="fixed bottom-10 right-10 z-[100] flex flex-col items-end">
-      {isOpen && (
-        <div className="mb-6 w-[380px] max-w-[calc(100vw-60px)] h-[540px] glass-panel rounded-3xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-500 shadow-2xl border-white/10">
-          {/* Header */}
-          <div className="p-8 flex justify-between items-center border-b border-white/5">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center border border-white/10">
-                <SparklesIcon className="w-4 h-4 text-accent-gold" />
-              </div>
-              <div>
-                <h3 className="text-white font-display font-light text-sm tracking-widest uppercase">Assistant</h3>
-                <p className="text-[8px] text-white/30 font-bold uppercase tracking-[0.3em] mt-1">Direct Answers</p>
+    <div className="fixed inset-0 md:inset-auto md:bottom-10 md:right-10 z-[200] md:z-[100] flex flex-col items-end">
+      {/* Mobile Backdrop */}
+      <div className={`md:hidden absolute inset-0 transition-opacity duration-500 ${theme === 'dark' ? 'bg-alpine-950/90 backdrop-blur-xl' : 'bg-white/80 backdrop-blur-lg'}`} onClick={() => setIsOpen(false)}></div>
+      
+      <div className={`w-full h-full md:w-[400px] md:h-[600px] glass-panel md:rounded-3xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-500 shadow-2xl relative z-10 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+        {/* Header */}
+        <div className={`p-8 flex justify-between items-center border-b ${theme === 'dark' ? 'bg-alpine-900/40 border-white/5' : 'bg-white/40 border-black/5'}`}>
+          <div className="flex items-center gap-4">
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center border ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-black/5 border-black/5'}`}>
+              <SparklesIcon className="w-5 h-5 text-accent-gold" />
+            </div>
+            <div>
+              <h3 className={`font-display font-light text-sm tracking-widest uppercase ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>Assistant</h3>
+              <p className={`text-[8px] font-bold uppercase tracking-[0.3em] mt-1 ${theme === 'dark' ? 'text-white/30' : 'text-black/30'}`}>Online & Ready</p>
+            </div>
+          </div>
+          <button onClick={() => setIsOpen(false)} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${theme === 'dark' ? 'hover:bg-white/5 text-white/30 hover:text-white' : 'hover:bg-black/5 text-black/30 hover:text-black'}`}>
+            <XIcon className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Messages */}
+        <div className={`flex-1 overflow-y-auto p-6 md:p-10 space-y-8 ${theme === 'dark' ? 'scrollbar-dark' : 'scrollbar-light'}`}>
+          {messages.map((msg) => (
+            <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-[88%] rounded-2xl px-6 py-4 text-[13px] leading-relaxed tracking-wide shadow-sm ${
+                  msg.role === 'user' 
+                    ? 'bg-accent-gold text-alpine-950 font-bold' 
+                    : (theme === 'dark' ? 'bg-white/5 text-white/70 border border-white/5' : 'bg-black/5 text-black/80 border border-black/5')
+                }`}>
+                {msg.text}
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="w-8 h-8 rounded-full hover:bg-white/5 flex items-center justify-center text-white/30 hover:text-white transition-all">
-              <XIcon className="w-3.5 h-3.5" />
+          ))}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className={`rounded-full px-5 py-3 flex gap-2 items-center ${theme === 'dark' ? 'bg-white/5' : 'bg-black/5'}`}>
+                <div className="w-1.5 h-1.5 bg-accent-gold rounded-full animate-bounce"></div>
+                <div className="w-1.5 h-1.5 bg-accent-gold rounded-full animate-bounce delay-100"></div>
+                <div className="w-1.5 h-1.5 bg-accent-gold rounded-full animate-bounce delay-200"></div>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input */}
+        <div className={`p-6 md:p-8 border-t pb-24 md:pb-8 transition-colors ${theme === 'dark' ? 'bg-alpine-900/40 border-white/5' : 'bg-white border-black/5'}`}>
+          <div className="relative flex items-center">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+              placeholder="Ask me anything..."
+              className={`w-full pl-6 pr-14 py-5 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-gold/20 transition-all text-sm font-light ${theme === 'dark' ? 'bg-white/5 border border-white/10 text-white placeholder-white/20' : 'bg-black/5 border border-black/10 text-black placeholder-black/30'}`}
+            />
+            <button 
+              onClick={handleSend} 
+              disabled={isLoading || !input.trim()}
+              className={`absolute right-4 p-2 transition-all disabled:opacity-20 ${theme === 'dark' ? 'text-white/40 hover:text-accent-gold' : 'text-black/40 hover:text-accent-gold'}`}
+            >
+              <SendIcon className="w-5 h-5" />
             </button>
           </div>
-
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-8 space-y-6">
-            {messages.map((msg) => (
-              <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-2xl px-5 py-3.5 text-xs leading-relaxed tracking-wide ${
-                    msg.role === 'user' 
-                      ? 'bg-white text-alpine-950 font-medium' 
-                      : 'bg-white/5 text-white/70 border border-white/5 font-light'
-                  }`}>
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-white/5 border border-white/5 rounded-full px-4 py-2 flex gap-1.5 items-center">
-                  <div className="w-1 h-1 bg-accent-gold/40 rounded-full animate-pulse"></div>
-                  <div className="w-1 h-1 bg-accent-gold/40 rounded-full animate-pulse delay-75"></div>
-                  <div className="w-1 h-1 bg-accent-gold/40 rounded-full animate-pulse delay-150"></div>
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input */}
-          <div className="p-6 border-t border-white/5">
-            <div className="relative flex items-center">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Ask a question..."
-                className="w-full pl-5 pr-14 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-accent-gold/30 text-xs text-white placeholder-white/20 transition-all font-light"
-              />
-              <button 
-                onClick={handleSend} 
-                className="absolute right-3 p-2 text-white/40 hover:text-accent-gold transition-all"
-              >
-                <SendIcon className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
         </div>
-      )}
-
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-16 h-16 rounded-full glass-panel flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all group border-white/10"
-      >
-        {isOpen ? <XIcon className="w-5 h-5 text-accent-gold" /> : <SparklesIcon className="w-5 h-5 group-hover:rotate-12 transition-transform text-accent-gold" />}
-      </button>
+      </div>
     </div>
   );
 };

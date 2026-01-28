@@ -5,9 +5,10 @@ import { ExternalLinkIcon, FileTextIcon, ChevronDownIcon, XIcon } from './Icons.
 interface ProjectCardProps {
   project: any;
   index: number;
+  theme?: 'light' | 'dark';
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark' }) => {
   const isEven = index % 2 === 0;
   const [copied, setCopied] = useState(false);
   const [mediaOpen, setMediaOpen] = useState(false);
@@ -21,7 +22,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -32,7 +32,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Prevent scroll when modal is open
   useEffect(() => {
     if (activeMedia) {
       document.body.style.overflow = 'hidden';
@@ -43,132 +42,118 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
   return (
     <article className="relative group flex flex-col items-center" aria-labelledby={`project-title-${project.id}`}>
-      {/* Media Viewer Modal (Hides Public URL from address bar) */}
+      {/* Media Viewer Modal */}
       {activeMedia && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-10">
           <div className="absolute inset-0 bg-alpine-950/95 backdrop-blur-xl animate-in fade-in duration-300" onClick={() => setActiveMedia(null)}></div>
-          <div className="relative w-full max-w-5xl aspect-video md:aspect-[4/3] glass-panel rounded-[2rem] overflow-hidden flex flex-col animate-in zoom-in duration-300 shadow-2xl border-white/20">
-            <div className="absolute top-6 right-6 z-10">
+          <div className="relative w-full max-w-6xl aspect-video glass-panel rounded-[2.5rem] overflow-hidden flex flex-col animate-in zoom-in duration-300 shadow-2xl border-white/20">
+            <div className="absolute top-8 right-8 z-10">
               <button 
                 onClick={() => setActiveMedia(null)}
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all backdrop-blur-md border border-white/10"
+                className="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all backdrop-blur-md border border-white/20"
               >
-                <XIcon className="w-5 h-5" />
+                <XIcon className="w-6 h-6" />
               </button>
             </div>
             <div className="flex-1 bg-black">
               {activeMedia.type === 'video' ? (
-                <video 
-                  src={activeMedia.url} 
-                  controls 
-                  autoPlay 
-                  className="w-full h-full object-contain"
-                />
+                <video src={activeMedia.url} controls autoPlay className="w-full h-full object-contain" />
               ) : (
-                <iframe 
-                  src={`${activeMedia.url}#toolbar=0`} 
-                  className="w-full h-full border-none"
-                  title={activeMedia.label}
-                />
+                <iframe src={`${activeMedia.url}#toolbar=0`} className="w-full h-full border-none" title={activeMedia.label} />
               )}
             </div>
-            <div className="p-6 bg-alpine-900/80 backdrop-blur-md flex justify-between items-center border-t border-white/10">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50">{activeMedia.label}</span>
-              <span className="text-[9px] font-medium text-accent-gold uppercase tracking-widest">Media Preview</span>
+            <div className="p-8 bg-alpine-900/90 backdrop-blur-md flex justify-between items-center border-t border-white/10">
+              <span className="text-[11px] font-bold uppercase tracking-[0.5em] text-white/50">{activeMedia.label}</span>
+              <span className="text-[10px] font-bold text-accent-gold uppercase tracking-[0.2em]">Media Engine Preview</span>
             </div>
           </div>
         </div>
       )}
 
-      {/* Background Image */}
-      <div className="w-full h-[500px] md:h-[650px] rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl relative">
+      {/* Background Image Container */}
+      <div className={`w-full h-[550px] md:h-[700px] rounded-[3rem] overflow-hidden border shadow-2xl relative transition-all duration-500 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
           <img 
             src={project.imageUrl} 
-            className={`w-full h-full object-cover ${project.imagePosition || 'object-center'} grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700`} 
-            alt={`Screenshot or representation of ${project.title}`}
+            className={`w-full h-full object-cover ${project.imagePosition || 'object-center'} transition-all duration-1000 ${theme === 'dark' ? 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-80' : 'opacity-90 group-hover:scale-105'}`} 
+            alt={project.title}
             loading="lazy"
-            decoding="async"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-alpine-950 via-alpine-950/20 to-transparent"></div>
+          <div className={`absolute inset-0 transition-opacity duration-500 ${theme === 'dark' ? 'bg-gradient-to-t from-alpine-950 via-alpine-950/30 to-transparent' : 'bg-gradient-to-t from-alpine-50/95 via-transparent to-transparent opacity-60'}`}></div>
           
-          {/* Scarcity Badge Overlay */}
           {project.spotsRemaining !== undefined && (
-            <div className="absolute top-10 right-10 z-10 animate-pulse">
-               <div className="bg-accent-gold text-alpine-950 px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-2xl border border-white/20">
-                  {project.spotsRemaining} Spots Left
+            <div className="absolute top-10 right-10 z-10">
+               <div className="bg-accent-gold text-alpine-950 px-8 py-3 rounded-full text-[12px] font-extrabold uppercase tracking-[0.25em] shadow-2xl border border-white/20 animate-pulse">
+                  {project.spotsRemaining} Spots Remaining
                </div>
             </div>
           )}
       </div>
 
       {/* Detail Panel */}
-      <div className={`mt-[-100px] md:mt-0 md:absolute ${isEven ? 'md:right-12' : 'md:left-12'} md:top-1/2 md:-translate-y-1/2 w-full max-w-lg glass-panel rounded-[2rem] p-10 md:p-12 space-y-8 z-20`}>
-          <div className="space-y-4">
-              <span className="text-white/40 font-bold uppercase tracking-[0.4em] text-[8px]">Project 0{index + 1}</span>
-              <h3 id={`project-title-${project.id}`} className="text-4xl font-light text-white font-display tracking-tight leading-none text-gradient-white">
+      <div className={`mt-[-120px] md:mt-0 md:absolute ${isEven ? 'md:right-16' : 'md:left-16'} md:top-1/2 md:-translate-y-1/2 w-full max-w-xl glass-panel rounded-[2.5rem] p-10 md:p-16 space-y-12 z-20`}>
+          <div className="space-y-8">
+              <span className={`font-bold uppercase tracking-[0.5em] text-[11px] ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>Project 0{index + 1}</span>
+              <h3 id={`project-title-${project.id}`} className="text-5xl md:text-6xl font-medium tracking-tighter leading-none text-gradient-white">
                 {project.title}
               </h3>
-              <p className="text-sm text-white/60 font-light leading-relaxed">
+              <p className={`text-base md:text-lg font-normal leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/80'}`}>
                 {project.longDescription}
               </p>
           </div>
 
-          <div className="space-y-4 pt-4 border-t border-white/10">
-              <div className="flex gap-4 items-start">
-                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent-gold/60" aria-hidden="true"></div>
-                <p className="text-[11px] text-white/50 leading-relaxed font-light">Join the private beta program to experience full premium functionality.</p>
+          <div className={`space-y-6 pt-8 border-t ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+              <div className="flex gap-5 items-start">
+                <div className={`mt-2 w-2.5 h-2.5 rounded-full ${theme === 'dark' ? 'bg-accent-gold/60' : 'bg-accent-clay/70'}`} aria-hidden="true"></div>
+                <p className={`text-[13px] leading-relaxed font-medium ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/70'}`}>Join the private beta program to experience full premium functionality.</p>
               </div>
           </div>
 
           {/* Beta Code Widget */}
           {project.betaCode && (
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-4">
+            <div className={`rounded-2xl p-8 flex flex-col gap-6 transition-colors shadow-inner ${theme === 'dark' ? 'bg-white/5 border border-white/10' : 'bg-black/[0.04] border border-black/5'}`}>
               <div className="flex justify-between items-center">
-                 <span className="text-[8px] font-bold uppercase tracking-[0.3em] text-white/30">Beta Access Code</span>
-                 {copied && <span className="text-[8px] font-bold text-accent-gold animate-pulse">COPIED!</span>}
+                 <span className={`text-[11px] font-bold uppercase tracking-[0.4em] ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/40'}`}>Beta Authorization</span>
+                 {copied && <span className="text-[11px] font-bold text-accent-gold animate-pulse tracking-widest">COPIED</span>}
               </div>
               <div 
                 onClick={handleCopy}
                 className="flex justify-between items-center group/code cursor-pointer"
               >
-                <code className="text-lg font-mono text-white tracking-widest bg-white/5 px-4 py-2 rounded-lg border border-white/5 group-hover/code:border-accent-gold/50 transition-all">
+                <code className={`text-2xl font-mono tracking-widest px-6 py-4 rounded-xl border transition-all ${theme === 'dark' ? 'bg-white/5 border-white/5 group-hover/code:border-accent-gold/50 text-white' : 'bg-white border-black/5 group-hover/code:border-accent-clay/50 text-alpine-950'}`}>
                   {project.betaCode}
                 </code>
-                <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-accent-gold/40 group-hover/code:text-accent-gold transition-colors">
-                  Click to Copy
+                <div className={`text-[11px] font-bold uppercase tracking-[0.3em] transition-colors ${theme === 'dark' ? 'text-accent-gold/40 group-hover/code:text-accent-gold' : 'text-accent-clay/50 group-hover/code:text-accent-clay'}`}>
+                  Copy
                 </div>
               </div>
             </div>
           )}
 
-          <div className="pt-4 flex items-center justify-between relative">
-              <div className="flex items-center gap-6">
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-10 relative">
+              <div className="flex items-center gap-10">
                   <a 
                     href={project.demoUrl || "#"} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="group/link inline-flex items-center gap-3 text-[9px] font-bold uppercase tracking-[0.3em] text-white hover:text-accent-gold transition-all"
-                    aria-label={`Launch demo for ${project.title}`}
+                    className={`group/link inline-flex items-center gap-4 text-[11px] font-extrabold uppercase tracking-[0.4em] transition-all ${theme === 'dark' ? 'text-white hover:text-accent-gold' : 'text-alpine-950 hover:text-accent-clay'}`}
                   >
-                      Launch App
-                      <ExternalLinkIcon className="w-3 h-3 opacity-50 group-hover/link:opacity-100" />
+                      Explore Demo
+                      <ExternalLinkIcon className="w-5 h-5 opacity-40 group-hover/link:opacity-100" />
                   </a>
 
-                  {/* MEDIA BUTTON */}
                   {project.media && project.media.length > 0 && (
                     <div className="relative" ref={dropdownRef}>
                       <button 
                         onClick={() => setMediaOpen(!mediaOpen)}
-                        className={`group/media inline-flex items-center gap-3 text-[9px] font-bold uppercase tracking-[0.3em] transition-all ${mediaOpen ? 'text-accent-gold' : 'text-white/50 hover:text-white'}`}
+                        className={`group/media inline-flex items-center gap-4 text-[11px] font-extrabold uppercase tracking-[0.4em] transition-all ${mediaOpen ? (theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay') : (theme === 'dark' ? 'text-white/50 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950')}`}
                       >
-                        <FileTextIcon className="w-3 h-3" />
-                        Media Center
-                        <ChevronDownIcon className={`w-3 h-3 transition-transform duration-300 ${mediaOpen ? 'rotate-180' : ''}`} />
+                        <FileTextIcon className="w-5 h-5" />
+                        Assets
+                        <ChevronDownIcon className={`w-4 h-4 transition-transform duration-300 ${mediaOpen ? 'rotate-180' : ''}`} />
                       </button>
 
-                      {/* MEDIA DROPDOWN */}
                       {mediaOpen && (
-                        <div className="absolute bottom-full left-0 mb-4 w-52 bg-alpine-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-2 shadow-2xl animate-in fade-in slide-in-from-bottom-2 z-50">
+                        <div className={`absolute bottom-full left-0 mb-6 w-64 backdrop-blur-3xl border rounded-[1.5rem] p-3 shadow-2xl animate-in fade-in slide-in-from-bottom-3 z-50 ${theme === 'dark' ? 'bg-alpine-900/95 border-white/10' : 'bg-white border-black/10'}`}>
                            {project.media.map((item: any, i: number) => (
                              <button 
                                key={i}
@@ -176,9 +161,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                                  setActiveMedia(item);
                                  setMediaOpen(false);
                                }}
-                               className="flex items-center gap-3 w-full text-left p-3 text-[8px] font-bold uppercase tracking-[0.2em] text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                               className={`flex items-center gap-5 w-full text-left p-5 text-[10px] font-bold uppercase tracking-[0.3em] rounded-xl transition-all ${theme === 'dark' ? 'text-white/60 hover:text-white hover:bg-white/5' : 'text-alpine-950/60 hover:text-alpine-950 hover:bg-black/5'}`}
                              >
-                               <div className="w-1.5 h-1.5 rounded-full bg-accent-gold/40"></div>
+                               <div className={`w-2.5 h-2.5 rounded-full ${theme === 'dark' ? 'bg-accent-gold/40' : 'bg-accent-clay/40'}`}></div>
                                {item.label}
                              </button>
                            ))}
@@ -188,11 +173,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                   )}
               </div>
 
-              <div className="flex gap-2">
-                 <span className="text-[8px] text-accent-gold border border-accent-gold/30 px-3 py-1 rounded-full uppercase tracking-tighter">
-                   Limited Slots
-                 </span>
-              </div>
+              <span className={`text-[11px] border px-6 py-2.5 rounded-full uppercase tracking-widest font-extrabold whitespace-nowrap shadow-sm ${theme === 'dark' ? 'text-accent-gold border-accent-gold/30' : 'text-accent-clay border-accent-clay/30'}`}>
+                Public Beta
+              </span>
           </div>
       </div>
     </article>

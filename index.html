@@ -19,19 +19,13 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://jason-benjamin.vercel.app/" />
-    <meta name="twitter:title" content="Jason Benjamin | Teacher & Builder" />
-    <meta name="twitter:description" content="Simple tools for smarter schools. Building helpers for parents and teachers." />
-    <meta name="twitter:image" content="https://res.cloudinary.com/dginphpy4/image/upload/v1765770525/Chekki_Futuristic_Background_i8foqe.png" />
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             fontFamily: {
@@ -43,22 +37,15 @@
                 950: '#0d0f14', 
                 900: '#161920',
                 800: '#232834',
+                200: '#e5e7eb',
+                100: '#f3f4f6',
                 50: '#faf9f6' 
               },
               accent: {
                 gold: '#e2b87d',
-                clay: '#a87c5c'
+                clay: '#8c6239'
               }
             },
-            animation: {
-              'pulse-slow': 'pulse-custom 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
-            keyframes: {
-              'pulse-custom': {
-                '0%, 100%': { opacity: 1, backgroundColor: 'rgba(226, 184, 125, 1)' },
-                '50%': { opacity: 0.85, backgroundColor: 'rgba(226, 184, 125, 0.7)' },
-              }
-            }
           },
         },
       }
@@ -68,6 +55,11 @@
             --font-sans: 'Inter', sans-serif;
             --font-display: 'Space Grotesk', sans-serif;
         }
+        
+        html, body {
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
         body {
             font-family: var(--font-sans);
             background-color: #0d0f14;
@@ -75,6 +67,13 @@
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body.light {
+            background-color: #faf9f6;
+            color: #1a1c23;
         }
 
         body::before {
@@ -86,121 +85,89 @@
             height: 100%;
             pointer-events: none;
             z-index: 9999;
-            opacity: 0.03;
+            opacity: 0.02;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
         h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); }
         
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #0d0f14; }
-        ::-webkit-scrollbar-thumb { background: #232834; border-radius: 10px; }
-
-        .parallax-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 130%;
-            z-index: -2;
-            background-image: linear-gradient(to bottom, rgba(13, 15, 20, 0.9), rgba(13, 15, 20, 1)), url('https://images.unsplash.com/photo-1510070112810-d4e9a46d9e91?q=80&w=2560&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.15;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e2b87d66; border-radius: 10px; }
 
         .glass-panel {
-            background: rgba(22, 25, 32, 0.4);
+            background: rgba(22, 25, 32, 0.6);
             backdrop-filter: blur(40px);
-            border: 1px solid rgba(250, 249, 246, 0.12); /* Brighter border */
-            border-top: 1px solid rgba(250, 249, 246, 0.25); /* Accent top edge */
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            border: 1px solid rgba(250, 249, 246, 0.1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body.light .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 40px -10px rgba(0,0,0,0.08);
         }
 
         .shiny-cta {
             position: relative;
             overflow: hidden;
-            border-radius: 12px;
-            font-weight: 600;
+            border-radius: 14px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.3em;
+            letter-spacing: 0.25em;
             color: #faf9f6;
-            background: rgba(250, 249, 246, 0.05);
-            border: 1px solid rgba(250, 249, 246, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem 3.5rem;
-            font-size: 0.7rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .shiny-cta:hover { 
-            background: #faf9f6;
-            color: #0d0f14;
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(226, 184, 125, 0.2), 0 0 20px rgba(250,249,246,0.1);
+            padding: 1.4rem 3.5rem;
+            font-size: 0.8rem;
         }
 
-        .ghost-cta {
-            position: relative;
-            border-radius: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            color: rgba(250, 249, 246, 0.6);
-            background: transparent;
-            border: 1px solid rgba(250, 249, 246, 0.15);
-            transition: all 0.4s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem 3.5rem;
-            font-size: 0.7rem;
+        body.light .shiny-cta {
+            background: #1a1c23;
+            color: #ffffff;
+            border: none;
         }
-        .ghost-cta:hover {
-            color: #faf9f6;
-            border-color: rgba(250, 249, 246, 0.4);
-            background: rgba(250, 249, 246, 0.03);
+
+        .shiny-cta:hover { 
+            background: #e2b87d;
+            color: #0d0f14;
             transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(226, 184, 125, 0.4);
+            border-color: transparent;
         }
 
         .text-gradient-white {
-            background: linear-gradient(to bottom, #faf9f6 0%, #e2b87d 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #e2b87d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light .text-gradient-white {
+            background: linear-gradient(135deg, #1a1c23 0%, #8c6239 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .lab-blueprint-bg {
-            background-image: radial-gradient(circle at 2px 2px, rgba(226, 184, 125, 0.08) 1.5px, transparent 0);
-            background-size: 40px 40px;
+            background-image: radial-gradient(circle at 2px 2px, rgba(226, 184, 125, 0.12) 1.5px, transparent 0);
+            background-size: 50px 50px;
         }
 
-        #root { position: relative; z-index: 10; }
-
-        @keyframes float-slow {
-            0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0, 0) scale(1); }
+        body.light .lab-blueprint-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(140, 98, 57, 0.1) 1.5px, transparent 0);
         }
-        .animate-float-slow { animation: float-slow 20s ease-in-out infinite; }
-        
-        @keyframes drift {
-            0% { transform: translate(-10%, -10%); }
-            50% { transform: translate(10%, 10%); }
-            100% { transform: translate(-10%, -10%); }
-        }
-        .animate-drift { animation: drift 30s ease-in-out infinite; }
 
         @keyframes banner-flash {
             0%, 100% { background-color: #e2b87d; color: #0d0f14; }
             50% { background-color: #faf9f6; color: #0d0f14; }
         }
         .banner-flash-animation {
-            animation: banner-flash 4s ease-in-out infinite;
+            animation: banner-flash 8s ease-in-out infinite;
         }
     </style>
   <script type="importmap">
@@ -217,16 +184,7 @@
 </script>
 </head>
   <body>
-    <div class="parallax-bg" id="parallaxBg" aria-hidden="true"></div>
     <div id="root"></div>
-    <!-- Explicit entry point script -->
     <script type="module" src="./index.tsx"></script>
-    <script>
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const bg = document.getElementById('parallaxBg');
-            bg.style.transform = `translateY(${scrolled * 0.1}px)`;
-        });
-    </script>
   </body>
 </html>
