@@ -22,6 +22,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleMediaSelection = (item: any) => {
+    if (item.type === 'pdf') {
+      // PDF files open in a new tab to prevent iframe blocking and ensure native browser viewer
+      window.open(item.url, '_blank', 'noopener,noreferrer');
+    } else {
+      // Video files open in the immersive glass modal
+      setActiveMedia(item);
+    }
+    setMediaOpen(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -42,7 +53,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
 
   return (
     <article className="relative group flex flex-col items-center" aria-labelledby={`project-title-${project.id}`}>
-      {/* Media Viewer Modal */}
+      {/* Media Viewer Modal (primarily for Video) */}
       {activeMedia && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-10">
           <div className="absolute inset-0 bg-alpine-950/95 backdrop-blur-xl animate-in fade-in duration-300" onClick={() => setActiveMedia(null)}></div>
@@ -50,7 +61,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
             <div className="absolute top-8 right-8 z-10">
               <button 
                 onClick={() => setActiveMedia(null)}
-                className="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all backdrop-blur-md border border-white/10"
+                className="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all backdrop-blur-md border border-white/20"
               >
                 <XIcon className="w-6 h-6" />
               </button>
@@ -157,10 +168,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
                            {project.media.map((item: any, i: number) => (
                              <button 
                                key={i}
-                               onClick={() => {
-                                 setActiveMedia(item);
-                                 setMediaOpen(false);
-                               }}
+                               onClick={() => handleMediaSelection(item)}
                                className={`flex items-center gap-5 w-full text-left p-5 text-[10px] font-bold uppercase tracking-[0.3em] rounded-xl transition-all ${theme === 'dark' ? 'text-white/60 hover:text-white hover:bg-white/5' : 'text-alpine-950/60 hover:text-alpine-950 hover:bg-black/5'}`}
                              >
                                <div className={`w-2.5 h-2.5 rounded-full ${theme === 'dark' ? 'bg-accent-gold/40' : 'bg-accent-clay/40'}`}></div>
