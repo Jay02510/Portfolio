@@ -19,7 +19,7 @@ function App() {
   const banners = [
     "MVP PREVIEW: Active development. Looking for your feedback!",
     "PREMIUM BETA: Use the codes on project cards to unlock Pro features.",
-    "URGENT: Limited spots remaining for early 2024 testing cycle."
+    "URGENT: Limited spots remaining for early 2026 testing cycle."
   ];
 
   useEffect(() => {
@@ -255,7 +255,7 @@ function App() {
       <footer className={`py-24 md:py-32 text-center border-t transition-colors duration-500 ${theme === 'dark' ? 'bg-black/90 border-white/[0.08]' : 'bg-white border-black/[0.1]'}`}>
           <div className="max-w-7xl mx-auto px-8 space-y-12 pb-40 md:pb-0">
             <p className={`text-[11px] md:text-[12px] font-black uppercase tracking-[1.2em] leading-none ${theme === 'dark' ? 'text-white/20' : 'text-black/30'}`}>
-              © 2024 Jason Benjamin — Built in Seoul, Korea
+              © 2026 Jason Benjamin — Built in Seoul, Korea
             </p>
             <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
                <button onClick={() => setModalType('privacy')} className={`text-[10px] font-black uppercase tracking-[0.4em] transition-all hover:text-accent-gold ${theme === 'dark' ? 'text-white/30' : 'text-black/50'}`}>Privacy</button>

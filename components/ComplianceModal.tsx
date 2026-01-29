@@ -18,7 +18,7 @@ const ComplianceModal: React.FC<ComplianceModalProps> = ({ isOpen, onClose, type
       EN: {
         title: "Privacy Policy",
         body: `
-          Last Updated: May 2024
+          Last Updated: May 2026
           
           1. Data Collection
           We collect minimal personal information necessary to provide educational services. This may include names and email addresses for account creation.
@@ -39,7 +39,7 @@ const ComplianceModal: React.FC<ComplianceModalProps> = ({ isOpen, onClose, type
       KR: {
         title: "개인정보 처리방침",
         body: `
-          최종 수정일: 2024년 5월
+          최종 수정일: 2026년 5월
           
           1. 데이터 수집
           교육 서비스를 제공하는 데 필요한 최소한의 개인정보만을 수집합니다. 여기에는 계정 생성을 위한 이름과 이메일 주소가 포함될 수 있습니다.
@@ -62,7 +62,7 @@ const ComplianceModal: React.FC<ComplianceModalProps> = ({ isOpen, onClose, type
       EN: {
         title: "Terms of Service",
         body: `
-          Last Updated: May 2024
+          Last Updated: May 2026
           
           1. MVP Status
           These products are Minimum Viable Products (MVPs). They are provided "as is" for testing and feedback purposes.
@@ -83,7 +83,7 @@ const ComplianceModal: React.FC<ComplianceModalProps> = ({ isOpen, onClose, type
       KR: {
         title: "이용 약관",
         body: `
-          최종 수정일: 2024년 5월
+          최종 수정일: 2026년 5월
           
           1. MVP 상태
           본 제품은 MVP(최소 기능 제품)입니다. 테스트 및 피드백 목적으로 "있는 그대로" 제공됩니다.
