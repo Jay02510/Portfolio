@@ -50,7 +50,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
             <div className="absolute top-8 right-8 z-10">
               <button 
                 onClick={() => setActiveMedia(null)}
-                className="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all backdrop-blur-md border border-white/20"
+                className="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all backdrop-blur-md border border-white/10"
               >
                 <XIcon className="w-6 h-6" />
               </button>
@@ -148,7 +148,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
                         className={`group/media inline-flex items-center gap-4 text-[11px] font-extrabold uppercase tracking-[0.4em] transition-all ${mediaOpen ? (theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay') : (theme === 'dark' ? 'text-white/50 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950')}`}
                       >
                         <FileTextIcon className="w-5 h-5" />
-                        Assets
+                        Media
                         <ChevronDownIcon className={`w-4 h-4 transition-transform duration-300 ${mediaOpen ? 'rotate-180' : ''}`} />
                       </button>
 
