@@ -62,7 +62,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
               </div>
               
               <h2 className="text-4xl md:text-6xl font-medium tracking-tighter font-display leading-[1.1] text-gradient-white">
-                Describe a <br/><span className={`italic font-light ${theme === 'dark' ? 'text-white/30' : 'text-black/30'}`}>problem.</span>
+                Describe a <br/><span className={`italic font-light ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/20'}`}>problem.</span>
               </h2>
               
               <p className={`text-base md:text-lg font-normal leading-relaxed max-w-sm ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/70'}`}>
@@ -81,6 +81,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                       ? 'bg-white/[0.04] border-white/10 text-white placeholder-white/20 focus:ring-accent-gold/20' 
                       : 'bg-black/[0.05] border-black/10 text-alpine-950 placeholder-alpine-950/40 focus:ring-accent-clay/20'
                   }`}
+                  aria-label="Describe your school problem"
                 />
               </div>
               
@@ -88,6 +89,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                 onClick={handleGenerate}
                 disabled={loading || !problem.trim()}
                 className="w-full shiny-cta disabled:opacity-40 transition-all shadow-xl py-6"
+                aria-label="Generate solutions"
               >
                 {loading ? 'Consulting the Model...' : 'Find a Helper'}
               </button>
@@ -149,6 +151,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                               : (theme === 'dark' ? 'border-white/10 hover:bg-white/10 text-white/40' : 'border-black/10 hover:bg-black/5 text-black/40')
                             }`}
                             title="Copy Summary"
+                            aria-label="Copy solution summary"
                           >
                             <FileTextIcon className="w-5 h-5" />
                           </button>

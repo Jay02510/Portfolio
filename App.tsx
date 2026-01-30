@@ -84,6 +84,7 @@ function App() {
                   <a href="#about" onClick={scrollToSection('about')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>Story</a>
                   <button 
                     onClick={toggleTheme} 
+                    aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
                     className={`p-3 rounded-full glass-panel hover:bg-accent-gold transition-all transform active:scale-95 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}
                   >
                     {theme === 'dark' ? '☀️' : '🌙'}
@@ -95,11 +96,11 @@ function App() {
 
       {/* UNIFIED MOBILE NAVIGATION */}
       <nav className={`md:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] glass-panel rounded-full px-5 py-4 flex items-center gap-4 shadow-[0_20px_60px_rgba(0,0,0,0.4)] w-[94%] max-w-[450px] transition-all duration-500 ${theme === 'dark' ? 'border-white/20' : 'border-black/10'}`}>
-          <button onClick={scrollToSection('portfolio')} className={`flex-1 flex flex-col items-center gap-1.5 p-2 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
+          <button onClick={scrollToSection('portfolio')} aria-label="Scroll to Examples" className={`flex-1 flex flex-col items-center gap-1.5 p-2 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
             <BookOpenIcon className="w-6 h-6" />
             <span className="text-[8px] font-black uppercase tracking-widest">Tools</span>
           </button>
-          <button onClick={scrollToSection('lab')} className={`flex-1 flex flex-col items-center gap-1.5 p-2 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
+          <button onClick={scrollToSection('lab')} aria-label="Scroll to Lab" className={`flex-1 flex flex-col items-center gap-1.5 p-2 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
             <CodeIcon className="w-6 h-6" />
             <span className="text-[8px] font-black uppercase tracking-widest">Lab</span>
           </button>
@@ -107,17 +108,18 @@ function App() {
           <div className="px-2">
             <button 
               onClick={() => setIsChatOpen(!isChatOpen)} 
+              aria-label="Toggle AI Assistant"
               className={`w-16 h-16 rounded-full flex items-center justify-center transition-all shadow-2xl border-4 transform active:scale-90 ${theme === 'dark' ? 'border-alpine-900 bg-accent-gold text-alpine-950' : 'border-white bg-alpine-950 text-accent-gold'} ${isChatOpen ? 'rotate-180 scale-110' : 'animate-pulse'}`}
             >
               <SparklesIcon className="w-7 h-7" />
             </button>
           </div>
 
-          <button onClick={scrollToSection('about')} className={`flex-1 flex flex-col items-center gap-1.5 p-2 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
+          <button onClick={scrollToSection('about')} aria-label="Scroll to Story" className={`flex-1 flex flex-col items-center gap-1.5 p-2 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
             <MapIcon className="w-6 h-6" />
             <span className="text-[8px] font-black uppercase tracking-widest">Story</span>
           </button>
-          <button onClick={scrollToSection('contact')} className={`flex-1 flex flex-col items-center gap-1.5 p-2 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
+          <button onClick={scrollToSection('contact')} aria-label="Scroll to Connect" className={`flex-1 flex flex-col items-center gap-1.5 p-2 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
             <MailIcon className="w-6 h-6" />
             <span className="text-[8px] font-black uppercase tracking-widest">Connect</span>
           </button>
