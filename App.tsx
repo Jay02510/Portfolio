@@ -59,11 +59,38 @@ function App() {
   return (
     <div className={`min-h-screen selection:bg-accent-gold/30 font-sans transition-colors duration-500 ${theme === 'dark' ? 'bg-alpine-950 text-white' : 'bg-alpine-50 text-alpine-950'}`}>
       
-      {/* FLASHING CYCLING BANNER */}
-      <div className={`banner-flash-animation py-2.5 px-4 text-center text-[10px] md:text-[11px] font-extrabold tracking-[0.35em] uppercase sticky top-0 z-[60] shadow-xl min-h-[38px] flex items-center justify-center border-b ${theme === 'dark' ? 'border-white/10' : 'border-black/5'}`}>
-        <span key={activeBanner} className={`animate-in fade-in slide-in-from-top-1 duration-700 ${theme === 'dark' ? 'text-alpine-950' : 'text-alpine-950'}`}>
-          {banners[activeBanner]}
-        </span>
+      {/* FROZEN TOP BAR CONTAINER */}
+      <div className="fixed top-0 left-0 w-full z-[100]">
+        {/* FLASHING CYCLING BANNER */}
+        <div className={`banner-flash-animation py-2.5 px-4 text-center text-[10px] md:text-[11px] font-extrabold tracking-[0.35em] uppercase shadow-xl min-h-[38px] flex items-center justify-center border-b ${theme === 'dark' ? 'border-white/10' : 'border-black/5'}`}>
+          <span key={activeBanner} className={`animate-in fade-in slide-in-from-top-1 duration-700 text-alpine-950`}>
+            {banners[activeBanner]}
+          </span>
+        </div>
+
+        {/* MAIN NAVIGATION HEADER */}
+        <header className={`w-full transition-all duration-500 flex items-center ${
+          isScrolled 
+            ? (theme === 'dark' ? 'bg-alpine-950/98 border-b border-white/10' : 'bg-white/98 border-b border-black/10') + ' backdrop-blur-3xl py-4 shadow-2xl' 
+            : 'bg-transparent py-8 md:py-10'
+        }`}>
+          <div className="max-w-7xl mx-auto px-8 w-full flex items-center justify-between h-full">
+              <span className={`font-display font-medium text-[11px] md:text-[13px] tracking-[0.8em] uppercase whitespace-nowrap leading-none transition-colors ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
+                J. BENJAMIN
+              </span>
+              <nav className="hidden md:flex items-center gap-14 text-[10px] font-bold uppercase tracking-[0.5em]">
+                  <a href="#portfolio" onClick={scrollToSection('portfolio')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>Examples</a>
+                  <a href="#lab" onClick={scrollToSection('lab')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>Lab</a>
+                  <a href="#about" onClick={scrollToSection('about')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>Story</a>
+                  <button 
+                    onClick={toggleTheme} 
+                    className={`p-3 rounded-full glass-panel hover:bg-accent-gold transition-all transform active:scale-95 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}
+                  >
+                    {theme === 'dark' ? '☀️' : '🌙'}
+                  </button>
+              </nav>
+          </div>
+        </header>
       </div>
 
       {/* UNIFIED MOBILE NAVIGATION */}
@@ -96,32 +123,9 @@ function App() {
           </button>
       </nav>
 
-      <header className={`fixed top-12 w-full z-50 transition-all duration-500 flex items-center ${
-        isScrolled 
-          ? (theme === 'dark' ? 'bg-alpine-950/98 border-b border-white/10' : 'bg-white/98 border-b border-black/10') + ' backdrop-blur-3xl py-5 shadow-2xl translate-y-[-48px]' 
-          : 'bg-transparent py-10 md:py-14'
-      }`}>
-        <div className="max-w-7xl mx-auto px-8 w-full flex items-center justify-between h-full">
-            <span className={`font-display font-medium text-[11px] md:text-[13px] tracking-[0.8em] uppercase whitespace-nowrap leading-none transition-colors ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
-              J. BENJAMIN
-            </span>
-            <nav className="hidden md:flex items-center gap-14 text-[10px] font-bold uppercase tracking-[0.5em]">
-                <a href="#portfolio" onClick={scrollToSection('portfolio')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>Examples</a>
-                <a href="#lab" onClick={scrollToSection('lab')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>Lab</a>
-                <a href="#about" onClick={scrollToSection('about')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>Story</a>
-                <button 
-                  onClick={toggleTheme} 
-                  className={`p-3 rounded-full glass-panel hover:bg-accent-gold transition-all transform active:scale-95 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}
-                >
-                  {theme === 'dark' ? '☀️' : '🌙'}
-                </button>
-            </nav>
-        </div>
-      </header>
-
       <main>
         {/* REFINED HERO SECTION */}
-        <section className="relative min-h-[90vh] md:min-h-screen flex flex-col items-center justify-center px-8 text-center overflow-hidden pt-40 pb-20">
+        <section className="relative min-h-[90vh] md:min-h-screen flex flex-col items-center justify-center px-8 text-center overflow-hidden pt-60 pb-20">
             <div className="absolute inset-0 pointer-events-none z-0">
                 <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#0a0c10]' : 'bg-[#faf9f6]'}`}></div>
                 
@@ -130,14 +134,12 @@ function App() {
                   className="absolute inset-0 transition-all duration-75"
                   style={{ transform: `translateY(${scrollY * 0.08}px) scale(1.05)` }}
                 >
-                  {/* Frosted glass overlay specifically for Light Mode */}
-                  <div className={`absolute inset-0 z-30 transition-all duration-500 ${theme === 'light' ? 'backdrop-blur-md bg-white/40' : 'bg-transparent'}`}></div>
-                  
                   {/* Digital Texture Overlays */}
                   <div className={`absolute inset-0 z-10 opacity-[0.15] mix-blend-screen pointer-events-none ${theme === 'dark' ? 'bg-[url("https://www.transparenttextures.com/patterns/stardust.png")]' : ''}`}></div>
                   <div className={`absolute inset-0 z-20 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-b from-alpine-950 via-transparent to-alpine-950' : 'bg-gradient-to-b from-alpine-50 via-transparent to-alpine-50'}`}></div>
                   
-                  <div className={`w-full h-full relative transition-opacity duration-1000 ${theme === 'dark' ? 'opacity-[0.25] brightness-90 contrast-125' : 'opacity-[0.12] grayscale contrast-75'}`}>
+                  {/* Optimized video display for Light Mode (Visible but subtle) */}
+                  <div className={`w-full h-full relative transition-opacity duration-1000 ${theme === 'dark' ? 'opacity-[0.25] brightness-90 contrast-125' : 'opacity-[0.4] brightness-110 contrast-75'}`}>
                     {heroVideoUrl ? (
                       <video 
                         autoPlay 
@@ -177,7 +179,7 @@ function App() {
                     <div className="relative">
                       <h1 className="text-5xl sm:text-7xl md:text-9xl lg:text-[10rem] font-medium tracking-tight leading-[1] font-display text-gradient-white pb-8 px-4">
                         Real tools for <br />
-                        <span className={`italic block tracking-tighter pt-4 md:pt-8 font-light ${theme === 'dark' ? 'text-white/20' : 'text-black/10'}`}>
+                        <span className={`italic block tracking-tighter pt-4 md:pt-8 font-light ${theme === 'dark' ? 'text-white/20' : 'text-alpine-950/20'}`}>
                           real people.
                         </span>
                       </h1>
