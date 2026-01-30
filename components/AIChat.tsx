@@ -10,6 +10,14 @@ interface AIChatProps {
   theme: 'light' | 'dark';
 }
 
+const SUGGESTIONS = [
+  "What was teaching in Seoul like?",
+  "Tell me about Chekki AI.",
+  "How does Benchmark Explorer work?",
+  "Why did you start building tools?",
+  "Can we work together?"
+];
+
 const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -32,14 +40,29 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
     }
   }, [messages, isOpen]);
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
-    const userMsg: ChatMessage = { id: Date.now().toString(), role: 'user', text: input, timestamp: new Date() };
+  const handleSend = async (textToSend?: string) => {
+    const messageText = textToSend || input;
+    if (!messageText.trim() || isLoading) return;
+
+    const userMsg: ChatMessage = { 
+      id: Date.now().toString(), 
+      role: 'user', 
+      text: messageText, 
+      timestamp: new Date() 
+    };
+    
     setMessages(prev => [...prev, userMsg]);
     setInput('');
     setIsLoading(true);
-    const responseText = await sendMessageToGemini(input);
-    const modelMsg: ChatMessage = { id: (Date.now() + 1).toString(), role: 'model', text: responseText, timestamp: new Date() };
+
+    const responseText = await sendMessageToGemini(messageText);
+    const modelMsg: ChatMessage = { 
+      id: (Date.now() + 1).toString(), 
+      role: 'model', 
+      text: responseText, 
+      timestamp: new Date() 
+    };
+    
     setMessages(prev => [...prev, modelMsg]);
     setIsLoading(false);
   };
@@ -62,7 +85,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
       {/* Mobile Backdrop */}
       <div className={`md:hidden absolute inset-0 transition-opacity duration-500 ${theme === 'dark' ? 'bg-alpine-950/90 backdrop-blur-xl' : 'bg-white/80 backdrop-blur-lg'}`} onClick={() => setIsOpen(false)}></div>
       
-      <div className={`w-full h-full md:w-[400px] md:h-[600px] glass-panel md:rounded-3xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-500 shadow-2xl relative z-10 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+      <div className={`w-full h-full md:w-[400px] md:h-[650px] glass-panel md:rounded-3xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-500 shadow-2xl relative z-10 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
         {/* Header */}
         <div className={`p-8 flex justify-between items-center border-b ${theme === 'dark' ? 'bg-alpine-900/40 border-white/5' : 'bg-white/40 border-black/5'}`}>
           <div className="flex items-center gap-4">
@@ -104,8 +127,26 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input */}
+        {/* Suggestion Chips & Input */}
         <div className={`p-6 md:p-8 border-t pb-24 md:pb-8 transition-colors ${theme === 'dark' ? 'bg-alpine-900/40 border-white/5' : 'bg-white border-black/5'}`}>
+          {/* Suggestion Chips */}
+          <div className="flex gap-2 overflow-x-auto pb-6 no-scrollbar">
+            {SUGGESTIONS.map((suggestion, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleSend(suggestion)}
+                disabled={isLoading}
+                className={`whitespace-nowrap px-4 py-2 rounded-full text-[10px] font-bold tracking-wider uppercase border transition-all hover:scale-105 active:scale-95 disabled:opacity-50 ${
+                  theme === 'dark' 
+                    ? 'bg-white/5 border-white/10 text-white/60 hover:border-accent-gold hover:text-accent-gold' 
+                    : 'bg-black/5 border-black/10 text-black/60 hover:border-accent-clay hover:text-accent-clay'
+                }`}
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
+
           <div className="relative flex items-center">
             <input
               type="text"
@@ -116,7 +157,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
               className={`w-full pl-6 pr-14 py-5 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-gold/20 transition-all text-sm font-light ${theme === 'dark' ? 'bg-white/5 border border-white/10 text-white placeholder-white/20' : 'bg-black/5 border border-black/10 text-black placeholder-black/30'}`}
             />
             <button 
-              onClick={handleSend} 
+              onClick={() => handleSend()} 
               disabled={isLoading || !input.trim()}
               className={`absolute right-4 p-2 transition-all disabled:opacity-20 ${theme === 'dark' ? 'text-white/40 hover:text-accent-gold' : 'text-black/40 hover:text-accent-gold'}`}
             >

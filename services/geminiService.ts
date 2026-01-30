@@ -8,15 +8,6 @@ export interface SolutionSuggestion {
   impact: string;
 }
 
-// Ensure the API key exists before attempting initialization
-const getAIClient = () => {
-  if (!process.env.API_KEY) {
-    console.error("Critical: API_KEY is missing from environment.");
-    return null;
-  }
-  return new GoogleGenAI({ apiKey: process.env.API_KEY });
-};
-
 const SYSTEM_INSTRUCTION = `
 You are Jason Benjamin's helpful digital assistant. Jason is a teacher who builds simple helpers for schools.
 
@@ -32,12 +23,12 @@ STRICT GUIDELINES:
 
 export const sendMessageToGemini = async (message: string): Promise<string> => {
   try {
-    const ai = getAIClient();
-    if (!ai) return "I'm having trouble connecting to my brain right now. Please check back in a moment.";
+    // Initialize client fresh per-call to ensure API key access
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: message,
+      contents: [{ parts: [{ text: message }] }],
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
         temperature: 0.8,
@@ -47,25 +38,29 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
 
     const text = response.text;
     if (!text) {
-      return "I processed your request but couldn't think of anything to say. Could you rephrase that?";
+      return "I processed your request but the response was empty. Could you try rephrasing?";
     }
 
-    // Strip out all potential markdown artifacts
+    // Strip out markdown for plain-text aesthetic
     return text.replace(/\*\*/g, '').replace(/\*/g, '').replace(/#/g, '').trim();
   } catch (error) {
     console.error("Assistant API Error:", error);
-    return "I'm experiencing a quick technical refresh. Give me a second and try that again!";
+    // Unique message to help identify if the latest version is running
+    return "I am currently having a slight connection delay. Please wait a moment and try asking me again.";
   }
 };
 
 export const generateSolutionsForProblem = async (problem: string): Promise<SolutionSuggestion[] | null> => {
   try {
-    const ai = getAIClient();
-    if (!ai) return null;
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `Someone described this school problem: "${problem}". Suggest 3 simple helpers that can be built to fix this.`,
+      contents: [{ 
+        parts: [{ 
+          text: `Someone described this school problem: "${problem}". Suggest 3 simple helpers that can be built to fix this.` 
+        }] 
+      }],
       config: {
         responseMimeType: "application/json",
         responseSchema: {
