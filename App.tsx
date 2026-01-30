@@ -16,7 +16,7 @@ function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [scrollY, setScrollY] = useState(0);
 
-  const heroVideoUrl = "https://res.cloudinary.com/dginphpy4/video/upload/v1769746177/Flow_Video_2_uzlq04.mp4"; 
+  const heroVideoUrl = "https://res.cloudinary.com/dginphpy4/video/upload/v1769751396/Flow_Video_3_eqf1ao.mp4"; 
   const heroFallbackImage = "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2560&auto=format&fit=crop";
 
   const banners = [
@@ -124,7 +124,7 @@ function App() {
       </nav>
 
       <main>
-        {/* SEOUL MIDNIGHT HERO SECTION */}
+        {/* REFINED HERO SECTION */}
         <section className="relative min-h-[90vh] md:min-h-screen flex flex-col items-center justify-center px-8 text-center overflow-hidden pt-60 pb-20">
             <div className="absolute inset-0 pointer-events-none z-0">
                 <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#0a0c10]' : 'bg-[#faf9f6]'}`}></div>
@@ -134,15 +134,15 @@ function App() {
                   className="absolute inset-0 transition-all duration-75"
                   style={{ transform: `translateY(${scrollY * 0.08}px) scale(1.05)` }}
                 >
-                  {/* Frosted mist overlay optimized for Light Mode visibility */}
-                  <div className={`absolute inset-0 z-30 transition-all duration-500 ${theme === 'light' ? 'backdrop-blur-[6px] bg-white/25' : 'bg-transparent'}`}></div>
+                  {/* Frosted mist overlay optimized for visibility */}
+                  <div className={`absolute inset-0 z-30 transition-all duration-500 ${theme === 'light' ? 'backdrop-blur-[4px] bg-white/20' : 'bg-transparent'}`}></div>
                   
                   {/* Digital Texture Overlays */}
                   <div className={`absolute inset-0 z-10 opacity-[0.15] mix-blend-screen pointer-events-none ${theme === 'dark' ? 'bg-[url("https://www.transparenttextures.com/patterns/stardust.png")]' : ''}`}></div>
                   <div className={`absolute inset-0 z-20 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-b from-alpine-950 via-transparent to-alpine-950' : 'bg-gradient-to-b from-alpine-50 via-transparent to-alpine-50'}`}></div>
                   
-                  {/* Optimized video display */}
-                  <div className={`w-full h-full relative transition-opacity duration-1000 ${theme === 'dark' ? 'opacity-[0.25] brightness-90 contrast-125' : 'opacity-[0.45] brightness-105 contrast-100'}`}>
+                  {/* High visibility video display */}
+                  <div className={`w-full h-full relative transition-opacity duration-1000 ${theme === 'dark' ? 'opacity-[0.25] brightness-90 contrast-125' : 'opacity-[0.6] brightness-100 contrast-100'}`}>
                     {heroVideoUrl ? (
                       <video 
                         autoPlay 
