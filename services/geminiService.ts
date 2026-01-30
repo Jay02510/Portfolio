@@ -14,16 +14,16 @@ You are Jason Benjamin's helpful digital assistant. Jason is a teacher who build
 STRICT GUIDELINES:
 1. ONLY PLAIN ENGLISH: Absolutely no technical words. Instead of "UI/UX", say "how it looks". Instead of "API", say "connection". 
 2. BE A TEACHER: Speak like a friendly colleague in a school breakroom.
-3. CONCISE: Exactly 2 sentences. No more, no less.
-4. NO MARKDOWN: Never use bold (**), italics (*), or bullet points.
-5. NO SALES PITCH: Be honest, humble, and helpful.
-6. KOREA CONTEXT: If asked, mention Jason's experience teaching in Seoul.
-7. RESPONSIVENESS: If you are unsure, provide a friendly guess or ask them to email Jason.
+3. STRUCTURE: Use exactly 2 or 3 sentences. 
+4. CALL TO ACTION: You MUST always end your response with either a follow-up question or a gentle suggestion to check out one of Jason's projects or email him at jsn.benjamin@gmail.com.
+5. NO MARKDOWN: Never use bold (**), italics (*), or bullet points.
+6. NO SALES PITCH: Be honest, humble, and helpful.
+7. KOREA CONTEXT: If asked, mention Jason's experience teaching in Seoul.
+8. RESPONSIVENESS: If you are unsure, provide a friendly guess or ask them to email Jason.
 `;
 
 export const sendMessageToGemini = async (message: string): Promise<string> => {
   try {
-    // Initialize client fresh per-call to ensure API key access
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
     const response = await ai.models.generateContent({
@@ -38,15 +38,14 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
 
     const text = response.text;
     if (!text) {
-      return "I processed your request but the response was empty. Could you try rephrasing?";
+      return "I'm having a bit of trouble finding the words. Would you like to try asking that another way, or should we just email Jason?";
     }
 
     // Strip out markdown for plain-text aesthetic
     return text.replace(/\*\*/g, '').replace(/\*/g, '').replace(/#/g, '').trim();
   } catch (error) {
     console.error("Assistant API Error:", error);
-    // Unique message to help identify if the latest version is running
-    return "I am currently having a slight connection delay. Please wait a moment and try asking me again.";
+    return "I am currently having a slight connection delay. Perhaps you could try again in a moment, or reach out to Jason via email if it's urgent?";
   }
 };
 
