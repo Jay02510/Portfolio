@@ -124,7 +124,7 @@ function App() {
       </nav>
 
       <main>
-        {/* REFINED HERO SECTION */}
+        {/* SEOUL MIDNIGHT HERO SECTION */}
         <section className="relative min-h-[90vh] md:min-h-screen flex flex-col items-center justify-center px-8 text-center overflow-hidden pt-60 pb-20">
             <div className="absolute inset-0 pointer-events-none z-0">
                 <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#0a0c10]' : 'bg-[#faf9f6]'}`}></div>
@@ -134,12 +134,15 @@ function App() {
                   className="absolute inset-0 transition-all duration-75"
                   style={{ transform: `translateY(${scrollY * 0.08}px) scale(1.05)` }}
                 >
+                  {/* Frosted mist overlay optimized for Light Mode visibility */}
+                  <div className={`absolute inset-0 z-30 transition-all duration-500 ${theme === 'light' ? 'backdrop-blur-[6px] bg-white/25' : 'bg-transparent'}`}></div>
+                  
                   {/* Digital Texture Overlays */}
                   <div className={`absolute inset-0 z-10 opacity-[0.15] mix-blend-screen pointer-events-none ${theme === 'dark' ? 'bg-[url("https://www.transparenttextures.com/patterns/stardust.png")]' : ''}`}></div>
                   <div className={`absolute inset-0 z-20 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-b from-alpine-950 via-transparent to-alpine-950' : 'bg-gradient-to-b from-alpine-50 via-transparent to-alpine-50'}`}></div>
                   
-                  {/* Optimized video display for Light Mode (Visible but subtle) */}
-                  <div className={`w-full h-full relative transition-opacity duration-1000 ${theme === 'dark' ? 'opacity-[0.25] brightness-90 contrast-125' : 'opacity-[0.4] brightness-110 contrast-75'}`}>
+                  {/* Optimized video display */}
+                  <div className={`w-full h-full relative transition-opacity duration-1000 ${theme === 'dark' ? 'opacity-[0.25] brightness-90 contrast-125' : 'opacity-[0.45] brightness-105 contrast-100'}`}>
                     {heroVideoUrl ? (
                       <video 
                         autoPlay 
@@ -268,8 +271,8 @@ function App() {
         {/* CONNECT SECTION */}
         <section id="contact" className={`py-48 md:py-64 px-8 text-center border-t transition-colors duration-700 ${theme === 'dark' ? 'bg-gradient-to-b from-transparent to-black/60 border-white/10' : 'bg-gradient-to-b from-transparent to-black/5 border-black/5'}`}>
             <div className="max-w-6xl mx-auto space-y-16 md:space-y-24">
-                <div className="text-accent-gold text-[11px] font-black tracking-[1.5em] uppercase leading-none">The Neighborhood</div>
-                <h2 className="text-7xl md:text-9xl lg:text-[11rem] font-medium font-display tracking-tighter leading-none opacity-95 text-gradient-white">Let's connect.</h2>
+                <div className="text-accent-gold text-[11px] font-black tracking-[1.5em] uppercase leading-none">The Staffroom</div>
+                <h2 className="text-7xl md:text-9xl lg:text-[11rem] font-medium font-display tracking-tighter leading-none opacity-95 text-gradient-white">Come say hi.</h2>
                 <div className="flex flex-col md:flex-row items-center justify-center gap-10 pt-12 md:pt-20">
                     <a href="mailto:jsn.benjamin@gmail.com" className="shiny-cta min-w-[320px] md:min-w-[400px] px-16 py-8 text-[12px] tracking-[0.6em] shadow-2xl">
                         <MailIcon className="w-6 h-6 mr-6 opacity-40" />
