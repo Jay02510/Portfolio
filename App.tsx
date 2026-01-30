@@ -16,6 +16,12 @@ function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [scrollY, setScrollY] = useState(0);
 
+  // YOUR GENERATED SEOUL MIDNIGHT VIDEO
+  const heroVideoUrl = "https://res.cloudinary.com/dginphpy4/video/upload/v1769746177/Flow_Video_2_uzlq04.mp4"; 
+  
+  // High-res fallback image (Namsan/Seoul aesthetic)
+  const heroFallbackImage = "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2560&auto=format&fit=crop";
+
   const banners = [
     "MVP PREVIEW: Active development. Looking for your feedback!",
     "PREMIUM BETA: Use the codes on project cards to unlock Pro features.",
@@ -33,7 +39,6 @@ function App() {
       setActiveBanner(prev => (prev + 1) % banners.length);
     }, 6000);
 
-    // Initial theme sync
     document.body.className = theme;
 
     return () => {
@@ -118,28 +123,50 @@ function App() {
       </header>
 
       <main>
-        {/* HERO */}
+        {/* SEOUL MIDNIGHT HERO SECTION */}
         <section className="relative min-h-[90vh] md:min-h-screen flex flex-col items-center justify-center px-8 text-center overflow-hidden pt-40 pb-20">
             <div className="absolute inset-0 pointer-events-none z-0">
-                <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#0d0f14]' : 'bg-[#faf9f6]'}`}></div>
+                <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#0a0c10]' : 'bg-[#faf9f6]'}`}></div>
+                
+                {/* Background Media Container with Dampened Parallax */}
                 <div 
-                  className="absolute inset-0 opacity-[0.06] mix-blend-multiply transition-all duration-75"
-                  style={{ transform: `translateY(${scrollY * 0.12}px) scale(1.15)` }}
+                  className="absolute inset-0 transition-all duration-75"
+                  style={{ transform: `translateY(${scrollY * 0.08}px) scale(1.05)` }}
                 >
-                  <img 
-                    src="https://images.unsplash.com/photo-1510070112810-d4e9a46d9e91?q=80&w=2560&auto=format&fit=crop" 
-                    className="w-full h-full object-cover grayscale"
-                    alt=""
-                  />
+                  {/* Digital Texture Overlays */}
+                  <div className={`absolute inset-0 z-10 opacity-[0.15] mix-blend-screen pointer-events-none ${theme === 'dark' ? 'bg-[url("https://www.transparenttextures.com/patterns/stardust.png")]' : ''}`}></div>
+                  <div className={`absolute inset-0 z-20 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-b from-alpine-950 via-transparent to-alpine-950' : ''}`}></div>
+                  
+                  <div className={`w-full h-full relative transition-opacity duration-1000 ${theme === 'dark' ? 'opacity-[0.25] brightness-90 contrast-125' : 'opacity-[0.08] grayscale'}`}>
+                    {heroVideoUrl ? (
+                      <video 
+                        autoPlay 
+                        loop 
+                        muted 
+                        playsInline 
+                        poster={heroFallbackImage}
+                        className="w-full h-full object-cover"
+                      >
+                        <source src={heroVideoUrl} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <img 
+                        src={heroFallbackImage} 
+                        className="w-full h-full object-cover"
+                        alt=""
+                      />
+                    )}
+                  </div>
                 </div>
+
+                {/* Ambient Atmosphere Glows */}
                 <div 
-                  className="absolute inset-0 z-[-1] transition-all duration-100"
-                  style={{ transform: `translateY(${scrollY * -0.2}px)` }}
+                  className="absolute inset-0 z-[-1] transition-all duration-150"
+                  style={{ transform: `translateY(${scrollY * -0.1}px)` }}
                 >
-                  <div className={`absolute top-[10%] left-[5%] w-[60vw] h-[60vw] rounded-full blur-[160px] opacity-40 ${theme === 'dark' ? 'bg-accent-gold/10' : 'bg-accent-gold/20'}`}></div>
-                  <div className={`absolute bottom-[5%] right-[5%] w-[50vw] h-[50vw] rounded-full blur-[140px] opacity-30 ${theme === 'dark' ? 'bg-white/10' : 'bg-black/10'}`}></div>
+                  <div className={`absolute top-[10%] left-[5%] w-[60vw] h-[60vw] rounded-full blur-[180px] opacity-20 ${theme === 'dark' ? 'bg-accent-gold/20' : 'bg-accent-gold/10'}`}></div>
+                  <div className={`absolute bottom-[5%] right-[5%] w-[50vw] h-[50vw] rounded-full blur-[160px] opacity-15 ${theme === 'dark' ? 'bg-white/10' : 'bg-black/5'}`}></div>
                 </div>
-                <div className={`absolute inset-0 z-[-1] ${theme === 'dark' ? 'bg-gradient-to-b from-alpine-950 via-transparent to-alpine-950' : 'bg-gradient-to-b from-alpine-50 via-transparent to-alpine-50'}`}></div>
             </div>
 
             <div className="max-w-7xl mx-auto flex flex-col items-center gap-14 md:gap-24 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-10">
