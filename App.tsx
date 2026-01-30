@@ -16,10 +16,7 @@ function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [scrollY, setScrollY] = useState(0);
 
-  // YOUR GENERATED SEOUL MIDNIGHT VIDEO
   const heroVideoUrl = "https://res.cloudinary.com/dginphpy4/video/upload/v1769746177/Flow_Video_2_uzlq04.mp4"; 
-  
-  // High-res fallback image (Namsan/Seoul aesthetic)
   const heroFallbackImage = "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2560&auto=format&fit=crop";
 
   const banners = [
@@ -63,8 +60,8 @@ function App() {
     <div className={`min-h-screen selection:bg-accent-gold/30 font-sans transition-colors duration-500 ${theme === 'dark' ? 'bg-alpine-950 text-white' : 'bg-alpine-50 text-alpine-950'}`}>
       
       {/* FLASHING CYCLING BANNER */}
-      <div className="banner-flash-animation py-2.5 px-4 text-center text-[10px] md:text-[11px] font-extrabold tracking-[0.35em] uppercase sticky top-0 z-[60] shadow-xl min-h-[38px] flex items-center justify-center">
-        <span key={activeBanner} className="animate-in fade-in slide-in-from-top-1 duration-700 text-alpine-950">
+      <div className={`banner-flash-animation py-2.5 px-4 text-center text-[10px] md:text-[11px] font-extrabold tracking-[0.35em] uppercase sticky top-0 z-[60] shadow-xl min-h-[38px] flex items-center justify-center border-b ${theme === 'dark' ? 'border-white/10' : 'border-black/5'}`}>
+        <span key={activeBanner} className={`animate-in fade-in slide-in-from-top-1 duration-700 ${theme === 'dark' ? 'text-alpine-950' : 'text-alpine-950'}`}>
           {banners[activeBanner]}
         </span>
       </div>
@@ -123,21 +120,24 @@ function App() {
       </header>
 
       <main>
-        {/* SEOUL MIDNIGHT HERO SECTION */}
+        {/* REFINED HERO SECTION */}
         <section className="relative min-h-[90vh] md:min-h-screen flex flex-col items-center justify-center px-8 text-center overflow-hidden pt-40 pb-20">
             <div className="absolute inset-0 pointer-events-none z-0">
                 <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#0a0c10]' : 'bg-[#faf9f6]'}`}></div>
                 
-                {/* Background Media Container with Dampened Parallax */}
+                {/* Background Media Container */}
                 <div 
                   className="absolute inset-0 transition-all duration-75"
                   style={{ transform: `translateY(${scrollY * 0.08}px) scale(1.05)` }}
                 >
+                  {/* Frosted glass overlay specifically for Light Mode */}
+                  <div className={`absolute inset-0 z-30 transition-all duration-500 ${theme === 'light' ? 'backdrop-blur-md bg-white/40' : 'bg-transparent'}`}></div>
+                  
                   {/* Digital Texture Overlays */}
                   <div className={`absolute inset-0 z-10 opacity-[0.15] mix-blend-screen pointer-events-none ${theme === 'dark' ? 'bg-[url("https://www.transparenttextures.com/patterns/stardust.png")]' : ''}`}></div>
-                  <div className={`absolute inset-0 z-20 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-b from-alpine-950 via-transparent to-alpine-950' : ''}`}></div>
+                  <div className={`absolute inset-0 z-20 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-b from-alpine-950 via-transparent to-alpine-950' : 'bg-gradient-to-b from-alpine-50 via-transparent to-alpine-50'}`}></div>
                   
-                  <div className={`w-full h-full relative transition-opacity duration-1000 ${theme === 'dark' ? 'opacity-[0.25] brightness-90 contrast-125' : 'opacity-[0.08] grayscale'}`}>
+                  <div className={`w-full h-full relative transition-opacity duration-1000 ${theme === 'dark' ? 'opacity-[0.25] brightness-90 contrast-125' : 'opacity-[0.12] grayscale contrast-75'}`}>
                     {heroVideoUrl ? (
                       <video 
                         autoPlay 
@@ -159,7 +159,6 @@ function App() {
                   </div>
                 </div>
 
-                {/* Ambient Atmosphere Glows */}
                 <div 
                   className="absolute inset-0 z-[-1] transition-all duration-150"
                   style={{ transform: `translateY(${scrollY * -0.1}px)` }}
@@ -169,7 +168,7 @@ function App() {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto flex flex-col items-center gap-14 md:gap-24 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-10">
+            <div className="max-w-7xl mx-auto flex flex-col items-center gap-14 md:gap-24 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-40">
                 <div className="space-y-8 md:space-y-12 w-full">
                     <div className={`flex items-center justify-center gap-6 text-[10px] md:text-[12px] font-black tracking-[1em] uppercase ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'}`}>
                       BUILDING HELPERS FOR SCHOOLS
@@ -190,7 +189,7 @@ function App() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-10 w-full max-w-2xl px-8">
-                    <a href="#portfolio" onClick={scrollToSection('portfolio')} className="shiny-cta w-full sm:min-w-[300px] group text-center py-6">
+                    <a href="#portfolio" onClick={scrollToSection('portfolio')} className="shiny-cta w-full sm:min-w-[300px] group text-center py-6 shadow-2xl">
                         Explore Examples
                         <div className="hidden sm:block absolute right-10 opacity-0 group-hover:opacity-100 transition-all transform -translate-x-3 group-hover:translate-x-0">→</div>
                     </a>
@@ -267,12 +266,12 @@ function App() {
         {/* CONNECT SECTION */}
         <section id="contact" className={`py-48 md:py-64 px-8 text-center border-t transition-colors duration-700 ${theme === 'dark' ? 'bg-gradient-to-b from-transparent to-black/60 border-white/10' : 'bg-gradient-to-b from-transparent to-black/5 border-black/5'}`}>
             <div className="max-w-6xl mx-auto space-y-16 md:space-y-24">
-                <div className="text-accent-gold text-[11px] font-black tracking-[1.5em] uppercase leading-none">The Terminal</div>
-                <h2 className="text-7xl md:text-9xl lg:text-[11rem] font-medium font-display tracking-tighter leading-none opacity-95 text-gradient-white">Initiate.</h2>
+                <div className="text-accent-gold text-[11px] font-black tracking-[1.5em] uppercase leading-none">The Neighborhood</div>
+                <h2 className="text-7xl md:text-9xl lg:text-[11rem] font-medium font-display tracking-tighter leading-none opacity-95 text-gradient-white">Let's connect.</h2>
                 <div className="flex flex-col md:flex-row items-center justify-center gap-10 pt-12 md:pt-20">
                     <a href="mailto:jsn.benjamin@gmail.com" className="shiny-cta min-w-[320px] md:min-w-[400px] px-16 py-8 text-[12px] tracking-[0.6em] shadow-2xl">
                         <MailIcon className="w-6 h-6 mr-6 opacity-40" />
-                        Send a Message
+                        Start a Conversation
                     </a>
                 </div>
             </div>
