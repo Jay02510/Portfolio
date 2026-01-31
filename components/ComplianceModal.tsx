@@ -18,43 +18,43 @@ const ComplianceModal: React.FC<ComplianceModalProps> = ({ isOpen, onClose, type
       EN: {
         title: "Privacy Policy",
         body: `
-          Last Updated: May 2026
-          
-          1. Data Collection
-          We collect minimal personal information necessary to provide educational services. This may include names and email addresses for account creation.
-          
-          2. Use of Data
-          Your data is used solely to enhance the learning experience. We do not sell or trade your personal information to third parties.
-          
-          3. Student Data (COPPA/FERPA)
-          We prioritize student safety. Our tools are designed to be compliant with major educational privacy standards. We do not track students across other websites.
-          
-          4. Security
-          We use industry-standard encryption to protect your information. As these are MVP products, we continuously update our security protocols.
-          
-          5. Contact
-          For privacy inquiries, contact: jsn.benjamin@gmail.com
+Last Updated: May 2026
+
+1. DATA COLLECTION & AI PROCESSING
+This site utilizes the Google Gemini API to power the "Idea Explorer" and "AI Assistant." When you input text, it is sent to Google for transient processing. We do not store your chat history on our servers; however, information provided to the AI should not contain sensitive personal student data or PII (Personally Identifiable Information).
+
+2. VOLUNTARY INFORMATION
+If you choose to contact Jason Benjamin via email or feedback forms, we collect your name and email address solely to respond to your inquiry. This data is never sold, traded, or shared with third-party advertisers.
+
+3. COOKIES & TRACKING
+We strive for a "cookieless" experience. We may use basic, privacy-respecting analytics to understand which projects are most interesting to our visitors, but we do not track you across other websites.
+
+4. STUDENT PRIVACY (COPPA/FERPA)
+As a tool built by a teacher, we take student privacy seriously. Our tools are designed to be "privacy-by-design." We encourage teachers to use anonymized data (e.g., "Student A" instead of "John Doe") when testing our beta tools.
+
+5. CONTACT
+For any privacy-related questions or data deletion requests, please contact: jsn.benjamin@gmail.com
         `
       },
       KR: {
         title: "개인정보 처리방침",
         body: `
-          최종 수정일: 2026년 5월
-          
-          1. 데이터 수집
-          교육 서비스를 제공하는 데 필요한 최소한의 개인정보만을 수집합니다. 여기에는 계정 생성을 위한 이름과 이메일 주소가 포함될 수 있습니다.
-          
-          2. 데이터 사용
-          귀하의 데이터는 오로지 학습 경험을 개선하기 위해서만 사용됩니다. 당사는 귀하의 개인정보를 제3자에게 판매하거나 거래하지 않습니다.
-          
-          3. 학생 데이터 보호
-          당사는 학생의 안전을 최우선으로 생각합니다. 당사의 도구는 주요 교육 개인정보 보호 표준을 준수하도록 설계되었습니다.
-          
-          4. 보안
-          정보 보호를 위해 업계 표준 암호화 기술을 사용합니다. MVP 제품으로서 보안 프로토콜을 지속적으로 업데이트하고 있습니다.
-          
-          5. 문의
-          개인정보 관련 문의: jsn.benjamin@gmail.com
+최종 수정일: 2026년 5월
+
+1. 데이터 수집 및 AI 처리
+본 사이트는 '아이디어 익스플로러(Idea Explorer)' 및 'AI 어시스턴트' 기능을 위해 Google Gemini API를 사용합니다. 귀하가 입력한 텍스트는 일시적인 처리를 위해 Google로 전송됩니다. 당사는 귀하의 채팅 기록을 서버에 저장하지 않으나, AI에 민감한 학생 개인정보나 개인식별정보(PII)를 입력하지 마십시오.
+
+2. 자발적 정보 제공
+이메일이나 피드백 양식을 통해 Jason Benjamin에게 연락하는 경우, 귀하의 성함과 이메일 주소는 문의 응대 목적으로만 수집됩니다. 이 데이터는 제3자 광고주에게 판매, 거래 또는 공유되지 않습니다.
+
+3. 쿠키 및 추적
+당사는 '쿠키 없는(cookieless)' 환경을 지향합니다. 방문자가 어떤 프로젝트에 관심을 갖는지 파악하기 위해 기본적인 분석 도구를 사용할 수 있으나, 다른 웹사이트에서의 활동을 추적하지는 않습니다.
+
+4. 학생 정보 보호 (COPPA/FERPA 준수)
+교사가 직접 만든 도구로서, 당사는 학생의 프라이버시를 매우 중요하게 생각합니다. 모든 도구는 '프라이버시 중심 설계'를 원칙으로 합니다. 베타 도구를 테스트할 때 학생의 실명 대신 익명(예: '학생 A')을 사용하실 것을 권장합니다.
+
+5. 문의처
+개인정보 관련 문의 또는 데이터 삭제 요청: jsn.benjamin@gmail.com
         `
       }
     },
@@ -62,43 +62,43 @@ const ComplianceModal: React.FC<ComplianceModalProps> = ({ isOpen, onClose, type
       EN: {
         title: "Terms of Service",
         body: `
-          Last Updated: May 2026
-          
-          1. MVP Status
-          These products are Minimum Viable Products (MVPs). They are provided "as is" for testing and feedback purposes.
-          
-          2. Use License
-          Permission is granted to use these tools for personal or educational purposes. Commercial redistribution without consent is prohibited.
-          
-          3. User Feedback
-          By providing feedback, you grant Jason Benjamin the right to use your suggestions to improve the tools.
-          
-          4. Limitations
-          In no event shall the developer be liable for any damages arising out of the use or inability to use the tools.
-          
-          5. Governing Law
-          These terms are governed by the laws applicable in the jurisdiction of the developer.
+Last Updated: May 2026
+
+1. BETA/MVP DISCLOSURE
+The projects showcased here (Chekki AI, Benchmark Explorer, EduPlanner, etc.) are currently in Public Beta or MVP (Minimum Viable Product) status. They are provided "AS IS" and "AS AVAILABLE" without any warranties, express or implied.
+
+2. AI GENERATED CONTENT
+The "Idea Explorer" provides conceptual suggestions generated by Artificial Intelligence. These suggestions are for inspirational purposes only and should be reviewed by qualified educational professionals before implementation in a real-world classroom setting.
+
+3. INTELLECTUAL PROPERTY
+The layout, design, and code of this portfolio are the property of Jason Benjamin. You are granted a limited license to explore and test the tools for personal or professional evaluation. Commercial redistribution of these tools is strictly prohibited without written consent.
+
+4. LIMITATION OF LIABILITY
+In no event shall the developer be liable for any data loss, scheduling conflicts, or educational outcomes resulting from the use of these beta tools. Use at your own discretion and risk.
+
+5. USER CONDUCT
+Users agree not to use the AI Assistant or tools to generate harmful, illegal, or offensive content. We reserve the right to limit access to anyone violating these terms.
         `
       },
       KR: {
         title: "이용 약관",
         body: `
-          최종 수정일: 2026년 5월
-          
-          1. MVP 상태
-          본 제품은 MVP(최소 기능 제품)입니다. 테스트 및 피드백 목적으로 "있는 그대로" 제공됩니다.
-          
-          2. 사용 라이선스
-          개인적 또는 교육적 목적으로 이 도구를 사용할 수 있는 권한이 부여됩니다. 동의 없는 상업적 재배포는 금지됩니다.
-          
-          3. 사용자 피드백
-          피드백을 제공함으로써 귀하는 Jason Benjamin에게 도구 개선을 위해 귀하의 제안을 사용할 수 있는 권리를 부여하게 됩니다.
-          
-          4. 책임 제한
-          개발자는 어떠한 경우에도 도구 사용 또는 사용 불능으로 인해 발생하는 손해에 대해 책임을 지지 않습니다.
-          
-          5. 준거법
-          본 약관은 개발자 거주 지역의 관련 법률에 따릅니다.
+최종 수정일: 2026년 5월
+
+1. 베타/MVP 공개 고지
+본 포트폴리오에 소개된 프로젝트(Chekki AI, Benchmark Explorer, EduPlanner 등)는 현재 공개 베타 또는 MVP(최소 기능 제품) 단계에 있습니다. 본 서비스는 명시적 또는 묵시적인 보증 없이 "있는 그대로" 그리고 "이용 가능한 상태로" 제공됩니다.
+
+2. AI 생성 콘텐츠
+'아이디어 익스플로러'는 인공지능이 생성한 개념적 제안을 제공합니다. 이러한 제안은 영감을 주기 위한 목적일 뿐이며, 실제 교실 현장에 적용하기 전에는 반드시 자격 있는 교육 전문가의 검토를 거쳐야 합니다.
+
+3. 지적 재산권
+본 포트폴리오의 레이아웃, 디자인 및 코드는 Jason Benjamin의 자산입니다. 귀하에게는 개인적 또는 전문가적 평가 목적으로 본 도구를 탐색하고 테스트할 수 있는 제한적인 권한이 부여됩니다. 서면 동의 없는 상업적 재배포는 엄격히 금지됩니다.
+
+4. 책임의 제한
+개발자는 본 베타 도구의 사용으로 인해 발생하는 데이터 손실, 일정 충돌 또는 교육적 결과에 대해 어떠한 경우에도 책임을 지지 않습니다. 모든 사용은 귀하의 판단과 책임 하에 이루어집니다.
+
+5. 사용자 준수 사항
+사용자는 AI 어시스턴트나 도구를 사용하여 유해하거나 불법적이거나 공격적인 콘텐츠를 생성하지 않을 것에 동의합니다. 당사는 본 약관을 위반하는 사용자의 접근을 제한할 권리를 보유합니다.
         `
       }
     }
@@ -147,7 +147,7 @@ const ComplianceModal: React.FC<ComplianceModalProps> = ({ isOpen, onClose, type
             onClick={onClose}
             className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent-gold hover:text-white transition-all"
           >
-            Close Document
+            I UNDERSTAND
           </button>
         </div>
       </div>
