@@ -79,9 +79,9 @@ function App() {
                 J. BENJAMIN
               </span>
               <nav className="hidden md:flex items-center gap-14 text-[10px] font-bold uppercase tracking-[0.5em]">
-                  <a href="#portfolio" onClick={scrollToSection('portfolio')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>Examples</a>
-                  <a href="#lab" onClick={scrollToSection('lab')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>Lab</a>
-                  <a href="#about" onClick={scrollToSection('about')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>Story</a>
+                  <a href="#portfolio" onClick={scrollToSection('portfolio')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>Projects</a>
+                  <a href="#lab" onClick={scrollToSection('lab')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>The Lab</a>
+                  <a href="#about" onClick={scrollToSection('about')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>My Story</a>
                   <button 
                     onClick={toggleTheme} 
                     aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
@@ -96,7 +96,7 @@ function App() {
 
       {/* UNIFIED MOBILE NAVIGATION */}
       <nav className={`md:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] glass-panel rounded-full px-5 py-4 flex items-center gap-4 shadow-[0_20px_60px_rgba(0,0,0,0.4)] w-[94%] max-w-[450px] transition-all duration-500 ${theme === 'dark' ? 'border-white/20' : 'border-black/10'}`}>
-          <button onClick={scrollToSection('portfolio')} aria-label="Scroll to Examples" className={`flex-1 flex flex-col items-center gap-1.5 p-2 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
+          <button onClick={scrollToSection('portfolio')} aria-label="Scroll to Projects" className={`flex-1 flex flex-col items-center gap-1.5 p-2 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
             <BookOpenIcon className="w-6 h-6" />
             <span className="text-[8px] font-black uppercase tracking-widest">Tools</span>
           </button>
@@ -197,7 +197,7 @@ function App() {
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-10 w-full max-w-2xl px-8">
                     <a href="#portfolio" onClick={scrollToSection('portfolio')} className="shiny-cta w-full sm:min-w-[300px] group text-center py-6 shadow-2xl">
-                        Explore Examples
+                        View My Projects
                         <div className="hidden sm:block absolute right-10 opacity-0 group-hover:opacity-100 transition-all transform -translate-x-3 group-hover:translate-x-0">→</div>
                     </a>
                     <button onClick={scrollToSection('lab')} className={`ghost-cta w-full sm:min-w-[300px] flex items-center justify-center gap-6 group py-6 rounded-2xl border transition-all ${theme === 'dark' ? 'border-white/20 hover:bg-white/5 text-white' : 'border-black/20 hover:bg-black/5 text-alpine-950'}`}>
@@ -216,7 +216,7 @@ function App() {
         {/* PORTFOLIO SECTION */}
         <section id="portfolio" className="py-32 md:py-48 px-8 max-w-7xl mx-auto">
             <div className="mb-24 md:mb-40 text-center space-y-10">
-                <div className="text-accent-gold text-[11px] font-black tracking-[1.2em] uppercase">01 / Digital Fleet</div>
+                <div className="text-accent-gold text-[11px] font-black tracking-[1.2em] uppercase">01 / The Tools</div>
                 <h2 className="text-6xl md:text-8xl font-medium tracking-tighter font-display text-gradient-white text-center leading-none">The Collection</h2>
                 <div className={`w-24 h-1 mx-auto rounded-full ${theme === 'dark' ? 'bg-white/10' : 'bg-black/10'}`}></div>
             </div>
@@ -230,10 +230,10 @@ function App() {
         {/* LAB SECTION */}
         <section id="lab" className={`py-32 md:py-48 relative overflow-hidden transition-all duration-700 ${theme === 'dark' ? 'bg-black/20' : 'bg-alpine-100/20'}`}>
             <div className="text-center mb-16 md:mb-24 px-8 space-y-8 relative z-10">
-                <div className="text-accent-gold text-[11px] font-black tracking-[1.2em] uppercase">02 / Synthesis</div>
+                <div className="text-accent-gold text-[11px] font-black tracking-[1.2em] uppercase">02 / The Lab</div>
                 <h2 className="text-6xl md:text-8xl font-medium font-display tracking-tighter text-gradient-white leading-none">Idea Explorer</h2>
                 <p className={`text-sm md:text-base max-w-md mx-auto font-medium leading-relaxed tracking-[0.1em] uppercase ${theme === 'dark' ? 'text-white/40' : 'text-black/50'}`}>
-                  Input a challenge. Output a helper.
+                  Describe a problem. See a solution.
                 </p>
             </div>
             <InteractiveDemo theme={theme} />
@@ -243,10 +243,10 @@ function App() {
         <section id="about" className="py-32 md:py-52 px-8 max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-24 md:gap-40 items-center">
             <div className="relative order-2 lg:order-1 group">
-               <div className={`relative z-10 rounded-[3.5rem] overflow-hidden aspect-[4/5] border transition-all duration-1000 ${theme === 'dark' ? 'grayscale border-white/10 shadow-3xl' : 'border-black/5 shadow-2xl hover:grayscale'}`}>
+               <div className={`relative z-10 rounded-[3.5rem] overflow-hidden aspect-[4/5] border transition-all duration-1000 ${theme === 'dark' ? 'border-white/10 shadow-3xl' : 'border-black/5 shadow-2xl'}`}>
                   <img 
                     src={PORTFOLIO_DATA.profileImageUrl} 
-                    className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000" 
+                    className={`w-full h-full object-cover scale-105 group-hover:scale-100 transition-all duration-1000 ${theme === 'dark' ? 'grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100' : 'opacity-90 group-hover:opacity-100'}`} 
                     alt="Jason Benjamin" 
                     loading="lazy"
                   />
@@ -258,8 +258,8 @@ function App() {
 
             <div className="space-y-16 md:space-y-24 order-1 lg:order-2">
                <div className="space-y-10">
-                 <div className="text-accent-gold text-[11px] font-black tracking-[1em] uppercase leading-none">03 / Provenance</div>
-                 <h2 className="text-6xl md:text-8xl font-medium font-display leading-[1] tracking-tighter text-gradient-white">Teacher as <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>Architect.</span></h2>
+                 <div className="text-accent-gold text-[11px] font-black tracking-[1em] uppercase leading-none">03 / My Story</div>
+                 <h2 className="text-6xl md:text-8xl font-medium font-display leading-[1] tracking-tighter text-gradient-white">Teacher who <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>builds tools.</span></h2>
                  <p className={`text-xl md:text-2xl font-normal leading-relaxed max-w-xl ${theme === 'dark' ? 'text-white/50' : 'text-black/70'}`}>
                    Ten years in Seoul's classrooms taught me that technology should actually <em>work</em>. I build for teachers because I am one.
                  </p>

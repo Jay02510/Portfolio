@@ -91,7 +91,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                 className="w-full shiny-cta disabled:opacity-40 transition-all shadow-xl py-6"
                 aria-label="Generate solutions"
               >
-                {loading ? 'Consulting the Model...' : 'Find a Helper'}
+                {loading ? 'Finding ideas...' : 'Show Me Helpers'}
               </button>
             </div>
           </div>
@@ -104,8 +104,8 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                       <SparklesIcon className={`w-10 h-10 ${theme === 'dark' ? 'text-white/10' : 'text-black/10'}`} />
                   </div>
                   <div className="space-y-4">
-                    <p className={`text-[12px] font-bold uppercase tracking-[0.7em] ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/40'}`}>Ready to Assist</p>
-                    <p className={`text-[11px] font-semibold uppercase tracking-[0.2em] max-w-[240px] mx-auto leading-relaxed ${theme === 'dark' ? 'text-white/20' : 'text-alpine-950/30'}`}>Enter your challenge to generate 3 custom solutions</p>
+                    <p className={`text-[12px] font-bold uppercase tracking-[0.7em] ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/40'}`}>Ready to Help</p>
+                    <p className={`text-[11px] font-semibold uppercase tracking-[0.2em] max-w-[240px] mx-auto leading-relaxed ${theme === 'dark' ? 'text-white/20' : 'text-alpine-950/30'}`}>Enter your challenge to generate 3 custom ideas</p>
                   </div>
                </div>
              )}
@@ -113,7 +113,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
              {loading && (
                <div className="absolute inset-0 flex flex-col items-center justify-center bg-alpine-950/5 backdrop-blur-2xl z-50">
                   <div className={`w-16 h-16 border-t-2 rounded-full animate-spin mb-8 transition-colors ${theme === 'dark' ? 'border-accent-gold' : 'border-accent-clay'}`}></div>
-                  <span className={`text-[12px] font-bold uppercase tracking-[0.6em] animate-pulse ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'}`}>Architecting Ideas</span>
+                  <span className={`text-[12px] font-bold uppercase tracking-[0.6em] animate-pulse ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'}`}>Working...</span>
                </div>
              )}
 
@@ -121,7 +121,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                <div className="space-y-12 animate-in fade-in slide-in-from-right-8 duration-700 flex-1 overflow-y-auto pr-4 custom-scrollbar">
                   <div className={`flex flex-col md:flex-row md:items-end justify-between border-b pb-10 gap-6 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
                     <h3 className="text-4xl md:text-5xl font-medium font-display tracking-tight text-gradient-white">Ways I can help</h3>
-                    <div className={`text-[11px] font-bold uppercase tracking-[0.5em] ${theme === 'dark' ? 'text-white/30' : 'text-black/40'}`}>Tailored Concept</div>
+                    <div className={`text-[11px] font-bold uppercase tracking-[0.5em] ${theme === 'dark' ? 'text-white/30' : 'text-black/40'}`}>Helper Idea</div>
                   </div>
 
                   <div className="grid gap-8">
@@ -172,7 +172,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                         }`}>
                           <div className={`px-5 py-3 rounded-xl border flex items-center gap-4 ${selectedSolution === i ? 'border-current' : (theme === 'dark' ? 'border-white/10' : 'border-black/10')}`}>
                              <MailIcon className="w-5 h-5" />
-                             <span>Discuss build details</span>
+                             <span>Discuss this idea</span>
                           </div>
                           <span className={`ml-auto hidden sm:inline-block px-4 py-1.5 rounded-full border text-[10px] font-bold ${selectedSolution === i ? 'border-current' : 'border-current opacity-40'}`}>
                              {sol.impact}
