@@ -24,8 +24,12 @@ STRICT GUIDELINES:
 
 export const sendMessageToGemini = async (message: string): Promise<string> => {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) {
+      return "I'm having a little trouble connecting to my brain right now. This usually happens in small browsers inside apps like Instagram or KakaoTalk. Could you try opening this page in Chrome or Safari?";
+    }
 
+    const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [{ parts: [{ text: message }] }],
@@ -41,7 +45,6 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
       return "I'm having a bit of trouble finding the words. Would you like to try asking that another way, or should we just email Jason?";
     }
 
-    // Strip out markdown for plain-text aesthetic
     return text.replace(/\*\*/g, '').replace(/\*/g, '').replace(/#/g, '').trim();
   } catch (error) {
     console.error("Assistant API Error:", error);
@@ -51,8 +54,10 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
 
 export const generateSolutionsForProblem = async (problem: string): Promise<SolutionSuggestion[] | null> => {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) return null;
 
+    const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [{ 
@@ -67,10 +72,10 @@ export const generateSolutionsForProblem = async (problem: string): Promise<Solu
           items: {
             type: Type.OBJECT,
             properties: {
-              title: { type: Type.STRING, description: "Simple name" },
-              description: { type: Type.STRING, description: "Plain English description" },
+              title: { type: Type.STRING },
+              description: { type: Type.STRING },
               technicalStack: { type: Type.ARRAY, items: { type: Type.STRING } },
-              impact: { type: Type.STRING, description: "Human-centered benefit" }
+              impact: { type: Type.STRING }
             },
             required: ["title", "description", "technicalStack", "impact"]
           }

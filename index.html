@@ -3,12 +3,13 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Jason Benjamin | Teacher & Builder</title>
     
     <!-- Standard Meta Tags -->
     <meta name="description" content="Simple tools for smarter schools. A collection of real, working helpers for parents and teachers based on a decade of classroom experience." />
     <meta name="author" content="Jason Benjamin" />
+    <meta name="format-detection" content="telephone=no">
 
     <!-- Open Graph / Facebook / Instagram / KakaoTalk -->
     <meta property="og:type" content="website" />
@@ -24,6 +25,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
+      // Fix for in-app browsers (Kakao/Insta) that strip environment variables
+      window.process = window.process || { env: {} };
+      if (typeof process !== 'undefined' && !process.env.API_KEY) {
+        // Fallback for injection
+        console.warn("In-app browser detected: Ensuring environment stability.");
+      }
+      
       tailwind.config = {
         darkMode: 'class',
         theme: {
@@ -58,17 +66,20 @@
         
         html, body {
             transition: background-color 0.4s ease, color 0.4s ease;
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         body {
             font-family: var(--font-sans);
             background-color: #0d0f14;
             color: #faf9f6;
-            overflow-x: hidden;
             min-height: 100vh;
             position: relative;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            padding-bottom: env(safe-area-inset-bottom, 0);
         }
 
         body.light {
@@ -97,15 +108,15 @@
 
         .glass-panel {
             background: rgba(22, 25, 32, 0.6);
-            backdrop-filter: blur(40px);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             border: 1px solid rgba(250, 249, 246, 0.1);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         body.light .glass-panel {
             background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 12px 40px -10px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 12px 40px -10px rgba(0,0,0,0.05);
         }
 
         .shiny-cta {
@@ -114,7 +125,7 @@
             border-radius: 14px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.25em;
+            letter-spacing: 0.2em;
             color: #faf9f6;
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -123,8 +134,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 1.4rem 3.5rem;
-            font-size: 0.8rem;
+            padding: 1rem 1.8rem;
+            font-size: 0.7rem;
         }
 
         body.light .shiny-cta {
@@ -137,8 +148,7 @@
             background: #e2b87d;
             color: #0d0f14;
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(226, 184, 125, 0.4);
-            border-color: transparent;
+            box-shadow: 0 10px 25px rgba(226, 184, 125, 0.3);
         }
 
         .text-gradient-white {
@@ -153,22 +163,16 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .lab-blueprint-bg {
-            background-image: radial-gradient(circle at 2px 2px, rgba(226, 184, 125, 0.12) 1.5px, transparent 0);
-            background-size: 50px 50px;
-        }
-
-        body.light .lab-blueprint-bg {
-            background-image: radial-gradient(circle at 2px 2px, rgba(140, 98, 57, 0.1) 1.5px, transparent 0);
-        }
-
         @keyframes banner-flash {
-            0%, 100% { background-color: #e2b87d; color: #0d0f14; }
-            50% { background-color: #faf9f6; color: #0d0f14; }
+            0%, 100% { background-color: #e2b87d; }
+            50% { background-color: #faf9f6; }
         }
         .banner-flash-animation {
             animation: banner-flash 8s ease-in-out infinite;
         }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
   <script type="importmap">
 {
