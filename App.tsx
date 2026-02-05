@@ -149,7 +149,7 @@ function App() {
 
       <main>
         {/* REFINED HERO SECTION - INCREASED PADDING FOR SUBSTANTIAL BREATHING ROOM */}
-        <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-64 md:pt-60 pb-24">
+        <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-72 md:pt-64 pb-24">
             <div className="absolute inset-0 pointer-events-none z-0">
                 <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#0a0c10]' : 'bg-[#faf9f6]'}`}></div>
                 
@@ -174,7 +174,7 @@ function App() {
             </div>
 
             {/* Increased MT to push content down significantly from the top nav */}
-            <div className="max-w-7xl mx-auto flex flex-col items-center gap-12 md:gap-28 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-40 mt-16 md:mt-24">
+            <div className="max-w-7xl mx-auto flex flex-col items-center gap-12 md:gap-28 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-40 mt-20 md:mt-32">
                 <div className="space-y-8 md:space-y-16 w-full">
                     <div className={`flex items-center justify-center gap-4 text-[9px] md:text-[12px] font-black tracking-[0.5em] md:tracking-[1em] uppercase ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'}`}>
                       BUILDING HELPERS FOR SCHOOLS
