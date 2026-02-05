@@ -21,7 +21,8 @@ export interface ProjectExtended extends Project {
 export const BETA_CODES = [
   { code: "CHEKKI40", label: "Chekki AI" },
   { code: "GUARDIAN-2025", label: "EduPlanner" },
-  { code: "BENCHMARK40", label: "Benchmark Explorer" }
+  { code: "BENCHMARK40", label: "Benchmark Explorer" },
+  { code: "PULSE-BETA", label: "IEP Pulse" }
 ];
 
 export const PORTFOLIO_DATA = {
@@ -64,6 +65,23 @@ export const PORTFOLIO_DATA = {
       ]
     },
     {
+      id: "iep-pulse",
+      title: "IEP Pulse",
+      category: "K-12",
+      description: "SPED tracking made simple.",
+      longDescription: "A specialized tool for Special Education teachers to track IEP goals in real-time. Replace paper clipboards with a tap-to-log interface that generates progress reports automatically.",
+      friction: "SPED teachers spend hours manually collating observational data into quarterly reports.",
+      flow: "A mobile-first dashboard where goal mastery is logged with one touch, and AI drafts the compliance narratives.",
+      impactLabel: "Focus",
+      impactValue: "100% Compliance",
+      betaCode: "PULSE-BETA",
+      spotsRemaining: 8,
+      tags: ["Special Ed", "Data Collection"],
+      imageUrl: "https://images.unsplash.com/photo-1516534775068-ba3e84529519?q=80&w=2670&auto=format&fit=crop",
+      imagePosition: "object-center",
+      demoUrl: "#"
+    },
+    {
       id: "benchmark-explorer",
       title: "Benchmark Explorer",
       category: "K-12",
@@ -78,6 +96,20 @@ export const PORTFOLIO_DATA = {
       tags: ["Data Visualization", "Classroom Strategy"],
       imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
       demoUrl: "https://education-benchmark-system.vercel.app/",
+    },
+    {
+      id: "rubric-bridge",
+      title: "Rubric Bridge",
+      category: "Tools",
+      description: "Expectations met, the first time.",
+      longDescription: "A student-facing AI coach that helps interpret complex grading rubrics. Students upload drafts and get immediate feedback on how well they are meeting teacher expectations.",
+      friction: "Students often submit work that misses specific requirements simply because they didn't understand the rubric language.",
+      flow: "An interactive coach that breaks down rubrics into actionable checklists and provides 'mock-grading' feedback.",
+      impactLabel: "Quality",
+      impactValue: "Higher grades",
+      tags: ["Student Agency", "Feedback"],
+      imageUrl: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2670&auto=format&fit=crop",
+      demoUrl: "#",
     },
     {
       id: "eduplanner",

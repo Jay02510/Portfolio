@@ -148,8 +148,8 @@ function App() {
       </nav>
 
       <main>
-        {/* REFINED HERO SECTION */}
-        <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-40 md:pt-32 pb-24">
+        {/* REFINED HERO SECTION - ADJUSTED PADDING FOR BREATHING ROOM */}
+        <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-52 md:pt-48 pb-24">
             <div className="absolute inset-0 pointer-events-none z-0">
                 <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#0a0c10]' : 'bg-[#faf9f6]'}`}></div>
                 
@@ -173,7 +173,7 @@ function App() {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto flex flex-col items-center gap-10 md:gap-24 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-40">
+            <div className="max-w-7xl mx-auto flex flex-col items-center gap-10 md:gap-24 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-40 mt-12 md:mt-16">
                 <div className="space-y-6 md:space-y-12 w-full">
                     <div className={`flex items-center justify-center gap-4 text-[9px] md:text-[12px] font-black tracking-[0.5em] md:tracking-[1em] uppercase ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'}`}>
                       BUILDING HELPERS FOR SCHOOLS
