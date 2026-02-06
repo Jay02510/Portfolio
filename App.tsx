@@ -6,7 +6,7 @@ import AIChat from './components/AIChat.tsx';
 import InteractiveDemo from './components/InteractiveDemo.tsx';
 import ComplianceModal from './components/ComplianceModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
-import { MailIcon, SparklesIcon, SendIcon, BookOpenIcon, MapIcon, CodeIcon, ChevronDownIcon, ExternalLinkIcon } from './components/Icons.tsx';
+import { MailIcon, SparklesIcon, SendIcon, BookOpenIcon, MapIcon, CodeIcon, ChevronDownIcon, ExternalLinkIcon, XIcon, FileTextIcon } from './components/Icons.tsx';
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,6 +16,8 @@ function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [scrollY, setScrollY] = useState(0);
   const [isInAppBrowser, setIsInAppBrowser] = useState(false);
+  const [isBrowserModalOpen, setIsBrowserModalOpen] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const heroVideoUrl = "https://res.cloudinary.com/dginphpy4/video/upload/v1769751396/Flow_Video_3_eqf1ao.mp4"; 
   const heroFallbackImage = "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2560&auto=format&fit=crop";
@@ -54,6 +56,12 @@ function App() {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
+  const copyCurrentLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  };
+
   const scrollToSection = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -81,12 +89,15 @@ function App() {
           </span>
         </div>
 
-        {/* IN-APP BROWSER ALERT (Safe for Kakao/Instagram) */}
+        {/* IN-APP BROWSER ALERT - Now Interactive */}
         {isInAppBrowser && (
-          <div className="bg-red-500/90 backdrop-blur-md text-white py-1.5 px-4 text-[9px] font-bold uppercase tracking-[0.2em] text-center flex items-center justify-center gap-3">
-             <span>Best viewed in Safari/Chrome</span>
-             <ExternalLinkIcon className="w-3 h-3" />
-          </div>
+          <button 
+            onClick={() => setIsBrowserModalOpen(true)}
+            className="w-full bg-red-600/95 hover:bg-red-500 backdrop-blur-md text-white py-2 px-4 text-[9px] font-black uppercase tracking-[0.2em] text-center flex items-center justify-center gap-3 transition-colors group"
+          >
+             <span className="group-hover:translate-x-1 transition-transform">Optimization Required: Open in Safari/Chrome</span>
+             <ExternalLinkIcon className="w-3.5 h-3.5 animate-pulse" />
+          </button>
         )}
 
         {/* MAIN NAVIGATION HEADER */}
@@ -116,6 +127,65 @@ function App() {
           </div>
         </header>
       </div>
+
+      {/* IN-APP BROWSER MODAL */}
+      {isBrowserModalOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">
+          <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl" onClick={() => setIsBrowserModalOpen(false)}></div>
+          <div className="relative w-full max-w-md bg-white rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl animate-in zoom-in duration-300">
+            <div className="p-8 pb-4 flex justify-between items-start">
+               <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-500">
+                  <ExternalLinkIcon className="w-6 h-6" />
+               </div>
+               <button onClick={() => setIsBrowserModalOpen(false)} className="p-2 text-black/20 hover:text-black transition-colors">
+                  <XIcon className="w-6 h-6" />
+               </button>
+            </div>
+            
+            <div className="px-8 pb-10 space-y-6">
+              <div className="space-y-2">
+                <h3 className="text-2xl font-display font-bold text-alpine-950 tracking-tight leading-tight">Escape the In-App Browser</h3>
+                <p className="text-sm text-black/60 leading-relaxed font-light">
+                  You are currently viewing this in a social media "mini-browser". To use the AI features and interactive demos, please open this in your system browser.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="p-5 bg-alpine-50 rounded-2xl border border-black/5 space-y-3">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-black/40">For KakaoTalk / Instagram / Line</span>
+                  <ol className="text-xs space-y-3 text-alpine-950 font-medium">
+                    <li className="flex gap-4">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-alpine-200 text-alpine-950 flex items-center justify-center text-[10px]">1</span>
+                      <span>Tap the <b>three dots (⋮)</b> or <b>share</b> button at the top right.</span>
+                    </li>
+                    <li className="flex gap-4">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-alpine-200 text-alpine-950 flex items-center justify-center text-[10px]">2</span>
+                      <span>Select <b>"Open in Browser"</b> or <b>"Open in Safari"</b>.</span>
+                    </li>
+                  </ol>
+                </div>
+
+                <button 
+                  onClick={copyCurrentLink}
+                  className={`w-full py-4 rounded-xl border flex items-center justify-center gap-3 transition-all ${linkCopied ? 'bg-green-500 border-green-500 text-white' : 'bg-white border-black/10 text-alpine-950 hover:bg-alpine-50'}`}
+                >
+                  {linkCopied ? <SparklesIcon className="w-4 h-4" /> : <FileTextIcon className="w-4 h-4" />}
+                  <span className="text-[11px] font-bold uppercase tracking-widest">{linkCopied ? 'Link Copied!' : 'Copy Link to Paste'}</span>
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-6 bg-alpine-50 text-center border-t border-black/5">
+               <button 
+                 onClick={() => setIsBrowserModalOpen(false)}
+                 className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 hover:text-black transition-colors"
+               >
+                 I understand, continue anyway
+               </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* UNIFIED MOBILE NAVIGATION */}
       <nav className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] glass-panel rounded-[2rem] px-4 py-3 flex items-center gap-2 shadow-[0_20px_60px_rgba(0,0,0,0.5)] w-[90%] max-w-[380px] transition-all duration-500 ${theme === 'dark' ? 'border-white/20' : 'border-black/10'} pb-[env(safe-area-inset-bottom,0.75rem)]`}>
