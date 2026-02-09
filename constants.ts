@@ -14,14 +14,12 @@ export interface ProjectExtended extends Project {
   impactValue: string;
   betaCode?: string;
   spotsRemaining?: number;
-  premiumFeatures?: string[];
+  features?: string[];
   media?: ProjectMedia[];
 }
 
 export const BETA_CODES = [
-  { code: "CHEKKI40", label: "Chekki AI" },
-  { code: "GUARDIAN-2025", label: "EduPlanner" },
-  { code: "BENCHMARK40", label: "Benchmark Explorer" }
+  { code: "CHEKKI40", label: "Chekki AI" }
 ];
 
 export const PORTFOLIO_DATA = {
@@ -54,6 +52,7 @@ export const PORTFOLIO_DATA = {
       impactValue: "Calm evenings",
       betaCode: "CHEKKI40",
       spotsRemaining: 5,
+      features: ["Bilingual AI Support", "Parent Guidance Mode", "Homework Simplifier", "Voice-to-Text Assistance"],
       tags: ["AI Assistant", "Bilingual Support"],
       imageUrl: "https://res.cloudinary.com/dginphpy4/image/upload/v1765770525/Chekki_Futuristic_Background_i8foqe.png",
       imagePosition: "object-right",
@@ -73,8 +72,8 @@ export const PORTFOLIO_DATA = {
       flow: "Automatically transforms raw test scores into visual skill-maps and individual learning plans.",
       impactLabel: "Actionable",
       impactValue: "Zero guesswork",
-      betaCode: "BENCHMARK40",
       spotsRemaining: 12,
+      features: ["Visual Skill Mapping", "Individual Learning Plans", "Automated Data Analysis", "PDF Report Generation"],
       tags: ["Data Visualization", "Classroom Strategy"],
       imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
       demoUrl: "https://education-benchmark-system.vercel.app/",
@@ -89,8 +88,8 @@ export const PORTFOLIO_DATA = {
       flow: "Intelligent conflict-resolution algorithms that suggest the best possible layout for your school's unique needs.",
       impactLabel: "Stability",
       impactValue: "Zero conflicts",
-      betaCode: "GUARDIAN-2025",
       spotsRemaining: 19,
+      features: ["Automatic Room Mapping", "Conflict Resolution Engine", "Staff Rotation Management", "Live Admin Dashboard"],
       tags: ["Operations", "Productivity"],
       imageUrl: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2670&auto=format&fit=crop",
       demoUrl: "https://scheduling-app-five.vercel.app/",

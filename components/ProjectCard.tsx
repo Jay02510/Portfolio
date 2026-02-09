@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { ExternalLinkIcon, FileTextIcon, ChevronDownIcon, XIcon } from './Icons.tsx';
+import { ExternalLinkIcon, FileTextIcon, ChevronDownIcon, XIcon, SparklesIcon } from './Icons.tsx';
 
 interface ProjectCardProps {
   project: any;
@@ -11,9 +11,7 @@ interface ProjectCardProps {
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark' }) => {
   const isEven = index % 2 === 0;
   const [copied, setCopied] = useState(false);
-  const [mediaOpen, setMediaOpen] = useState(false);
   const [activeMedia, setActiveMedia] = useState<any | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleCopy = () => {
     if (!project.betaCode) return;
@@ -21,25 +19,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-
-  const handleMediaSelection = (item: any) => {
-    if (item.type === 'pdf') {
-      window.open(item.url, '_blank', 'noopener,noreferrer');
-    } else {
-      setActiveMedia(item);
-    }
-    setMediaOpen(false);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setMediaOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   return (
     <article className="relative flex flex-col items-center group">
@@ -73,7 +52,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
             }`} 
             alt={project.title}
           />
-          {/* pointer-events-none ensures the mouse events reach the group container */}
           <div className={`absolute inset-0 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-t from-alpine-950 via-transparent' : 'bg-gradient-to-t from-alpine-50/80 via-transparent'}`}></div>
           
           {project.spotsRemaining !== undefined && (
@@ -97,35 +75,54 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
               </p>
           </div>
 
-          {/* Beta Code Widget */}
-          {project.betaCode && (
-            <div className={`rounded-xl p-5 md:p-8 flex flex-col gap-3 md:gap-5 ${theme === 'dark' ? 'bg-white/5' : 'bg-black/[0.04]'}`}>
-              <div className="flex justify-between items-center">
-                 <span className={`text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/40'}`}>Beta Authorization</span>
-                 {copied && <span className="text-[9px] font-bold text-accent-gold animate-pulse">COPIED</span>}
+          {/* Features / Beta Code Widget */}
+          <div className="space-y-6">
+            {project.features && (
+              <div className="flex flex-wrap gap-2 md:gap-3">
+                {project.features.map((feature: string, fIdx: number) => (
+                  <span key={fIdx} className={`px-3 py-1.5 md:px-5 md:py-2 rounded-lg border text-[8px] md:text-[10px] font-black uppercase tracking-widest transition-all hover:border-accent-gold/50 ${theme === 'dark' ? 'bg-white/5 border-white/5 text-white/50' : 'bg-black/5 border-black/5 text-alpine-950/60'}`}>
+                    {feature}
+                  </span>
+                ))}
               </div>
-              <div onClick={handleCopy} className="flex justify-between items-center cursor-pointer group/code">
-                <code className={`text-base md:text-2xl font-mono tracking-widest px-3 md:px-6 py-2 md:py-4 rounded-lg border transition-all ${theme === 'dark' ? 'bg-white/5 border-white/5 group-hover/code:border-accent-gold/50 text-white' : 'bg-white border-black/5 text-alpine-950'}`}>
-                  {project.betaCode}
-                </code>
-                <div className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] opacity-40 group-hover/code:opacity-100 transition-opacity">Copy</div>
-              </div>
-            </div>
-          )}
+            )}
 
-          <div className="flex items-center justify-between gap-4">
-              <a 
-                href={project.demoUrl || "#"} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className={`flex items-center gap-3 text-[9px] md:text-[11px] font-black uppercase tracking-[0.2em] md:tracking-[0.4em] transition-all ${theme === 'dark' ? 'text-white hover:text-accent-gold' : 'text-alpine-950 hover:text-accent-clay'}`}
-              >
-                  Explore Demo
-                  <ExternalLinkIcon className="w-4 h-4 opacity-40 group-hover:opacity-100 transition-opacity" />
-              </a>
+            {project.betaCode && (
+              <div className={`rounded-xl p-5 md:p-8 flex flex-col gap-3 md:gap-5 ${theme === 'dark' ? 'bg-white/5' : 'bg-black/[0.04]'}`}>
+                <div className="flex justify-between items-center">
+                  <span className={`text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/40'}`}>Beta Authorization</span>
+                  {copied && <span className="text-[9px] font-bold text-accent-gold animate-pulse">COPIED</span>}
+                </div>
+                <div onClick={handleCopy} className="flex justify-between items-center cursor-pointer group/code">
+                  <code className={`text-base md:text-2xl font-mono tracking-widest px-3 md:px-6 py-2 md:py-4 rounded-lg border transition-all ${theme === 'dark' ? 'bg-white/5 border-white/5 group-hover/code:border-accent-gold/50 text-white' : 'bg-white border-black/5 text-alpine-950'}`}>
+                    {project.betaCode}
+                  </code>
+                  <div className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] opacity-40 group-hover/code:opacity-100 transition-opacity">Copy</div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+              <div className="flex flex-col gap-1">
+                <a 
+                  href={project.demoUrl || "#"} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className={`flex items-center gap-3 text-[10px] md:text-[12px] font-black uppercase tracking-[0.2em] md:tracking-[0.4em] transition-all ${theme === 'dark' ? 'text-white hover:text-accent-gold' : 'text-alpine-950 hover:text-accent-clay'}`}
+                >
+                    Explore Demo
+                    <ExternalLinkIcon className="w-4 h-4 opacity-40 group-hover:opacity-100 transition-opacity" />
+                </a>
+                {!project.betaCode && (
+                  <span className={`text-[8px] font-black uppercase tracking-[0.2em] animate-pulse ${theme === 'dark' ? 'text-accent-gold/60' : 'text-accent-clay/60'}`}>
+                    Free to try
+                  </span>
+                )}
+              </div>
 
               <span className={`text-[8px] md:text-[10px] border px-3 md:px-5 py-1.5 rounded-full uppercase tracking-widest font-black ${theme === 'dark' ? 'text-accent-gold border-accent-gold/30' : 'text-accent-clay border-accent-clay/30'}`}>
-                Public Beta
+                {project.betaCode ? 'Restricted Beta' : 'Public Beta'}
               </span>
           </div>
       </div>
