@@ -1,30 +1,32 @@
+
 # System Audit: Jason Benjamin Portfolio
 
 ## 1. Executive Summary
-This application is a live demonstration of simple tools built for schools. It is designed to bridge the gap between complex technology and everyday classroom needs. The primary audience is parents, teachers, and school leaders who value clear, working solutions over technical hype.
+This application is a live demonstration of simple tools built for schools. It is designed to bridge the gap between complex technology and everyday classroom needs.
 
 ## 2. Positioning & Identity
 - **Role**: Teacher & Builder (Transitioned from 10 years in the classroom).
 - **Core Philosophy**: "Human-First." Every tool must solve a friction point identifiable by a non-technical user.
-- **Design Language**: "Alpine Minimalism." High-contrast, focused, and free of clutter to allow the tools to speak for themselves.
+- **Design Language**: "Alpine Minimalism." High-contrast and focused.
 
-## 3. Feature Audit
-### A. The Idea Explorer (`InteractiveDemo.tsx`)
-- **Function**: A conceptual bridge. It converts plain-English problems into three concrete "Helper" ideas.
-- **AI Logic**: Uses `gemini-3-flash-preview` with a JSON schema to provide structured, predictable results without technical jargon.
-- **Status**: Active and optimized for low-latency ideation.
+## 3. Security & Hardening (Audit May 2026)
+### A. Injection Defense
+- **SQL Injection**: Not applicable (Stateless frontend architecture with no local DB).
+- **XSS Prevention**: Implemented `sanitizeInput` utility to scrub user text. Enabled strict **Content Security Policy (CSP)** to block unauthorized script execution.
+- **Prompt Injection**: Hardened LLM system instructions to enforce boundaries and handle adversarial inputs gracefully.
 
-### B. Chat Helper (`AIChat.tsx`)
-- **Function**: A concierge that answers questions about the tools and Jason's history in Korea.
-- **Tone**: Friendly, calm, and professional. Strictly limited to 2-sentence responses to ensure clarity.
-- **Constraint**: Prohibited from using engineering terminology.
+### B. Access Control
+- **Administrative Access**: None present. This reduces the attack surface significantly. Authentication (OIDC) recommended for future CMS features.
+- **API Key Hardening**: Environment-injected API keys. **CRITICAL**: Referer restrictions must be enabled in the Google Cloud Console for the `API_KEY`.
+
+### C. Data Integrity
+- **Output Validation**: Using strict JSON Schema for AI results to prevent unexpected or malicious payload structures from the model.
 
 ## 4. Technical Architecture
-- **Framework**: React 19 (ESM-only for performance).
-- **Styling**: Tailwind CSS for a lean, utility-first UI.
-- **Intelligence**: Google Gemini API integration using high-reasoning tokens for creative "Helper" generation.
+- **Framework**: React 19 (ES6+).
+- **Intelligence**: Google Gemini 3 Flash (High efficiency, low latency).
+- **Deployment**: Vercel/Static Hosting.
 
-## 5. Potential Improvements (For ChatGPT Analysis)
-1. **Interactive Previews**: Currently, "Launch App" links to external demos. Integrating a small "Live Sandbox" for one tool could increase trust.
-2. **Contextual Awareness**: The Chat Helper could be updated to know which section of the page the user is currently viewing.
-3. **Localisation**: Given the Seoul, Korea background, a toggle for simple Korean translations would reinforce the "Chekki AI" project story.
+## 5. Potential Improvements
+1. **End-to-End Encryption**: If collecting parent/student data in future versions, implement E2EE for feedback storage.
+2. **Rate Limiting**: Add a middleware layer if traffic grows to prevent API key quota exhaustion by malicious bots.

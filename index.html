@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Jason Benjamin | Teacher & Builder</title>
     
+    <!-- Security Headers (Content Security Policy) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://esm.sh; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://res.cloudinary.com https://images.unsplash.com; media-src 'self' https://res.cloudinary.com; connect-src 'self' https://generativelanguage.googleapis.com https://esm.sh;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
     <!-- Standard Meta Tags -->
     <meta name="description" content="Simple tools for smarter schools. A collection of real, working helpers for parents and teachers based on a decade of classroom experience." />
     <meta name="author" content="Jason Benjamin" />
@@ -28,8 +33,7 @@
       // Fix for in-app browsers (Kakao/Insta) that strip environment variables
       window.process = window.process || { env: {} };
       if (typeof process !== 'undefined' && !process.env.API_KEY) {
-        // Fallback for injection
-        console.warn("In-app browser detected: Ensuring environment stability.");
+        console.warn("In-app browser environment stability ensured.");
       }
       
       tailwind.config = {
