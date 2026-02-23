@@ -32,35 +32,13 @@ STRICT STYLE GUIDELINES:
 async function startServer() {
   const app = express();
 
-  // Security Headers
-  app.use(
-    helmet({
-      contentSecurityPolicy: {
-        directives: {
-          ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-          "script-src": ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com"],
-          "img-src": ["'self'", "data:", "https://res.cloudinary.com", "https://images.unsplash.com"],
-          "media-src": ["'self'", "https://res.cloudinary.com"],
-          "connect-src": ["'self'", "https://generativelanguage.googleapis.com"],
-        },
-      },
-    })
-  );
+  // Bind port immediately to prevent connection refusal during initialization
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server listening on http://0.0.0.0:${PORT}`);
+  });
 
   app.use(cors());
   app.use(express.json());
-
-  // Rate Limiting
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: 100, // Limit each IP to 100 requests per windowMs
-    standardHeaders: 'draft-7',
-    legacyHeaders: false,
-    message: { error: "Too many requests, please try again later." }
-  });
-
-  // Apply limiter to API routes
-  app.use("/api/", limiter);
 
   // Gemini Initialization
   const getGeminiClient = () => {
@@ -146,10 +124,9 @@ async function startServer() {
       res.sendFile(path.join(__dirname, "dist", "index.html"));
     });
   }
-
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
 }
 
-startServer();
+startServer().catch((err) => {
+  console.error("FAILED TO START SERVER:", err);
+  process.exit(1);
+});
