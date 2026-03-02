@@ -114,15 +114,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
                     Explore Demo
                     <ExternalLinkIcon className="w-4 h-4 opacity-40 group-hover:opacity-100 transition-opacity" />
                 </a>
-                {!project.betaCode && (
+                {!project.betaCode && !project.collaborationUrl && (
                   <span className={`text-[8px] font-black uppercase tracking-[0.2em] animate-pulse ${theme === 'dark' ? 'text-accent-gold/60' : 'text-accent-clay/60'}`}>
                     Free to try
                   </span>
                 )}
+                {project.collaborationUrl && (
+                  <a 
+                    href={project.collaborationUrl}
+                    className={`text-[8px] font-black uppercase tracking-[0.2em] transition-all ${theme === 'dark' ? 'text-accent-gold hover:text-white' : 'text-accent-clay hover:text-black'}`}
+                  >
+                    Inquire for Collaboration
+                  </a>
+                )}
               </div>
 
               <span className={`text-[8px] md:text-[10px] border px-3 md:px-5 py-1.5 rounded-full uppercase tracking-widest font-black ${theme === 'dark' ? 'text-accent-gold border-accent-gold/30' : 'text-accent-clay border-accent-clay/30'}`}>
-                {project.betaCode ? 'Restricted Beta' : 'Public Beta'}
+                {project.betaCode ? 'Restricted Beta' : (project.collaborationUrl ? 'Live' : 'Public Beta')}
               </span>
           </div>
       </div>

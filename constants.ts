@@ -16,11 +16,8 @@ export interface ProjectExtended extends Project {
   spotsRemaining?: number;
   features?: string[];
   media?: ProjectMedia[];
+  collaborationUrl?: string;
 }
-
-export const BETA_CODES = [
-  { code: "CHEKKI40", label: "Chekki AI" }
-];
 
 export const PORTFOLIO_DATA = {
   name: "Jason Benjamin",
@@ -45,13 +42,12 @@ export const PORTFOLIO_DATA = {
       title: "Chekki AI",
       category: "Tools",
       description: "Homework help without the stress.",
-      longDescription: "An AI-powered learning assistant designed for families in Korea. It helps bridge the communication gap between school and home while supporting students with their homework in a supportive environment.",
+      longDescription: "Chekki AI is now live! An AI-powered learning assistant designed for families in Korea. It helps bridge the communication gap between school and home while supporting students with their homework in a supportive environment.",
       friction: "The communication barrier between non-native speaking parents and complex school homework assignments.",
       flow: "A bilingual interface that simplifies homework tasks and provides guided explanations for parents.",
       impactLabel: "Confidence",
       impactValue: "Calm evenings",
-      betaCode: "CHEKKI40",
-      spotsRemaining: 5,
+      collaborationUrl: "mailto:jsn.benjamin@gmail.com?subject=Collaboration%20Inquiry%20-%20Chekki%20AI",
       features: ["Bilingual AI Support", "Parent Guidance Mode", "Homework Simplifier", "Voice-to-Text Assistance"],
       tags: ["AI Assistant", "Bilingual Support"],
       imageUrl: "https://res.cloudinary.com/dginphpy4/image/upload/v1765770525/Chekki_Futuristic_Background_i8foqe.png",

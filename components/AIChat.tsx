@@ -12,10 +12,10 @@ interface AIChatProps {
 
 const SUGGESTIONS = [
   "What was teaching in Seoul like?",
+  "How can we collaborate?",
   "Tell me about Chekki AI.",
   "How does Benchmark Explorer work?",
-  "Why did you start building tools?",
-  "Can we work together?"
+  "Why did you start building tools?"
 ];
 
 const MAX_MESSAGES = 10;
