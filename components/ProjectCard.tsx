@@ -105,16 +105,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div className="flex flex-col gap-1">
-                <a 
-                  href={project.demoUrl || "#"} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className={`flex items-center gap-3 text-[10px] md:text-[12px] font-black uppercase tracking-[0.2em] md:tracking-[0.4em] transition-all ${theme === 'dark' ? 'text-white hover:text-accent-gold' : 'text-alpine-950 hover:text-accent-clay'}`}
-                >
-                    Explore Demo
-                    <ExternalLinkIcon className="w-4 h-4 opacity-40 group-hover:opacity-100 transition-opacity" />
-                </a>
-                {!project.betaCode && !project.collaborationUrl && (
+                {(project.demoUrl || project.websiteUrl) && (
+                  <a 
+                    href={project.demoUrl || project.websiteUrl || "#"} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={`flex items-center gap-3 text-[10px] md:text-[12px] font-black uppercase tracking-[0.2em] md:tracking-[0.4em] transition-all ${theme === 'dark' ? 'text-white hover:text-accent-gold' : 'text-alpine-950 hover:text-accent-clay'}`}
+                  >
+                      {project.websiteUrl ? 'Visit Website' : 'Explore Demo'}
+                      <ExternalLinkIcon className="w-4 h-4 opacity-40 group-hover:opacity-100 transition-opacity" />
+                  </a>
+                )}
+                {!project.betaCode && !project.collaborationUrl && !project.websiteUrl && (
                   <span className={`text-[8px] font-black uppercase tracking-[0.2em] animate-pulse ${theme === 'dark' ? 'text-accent-gold/60' : 'text-accent-clay/60'}`}>
                     Free to try
                   </span>

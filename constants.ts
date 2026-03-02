@@ -52,10 +52,10 @@ export const PORTFOLIO_DATA = {
       tags: ["AI Assistant", "Bilingual Support"],
       imageUrl: "https://res.cloudinary.com/dginphpy4/image/upload/v1765770525/Chekki_Futuristic_Background_i8foqe.png",
       imagePosition: "object-right",
-      demoUrl: "https://chekki-ai.vercel.app/",
+      websiteUrl: "https://chekki-ai.vercel.app/",
       media: [
         { label: "Chekki Flyer", url: "https://res.cloudinary.com/dginphpy4/image/upload/Chekki_Flyer_nvsnta.pdf", type: 'pdf' },
-        { label: "Demonstration Video", url: "https://res.cloudinary.com/dginphpy4/video/upload/v1769504113/Chekki_AI_V0_fkdlyx.mp4", type: 'video' }
+        { label: "Product Walkthrough", url: "https://res.cloudinary.com/dginphpy4/video/upload/v1769504113/Chekki_AI_V0_fkdlyx.mp4", type: 'video' }
       ]
     },
     {
