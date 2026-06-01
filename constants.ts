@@ -109,7 +109,6 @@ export const PORTFOLIO_DATA = {
       features: ["Fillout Teacher Intake", "Relational Airtable Database", "Make.com Automation Routers", "Softr Client Portals"],
       tags: ["Integration", "Operations"],
       imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-      demoUrl: "https://jason-benjamin.vercel.app/",
     },
     {
       id: "lead-enrichment",
@@ -126,7 +125,6 @@ export const PORTFOLIO_DATA = {
       features: ["Naver Map API Integration", "Bilingual Email Synthesizer", "Firebase CRM Tracker", "1-Click Gmail deep-links"],
       tags: ["B2B Sales", "Automation"],
       imageUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop",
-      demoUrl: "https://jason-benjamin.vercel.app/",
     }
   ]
 };
