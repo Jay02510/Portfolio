@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { SparklesIcon, SendIcon, MailIcon, FileTextIcon } from './Icons.tsx';
+import { CodeIcon, SendIcon, MailIcon, FileTextIcon, SparklesIcon } from './Icons.tsx';
 import { generateSolutionsForProblem, SolutionSuggestion } from '../services/geminiService.ts';
 
 interface InteractiveDemoProps {
@@ -41,7 +41,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
       const sol = solutions[index];
       const subject = encodeURIComponent(`Let's talk about: ${sol.title}`);
       const body = encodeURIComponent(
-        `Hi Jason,\n\nI used your Idea Explorer and I'd like to talk about this helper: "${sol.title}"\n\nProblem: ${problem}\n\nMy Idea: ${sol.description}\n\nCan we chat?`
+        `Hi Jason,\n\nI used your Live AI Playground and I'd like to talk about this helper: "${sol.title}"\n\nProblem: ${problem}\n\nMy Idea: ${sol.description}\n\nCan we chat?`
       );
       window.location.href = `mailto:jsn.benjamin@gmail.com?subject=${subject}&body=${body}`;
     }
@@ -57,8 +57,8 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
           <div className={`lg:col-span-5 p-8 md:p-16 border-r flex flex-col justify-between transition-colors duration-500 ${theme === 'dark' ? 'bg-alpine-950/80 border-white/10' : 'bg-white/95 border-black/10'}`}>
             <div className="space-y-8">
               <div className={`inline-flex items-center gap-3 px-5 py-2.5 rounded-full border text-[11px] font-bold uppercase tracking-[0.4em] transition-colors ${theme === 'dark' ? 'bg-accent-gold/10 border-accent-gold/20 text-accent-gold' : 'bg-accent-clay/10 border-accent-clay/20 text-accent-clay'}`}>
-                <div className={`w-2.5 h-2.5 rounded-full shadow-lg ${theme === 'dark' ? 'bg-accent-gold shadow-accent-gold/50' : 'bg-accent-clay shadow-accent-clay/50'}`}></div>
-                Idea Explorer
+                <SparklesIcon className={`w-3.5 h-3.5 animate-pulse ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'} shrink-0`} />
+                Live No-Code AI Playground
               </div>
               
               <h2 className="text-4xl md:text-6xl font-medium tracking-tighter font-display leading-[1.1] text-gradient-white">
@@ -101,7 +101,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
              {!solutions && !loading && (
                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-10 animate-in fade-in duration-1000">
                   <div className={`w-24 h-24 rounded-[2rem] border flex items-center justify-center transition-all ${theme === 'dark' ? 'border-white/10 bg-white/[0.02]' : 'border-black/5 bg-white shadow-xl'}`}>
-                      <SparklesIcon className={`w-10 h-10 ${theme === 'dark' ? 'text-white/10' : 'text-black/10'}`} />
+                      <CodeIcon className={`w-10 h-10 ${theme === 'dark' ? 'text-white/10' : 'text-black/10'} shrink-0`} />
                   </div>
                   <div className="space-y-4">
                     <p className={`text-[12px] font-bold uppercase tracking-[0.7em] ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/40'}`}>Ready to Help</p>

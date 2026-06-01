@@ -6,9 +6,10 @@ interface ProjectCardProps {
   project: any;
   index: number;
   theme?: 'light' | 'dark';
+  onOpenCaseStudy?: (id: string) => void;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark' }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark', onOpenCaseStudy }) => {
   const isEven = index % 2 === 0;
   const [copied, setCopied] = useState(false);
   const [activeMedia, setActiveMedia] = useState<any | null>(null);
@@ -45,7 +46,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
       <div className={`w-full h-[350px] md:h-[700px] rounded-[1.5rem] md:rounded-[3rem] overflow-hidden border shadow-2xl relative transition-all duration-700 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
           <img 
             src={project.imageUrl} 
-            className={`w-full h-full object-cover ${project.imagePosition || 'object-center'} transition-all duration-700 ${
+            onClick={() => onOpenCaseStudy?.(project.id)}
+            className={`w-full h-full object-cover cursor-pointer ${project.imagePosition || 'object-center'} transition-all duration-700 ${
               theme === 'dark' 
                 ? 'grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 scale-105 group-hover:scale-100' 
                 : 'opacity-90 group-hover:opacity-100 group-hover:scale-105'
@@ -54,10 +56,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
           />
           <div className={`absolute inset-0 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-t from-alpine-950 via-transparent' : 'bg-gradient-to-t from-alpine-50/80 via-transparent'}`}></div>
           
-          {project.spotsRemaining !== undefined && (
+          {project.maturityBadge && (
             <div className="absolute top-4 right-4 md:top-10 md:right-10 z-10">
-               <div className="bg-accent-gold text-alpine-950 px-4 py-1.5 md:px-8 md:py-3 rounded-full text-[9px] md:text-[12px] font-extrabold uppercase tracking-[0.2em] shadow-2xl">
-                  {project.spotsRemaining} Spots Left
+               <div className="bg-accent-gold text-alpine-950 px-4 py-1.5 md:px-8 md:py-3 rounded-full text-[9px] md:text-[12px] font-black uppercase tracking-[0.2em] shadow-2xl">
+                  {project.maturityBadge}
                </div>
             </div>
           )}
@@ -67,7 +69,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
       <div className={`mt-[-60px] md:mt-0 md:absolute ${isEven ? 'md:right-12' : 'md:left-12'} md:top-1/2 md:-translate-y-1/2 w-[90%] md:w-full md:max-w-xl glass-panel rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-14 space-y-6 md:space-y-10 z-20 transition-all duration-500 group-hover:shadow-accent-gold/5`}>
           <div className="space-y-2 md:space-y-6">
               <span className={`font-bold uppercase tracking-[0.4em] text-[8px] md:text-[11px] ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>Project 0{index + 1}</span>
-              <h3 className="text-2xl md:text-5xl lg:text-6xl font-medium tracking-tighter leading-none text-gradient-white">
+              <h3 
+                onClick={() => onOpenCaseStudy?.(project.id)}
+                className="text-2xl md:text-5xl lg:text-6xl font-medium tracking-tighter leading-none text-gradient-white cursor-pointer hover:text-accent-gold transition-colors"
+              >
                 {project.title}
               </h3>
               <p className={`text-xs md:text-lg font-normal leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/80'}`}>
@@ -87,6 +92,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
               </div>
             )}
 
+            {project.engineDetails && (
+              <p className={`text-[10px] md:text-[11px] font-mono tracking-wide leading-relaxed p-4 rounded-xl border ${
+                theme === 'dark' ? 'bg-white/5 border-white/5 text-accent-gold/90' : 'bg-black/5 border-black/5 text-accent-clay'
+              }`}>
+                {project.engineDetails}
+              </p>
+            )}
+
             {project.betaCode && (
               <div className={`rounded-xl p-5 md:p-8 flex flex-col gap-3 md:gap-5 ${theme === 'dark' ? 'bg-white/5' : 'bg-black/[0.04]'}`}>
                 <div className="flex justify-between items-center">
@@ -103,17 +116,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-              <div className="flex flex-col gap-1">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6 w-full pt-4">
+              <div className="flex flex-wrap items-center gap-4">
+                <button 
+                  onClick={() => onOpenCaseStudy?.(project.id)}
+                  className="shiny-cta py-3 px-6 text-[10px] md:text-[11px]"
+                >
+                  Read Case Study
+                </button>
                 {(project.demoUrl || project.websiteUrl) && (
                   <a 
                     href={project.demoUrl || project.websiteUrl || "#"} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className={`flex items-center gap-3 text-[10px] md:text-[12px] font-black uppercase tracking-[0.2em] md:tracking-[0.4em] transition-all ${theme === 'dark' ? 'text-white hover:text-accent-gold' : 'text-alpine-950 hover:text-accent-clay'}`}
+                    className={`flex items-center gap-2 text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] transition-all ${theme === 'dark' ? 'text-white/60 hover:text-accent-gold' : 'text-alpine-950/60 hover:text-accent-clay'}`}
                   >
-                      {project.websiteUrl ? 'Visit Website' : 'Explore Demo'}
-                      <ExternalLinkIcon className="w-4 h-4 opacity-40 group-hover:opacity-100 transition-opacity" />
+                      {project.websiteUrl ? 'Launch Live' : 'Launch Demo'}
+                      <ExternalLinkIcon className="w-3.5 h-3.5 opacity-60" />
                   </a>
                 )}
                 {!project.betaCode && !project.collaborationUrl && !project.websiteUrl && (
@@ -131,7 +150,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
                 )}
               </div>
 
-              <span className={`text-[8px] md:text-[10px] border px-3 md:px-5 py-1.5 rounded-full uppercase tracking-widest font-black ${theme === 'dark' ? 'text-accent-gold border-accent-gold/30' : 'text-accent-clay border-accent-clay/30'}`}>
+              <span className={`text-[8px] md:text-[10px] border px-3 md:px-5 py-1.5 rounded-full uppercase tracking-widest font-black self-start sm:self-auto ${theme === 'dark' ? 'text-accent-gold border-accent-gold/30' : 'text-accent-clay border-accent-clay/30'}`}>
                 {project.betaCode ? 'Restricted Beta' : (project.collaborationUrl ? 'Live' : 'Public Beta')}
               </span>
           </div>
