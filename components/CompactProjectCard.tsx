@@ -5,6 +5,7 @@ interface CompactProjectCardProps {
   project: any;
   index: number;
   theme?: 'light' | 'dark';
+  locale?: 'en' | 'ko';
   onOpenCaseStudy?: (id: string) => void;
 }
 
@@ -12,6 +13,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
   project, 
   index, 
   theme = 'dark', 
+  locale = 'en',
   onOpenCaseStudy 
 }) => {
   return (
@@ -57,6 +59,17 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
       {/* Info Body */}
       <div className="p-6 flex flex-col flex-1 space-y-4">
         <div className="space-y-1">
+          {project.tags?.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {project.tags.map((tag: string, tIdx: number) => (
+                <span key={tIdx} className={`text-[7px] md:text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                  theme === 'dark' ? 'bg-accent-gold/10 text-accent-gold border border-accent-gold/20' : 'bg-accent-clay/10 text-accent-clay border border-accent-clay/20'
+                }`}>
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
           <h3 
             onClick={() => onOpenCaseStudy?.(project.id)}
             className={`text-xl font-bold font-display tracking-tight cursor-pointer transition-colors ${
@@ -109,7 +122,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
             onClick={() => onOpenCaseStudy?.(project.id)}
             className="shiny-cta py-2.5 px-4 text-[9px] font-black uppercase tracking-widest"
           >
-            Case Study
+            {locale === 'ko' ? "케이스 스터디" : "Case Study"}
           </button>
           
           {(project.demoUrl || project.websiteUrl) && (
@@ -121,7 +134,9 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
                 theme === 'dark' ? 'text-white/50 hover:text-accent-gold' : 'text-alpine-950/60 hover:text-accent-clay'
               }`}
             >
-              Launch Live
+              {project.websiteUrl 
+                ? (locale === 'ko' ? '실시간 실행 ↗' : 'Launch Live') 
+                : (locale === 'ko' ? '데모 부스 ↗' : 'Launch Demo')}
               <ExternalLinkIcon className="w-3 h-3 opacity-60" />
             </a>
           )}

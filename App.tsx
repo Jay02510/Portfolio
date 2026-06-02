@@ -8,7 +8,7 @@ import InteractiveDemo from './components/InteractiveDemo.tsx';
 import ComplianceModal from './components/ComplianceModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import { CaseStudyViewer } from './CaseStudyViewer.tsx';
-import { MailIcon, SparklesIcon, SendIcon, BookOpenIcon, MapIcon, CodeIcon, ChevronDownIcon, ExternalLinkIcon, XIcon, FileTextIcon } from './components/Icons.tsx';
+import { MailIcon, SparklesIcon, SendIcon, BookOpenIcon, MapIcon, CodeIcon, ChevronDownIcon, ExternalLinkIcon, XIcon, FileTextIcon, SearchIcon } from './components/Icons.tsx';
 
 const t = {
   en: {
@@ -82,6 +82,40 @@ function App() {
   const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(null);
   const [portfolioLayout, setPortfolioLayout] = useState<'grid' | 'detailed'>('grid');
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'ai' | 'pipelines'>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+
+  // Synchronize case study state with URL Hash
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      const validIds = ['chekki', 'benchmark-explorer', 'eduplanner', 'consultation-pipeline', 'lead-enrichment'];
+      if (validIds.includes(hash)) {
+        setActiveCaseStudyId(hash);
+      } else if (!hash) {
+        setActiveCaseStudyId(null);
+      }
+    };
+
+    handleHashChange();
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (activeCaseStudyId) {
+      if (window.location.hash !== `#${activeCaseStudyId}`) {
+        window.location.hash = activeCaseStudyId;
+      }
+    } else {
+      if (window.location.hash) {
+        history.pushState("", document.title, window.location.pathname + window.location.search);
+      }
+    }
+  }, [activeCaseStudyId]);
 
   const heroVideoUrl = "https://res.cloudinary.com/dginphpy4/video/upload/v1769751396/Flow_Video_3_eqf1ao.mp4"; 
   const heroFallbackImage = "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2560&auto=format&fit=crop";
@@ -162,6 +196,59 @@ function App() {
                   <a href="#about" onClick={scrollToSection('about')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>{t[locale].storyNav}</a>
                   
                   <div className="flex items-center gap-3">
+                    {/* Search Icon / Sleek Expandable Input */}
+                    <div className="flex items-center mr-1">
+                      <div className={`flex items-center gap-2 rounded-full transition-all duration-300 ${
+                        isSearchExpanded 
+                          ? `px-3.5 py-2 border ${theme === 'dark' ? 'border-white/20 bg-white/5 text-white' : 'border-black/20 bg-black/5 text-alpine-950'} w-48 md:w-56 shadow-inner` 
+                          : `w-10 h-10 hover:bg-accent-gold/10 hover:text-accent-gold justify-center rounded-full cursor-pointer flex items-center ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'}`
+                      }`}
+                      onClick={() => {
+                        if (!isSearchExpanded) {
+                          setIsSearchExpanded(true);
+                          const element = document.getElementById('portfolio');
+                          if (element) {
+                            const headerOffset = 80;
+                            const elementPosition = element.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                            window.scrollTo({
+                              top: offsetPosition,
+                              behavior: 'smooth'
+                            });
+                          }
+                        }
+                      }}>
+                        <SearchIcon className="w-4 h-4 cursor-pointer shrink-0 transition-colors" />
+                        {isSearchExpanded && (
+                          <input
+                            autoFocus
+                            type="text"
+                            placeholder={locale === 'en' ? "Search..." : "검색..."}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onBlur={() => {
+                              if (!searchQuery) {
+                                setIsSearchExpanded(false);
+                              }
+                            }}
+                            className="bg-transparent border-none outline-none text-[10px] w-full font-bold uppercase tracking-wider text-inherit p-0 placeholder-black/30 dark:placeholder-white/30"
+                          />
+                        )}
+                        {isSearchExpanded && searchQuery && (
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSearchQuery('');
+                              setIsSearchExpanded(false);
+                            }}
+                            className="text-[9px] font-black uppercase text-accent-gold hover:text-white ml-1 shrink-0"
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
                     <button 
                       onClick={() => setLocale(prev => prev === 'en' ? 'ko' : 'en')}
                       className={`px-4 py-2 rounded-full text-xs font-black tracking-widest transition-all transform active:scale-95 border-2 shadow-sm ${
@@ -183,10 +270,63 @@ function App() {
                     </button>
                   </div>
               </nav>
-              <div className="flex items-center gap-3 md:hidden">
+              <div className="flex items-center gap-2 md:hidden">
+                {/* Mobile Search Icon / Sleek Expandable Input */}
+                <div className="flex items-center">
+                  <div className={`flex items-center gap-1.5 rounded-full transition-all duration-300 ${
+                    isSearchExpanded 
+                      ? `px-2.5 py-1.5 border ${theme === 'dark' ? 'border-white/20 bg-white/5 text-white' : 'border-black/20 bg-black/5 text-alpine-950'} w-28 sm:w-36 shadow-inner` 
+                      : `w-8 h-8 hover:bg-accent-gold/10 hover:text-accent-gold justify-center rounded-full cursor-pointer flex items-center ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'}`
+                  }`}
+                  onClick={() => {
+                    if (!isSearchExpanded) {
+                      setIsSearchExpanded(true);
+                      const element = document.getElementById('portfolio');
+                      if (element) {
+                        const headerOffset = 80;
+                        const elementPosition = element.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        window.scrollTo({
+                          top: offsetPosition,
+                          behavior: 'smooth'
+                        });
+                      }
+                    }
+                  }}>
+                    <SearchIcon className="w-3.5 h-3.5 cursor-pointer shrink-0 transition-colors" />
+                    {isSearchExpanded && (
+                      <input
+                        autoFocus
+                        type="text"
+                        placeholder={locale === 'en' ? "Search..." : "검색..."}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onBlur={() => {
+                          if (!searchQuery) {
+                            setIsSearchExpanded(false);
+                          }
+                        }}
+                        className="bg-transparent border-none outline-none text-[9px] w-full font-bold uppercase tracking-wider text-inherit p-0 placeholder-black/30 dark:placeholder-white/30"
+                      />
+                    )}
+                    {isSearchExpanded && searchQuery && (
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSearchQuery('');
+                          setIsSearchExpanded(false);
+                        }}
+                        className="text-[8px] font-black uppercase text-accent-gold hover:text-white ml-0.5 shrink-0"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                </div>
+
                 <button 
                   onClick={() => setLocale(prev => prev === 'en' ? 'ko' : 'en')}
-                  className={`px-4 py-2 rounded-full text-[11px] font-black tracking-wider transition-all transform active:scale-95 border-2 shadow-sm ${
+                  className={`px-3 py-1.5 rounded-full text-[10px] font-black tracking-wider transition-all transform active:scale-95 border-2 shadow-sm ${
                     locale === 'ko' 
                       ? 'bg-accent-gold border-accent-gold text-alpine-950 shadow-md' 
                       : (theme === 'dark' 
@@ -196,7 +336,7 @@ function App() {
                 >
                   {locale === 'en' ? '한글 🇰🇷' : 'EN 🇺🇸'}
                 </button>
-                <button onClick={toggleTheme} className="p-2 text-lg">
+                <button onClick={toggleTheme} className="p-1 px-1.5 text-base">
                   {theme === 'dark' ? '☀️' : '🌙'}
                 </button>
               </div>
@@ -368,10 +508,82 @@ function App() {
                 <h2 className="text-5xl md:text-8xl font-medium tracking-tighter font-display text-gradient-white leading-none">{t[locale].toolsTitle}</h2>
             </div>
 
+            {/* CORE COMPETENCIES & TECHNOLOGY BOARD */}
+            <div className={`mb-16 p-8 md:p-14 rounded-[2rem] border relative overflow-hidden transition-all duration-300 ${
+              theme === 'dark' ? 'bg-[#12161A]/40 border-white/10 shadow-2xl' : 'bg-black/[0.01]/40 border-black/5 shadow-lg'
+            }`}>
+              <div className="absolute top-0 right-0 w-64 h-64 bg-accent-gold/5 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-white/5">
+                <div>
+                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold font-mono">
+                    {locale === 'en' ? "CURRICULUM VITAE MATCH" : "핵심 역량 및 서칭 매트릭스"}
+                  </span>
+                  <h3 className="text-2xl md:text-4xl font-display font-medium tracking-tight text-gradient-white">
+                    {locale === 'en' ? "Core Competencies & Stack" : "핵심 전문 역량 (Core Competencies)"}
+                  </h3>
+                </div>
+                <div className={`text-xs max-w-md leading-relaxed ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>
+                  {locale === 'en'
+                    ? "Targeted search keywords, hybrid platform expertise, and monetization infrastructures mapped to industry-level requirements."
+                    : "헤드헌터 및 개발 매니저 채용 서칭 지표(Mobile, Data, Monetization)를 완벽 일치 기입한 검증 완료 보증판."}
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* COLUMN 1 */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">📱</span>
+                    <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold">
+                      {locale === 'en' ? "Mobile & Frontend Bridges" : "모바일 및 하이브리드 프론트엔드"}
+                    </h4>
+                  </div>
+                  <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Capacitor SDK Bridge</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Native Device Android/iOS Integrations</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Bilingual UI Layout Engraving</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>React 18 & Vite Ecosystem</li>
+                  </ul>
+                </div>
+
+                {/* COLUMN 2 */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">⚙️</span>
+                    <h4 className="text-xs font-black uppercase tracking-widest text-[#44D9C5]">
+                      {locale === 'en' ? "Data & Automation Architecture" : "데이터 및 자동화 아키텍처"}
+                    </h4>
+                  </div>
+                  <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Airtable Relational Clustering</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Make.com Automation Routers</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Fillout Dynamic Schema Mappings</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Secure Server-Side Webhook Controllers</li>
+                  </ul>
+                </div>
+
+                {/* COLUMN 3 */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">💳</span>
+                    <h4 className="text-xs font-black uppercase tracking-widest text-[#E15A5A]">
+                      {locale === 'en' ? "Monetization & Store Deployments" : "수익화 및 앱스토어 배포"}
+                    </h4>
+                  </div>
+                  <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>RevenueCat Subscriptions Hub</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>Google Play Developer Ecosystem</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>App Store Connect Sandbox Suites</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>Secure Server-to-Server Ingestion</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
             {/* INTERACTIVE CONTROLS: CATEGORIES & LAYOUTS */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-16 pb-8 border-b border-white/5">
                 {/* Category Pills */}
-                <div className="flex flex-wrap items-center gap-2 justify-center">
+                <div className="flex overflow-x-auto flex-nowrap items-center gap-2 py-1 justify-start max-w-full scrollbar-none -mx-6 px-6 md:mx-0 md:px-0">
                     {[
                       { id: 'all', label: t[locale].allSolutions, count: 5 },
                       { id: 'ai', label: t[locale].aiEngines, count: 3 },
@@ -382,7 +594,7 @@ function App() {
                         <button
                           key={tab.id}
                           onClick={() => setSelectedCategory(tab.id as any)}
-                          className={`px-5 py-2.5 rounded-full text-[10px] md:text-[11px] font-black uppercase tracking-widest transition-all ${
+                          className={`px-5 py-2.5 rounded-full text-[10px] md:text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap shrink-0 ${
                             isActive
                               ? 'bg-accent-gold text-alpine-950 font-black'
                               : theme === 'dark'
@@ -397,7 +609,7 @@ function App() {
                 </div>
 
                 {/* Layout Switches */}
-                <div className={`flex items-center gap-2 border rounded-full p-1 ${theme === 'dark' ? 'border-white/10 bg-white/[0.02]' : 'border-black/10 bg-black/[0.02]'}`}>
+                <div className={`flex items-center gap-2 border rounded-full p-1 whitespace-nowrap shrink-0 ${theme === 'dark' ? 'border-white/10 bg-white/[0.02]' : 'border-black/10 bg-black/[0.02]'}`}>
                     {[
                       { id: 'grid', label: t[locale].sleekGrid, icon: 'grid' },
                       { id: 'detailed', label: t[locale].continuousStory, icon: 'list' }
@@ -436,15 +648,29 @@ function App() {
 
             {/* FILTERED PORTFOLIO DISPLAY */}
             {(() => {
-              const filteredProjects = PORTFOLIO_DATA.projects.filter(project => {
-                if (selectedCategory === 'all') return true;
-                if (selectedCategory === 'ai') {
-                  return ['chekki', 'eduplanner', 'lead-enrichment'].includes(project.id);
+              const activeProjects = locale === 'ko' ? PORTFOLIO_DATA.ko.projects : PORTFOLIO_DATA.en.projects;
+              const filteredProjects = activeProjects.filter(project => {
+                // Category filtering
+                let categoryMatches = true;
+                if (selectedCategory === 'all') categoryMatches = true;
+                else if (selectedCategory === 'ai') {
+                  categoryMatches = ['chekki', 'eduplanner', 'lead-enrichment'].includes(project.id);
+                } else if (selectedCategory === 'pipelines') {
+                  categoryMatches = ['benchmark-explorer', 'consultation-pipeline', 'lead-enrichment'].includes(project.id);
                 }
-                if (selectedCategory === 'pipelines') {
-                  return ['benchmark-explorer', 'consultation-pipeline', 'lead-enrichment'].includes(project.id);
+
+                // Search query filtering
+                if (searchQuery) {
+                  const query = searchQuery.toLowerCase().trim();
+                  const titleMatch = project.title.toLowerCase().includes(query);
+                  const descMatch = project.description?.toLowerCase().includes(query) || project.longDescription?.toLowerCase().includes(query);
+                  const tagMatch = project.tags?.some(t => t.toLowerCase().includes(query));
+                  const featureMatch = project.features?.some(f => f.toLowerCase().includes(query));
+                  const engineMatch = project.engineDetails?.toLowerCase().includes(query);
+                  return categoryMatches && (titleMatch || descMatch || tagMatch || featureMatch || engineMatch);
                 }
-                return true;
+
+                return categoryMatches;
               });
 
               if (filteredProjects.length === 0) {
@@ -462,8 +688,9 @@ function App() {
                       <CompactProjectCard 
                         key={project.id} 
                         project={project} 
-                        index={PORTFOLIO_DATA.projects.findIndex(p => p.id === project.id)} 
+                        index={activeProjects.findIndex(p => p.id === project.id)} 
                         theme={theme} 
+                        locale={locale}
                         onOpenCaseStudy={setActiveCaseStudyId} 
                       />
                     ))}
@@ -477,8 +704,9 @@ function App() {
                     <ProjectCard 
                       key={project.id} 
                       project={project} 
-                      index={PORTFOLIO_DATA.projects.findIndex(p => p.id === project.id)} 
+                      index={activeProjects.findIndex(p => p.id === project.id)} 
                       theme={theme} 
+                      locale={locale}
                       onOpenCaseStudy={setActiveCaseStudyId} 
                     />
                   ))}
@@ -541,14 +769,15 @@ function App() {
           <p className="text-[10px] font-black uppercase tracking-[1em]">© 2026 Jason Benjamin — Seoul, Korea</p>
       </footer>
 
-      <ComplianceModal isOpen={!!modalType} onClose={() => setModalType(null)} type={modalType || 'privacy'} />
-      <AIChat isOpen={isChatOpen} setIsOpen={setIsChatOpen} theme={theme} />
+      <ComplianceModal isOpen={!!modalType} onClose={() => setModalType(null)} type={modalType || 'privacy'} locale={locale} />
+      <AIChat isOpen={isChatOpen} setIsOpen={setIsChatOpen} theme={theme} locale={locale} />
       
       {activeCaseStudyId && (
         <CaseStudyViewer 
           projectId={activeCaseStudyId} 
           onClose={() => setActiveCaseStudyId(null)} 
           theme={theme} 
+          locale={locale}
         />
       )}
     </div>

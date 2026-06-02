@@ -1,15 +1,21 @@
-
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ExternalLinkIcon, FileTextIcon, ChevronDownIcon, XIcon, SparklesIcon } from './Icons.tsx';
 
 interface ProjectCardProps {
   project: any;
   index: number;
   theme?: 'light' | 'dark';
+  locale?: 'en' | 'ko';
   onOpenCaseStudy?: (id: string) => void;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark', onOpenCaseStudy }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ 
+  project, 
+  index, 
+  theme = 'dark', 
+  locale = 'en',
+  onOpenCaseStudy 
+}) => {
   const isEven = index % 2 === 0;
   const [copied, setCopied] = useState(false);
   const [activeMedia, setActiveMedia] = useState<any | null>(null);
@@ -53,6 +59,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
                 : 'opacity-90 group-hover:opacity-100 group-hover:scale-105'
             }`} 
             alt={project.title}
+            referrerPolicy="no-referrer"
           />
           <div className={`absolute inset-0 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-t from-alpine-950 via-transparent' : 'bg-gradient-to-t from-alpine-50/80 via-transparent'}`}></div>
           
@@ -68,7 +75,20 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
       {/* Detail Panel */}
       <div className={`mt-[-60px] md:mt-0 md:absolute ${isEven ? 'md:right-12' : 'md:left-12'} md:top-1/2 md:-translate-y-1/2 w-[90%] md:w-full md:max-w-xl glass-panel rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-14 space-y-6 md:space-y-10 z-20 transition-all duration-500 group-hover:shadow-accent-gold/5`}>
           <div className="space-y-2 md:space-y-6">
-              <span className={`font-bold uppercase tracking-[0.4em] text-[8px] md:text-[11px] ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>Project 0{index + 1}</span>
+              <div className="flex flex-col gap-2">
+                <span className={`font-bold uppercase tracking-[0.4em] text-[8px] md:text-[11px] ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>Project 0{index + 1}</span>
+                {project.tags?.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.tags.map((tag: string, tIdx: number) => (
+                      <span key={tIdx} className={`text-[7px] md:text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${
+                        theme === 'dark' ? 'bg-accent-gold/10 text-accent-gold border border-accent-gold/20' : 'bg-accent-clay/15 text-accent-clay border border-accent-clay/25'
+                      }`}>
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
               <h3 
                 onClick={() => onOpenCaseStudy?.(project.id)}
                 className="text-2xl md:text-5xl lg:text-6xl font-medium tracking-tighter leading-none text-gradient-white cursor-pointer hover:text-accent-gold transition-colors"
@@ -103,14 +123,22 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
             {project.betaCode && (
               <div className={`rounded-xl p-5 md:p-8 flex flex-col gap-3 md:gap-5 ${theme === 'dark' ? 'bg-white/5' : 'bg-black/[0.04]'}`}>
                 <div className="flex justify-between items-center">
-                  <span className={`text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/40'}`}>Beta Authorization</span>
-                  {copied && <span className="text-[9px] font-bold text-accent-gold animate-pulse">COPIED</span>}
+                  <span className={`text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/40'}`}>
+                    {locale === 'ko' ? "베타 접속 권한코드" : "Beta Authorization"}
+                  </span>
+                  {copied && (
+                    <span className="text-[9px] font-bold text-accent-gold animate-pulse">
+                      {locale === 'ko' ? "복사됨" : "COPIED"}
+                    </span>
+                  )}
                 </div>
                 <div onClick={handleCopy} className="flex justify-between items-center cursor-pointer group/code">
                   <code className={`text-base md:text-2xl font-mono tracking-widest px-3 md:px-6 py-2 md:py-4 rounded-lg border transition-all ${theme === 'dark' ? 'bg-white/5 border-white/5 group-hover/code:border-accent-gold/50 text-white' : 'bg-white border-black/5 text-alpine-950'}`}>
                     {project.betaCode}
                   </code>
-                  <div className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] opacity-40 group-hover/code:opacity-100 transition-opacity">Copy</div>
+                  <div className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] opacity-40 group-hover/code:opacity-100 transition-opacity">
+                    {locale === 'ko' ? "복사" : "Copy"}
+                  </div>
                 </div>
               </div>
             )}
@@ -122,7 +150,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
                   onClick={() => onOpenCaseStudy?.(project.id)}
                   className="shiny-cta py-3 px-6 text-[10px] md:text-[11px]"
                 >
-                  Read Case Study
+                  {locale === 'ko' ? "케이스 스터디 읽기" : "Read Case Study"}
                 </button>
                 {(project.demoUrl || project.websiteUrl) && (
                   <a 
@@ -131,13 +159,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
                     rel="noopener noreferrer"
                     className={`flex items-center gap-2 text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] transition-all ${theme === 'dark' ? 'text-white/60 hover:text-accent-gold' : 'text-alpine-950/60 hover:text-accent-clay'}`}
                   >
-                      {project.websiteUrl ? 'Launch Live' : 'Launch Demo'}
+                      {project.websiteUrl 
+                        ? (locale === 'ko' ? '실시간 앱 실행 ↗' : 'Launch Live') 
+                        : (locale === 'ko' ? '데모 부스 실행 ↗' : 'Launch Demo')}
                       <ExternalLinkIcon className="w-3.5 h-3.5 opacity-60" />
                   </a>
                 )}
                 {!project.betaCode && !project.collaborationUrl && !project.websiteUrl && (
                   <span className={`text-[8px] font-black uppercase tracking-[0.2em] animate-pulse ${theme === 'dark' ? 'text-accent-gold/60' : 'text-accent-clay/60'}`}>
-                    Free to try
+                    {locale === 'ko' ? "프리 무료 체험" : "Free to try"}
                   </span>
                 )}
                 {project.collaborationUrl && (
@@ -145,13 +175,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, theme = 'dark
                     href={project.collaborationUrl}
                     className={`text-[8px] font-black uppercase tracking-[0.2em] transition-all ${theme === 'dark' ? 'text-accent-gold hover:text-white' : 'text-accent-clay hover:text-black'}`}
                   >
-                    Inquire for Collaboration
+                    {locale === 'ko' ? "협업 및 커미션 의뢰" : "Inquire for Collaboration"}
                   </a>
                 )}
               </div>
 
               <span className={`text-[8px] md:text-[10px] border px-3 md:px-5 py-1.5 rounded-full uppercase tracking-widest font-black self-start sm:self-auto ${theme === 'dark' ? 'text-accent-gold border-accent-gold/30' : 'text-accent-clay border-accent-clay/30'}`}>
-                {project.betaCode ? 'Restricted Beta' : (project.collaborationUrl ? 'Live' : 'Public Beta')}
+                {project.betaCode 
+                  ? (locale === 'ko' ? '초대 전용 베타' : 'Restricted Beta') 
+                  : (project.collaborationUrl 
+                      ? (locale === 'ko' ? '실시간 가동' : 'Live') 
+                      : (locale === 'ko' ? '공동 베타' : 'Public Beta'))}
               </span>
           </div>
       </div>

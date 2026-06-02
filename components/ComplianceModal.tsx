@@ -1,15 +1,21 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { XIcon } from './Icons.tsx';
 
 interface ComplianceModalProps {
   isOpen: boolean;
   onClose: () => void;
   type: 'privacy' | 'terms';
+  locale?: 'en' | 'ko';
 }
 
-const ComplianceModal: React.FC<ComplianceModalProps> = ({ isOpen, onClose, type }) => {
-  const [lang, setLang] = useState<'EN' | 'KR'>('EN');
+const ComplianceModal: React.FC<ComplianceModalProps> = ({ isOpen, onClose, type, locale = 'en' }) => {
+  const [lang, setLang] = useState<'EN' | 'KR'>(locale === 'ko' ? 'KR' : 'EN');
+
+  useEffect(() => {
+    if (isOpen) {
+      setLang(locale === 'ko' ? 'KR' : 'EN');
+    }
+  }, [isOpen, locale]);
 
   if (!isOpen) return null;
 
@@ -147,7 +153,7 @@ Users agree not to use the AI Assistant or tools to generate harmful, illegal, o
             onClick={onClose}
             className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent-gold hover:text-white transition-all"
           >
-            I UNDERSTAND
+            {lang === 'KR' ? '확인 및 닫기' : 'I UNDERSTAND'}
           </button>
         </div>
       </div>

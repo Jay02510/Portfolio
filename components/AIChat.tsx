@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { SparklesIcon, SendIcon, XIcon, MailIcon } from './Icons.tsx';
 import { sendMessageToGemini } from '../services/geminiService.ts';
@@ -8,9 +7,10 @@ interface AIChatProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   theme: 'light' | 'dark';
+  locale?: 'en' | 'ko';
 }
 
-const SUGGESTIONS = [
+const SUGGESTIONS_EN = [
   "What was teaching in Seoul like?",
   "How can we collaborate?",
   "Tell me about Chekki AI.",
@@ -18,21 +18,40 @@ const SUGGESTIONS = [
   "Why did you start building tools?"
 ];
 
+const SUGGESTIONS_KO = [
+  "서울에서의 교직 생활은 어땠나요?",
+  "제이슨과 프로젝트를 같이 만들려면?",
+  "Chekki AI는 어떤 서비스인가요?",
+  "Benchmark Explorer 구조에 대해 알려줘.",
+  "왜 직접 에듀테크 도구를 제작하나요?"
+];
+
 const MAX_MESSAGES = 10;
 
-const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
+const AIChat: React.FC<AIChatProps> = ({ 
+  isOpen, 
+  setIsOpen, 
+  theme,
+  locale = 'en'
+}) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messageCount, setMessageCount] = useState(0);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: 'welcome',
-      role: 'model',
-      text: "Hi there. I'm Jason's digital helper. If you have questions about how these tools work or what Jason did while teaching in Seoul, just ask.",
-      timestamp: new Date()
-    }
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMessages([
+      {
+        id: 'welcome',
+        role: 'model',
+        text: locale === 'ko' 
+          ? "안녕하세요! 저는 제이슨의 디지털 비서입니다. 제이슨의 교육 솔루션, 10년 교직 스토리, 또는 기술 스택에 대해 무엇이든 편안하게 물어보세요."
+          : "Hi there. I'm Jason's digital helper. If you have questions about how these tools work or what Jason did while teaching in Seoul, just ask.",
+        timestamp: new Date()
+      }
+    ]);
+  }, [locale]);
 
   useEffect(() => {
     if (isOpen) {
@@ -72,6 +91,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
   };
 
   const isLimitReached = messageCount >= MAX_MESSAGES;
+  const activeSuggestions = locale === 'ko' ? SUGGESTIONS_KO : SUGGESTIONS_EN;
 
   if (!isOpen) {
     return (
@@ -101,12 +121,16 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
         <div className={`p-8 flex justify-between items-center border-b ${theme === 'dark' ? 'bg-alpine-900/40 border-white/5' : 'bg-white/40 border-black/5'}`}>
           <div className="flex items-center gap-4">
             <div className={`w-12 h-12 rounded-full flex items-center justify-center border ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-black/5 border-black/5'}`}>
-              <SparklesIcon className="w-5 h-5 text-accent-gold" />
+               <SparklesIcon className="w-5 h-5 text-accent-gold" />
             </div>
             <div>
-              <h3 className={`font-display font-light text-sm tracking-widest uppercase ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>Assistant</h3>
+              <h3 className={`font-display font-light text-sm tracking-widest uppercase ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
+                {locale === 'ko' ? 'AI 어시스턴트' : 'Assistant'}
+              </h3>
               <p className={`text-[8px] font-bold uppercase tracking-[0.3em] mt-1 ${theme === 'dark' ? 'text-white/30' : 'text-black/30'}`}>
-                {isLimitReached ? 'Session Complete' : 'Online & Ready'}
+                {isLimitReached 
+                  ? (locale === 'ko' ? '세션 대화 종료' : 'Session Complete') 
+                  : (locale === 'ko' ? '대화 준비 완료' : 'Online & Ready')}
               </p>
             </div>
           </div>
@@ -141,14 +165,16 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
             <div className="pt-4 flex flex-col items-center gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
                <div className={`w-12 h-px ${theme === 'dark' ? 'bg-white/10' : 'bg-black/10'}`}></div>
                <p className={`text-[11px] font-bold uppercase tracking-widest text-center px-8 leading-relaxed ${theme === 'dark' ? 'text-white/30' : 'text-black/40'}`}>
-                 You've reached the conversation limit. Jason would love to hear from you directly!
+                 {locale === 'ko' 
+                   ? "금일 권장 대화수 회수에 도달했습니다. 언제든 제이슨에게 편한 메일 전송으로 협의해 보세요!" 
+                   : "You've reached the conversation limit. Jason would love to hear from you directly!"}
                </p>
                <a 
                 href="mailto:jsn.benjamin@gmail.com" 
                 className="flex items-center gap-3 px-6 py-3 bg-accent-gold text-alpine-950 rounded-full text-[11px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl"
                >
                  <MailIcon className="w-4 h-4" />
-                 Contact Jason
+                 {locale === 'ko' ? "제이슨과 메일 대화 나누기" : "Contact Jason"}
                </a>
             </div>
           )}
@@ -157,10 +183,9 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
 
         {/* Suggestion Chips & Input */}
         <div className={`p-6 md:p-8 border-t pb-24 md:pb-8 transition-colors ${theme === 'dark' ? 'bg-alpine-900/40 border-white/5' : 'bg-white border-black/5'}`}>
-          {/* Suggestion Chips - Hide when limit reached to clean up UI */}
           {!isLimitReached && (
             <div className="flex gap-2 overflow-x-auto pb-6 no-scrollbar">
-              {SUGGESTIONS.map((suggestion, idx) => (
+              {activeSuggestions.map((suggestion, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSend(suggestion)}
@@ -184,7 +209,9 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               disabled={isLimitReached}
-              placeholder={isLimitReached ? "Conversation limit reached" : "Ask me anything..."}
+              placeholder={isLimitReached 
+                ? (locale === 'ko' ? "보유 세션 횟수를 초과했습니다" : "Conversation limit reached") 
+                : (locale === 'ko' ? "무엇이든 물어보세요..." : "Ask me anything...")}
               className={`w-full pl-6 pr-14 py-5 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-gold/20 transition-all text-sm font-light ${
                 theme === 'dark' 
                   ? 'bg-white/5 border border-white/10 text-white placeholder-white/20' 
@@ -204,7 +231,9 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, setIsOpen, theme }) => {
           
           {!isLimitReached && messageCount > 0 && (
             <p className={`text-[8px] font-bold uppercase tracking-[0.2em] mt-4 text-center opacity-30 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
-              {MAX_MESSAGES - messageCount} messages remaining
+              {locale === 'ko' 
+                ? `앞으로 가용대화 ${MAX_MESSAGES - messageCount}회 가능` 
+                : `${MAX_MESSAGES - messageCount} messages remaining`}
             </p>
           )}
         </div>
