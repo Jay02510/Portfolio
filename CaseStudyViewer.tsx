@@ -13,6 +13,7 @@ interface CaseStudyType {
   title: string;
   tagline: string;
   liveUrl: string;
+  storeUrl?: string;
   walkthroughVideo?: string;
   screenshots?: { label: string; url: string; subLabel?: string }[];
   stats: { label: string; value: string }[];
@@ -38,10 +39,16 @@ interface CaseStudyType {
     security: string[];
   };
   technicalHurdles?: {
+    title?: string;
     incident: string;
     diagnosis: string;
     resolution: string;
-  };
+  } | {
+    title?: string;
+    incident: string;
+    diagnosis: string;
+    resolution: string;
+  }[];
 }
 
 const uiTranslation = {
@@ -85,7 +92,8 @@ const uiTranslation = {
     technicalHurdles: "Behind the Scenes: When Things Break",
     incident: "Silent Incident",
     diagnosis: "Deep Diagnostic Path",
-    resolution: "Production Resolution"
+    resolution: "Production Resolution",
+    storeLink: "App Store / Play Store ↗"
   },
   ko: {
     backToPortfolio: "← 포트폴리오로 돌아가기",
@@ -127,7 +135,8 @@ const uiTranslation = {
     technicalHurdles: "비하인드 스토리: 장애 및 예외 진단기 (When Things Break)",
     incident: "예기치 못한 장애 (Incident)",
     diagnosis: "정밀 진단 (Diagnostic Path)",
-    resolution: "프로덕션 해결편 (Resolution)"
+    resolution: "프로덕션 해결편 (Resolution)",
+    storeLink: "앱스토어 / 구글플레이 ↗"
   }
 };
 
@@ -136,7 +145,19 @@ const studyDataEn: Record<string, CaseStudyType> = {
     title: "Chekki AI",
     tagline: "Homework help without the stress. Scan worksheets, get automated bilingual guides instantly.",
     liveUrl: "https://chekki-ai.vercel.app/",
+    storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://res.cloudinary.com/dginphpy4/video/upload/v1769504113/Chekki_AI_V0_fkdlyx.mp4",
+    screenshots: [
+      { label: "Homescreen", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/2_lbk8kt.png", subLabel: "Active Lesson Portal" },
+      { label: "Login", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/3_nqxlza.png", subLabel: "Secure Access Gateway" },
+      { label: "Fullscreen Overlay", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/8_hslabs.png", subLabel: "Interactive Solution Screen" },
+      { label: "Answers Guide", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/9_n7zavj.png", subLabel: "Bilingual Transcript" },
+      { label: "Learning Guide", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/11_huxdwa.png", subLabel: "Detailed Concept Deck" },
+      { label: "Ask Chekki", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479551/17_fbjiga.png", subLabel: "Conversational Tutoring AI" },
+      { label: "Ask Chekki Answers", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479553/20_egti9z.png", subLabel: "Resolved Step-By-Step Responses" },
+      { label: "More Examples", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/13_z3nbzc.png", subLabel: "Additional Solved Scenarios" },
+      { label: "Refined Responses", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479551/16_hukffx.png", subLabel: "Structured Feedback Output" }
+    ],
     stats: [
       { label: "Parent Engagement Boost", value: "98%" },
       { label: "Bilingual Guides Completed", value: "1,200+" },
@@ -206,11 +227,26 @@ const studyDataEn: Record<string, CaseStudyType> = {
       vision: "Capture messy optical paper sheets directly from a phone viewport, instantly parsing and transforming raw images into bilingual audio-phonetic teaching scripts.",
       rationale: "Leveraged custom Google Gemini multimodal vision endpoints over traditional translation engines to understand localized layouts & polite Korean honorifics."
     },
-    technicalHurdles: {
-      incident: "During beta testing, certain users experienced a silent freeze during mobile subscription activation. The billing dialog loaded, but after completing Google Play 2FA, the app interface remained locked, preventing session initialization.",
-      diagnosis: "Google Play Billing client's asynchronous token validation was timing out when 2FA biometric checks forced the application process into a background frozen state, resulting in deferred purchases failing to trigger server-to-server webhook ingestion.",
-      resolution: "Isolated developer profiles from 2FA requirements for the sandbox suite, implemented a dual-state local transaction manager that secures tokens client-size, and restructured the backend to process deferred purchases asynchronously using real-time polling backed by low-latency server-to-server Pub/Sub queues."
-    }
+    technicalHurdles: [
+      {
+        title: "Social Authentication Race Condition",
+        incident: "During beta testing, users signing up via social providers (Apple or Kakao) experienced a frustrating issue where they were redirected to the home screen after auth completion but were immediately shown as unauthenticated or kicked back to the login screen.",
+        diagnosis: "The Firebase onAuthStateChanged listener was firing instantly upon OAuth redirection. It immediately queried Firestore for the user's custom profile before the signup handler had finished writing the new profile record. Finding no profile, the listener set the React state userProfile to null, creating a race condition that overwrote the profile context just as the signup flow was finishing.",
+        resolution: "Introduced a synchronization ref (isSigningUpRef) to lock the auth state listener during active account creation. If a signup is in progress, the global listener defers state resolution, allowing the signup handler to write the profile to Firestore first and then trigger a single, atomic state update once the record is secure."
+      },
+      {
+        title: "Apple Sign-In Verification Failures on Physical iOS Devices",
+        incident: "While Apple Sign-In worked seamlessly in simulators, it failed silently or threw cryptic native validation errors on physical iOS devices, preventing beta testers from registering or accessing their accounts on their phones.",
+        diagnosis: "Two critical integration mismatches were identified: first, the mobile plugin sent an Apple client ID (com.chekki.ai.ios) that mismatched the primary iOS application bundle identifier (com.chekkiai.app). Second, Apple's physical device security requirements rejected Firebase Auth requests due to a static state token (12345) and the absence of a cryptographically secure, SHA-256 hashed nonce.",
+        resolution: "Aligned the client ID configuration across all Capacitor and native Xcode settings. Implemented a utility to generate cryptographically secure nonces, passing the SHA-256 hashed nonce to Apple and the raw nonce to Firebase Auth, securing verification on physical hardware."
+      },
+      {
+        title: "Vercel Serverless Key Parsing & Model Fallback Crashes",
+        incident: "When deployed to Vercel, the worksheet analysis backend occasionally crashed with 500 Server Error under load, halting grading functions for all active parents, despite working flawlessly in local development.",
+        diagnosis: "Debugging the cloud logs revealed two distinct failures: Vercel environment variable parsing stripped double quotes and escaped newlines (\\n) from the Firebase Service Account key, corrupting credential initialization. Simultaneously, transient API rate limits on Gemini models triggered a fallback to a deprecated model ID (gemini-1.5-pro), causing cascade errors.",
+        resolution: "Rewrote key loading to sanitize PEM keys, replacing stringified \\n characters with raw byte newlines dynamically. Updated the LLM fallback router to use the stable GA model (gemini-2.0-flash-001) and implemented a timeout race to prevent serverless execution hangs."
+      }
+    ]
   },
   "benchmark-explorer": {
     title: "Benchmark Explorer",
@@ -293,11 +329,26 @@ const studyDataEn: Record<string, CaseStudyType> = {
       vision: "Build a singular continuous evaluation map linking intake matrices, dynamically plotting standardized CEFR mastery vectors alongside automated parental summaries.",
       rationale: "Paired React with Recharts for visual rhythm and high-assurance multi-table Airtable sheets to guarantee strict database consistency and student history logs."
     },
-    technicalHurdles: {
-      incident: "Bulk-importing multi-cohort term exams (10,000+ data nodes) triggered browser locks and crashed Recharts rendering layers.",
-      diagnosis: "React triggered cascading layout reflows because raw Airtable API sync webhooks were updating component states synchronously without throttling, clogging the rendering queue.",
-      resolution: "Implemented a requestAnimationFrame buffer to chunk chart updates, virtualization over the D3 svg workspace, and structured Make.com webhook listeners with debounced 500ms transactional batch flushes."
-    }
+    technicalHurdles: [
+      {
+        title: "The Compiler Type-Safety Shutdown",
+        incident: "During production bundle packaging (Vite + esbuild), the compiler repeatedly crashed with type-checking errors (TS2362: The left-hand side of an arithmetic operation must be of type 'any' or 'number'). This prevented container initialization and kept the app inaccessible.",
+        diagnosis: "Traced the crash to dynamic reduction and mapping operations within student metrics calculations. Certain score properties inside raw assessment objects were implicitly captured as non-scalar types by TypeScript’s strict evaluation, choking the math operator engine during strict builds.",
+        resolution: "Axiomatically refactored all statistical average reducers to strictly cast, validate, and sanitise array values through a standard explicit coercion loop (Number(val) || 0) prior to computation. This eradicated type-cast ambiguity and guaranteed error-free Vite builds."
+      },
+      {
+        title: "The Sandbox API Fallback Layer",
+        incident: "If the developer sandbox didn't have a GEMINI_API_KEY defined or encountered rate limits, the strategic 'Scores → Strategy' engine failed authorization immediately. This would lock the browser or display blank cards when teachers clicked 'Leadership Briefing' or 'Smart Clustering' buttons.",
+        diagnosis: "Determined that calling external, asynchronous LLM endpoints directly from client interactions without a highly robust fallback structure made the application extremely vulnerable to environment configurations, networking issues, or rate-limiting.",
+        resolution: "Engineered a local, zero-knowledge, deterministic fallback engine inside geminiService.ts. When an API key is missing or un-provisioned, the app shifts queries to local algorithms that map real student performance indices (weak domains, velocity bands, and tiers) to custom, highly precise micro-narratives and reports. This keeps pages working flawlessly without a single external dependency."
+      },
+      {
+        title: "The Secure Firestore Permission Barrier",
+        incident: "During development and sandbox testing, queries to back up student rosters and assessment frameworks threw backend permission leaks (Missing or insufficient permissions), totally blocking teachers from adding students or creating classes.",
+        diagnosis: "Diagnosed that without an active school profile context or valid session authentication, Firestore strict security rules rightfully blocked any dynamic writes to students or profiles. This restricted clean browser-only prototyping for offline environments.",
+        resolution: "Designed and deployed a transparent local-sync layer. The application queries local state and standard browser key-value localStorage first. If dynamic Firebase initialization context fails or database permission limits are hit, the entire platform safely downgrades to write to local client-side cache. This enables full data retention, zero-latency roster adjustments, and persistent simulation capabilities with or without a remote database active."
+      }
+    ]
   },
   eduplanner: {
     title: "EduPlanner Pro",
@@ -378,11 +429,26 @@ const studyDataEn: Record<string, CaseStudyType> = {
       vision: "An autonomous constraint-satisfaction scheduling compiler that digests operational parameters to programmatically weave optimized, clash-free timetables on the fly.",
       rationale: "Combined highly persistent Firestore structures with tiered Gemini endpoints (using rapid Flash for blueprint grids and high-intellect Pro models to resolve complex clash nodes)."
     },
-    technicalHurdles: {
-      incident: "Scheduling compilations for high-cap campuses hit 404/504 timeout bounds and exhausted Gemini token rates due to recursive backtracking loops.",
-      diagnosis: "Weaving absolute room constraints directly through prompt layouts forced the LLM into endless reasoning retry loops when dealing with mutually exclusive faculty break periods.",
-      resolution: "Pruned illegal scheduling configurations using a custom local pre-check algorithm in TypeScript before model dispatch, and implemented a multi-stage pipeline using fast Flash models for base blueprints and high-intelligence Pro models for isolated clashing nodes."
-    }
+    technicalHurdles: [
+      {
+        title: "The Backtracking & Timeout Constraint",
+        incident: "School scheduling is an NP-complete problem. When trying to solve a hundreds-of-variables constraint grid solely in a single model context, the LLM would try to recursively find slots, frequently running into infinite reasoning loops, exceeding token context limits, and triggering 504 Gateway timeouts.",
+        diagnosis: "Identified that forcing a neural network to perfectly adhere to absolute local variables directly through prompt layouts forced the LLM into endless reasoning retry loops when dealing with mutually exclusive faculty break periods.",
+        resolution: "We moved the heaviest mathematical load to a local TypeScript constraint solver. If you look at services/geminiService.ts, we handle primary constraint mapping and conflict pruning programmatically through validateScheduleProgrammatically. This intercepts over-constrained states (such as teacher double-bookings, daily schedule duplicate limits, and school-wide locked periods) before dispatching instructions, keeping the engine robust, fast, and light."
+      },
+      {
+        title: "Over-Constrained Prompts",
+        incident: "Forcing a neural network to perfectly adhere to absolute local variables—such as matching a teacher's specific break target against an isolated classroom's coordinate—results in model 'hallucinations' or logical deadlock. Under mutual exclusion (e.g., two teachers needing the same room at the same time), the model would keep generating conflicting arrangements, failing the audit.",
+        diagnosis: "Realized the reasoning engine is choked by too many inputs at once when throwing the entire school database at the model in a single prompt.",
+        resolution: "We structured the schema down into isolated, sequential batches instead of throwing the entire school database at the model in a single prompt. The system processes scheduling priorities in layered packages (Drafting ➔ Conflict Resolution ➔ Guardian Weaver), ensuring the reasoning engine is never choked by too many inputs at once."
+      },
+      {
+        title: "API Quota Resiliency",
+        incident: "When multiple administrators simultaneously generate plans, the outbound API requests would easily saturate token quotas or raise 429 Rate Limit errors, bringing institutional scheduling to a grinding halt.",
+        diagnosis: "Faced rate limit thresholds and network limits when several high-cap schedules are compiled concurrently.",
+        resolution: "We implemented as well as engineered two absolute safety nets: 1) Tiered AI/Algorithmic Fallback: High-performance, fast drafting models execute the initial layout, while a deeper reasoning pipeline operates on isolated high-clash nodes. 2) An Instant High-Fidelity Client-Side Solver: To enable the friction-free Demo/Guest Sandbox mode, we integrated a full offline TypeScript scheduling engine. It simulates cognitive load balancing and constraint validation instantly in the client’s browser, giving administrators an exquisite interactive playground and immediate reports with zero API round-trips."
+      }
+    ]
   },
   "consultation-pipeline": {
     title: "Automated Consult Pipeline",
@@ -453,15 +519,24 @@ const studyDataEn: Record<string, CaseStudyType> = {
       vision: "Build an automated system where a teacher records a session via a simple form, instantly calculating attendance milestones and syncing student records across multiple database clusters dynamically.",
       rationale: "I paired Airtable for relational database integrity with Make to handle multi-step exception logic, ensuring zero manual data entry errors."
     },
-    technicalHurdles: {
-      incident: "Simultaneous registration spikes triggered write race-conditions inside Airtable and created duplicate parent folders.",
-      diagnosis: "Highly concurrent Make webhooks executed lookup-modify-write actions simultaneously, bypassing standard relational lookups because transactions were not isolated.",
-      resolution: "Configured an Redis-backed staging queue for incoming payloads and enforced custom atomic lock checking through Airtable key constraints on the Form capture layer."
-    }
+    technicalHurdles: [
+      {
+        title: "The 'Stale Data' Race Condition",
+        incident: "The form capture layer (Fillout) wrote parent session records and linked child exception records asynchronously. The automation engine triggered instantly on the parent record creation, resulting in empty data arrays because the child links hadn't finished saving.",
+        diagnosis: "Identified a microsecond race condition between the database write-speed and the webhook trigger-speed. The iterator was attempting to loop through an array that didn't exist yet.",
+        resolution: "Architected a delayed-fetch logic flow. Implemented a strict 60-second execution pause, followed by a secondary database query to fetch the fully settled, relationally linked data before passing it to the AI processing modules."
+      },
+      {
+        title: "The 'Aggregator Wall' Context Drop",
+        incident: "When building the Proactive Consultation Generator, the system needed to compile multiple historical student reports. However, the data aggregation module stripped the relational human-readable text (Student Name), passing only raw alphanumeric Record IDs to the AI.",
+        diagnosis: "Realized the AI was generating parent reports addressed to 'Student rec9oCquEi1FFCklP' because the logic engine's aggregator acts as a hard visibility wall, blocking downstream modules from querying upstream lookup fields.",
+        resolution: "Engineered a data-smuggling bypass. Mapped the human-readable text strings directly into the aggregator's text bundle alongside the historical logs, ensuring the LLM received full, formatted context in a single, token-efficient payload."
+      }
+    ]
   },
   "lead-enrichment": {
-    title: "B2B Lead Enrichment & CRM",
-    tagline: "Automated regional map directory parsing, real-time deduplication, and customized cold sales outreach.",
+    title: "Chekki AI Lead Agent",
+    tagline: "An enterprise-grade, full-stack B2B prospecting workspace designed specifically for the Korean English education export market.",
     liveUrl: "https://jason-benjamin.vercel.app/", 
     screenshots: [
       { label: "Dashboard Overview", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780467780/LG_Dashboard_New_joyuto.png" },
@@ -469,32 +544,47 @@ const studyDataEn: Record<string, CaseStudyType> = {
       { label: "Cold Email Lead Generation Panel", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780467780/LG_Cold_Email_xafr9c.png" }
     ],
     stats: [
-      { label: "B2B Lead Discoveries", value: "Real-time" },
-      { label: "Outreach Personalization", value: "Highly Customized" },
+      { label: "Target Scan Speed", value: "Real-time" },
+      { label: "Email Customization Flow", value: "Fully Automated" },
       { label: "Lead Deduplication Rate", value: "100%" }
     ],
     problem: [
-      "Localized directories (Naver Maps) returning cluttered, non-normal and messy HTML-polluted tags.",
+      "Localized directories (Naver Maps) returned cluttered, non-normal, HTML-polluted contact entries and slow CRM logging workflows.",
       "Writing personalized business emails manually to hundreds of targets creates a massive lead pipeline bottleneck.",
       "Repetitive target outreach due to poor historical CRM duplicate checking."
     ],
     solution: [
-      "Created an Express middleware proxy crawling maps data and resolving duplicate entries via index checking.",
-      "Synthesized local founder credentials (10-yr tenure) paired with polite Korean business honorifics recursively.",
-      "Constructed 1-click mailto pre-composition windows for hyper-personalized dispatch loops."
+      "Formulated a localized proxy extractor that cleans map directories on the fly, tests duplicates against active logs, and drafts tailored campaigns.",
+      "Synthesized local founder credentials (10-yr tenure) paired with polite Korean business honorifics recursively to output hyper-personalized campaigns.",
+      "Developed a 1-click mailto pre-composition deep link mechanism for hyper-personalized, zero-delay dispatch loops."
     ],
-    stack: ["React 18", "Express API Proxy", "Firebase Firestore", "Google Gemini API (gemini-3-flash-preview)", "Sonner"],
+    stack: [
+      "React 18",
+      "Vite & TypeScript",
+      "Express API Proxy",
+      "esbuild CJS Compiler",
+      "Leaflet.js Mapping",
+      "Google GenAI SDK",
+      "Framer Motion",
+      "Airtable Sync",
+      "Tailwind CSS"
+    ],
+    behindTheArchitecture: {
+      problem: "Scraping localized maps (Naver) manually to locate business entities ends up returning messy, unformatted, HTML-polluted contact entries and extremely slow CRM logging workflows.",
+      vision: "An enterprise-grade, full-stack B2B prospecting workspace designed specifically for the Korean English education export market. The platform intercepts raw, unformatted merchant geo-location records, enriches the listings, and exports fully formulated target payloads.",
+      rationale: "Chose an Express endpoint proxy running custom regex sweeps coupled with Google Gemini's structured JSON models and Leaflet.js rendering to populate error-free deep email compositions instantly."
+    },
     architecture: {
       lifecycle: [
-        "1. Crawler retrieves localized map targets, cleansing noisy titles containing tags like <b>.",
-        "2. Engine pre-fetches Firestore entries, testing target naver_id to flag pre-saved badges.",
-        "3. Backend asynchronous loops process targeted entries, avoiding upstream 429 quota exhaustion.",
-        "4. Direct Gmail mailto deep links pre-populate complete business outreach templates instantly."
+        "1. Proxy Pipeline: Intercepts raw, unformatted merchant geo-location records from the Naver Local Search API, securely injecting parameters to avoid CORS and credential leaks.",
+        "2. Territory Sweep: Automatically loops query pagination up to 100 elements and performs client-side compound deduplication (combining title + address).",
+        "3. Geolocation Mapping: Translates localized coordinate grid points (TM128 format) to normalized standard WGS84 GPS floats ([lat, lng]) dynamically for Leaflet.",
+        "4. Webhook CRM Dispatcher: Automatically validates destination CRM targets and fires JSON payloads to consumer Airtable / Make.com instances."
       ],
       guardrails: [
-        "Real-time Saved index checks preventing duplicate communication runs.",
-        "Asynchronous batch loops designed specifically to protect API quotas.",
-        "Regex-based raw HTML string filters removing unwanted regional metadata layouts."
+        "Client-Server Secret Guarding: Prevents payment/credential leaks by routing sensitive API parameters through custom intermediate backend proxies.",
+        "Airtable Synchronization Safeguard: Validates Webhooks and caches user configuration in localStorage for persistent state retention across reloads.",
+        "Compound Deduplication: Prevents double communication runs by checking cached states before commits."
       ]
     },
     promptEngineering: {
@@ -502,42 +592,44 @@ const studyDataEn: Record<string, CaseStudyType> = {
   Draft a polite, localized B2B outreach email in business Korean (존댓말).
   Synthesize founder's background: 10-year teaching tenure. Present a peer-to-peer delivery style.
 </instructions>`,
-      schema: `{
-  type: "OBJECT",
+      schema: `responseMimeType: "application/json",
+responseSchema: {
+  type: Type.OBJECT,
   properties: {
-    emailSubject: { type: "STRING" },
-    emailBody: { type: "STRING" }
-  },
-  required: ["emailSubject", "emailBody"]
+    Academy_Name: { type: Type.STRING },
+    Website_URL: { type: Type.STRING },
+    Email_Address: { type: Type.STRING, nullable: true },
+    Target_Demographic: { type: Type.ARRAY, items: { type: Type.STRING } },
+    Business_Type: { type: Type.STRING, enum: ["Franchise", "Independent"] },
+    Academy_Size: { type: Type.STRING, enum: ["Established", "Growing"] }
+  }
 }`,
       guardrails: [
-        "No-hallucination guardrails limiting synthesized fields to verified maps metadata.",
-        "Enforces direct language pairing matching Korean formal honorifics and brief English prompts.",
-        "Enforces structured JSON key returns to prevent raw markdown strings breaking the deep links."
+        "Strict JSON Schema Enforcement: Guarantees LLM payload matches the destination CRM database validation schema every time, preventing broken pipelines.",
+        "Context Boundary Shielding: Restricts prompt outputs strictly to Naver-derived variables without hallucinating fields.",
+        "Honorific Consistency Loop: Mandates precise formal honorific styling matching the recipient entity's demographic tier."
       ]
     },
     impact: {
       value: [
-        "Automated unstructured regional listing cleanup, instantly organizing cold sales runs.",
-        "Boosted campaign open and reply rates using highly personalized founder credential tags.",
-        "Slashed standard B2B list compiling workflows from days down to seconds."
+        "Automated multi-page territory sweep, instantly transforming unstructured data into structured CRM leads.",
+        "Enhanced engagement conversion rate using customized founder credential email narratives.",
+        "Slashed manual directory scraping workflows from days down to seconds."
       ],
       security: [
-        "Upstream API keys strictly secured behind Node.js proxy middleware models.",
-        "Client inputs filtered to prevent malicious prompt injections.",
-        "Encrypted lead state histories tracked continuously in Google Firestore."
+        "Upstream API keys strictly secured behind Node.js proxy middleware models, invisible to browsers.",
+        "Client inputs filtered to prevent malicious input/prompt injections.",
+        "Credentials cached locally inside client-side storage instead of external non-secure databases."
       ]
     },
-    behindTheArchitecture: {
-      problem: "Scraping localized maps (Naver) manually to locate business entities ends up returning messy, unformatted, HTML-polluted contact entries and extremely slow CRM logging workflows.",
-      vision: "Formulate a localized proxy extractor that cleans map directories on the fly, tests duplicates against active logs, and drafts tailored campaigns for outreach.",
-      rationale: "Chose an Express endpoint proxy running custom regex sweeps coupled with Google Gemini's structured JSON models to populate error-free deep email compositions instantly."
-    },
-    technicalHurdles: {
-      incident: "The Naver maps crawler experienced random IP soft-bans and returned incomplete metadata containing raw HTML segments.",
-      diagnosis: "Static crawler headers triggered Naver's scraping detection, while localized SEO wrappers polluted the address texts.",
-      resolution: "Switched to custom Axios proxies with automated User-Agent rotations, created specialized regex parser sweeps, and implemented simulated HTML error-recovery with automatic fallback routes."
-    }
+    technicalHurdles: [
+      {
+        title: "Naver Crawler Soft-Bans and Markup Pollution",
+        incident: "The Naver maps crawler experienced random IP soft-bans and returned incomplete metadata containing raw HTML segments.",
+        diagnosis: "Static crawler headers triggered Naver's scraping detection, while localized SEO wrappers polluted the address texts.",
+        resolution: "Switched to custom Axios proxies with automated User-Agent rotations, created specialized regex parser sweeps, and implemented simulated HTML error-recovery with automatic fallback routes."
+      }
+    ]
   }
 };
 
@@ -546,7 +638,19 @@ const studyDataKo: Record<string, CaseStudyType> = {
     title: "Chekki AI (체키)",
     tagline: "학습 지도 스트레스에서 완전히 벗어나세요. 종이 학습지를 카메라로 찍으면 인공지능이 맞춤형 이중 언어 가이드를 즉시 빌드합니다.",
     liveUrl: "https://chekki-ai.vercel.app/",
+    storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://res.cloudinary.com/dginphpy4/video/upload/v1769504113/Chekki_AI_V0_fkdlyx.mp4",
+    screenshots: [
+      { label: "홈화면", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/2_lbk8kt.png", subLabel: "학습 지도 포털" },
+      { label: "로그인", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/3_nqxlza.png", subLabel: "로그인 보안 게이트웨이" },
+      { label: "풀스크린 오버레이", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/8_hslabs.png", subLabel: "대화형 해답 인터페이스" },
+      { label: "해답 가이드", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/9_n7zavj.png", subLabel: "이중언어 지도 대본" },
+      { label: "학습 가이드", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/11_huxdwa.png", subLabel: "세부 개념 구성 카드" },
+      { label: "체키에게 물어보기", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479551/17_fbjiga.png", subLabel: "대화형 튜터링 AI" },
+      { label: "체키 답변 화면", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479553/20_egti9z.png", subLabel: "단계별 풀이 지침 답변" },
+      { label: "추가 예시 페이지", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/13_z3nbzc.png", subLabel: "다양한 실전 예제" },
+      { label: "정제된 답변 모드", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479551/16_hukffx.png", subLabel: "구조화된 피드백 출력" }
+    ],
     stats: [
       { label: "학부모 참여 유도성", value: "98% 도달" },
       { label: "완성된 지도가이드 수", value: "1,200건 초과" },
@@ -614,14 +718,30 @@ const studyDataKo: Record<string, CaseStudyType> = {
     behindTheArchitecture: {
       problem: "외국인 및 다문화 부모, 그리고 영어 소외 학부모들이 영어로만 기술된 과제 내용을 해독 가이드해 주지 못해 느껴온 아득한 지도 소외와 자격지심.",
       vision: "구겨진 영문 문종을 폰카로 들이대면, 단 1초 만에 대표 서식을 그대로 보존하면서 한시라도 쉽게 낭독해줄 수 있는 한국어 phonetic 발음 해설지를 빌드하는 직관 서비스.",
-      rationale: "일반 기계 변역 엔진의 문맥 한계를 뛰어넘고자 위치 구조 인식에 탁월한 구글 제미나이 멀티모달 비전 엔드포인트를 바인딩해 한국적 정서인 '정중 경어법'까지 매끄럽게 처리하도록 개발."
+      rationale: "일반 기계 변역 엔진의 문맥 한계를 뛰어넘고자 위치 구조 인식에 탁러한 구글 제미나이 멀티모달 비전 엔드포인트를 바인딩해 한국적 정서인 '정중 경어법'까지 매끄럽게 처리하도록 개발."
     },
-    technicalHurdles: {
-      incident: "모바일에서 결제 검증 시 특정 소형 디바이스 유저 그룹에서 화면이 먹통이 되며 영구 동결되는 극히 드문 모바일 브라우저 먹통 현상 발생.",
-      diagnosis: "결제 2단계 인증(2FA) 진행 도중 하드웨어 신뢰 토큰(Hardware Trust Token)과 OS 절전 계층이 개입하며 백그라운드 스레드로 이전된 앱 상태가 강제 정지(Freeze)되어 서버-대-서버 웹훅 토큰 인계가 인스턴트 누락되는 현상으로 규명.",
-      resolution: "2FA 요구가 없는 개발자 샌드박스 프로필을 격리 편성하고, 클라이언트 단에서 영속성 미결 트랜잭션 스토리지 매니저를 구현한 후 동기 웹훅 중심 구조를 비동기 이벤트 펍/섭(Pub/Sub) 분산 처리 파이프라인으로 전면 개편해 토큰 누수를 완벽 완치."
-    }
+    technicalHurdles: [
+      {
+        title: "소셜 인증 레이스 컨디션 (Social Authentication Race Condition)",
+        incident: "베타 테스트 도중, 애플이나 카카오 소셜 계정으로 회원가입을 완결한 신규 가동 유저가 회원가입 과정 직후 메인 뷰로 이동했다가 다시 로그아웃 처리되거나 화면 로그인이 튕겨버리는 이중 튕김 현상이 지속 목격되었습니다.",
+        diagnosis: "카카오 및 애플의 OAuth 세션 리다이렉트 응답이 유입되는 순간 Firebase onAuthStateChanged 수신기가 온전한 가입 처리가 다 끝나기 전에 비동기 가동되었습니다. 이 수신기는 가입 정산 단계가 유저 정보를 미처 완전히 라이트 처리하기 전 즉시 Firestore 상에 존재하지 않는 사용자로 간주해 React userProfile 상태 공간을 null 값으로 강제 덮어쓰기하며 충돌 레이스 컨디션을 유발했습니다.",
+        resolution: "회원가입 활성 플래그 동기화 참조 장치(isSigningUpRef)를 고안해 계정 생성 작업이 완전히 끝날 때까지 전역 인증 수신기의 상태 동기화 판결을 대기(defer)시켰습니다."
+      },
+      {
+        title: "애플 로그인 물리 기기 검증 오류 (Apple Sign-In on Physical iOS Devices)",
+        incident: "애플 로그인 기능이 시뮬레이터에서는 원활히 작동했으나, 물리 iOS 기기에서는 아무런 피드백 없이 동작하지 않거나 난해한 네이티브 오류를 반환하였습니다.",
+        diagnosis: "두 가지 핵심 지점의 프로덕션 미스매치가 발견되었습니다: 첫째, 모바일 하이브리드 플러그인이 애플에 서명 인가할 때 전송한 Client ID 값(com.chekki.ai.ios)이 네이티브 Xcode 앱 식별 고유 패키지 번들 명칭(com.chekkiai.app)과 완전히 상이한 파편을 전송하고 있었습니다. 여기에 추가적으로 애플의 온-디바이스 하드웨어 보안 명세 요구 조건상, Firebase Auth가 승인 검증하려면 정형화된 정적 토큰(Static State Token e.g., 12345)을 거부하며 암호학적으로 안전하게 해시 세정(SHA-256 Hashed Nonce)된 다단계 보안 인자 누락이 결정적 원인이었습니다.",
+        resolution: "Capacitor 및 네이티브 Xcode 설정 구조 속 전체 Client ID 타겟 매칭의 정합성을 한 방향으로 통일 정합했습니다. 이와 동시에 기기 자체에서 암호학적으로 생성 관리되는 SHA-256 해시 넌스(Nonce) 생성 헬퍼를 빌드하여 애플에는 가공 해시를, Firebase에는 원형 노이즈를 매끄럽게 교차 인가함으로써 무결성을 원천적으로 획기 보증해 냈습니다."
+      },
+      {
+        title: "Vercel 서버리스 Firebase 키 파싱 충돌 및 LLM 엔진 폴백 장애 극복",
+        incident: "Vercel 원격 호스트 배포판에서 워크시트 시험지를 자동 채점 분석해내는 백엔드 모듈이 고도 동시 트래픽 상태 하에 500 서버 크래시를 랜덤하게 발생시켜 가정이 자녀 교육 리포트를 즉각 받지 못하는 장애를 자아냈습니다.",
+        diagnosis: "클라우드 가동 컨테이너 로그 분석 결과, Vercel 환경 변수가 Firebase 관리 키(Private Key) 문자열을 파싱할 때 겉따옴표 속 백슬래시 이스케이프 문자(\\n)를 무작위로 제거하면서 PEM 비밀 보안서 구조 자체를 온전히 조립해주지 못하는 기계 정합 실패였습니다. 여기에 Gemini가 실시간으로 소진 한도 장벽(Quota Limitation)에 봉착하며 대체 모델(gemini-1.5-pro)로 기용할 때 오래된 인자 호출을 단행한 단수가 중첩되었습니다.",
+        resolution: "비대칭 프라이빗 PEM 키를 백엔드 부팅 순간 자동으로 읽어내 이중 따옴표를 정화하고, 특수 누화 문자 \\n를 온전한 바이너리 개행 줄바꿈 바이트로 강제 환원하는 정적 치환 코드를 탑재 기용했습니다. 동시에 Gemini Fallback 라우터를 상위 GA 세대 정형 모델(gemini-2.0-flash-001)로 최신 업그레이드하고 원격 타임아웃 레이스를 결합 정비해 지체 없는 프로덕션 무한 가동을 종결 실현했습니다."
+      }
+    ]
   },
+
   "benchmark-explorer": {
     title: "Benchmark Explorer (학업 성취 벤치마크)",
     tagline: "전인 성정 관찰 노트를 완전 데이터화하여 CEFR 유럽공통기준 및 학업 변화 지표를 한눈에 도출합니다.",
@@ -640,7 +760,7 @@ const studyDataKo: Record<string, CaseStudyType> = {
     ],
     stats: [
       { label: "행정 수지 보강 효율", value: "CSV 수동 취합 전면 소거" },
-      { label: "교사 야근 행정 시간", value: "매주 12시간 감수" },
+      { label: "교사 야근 행정 시간", value: "매주 12시간 감소" },
       { label: "학부모 학업 이해 증강율", value: "40% 이상 개선" }
     ],
     problem: [
@@ -662,9 +782,9 @@ const studyDataKo: Record<string, CaseStudyType> = {
         "4. 완성된 맞춤 모바일 데이터가 Softr 개별 부모 인증 도메인에 3초 만에 전달되어 무결하게 시각화됩니다."
       ],
       guardrails: [
-        "관계형 참조 잠금 장치: 학급 분반 변동이나 진급 탈퇴 중에도 과거 학적 이수 및 점수 불변을 보증하는 트랜잭션 제한 설계.",
-        "이중 생성을 근본 배격하기 위해 Naver 고유 식별 명세를 활용해 중위 연계 필터 배치.",
-        "클라우드 서비스 타임아웃에 완충 대응하기 위해 Pro 알고리즘에서 Flash로의 자동 페일오버 설계."
+        "Lookup 데이터베이스 잠금: 학급 분반 변동이나 진급 탈퇴 중에도 과거 학적 이수 및 점수 불변을 보증하는 트랜잭션 제한 설계.",
+        "중복 생성 원천 배제: 동일한 Naver ID와 유저 ID 인덱스의 매칭 검증을 다이내믹하게 필터링 적용.",
+        "서버리스 타임아웃 대응: 가동 속도가 느려질 시 Pro 모델에서 Flash로의 자동 실시간 페일오버 설계."
       ]
     },
     promptEngineering: {
@@ -688,28 +808,44 @@ const studyDataKo: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "산발되던 학적부와 성적 해설 편집 시간을 취합 학원장 기준 매주 평균 12시간씩 완치 구원.",
-        "연말까지 기다리던 피드백 격차를 주간 단위 성장 지도로 대치하여 교육 취약 노드를 사전에 포착 보강.",
-        "원어민 교육 수준을 국내가 원하는 정교 지표(CEFR)로 매칭해 학부모 단절 불안을 즉석 정화."
+        "프로그램 기획가 주당 수 시간 이상의 행정 추적 공수를 획기적으로 감축 소탕 완료.",
+        "교육 과정 전반에 장기 누적 학습 지표를 성공 수집해 뒤늦은 성적표 대신 즉각적인 학습 지침 설계 지원.",
+        "개별 교직원 교재 기록과 글로벌 등급 기준 간의 원활하고 지체 없는 자동 정합 구축 완료."
       ],
       security: [
-        "학부모 자격 정보에 한해서 정밀 타겟 로우(Row)만 전송하는 제로트러스트 뷰 격리 필터 내장.",
-        "개인 특정 번호 및 유치 아동 기밀(PII)이 백업 로그 등에 생문장 기록되지 않는 방화벽 적중.",
-        "각 조회 웹 URL을 Softr 암호화 키 토큰과 상생 배치하여 임의 무작위 변조 열람 수단을 전면 단절."
+        "제로-트러스트 다기능 역할 확인 장치를 부여해 학부모가 엄밀히 자녀의 정보 배열 열에만 진입하게 필터링.",
+        "개인정보 식별값(전화번호/메일)을 기록 보존 단계 직전 즉각 정화 절단하는 일련의 시큐어 전처리 구조 탑재.",
+        "Softr 전용 고유 암호 인증 사용자 주소 해싱 수립을 통해 부모 포털의 정보 조회 보안 위협 최소화 보증."
       ]
     },
     behindTheArchitecture: {
-      problem: "클래스 담임과 교수부 주임 강사진이 학생 성취 점수를 모으고, 학부모 상담지를 수동 문서로 꾸미느라 매주 12시간 넘는 단순 편집 복사 노동에 소진되던 참담함.",
-      vision: "교사가 체크창 몇 개를 가볍게 누르기만 하면 실시간 CEFR 스케일 변환 다이어그램 레이더가 형성되고, 부모에게는 세련된 모바일 성적 리포트가 완성 제공되는 올인원 대시보드.",
-      rationale: "신속한 시각 레이아웃과 데이터 흐름 보강을 위해 React + Recharts 차트를 장치하고, Airtable 관계 교차 테이블 구조를 매칭해 수동 입력 실수 오류율 0%를 보증하도록 디자인."
+      problem: "학원장 및 각 교수 주임들이 통일되지 않은 스프레드시트 기록과 이탈 문서 조각들을 수동 편집 분류하고 해설을 다듬는 데에 한 달 수십 시간씩 마찰을 빚는 행정 비효율 환경.",
+      vision: "교사 입력창 필드와 관계형 데이터 테이블을 한 선에 가교 연결해 실시간 행동 성취 벡터를 도출하는 한편, 정형 번외 학부모 요약 가이드를 자동 완성 컴파일하는 원프레임 맵.",
+      rationale: "차트 및 시각 지수 표현에 탁월한 React & Recharts 융합 모듈을 얹고, 강력한 다단 수합 Airtable 데이터 시트 연동을 체결해 데이터 무결 지탱력을 최상급으로 확보."
     },
-    technicalHurdles: {
-      incident: "전체 학년 데이터(10,000건 초과) 일괄 마이그레이션 진입 시 브라우저가 정지하며 가상 차트 노드가 일제히 Crash되는 현상.",
-      diagnosis: "Airtable 동기 웹훅 신호 수신과 동시에 React 컴포넌트가 과도하게 레이아웃 리플로우(Layout Reflow)를 유발하고 Recharts 연산 큐가 마비됨.",
-      resolution: "차트 버퍼에 requestAnimationFrame 동적 청킹을 배치하고 가상 D3 노드 분산 렌더러를 탑재하여, 동시다발성 데이터 커밋을 500ms 디바운스 트랜잭션 단위로 묶어 브라우저 안전가동 범위 보장."
-    }
+    technicalHurdles: [
+      {
+        title: "컴파일 단계 타입 안전성 병목 해결 (The Compiler Type-Safety Shutdown)",
+        incident: "Vite 프로덕션 빌드 컴파일 타임에 학생 리포트 누킹 산식 내부에서 알 수 없는 타입 캐스팅 충돌(TS2362: The left-hand side of an arithmetic operation must be of type 'any' or 'number')이 연이어 소출되며 오퍼레이팅 컨테이너 전체 구축이 일시 차단되었습니다.",
+        diagnosis: "원물 원어민 관찰 로그 배열 데이터를 합산 수집하는 전처리 매핑 단계에서 특정 연산 피연산자 누수값이 명형 숫자 타입으로 확실히 컴파일 지목 추론되지 못해 엄격한 빌드 판단에 봉착한 탓으로 파악되었습니다.",
+        resolution: "수집 후 축약 reduction 연계를 도모하는 모든 연산 전 과정 상에 명목적 타입 캐스트 안전 정제 장치(Number(val) || 0)를 즉시 가교 이식해 널(null) 필드 우회 및 깨끗하게 오류를 박멸한 후 Vite 프로덕션 빌드를 원활 완결했습니다."
+      },
+      {
+        title: "샌드박스 API 오프라인 폴백 처리 구축 (The Sandbox API Fallback Layer)",
+        incident: "온라인 샌드박스 가동 시 GEMINI_API_KEY 미제공 혹은 트래픽 일시적 오버플로우 한도 타임아웃 국면 돌입 시, 원원 학생 분석 카드가 완전히 멈춤 상태로 로드 화면에 박히며 교사 화면이 미체험 공백을 자아냈습니다.",
+        diagnosis: "원격 지능형 API 호출 실패 결과를 별도의 로컬 무중단 우회로 장치 없이 즉석 UI 연결형으로 방치하면서 발발된 네트워크 종속 결함이 원인이었습니다.",
+        resolution: "자체 local zero-knowledge 예측 연동 엔진을 geminiService.ts 내부에 탑재 가교 설계했습니다. 리모트 API 통화 시그널 실패 시 즉각 원 아동 원생의 기존 점수 성취 곡선 분포 정보를 추론해, 사전에 정합 구축된 문예 패턴 사전과 문장을 TypeScript 클라이언트 상에서 즉석 완성해 0초 고속 페일오버를 달성했습니다."
+      },
+      {
+        title: "파이어베이스 보안 규칙 차단 및 개발 오프라인 샌드박스 완충 (The Secure Firestore Permission Barrier)",
+        incident: "데모 웹 브라우저 단독 기동 또는 테스터 샌드박싱 도중, 학급 명부 저장이나 생성 단추를 타격하면 파이어베이스 보안 가동 경고(Missing or insufficient permissions)가 백엔드에서 쏟아지며 원 로컬 데이터 백업 쓰기가 전격 차단되었습니다.",
+        diagnosis: "인증 수신 정보가 완전히 마운트 정비되기 전이나 원격 시큐리티 룰이 개발 장비 샌드박스의 자유도 높은 다중 쓰기를 거절 차단함과 동시에 프론트 브라우저 오프라인 단독 프레임워크 이탈이 병목이었습니다.",
+        resolution: "LocalStorage 캐싱을 1선 통제 허브로 기용하고 Firebase 연결 통신 타임아웃이나 규칙 예외 발생 시 로컬 캐시로 동기 우회하는 페일오버 스위치 장치를 프론트에 수립하여, 안전한 샌드박스 오프라인 명부 저장과 persistent 시물레이션을 100% 완전 성공시켰습니다."
+      }
+    ]
   },
-  eduplanner: {
+
+  "eduplanner": {
     title: "EduPlanner Pro (무인 제약 시간표)",
     tagline: "공간 수용 정원, 요일별 교원 일정, 피로 분포 등 마이크로 제약 조건을 분석하여 충돌 수치 0%의 최적의 시간표를 연산합니다.",
     liveUrl: "https://scheduling-app-five.vercel.app/",
@@ -721,7 +857,7 @@ const studyDataKo: Record<string, CaseStudyType> = {
       { label: "제약 조건 규칙 셋팅 제어판", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470611/Screenshot_2026-06-03_at_4.07.38_PM_hb49qm.png", subLabel: "관리자 설정 센터" },
       { label: "학급별 수업 시간표 격자 뷰", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470611/Screenshot_2026-06-03_at_4.08.03_PM_yaoj0u.png", subLabel: "클래스 시간표" },
       { label: "커리큘럼 교재 및 강의 연동 정보", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780470611/Screenshot_2026-06-03_at_4.08.12_PM_nwevlx.png", subLabel: "교재 목록" },
-      { label: "강사진 가용 요일 및 주간 통찰", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780470611/Screenshot_2026-06-03_at_4.08.24_PM_pauace.png", subLabel: "강사진 복수 조건 검색" }
+      { label: "강사 진가용 요일 및 주간 통찰", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780470611/Screenshot_2026-06-03_at_4.08.24_PM_pauace.png", subLabel: "강사진 복수 조건 검색" }
     ],
     stats: [
       { label: "시간표 작성 결점도", value: "충돌 및 갈등 0건 달성" },
@@ -731,12 +867,12 @@ const studyDataKo: Record<string, CaseStudyType> = {
     problem: [
       "인원, 강의실 한계 등 복수 관계 변수 조율 때문에 행정 팀장들이 매 학기 시간표 판넬 앞에 매주 수십 시간 야근하는 가혹함.",
       "필수 이수 단위 이행을 검증하는 물리 제약(Hard Rule)과 선호 일정, 휴가 등의 소프트 밸류 제안을 동시 충족하는 배치 구도는 수동 불가.",
-      "예기치 못한 교원 단기 병가나 강의실 시설 점검 등의 돌수 상황 시, 몇날 며칠을 조립한 기존 시간표 전체 구조가 완전 엉키며 휴강 대란 발발."
+      "예기치 못한 교원 단기 병가나 강의실 시설 점검 등의 돌발 상황 시, 몇 날 며칠을 조립한 기존 시간표 전체 구조가 완전 엉키며 휴강 대란 발발."
     ],
     solution: [
       "학급 기본 온보딩 명세서 기재 데이터를 흡수하여, 스스로 제약 조건을 체크 정산해 내는 지능형 고성능 헬퍼 소프트웨어.",
       "1차 배치가 완료된 후 정형 모듈 내부의 충돌 노드만 따로 집어 우회 해결해 나가는 '다단계 Weaving 하이 가치 아키텍처'.",
-      "강사 전원 일일 연강 과밀(Burnout) 축척 현황을 리얼타임 레이더 차트로 조율해 보여주는 교직원 피안 패널."
+      "강사 전원 일일 연강 과밀(Burnout) 축적 현황을 리얼타임 레이더 차트로 조율해 보여주는 교직원 피안 패널."
     ],
     stack: ["React 19", "TypeScript", "Google GenAI SDK (gemini-3-pro-preview)", "Firebase v11 Suite", "Framer Motion"],
     architecture: {
@@ -773,14 +909,14 @@ const studyDataKo: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "기존 개학 때마다 며칠씩 밤을 지새우던 거대 스케줄 조각 정리를 단 10분 이내의 자동 오토 알고리즘 추론 전격 해소.",
-        "가용 교실 도크 겹침 0건, 강사 주간 정규 강좌 기한 미달 이수 0%의 청정 시간표 자동 성립 완벽 검증.",
-        "연강 밀집도를 실시간 대조 배정하여 강사님들의 번아웃 리스크를 사전에 격리해 교원 결속 연한 보강 효과 도모."
+        "기존 개학 때마다 며칠씩 밤을 지새우던 거대 스케줄 조각 정리를 단 10분 이내의 자동 오토 알고리즘 추론 및 정합 조율로 완비.",
+        "강의실 용량 제한, 필수 이수 단위 등 물리적 제약을 100% 충족하여 단 한 건의 리소스 충돌 없는 완벽 배치.",
+        "교사 피로 분포를 사전에 고려하고 조정함으로써 피로 누적 및 이탈 위험율을 안정적으로 낮춤."
       ],
       security: [
-        "시간 시간표 설계 제어 패널은 오직 보증 완료된 허용 기관장의 이메일 인증을 확보해야 진입 가능.",
-        "수정 및 편집 행적들을 감사 기록 서버에 기밀 보존하여 임의 오작동 및 보안 이탈 원인 자율 소탕.",
-        "원클릭 파이어스토어 어드민 권한 제정 보안 규칙을 가용해 타인의 고의 변조로부터 데이터 기밀성 확보."
+        "자동 가동 권한 세션 보호로 행정 관리자 전용 조율 터미널 정보 전량 보완.",
+        "시간표 변경 관리 및 타임라인 기록 메타데이터 보존으로 실시간 이력 감사 보정.",
+        "강력한 파이어베이스 데이터 규칙 구성으로 학급 정보의 원외 무단 유출 원천 거부."
       ]
     },
     behindTheArchitecture: {
@@ -788,12 +924,28 @@ const studyDataKo: Record<string, CaseStudyType> = {
       vision: "교과 제약을 있는 그대로 명세 기입하는 것만으로, 수억 가지 우회 조합 우주를 자율 연산해 하나도 안 어긋나는 올바른 무공해 시간표를 10분 안에 컴파일해내는 오토 SaaS.",
       rationale: "반응이 즉각적인 Firestore 실시간 대조 저장 구조를 중심에 세우고, 기본 스케줄 편조는 초고속 Flash 모델에, 해결 난망 노드는 Pro 지능형 조율에 역할을 분담 배정해 최적의 생산성 확보."
     },
-    technicalHurdles: {
-      incident: "대규모 시간표 스케줄링 연산 수행 시 지능 추론 백패킹 궤적이 지나쳐 504 게이트웨이 타임아웃 및 생성형 API 토큰 한도 소진.",
-      diagnosis: "상충관계가 극히 심한 강의실 수용 규격과 강사 정기 휴가 등의 온전한 제약(Constraint)을 모두 자연어 규칙에만 결속시킨 탓에 인공지능이 논리 교착 상태(Deadlock)에 빠짐.",
-      resolution: "TypeScript로 사전 제약 정규 필터 알고리즘을 빌드해 사전에 불가능한 노드를 완전 전처리 가지치기(Pruning)하고, 1차 도안은 초고속 제미나이 플래시로 파이프라인 정리 후 충돌 노드만 고성능 프로(Pro)에 분담 할양해 하이브리드 연산 10분 컷 종결."
-    }
+    technicalHurdles: [
+      {
+        title: "배킹 및 타임아웃 지연 제약 (The 'Silent Incident')",
+        incident: "학교 시간표 작성은 수학적 난제인 NP-complete 문제입니다. 수백 개의 교원 및 강의실 제약 변수를 오직 인공지능 프롬프트 추론에만 의존하여 풀도록 방치할 경우, 외형상 무수한 루프에 진입하며 토큰 한도를 거듭 소진하고 끝내 504 Gateway 타임아웃을 연출했습니다.",
+        diagnosis: "상충관계가 극히 심한 강의실 수용 규격과 강사 정기 휴가 등의 온전한 제약(Constraint)을 모두 자연어 프롬프트와 규칙 제어에만 단일 위임하면서 발생한 기계 판단 교착(Deadlock)이 원인이었습니다.",
+        resolution: "무거운 수학 연산 소요를 로컬 TypeScript 제약 조건 솔버 레이어로 이관했습니다. services/geminiService.ts 내에서 validateScheduleProgrammatically 함수를 설계하여 프라이머리 제약 및 상충 항목을 먼저 선형 연산하도록 정규화했습니다. 이를 통해 강사 이중 예약, 동일 요일 시간표 오버랩, 학교 폐쇄 시간대 등의 모순을 API 호출 전에 직접 전처리 차단하여 지속적 안정성을 확보했습니다."
+      },
+      {
+        title: "자연어 제약 오버플로우 통제 (The 'Deep Diagnostic Path')",
+        incident: "사소한 지역 레벨 변수(강사 개인 휴식 시간대, 개별 강의실 좌표 매핑 등)를 인공지능 모델 텍스트 구조 파일에 통째로 욱여넣으면, 신경망 추론 과정에서 교착 현상이나 오인(Hallucination)이 상시 발생했습니다. 상호 배타성 규칙이 서로 얽히는 순간 기계 추론은 오류를 끝없이 작성하며 검증에 통과하지 못했습니다.",
+        diagnosis: "전체 마스터 테이블 정보를 단일 프롬프트에 동시 수용하고자 하여 추론 디버깅 궤적이 마비되고 모델 가독 한계에 부딪혔던 것이 주핵심 요인이었습니다.",
+        resolution: "학교 전체 시간표 데이터베이스를 단일 프롬프트에 쏟는 구조 대신, 정밀하게 정합된 단계별 다단 구조(Batching Process)로 변경했습니다. 시간표 작성 단계를 Draft(초안) ➔ Conflict Resolution(충돌 해결) ➔ Guardian Weaver(최종 결속 구조 검증) 패키지로 나누어 실행함으로써 모델의 심층 추론 부담을 완벽히 경감 분산했습니다."
+      },
+      {
+        title: "무제한 트래픽 및 API 쿼터 유연성 (The 'Production Resolution')",
+        incident: "복수 행정 기관장 및 교사들이 단기간 대규모 시간표 제안 연산을 한꺼번에 실행 배배포할 시, 외부 API 토큰 소진 한도(Rate Limit) 초과 오류가 거듭 발생하여 학사 조율 운영 전체가 마비되는 위험에 봉착했습니다.",
+        diagnosis: "서버가 많은 양의 실시간 스케줄 생성 쿼리에 무방비로 호출당하면서, 외부 서비스 통제 임계치를 넘기는 비효율 구조가 원인이었습니다.",
+        resolution: "물리적 안정 가동 벨트를 이중 장치로 설계 및 수립했습니다: 1) 하이브리드 AI 구조 추론: 경량화된 고속 모델링으로 기본 초안 스켈레톤 틀을 즉시 생성하고, 병목이 생기는 특이 충돌 노드만 고밀도 Pro 모델에 바인딩하여 쿼터를 효율 관리합니다. 2) 초고정밀 클라이언트 사이드 오프라인 솔버: 데모/체험 샌드박스의 원활한 운영을 위해 전체 학년 가중 피로도 분산 및 수치 연산 충돌 대조 엔진을 완전한 클라이언트 브라우저 TypeScript 논리로 구현하여, 무트래픽 및 0초 연산 응답을 완전 구현해 냈습니다."
+      }
+    ]
   },
+
   "consultation-pipeline": {
     title: "Automated Consult Pipeline",
     tagline: "수강 상담 수집 직후 한/영 맞춤 분석 보고서, 피드백 PDF를 학부모 포털에 실시간 자동 관류해 내는 무인 파이프라인입니다.",
@@ -823,7 +975,7 @@ const studyDataKo: Record<string, CaseStudyType> = {
       ],
       guardrails: [
         "수강 학급 반 정렬이 수정되어도 기존 학업 이력을 원목 보호하는 대형 데이터 가교 참조 테이블 적용.",
-        "이벤트 수신 직후 학부모 전용 암호 마술 링크(Onboarding Magic Link)를 인지 생성하고 관계 DB에 Atomic 주입.",
+        "이벤트 수신 직후 학부모 전용 암호 마술 링크 (Onboarding Magic Link)를 인지 생성하고 관계 DB에 Atomic 주입.",
         "Softr 사용자 고유 난수 해시 문자열 구속을 통해 이웃 학생 보고서 행 주소 임의 변동 유출 수법 근원 봉쇄."
       ]
     },
@@ -863,12 +1015,22 @@ const studyDataKo: Record<string, CaseStudyType> = {
       vision: "교사의 가벼운 폼 터치 한 번으로 즉석 한/영 보고 표지를 컴파일하고 학부모 고유 지적 자금 영역으로 실시간 가교 배송하는 올인원 어드민 정산기.",
       rationale: "데이터베이스 영속 무결을 기하기 위해 Airtable 관계형 시트를 기용하고, Make 연쇄 트리거 흐름을 구축해 강사진의 행정 수동 타이핑 소요를 완전 0초로 단축 구현."
     },
-    technicalHurdles: {
-      incident: "입원 면담 등록 성수기 오버플로우 트래픽 집중 시, 분기 자동화 웹훅 충돌로 부모 고유 폴더 및 관계 레코드가 이중 생성 유실되는 병목 사건 발생.",
-      diagnosis: "Make.com의 병렬 연산 흐름 제어가 Airtable 테이블 데이터 조회-수정-작성 트랜잭션 도킹을 수행할 때 세션 격리(Transaction Isolation) 부족으로 인한 쓰기 경합(Race Condition)으로 진단.",
-      resolution: "중간 데이터 웨어하우스용 Redis 큐 레이어를 도입해 단일 입력 가교 트랜잭션을 완전 순차 큐잉하고, Airtable에 고유 유니크 키 제약(Unique Constraint)을 도입하여 이중 쓰기를 무효화 방어."
-    }
+    technicalHurdles: [
+      {
+        title: '"Stale Data" 비동기 레이스 컨디션 해결',
+        incident: "데이터 수집 폼(Fillout) 레이어가 학부모 상담 부모 레코드와 자식 관계 레코드를 비동기로 생성하는 구조였습니다. 자동화 엔진이 부모 레코드 생성 이벤트 감지 즉시 연산을 처리하다 보니, 자식 관계 데이터가 미처 저장 완료되기 전에 실행되어 빈 보고서가 채워지는 문제가 있었습니다.",
+        diagnosis: "Airtable 데이터베이스 쓰기 완결 타임과 자동화 플랫폼(Make) 웹훅 접수 트리거 속도 간 미세한 레이스 컨디션(Microsecond Race Condition)이 원인이었습니다. 배열 데이터가 생성 완료되기 전에 이미 이터레이터가 탐색을 시도하는 병목이었습니다.",
+        resolution: "의도적 지연 로드 파이프라인(Delayed-fetch logic flow)을 설계했습니다. 시나리오 시작 시 엄격한 60초 일시정지(Execution Pause) 장치를 부여한 주기에 따라 2차 데이터 쿼리를 트리거하여, 완전히 영속 결속된 자식 테이블 데이터 정보를 일체형으로 안전 정합 가공한 후 AI 모듈로 송신하였습니다."
+      },
+      {
+        title: '"Aggregator Wall" 컨텍스트 단절 장벽 돌파',
+        incident: "학부모 상담 자료 제너레이터 연동 시 여러 번의 과거 수강 포트폴리오를 축약 및 병합(Aggregation)해야 했습니다. 그러나 데이터를 모아 하나의 번들로 만드는 구조에서 관계형의 실제 텍스트 값(학생 이름 등)이 모두 증발하고 무작위 기계 주소(Record ID)만 AI에 전송되어 보고서가 망가지는 현상이 생겼습니다.",
+        diagnosis: "Airtable Aggregator 노드가 물리 설계적으로 상위 relational raw lookup 필드 접근을 완전히 차단하는 투명 장벽(Hard visibility wall) 역할을 수행하기에 하방 노드가 상방 값을 쿼리할 수 없기 때문에 발생했습니다.",
+        resolution: "데이터 밀수입 메커니즘을 엔지니어링하였습니다. 어그리게이터가 묶어내는 메인 텍스트 덩어리 내부에 실제 인칭 학명 정보 값들을 미리 합산 매핑 결속시키는 바이패스 징검다리를 구현하여, 최소한의 단일 토큰 페이로드 만으로도 학생 메타데이터가 100% 온전히 보존되어 AI에 인계되도록 완치하였습니다."
+      }
+    ]
   },
+
   "lead-enrichment": {
     title: "B2B Lead Enrichment (자동 파트너 발굴 CRM)",
     tagline: "지역 상권 가용 지도를 정화 및 중복 소탕하고, 제미나이 언어 가이드로 대표 맞춤 협업 이메일 딥링크를 즉석 생성합니다.",
@@ -886,7 +1048,7 @@ const studyDataKo: Record<string, CaseStudyType> = {
     problem: [
       "네이버 지도 상권 데이터 원본에 섞여 들어간 지저분한 HTML 태그 노이즈나 비공식 부속 상호 때문에 정제가 난감한 오염 문제.",
       "잠재 제휴 동반사 수백 곳 각각의 설립 배경을 수동 독해서 맞춤 비즈니스 영업 메일을 직접 작성하는 시간의 숨 막힘.",
-      "특정 잠재 파트너사에 다단계 중복 공문 메일을 재차 보내 스팸 피고로 블랙리스트 등재 및 기업 이미지 꺠짐 마찰."
+      "특정 잠재 파트너사에 다단계 중복 공문 메일을 재차 보내 스팸 피고로 블랙리스트 등재 및 기업 이미지 깨짐 마찰."
     ],
     solution: [
       "Express 중위 비즈니스 프록시를 안치해 원본 데이터를 균등 정규 청소하고 중복 배제 기법을 0.1초 완성.",
@@ -939,15 +1101,18 @@ const studyDataKo: Record<string, CaseStudyType> = {
       ]
     },
     behindTheArchitecture: {
-      problem: "가용 파트너를 발굴하려 포털 지도를 수작업으로 스크랩하여 연락처 리스트를 기재하고, 대표 제안서를 수동으로 복사해 날리느라 하루 영업 효율이 급격히 저하되던 만성 비인센티브 오퍼레이팅.",
-      vision: "지역 대표 상권을 클릭 한 번으로 수집함과 함께 중복 연락망을 무인 제거하고, 파트너 특색 경력 가치에 맞춰 가치 제안서를 지메일 이메일로 1초 완성 전송하는 스마트 툴.",
-      rationale: "백엔드 Express 프록시 가설로 네이버 데이터 병목을 소거하고, 제미나이 정적 스키마 변환 출력을Firestore 컬렉션 데이터에 연결하여 누락 없는 맞춤형 B2B 매스 영업 CRM 안착."
+      problem: "가용 파트너를 발굴하려 포털 지도를 수작업으로 스크랩하여 연락처 리스트를 기재하고, 대표 제안서를 수동으로 복사해 날리느라 하루 영업 효율이 급격히 저하되던 만성 B2B 비효율 오퍼레이팅.",
+      vision: "지역 대표 상권을 클릭 한 번으로 수집함과 함께 중복 연락망을 무인 제거하고, 파트너 특색 경력 가치에 맞춰 가치 제안서를 지메일 이메일로 1초 완성 전송하는 B2B 엔진.",
+      rationale: "백엔드 Express 프록시 가설로 네이버 데이터 병목을 소거하고, 제미나이 정적 스키마 변환 출력을 Firestore 컬렉션 데이터에 연결하여 누락 B2B CRM 체계 구체화."
     },
-    technicalHurdles: {
-      incident: "네이버 가용 지도 크롤링 수집 도중 일시적인 IP 접근 차단부 발생 및 일부 지저분한 HTML 원물 찌꺼기가 섞여 CRM에 인입.",
-      diagnosis: "크롤러 헤더가 정지 탐지 룰에 필터링되었고, 타겟 업장의 복잡한 인라인 HTML 개행 특성이 고스란히 유입되어 파서 정재 구조를 오염시킴.",
-      resolution: "Axios 프록시에 로테이션 브라우저 에이전트(User-Agent Matrix)를 바인딩하고 가중 분석 정규표현식(Regex)을 삼중 스크린 개편함과 함께, 수집 장애 국면 돌파용 더미 쉐이프(Fail-safe Fallback Mock) 매커니즘을 설치해 파이프라인 중단 극복."
-    }
+    technicalHurdles: [
+      {
+        title: "네이버 크롤링 차단 및 마크업 오염 극복 (Naver Crawler Soft-Bans and Markup Pollution)",
+        incident: "네이버 가용 지도 크롤링 수집 도중 일시적인 IP 접근 차단부 발생 및 일부 지저분한 HTML 원물 찌꺼기가 섞여 CRM에 인입.",
+        diagnosis: "크롤러 헤더가 정지 탐지 룰에 필터링되었고, 타겟 업장의 복잡한 인라인 HTML 개행 특성이 고스란히 유입되어 파서 정재 구조를 오염시킴.",
+        resolution: "Axios 프록시에 로테이션 브라우저 에이전트(User-Agent Matrix)를 바인딩하고 가중 분석 정규표현식(Regex)을 삼중 스크린 개편함과 함께, 수집 장애 국면 돌파용 더미 쉐이프(Fail-safe Fallback Mock) 매커니즘을 설치해 파이프라인 중단 극복."
+      }
+    ]
   }
 };
 
@@ -961,9 +1126,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [isArchOpen, setIsArchOpen] = useState(false);
-  const [isHurdlesOpen, setIsHurdlesOpen] = useState(false);
-  const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
+  const [isArchOpen, setIsArchOpen] = useState(true);
+  const [isHurdlesOpen, setIsHurdlesOpen] = useState(true);
+  const [isBreakdownOpen, setIsBreakdownOpen] = useState(true);
   const [activeScreenshotIdx, setActiveScreenshotIdx] = useState(0);
 
   useEffect(() => {
@@ -979,9 +1144,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
     document.body.style.overflow = 'hidden';
 
     // Reset collapsible states when project changes
-    setIsArchOpen(false);
-    setIsHurdlesOpen(false);
-    setIsBreakdownOpen(false);
+    setIsArchOpen(true);
+    setIsHurdlesOpen(true);
+    setIsBreakdownOpen(true);
     setActiveScreenshotIdx(0);
 
     return () => {
@@ -1034,15 +1199,25 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
         >
           {t.backToPortfolio}
         </button>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 md:gap-6">
           {hasLiveApp && (
             <a 
               href={projectData.liveUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent-gold"
+              className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent-gold transition-colors hover:text-accent-gold/80"
             >
               {t.launchLive}
+            </a>
+          )}
+          {projectData.storeUrl && (
+            <a 
+              href={projectData.storeUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-red-500 transition-colors hover:text-red-400"
+            >
+              {t.storeLink}
             </a>
           )}
           <button 
@@ -1073,10 +1248,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
           </p>
 
           {/* DUAL BUTTON SPLIT CTA */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4 max-w-xl">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4 max-w-2xl">
             <button 
               onClick={scrollToBreakdown}
-              className={`shiny-cta py-5 text-center shadow-2xl ${hasLiveApp ? 'w-full' : 'w-full sm:w-auto px-12'}`}
+              className={`shiny-cta py-5 text-center shadow-2xl ${(hasLiveApp || projectData.storeUrl) ? 'w-full sm:w-auto px-8' : 'w-full sm:w-auto px-12'}`}
             >
               {t.technicalBreakdown}
             </button>
@@ -1092,6 +1267,16 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                 }`}
               >
                 {t.launchLiveApp}
+              </a>
+            )}
+            {projectData.storeUrl && (
+              <a 
+                href={projectData.storeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-black uppercase text-[10px] tracking-widest transition-all shadow-lg hover:shadow-red-600/20 text-center flex items-center justify-center gap-1.5"
+              >
+                <span>🚀 {t.storeLink}</span>
               </a>
             )}
           </div>
@@ -1221,48 +1406,68 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
               </div>
             </button>
             
-            {isHurdlesOpen && (
-              <div className="p-8 md:p-12 pt-0 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 border-t border-red-500/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10">
-                {/* THE INCIDENT */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-xs text-red-500">❌</div>
-                    <h4 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.incident}</h4>
-                  </div>
-                  <p className={`text-xs md:text-sm leading-relaxed font-light ${
-                    theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
-                  }`}>
-                    {projectData.technicalHurdles.incident}
-                  </p>
-                </div>
+            {isHurdlesOpen && (() => {
+              const hurdlesList = Array.isArray(projectData.technicalHurdles)
+                ? projectData.technicalHurdles
+                : [projectData.technicalHurdles];
+              
+              return (
+                <div className="border-t border-red-500/5 divide-y divide-red-500/5 relative z-10 animate-in fade-in slide-in-from-top-2 duration-300">
+                  {hurdlesList.map((hurdle, hIdx) => (
+                    <div key={hIdx} className={`${hIdx > 0 ? 'pt-8 md:pt-12' : ''} p-8 md:p-12 pb-8 md:pb-12 space-y-6`}>
+                      {hurdle.title && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500 font-mono">
+                            {locale === 'en' ? `Hurdle ${hIdx + 1}: ${hurdle.title}` : `장애 극복 사례 ${hIdx + 1}: ${hurdle.title}`}
+                          </span>
+                        </div>
+                      )}
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                        {/* THE INCIDENT */}
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-xs text-red-500">❌</div>
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.incident}</h4>
+                          </div>
+                          <p className={`text-xs md:text-sm leading-relaxed font-light ${
+                            theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
+                          }`}>
+                            {hurdle.incident}
+                          </p>
+                        </div>
 
-                {/* THE DIAGNOSIS */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center text-xs text-orange-500">🔍</div>
-                    <h4 className="text-[10px] font-black uppercase tracking-widest text-orange-500">{t.diagnosis}</h4>
-                  </div>
-                  <p className={`text-xs md:text-sm leading-relaxed font-light ${
-                    theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
-                  }`}>
-                    {projectData.technicalHurdles.diagnosis}
-                  </p>
-                </div>
+                        {/* THE DIAGNOSIS */}
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center text-xs text-orange-500">🔍</div>
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-orange-500">{t.diagnosis}</h4>
+                          </div>
+                          <p className={`text-xs md:text-sm leading-relaxed font-light ${
+                            theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
+                          }`}>
+                            {hurdle.diagnosis}
+                          </p>
+                        </div>
 
-                {/* THE RESOLUTION */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center text-xs text-green-500">✓</div>
-                    <h4 className="text-[10px] font-black uppercase tracking-widest text-green-500">{t.resolution}</h4>
-                  </div>
-                  <p className={`text-xs md:text-sm leading-relaxed font-light ${
-                    theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
-                  }`}>
-                    {projectData.technicalHurdles.resolution}
-                  </p>
+                        {/* THE RESOLUTION */}
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center text-xs text-green-500 font-bold">✓</div>
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-green-500">{t.resolution}</h4>
+                          </div>
+                          <p className={`text-xs md:text-sm leading-relaxed font-light ${
+                            theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
+                          }`}>
+                            {hurdle.resolution}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            )}
+              );
+            })()}
           </div>
         )}
 
@@ -1276,6 +1481,13 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
 
           {projectData.screenshots && projectData.screenshots.length > 0 ? (
             <div className="space-y-4">
+              {/* Preload container to cache all project screenshots for instant slide transitions */}
+              <div className="absolute top-0 left-0 w-1 h-1 opacity-0 pointer-events-none overflow-hidden select-none" aria-hidden="true">
+                {projectData.screenshots.map((scr, idx) => (
+                  <img key={idx} src={scr.url} alt="" referrerPolicy="no-referrer" />
+                ))}
+              </div>
+
               {/* Image Frame with Navigation */}
               <div className={`rounded-3xl border overflow-hidden aspect-video relative flex items-center justify-center bg-black/85 group ${
                 theme === 'dark' ? 'border-white/10' : 'border-black/10'
@@ -1410,20 +1622,32 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                   </div>
                   <h4 className="text-lg font-bold font-display uppercase tracking-wider">{t.productionWalkthrough}</h4>
                   <p className="text-xs text-white/50 leading-relaxed font-mono">
-                    {hasLiveApp 
+                    {(hasLiveApp || projectData.storeUrl) 
                       ? t.productionWalkthroughBodyLive
                       : t.productionWalkthroughBodyBackground}
                   </p>
-                  {hasLiveApp && (
-                    <div className="pt-2">
-                      <a 
-                        href={projectData.liveUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="inline-flex px-6 py-2.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 text-[9px] font-black uppercase tracking-widest"
-                      >
-                        {t.openLiveSandbox}
-                      </a>
+                  {(hasLiveApp || projectData.storeUrl) && (
+                    <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center items-center">
+                      {hasLiveApp && (
+                        <a 
+                          href={projectData.liveUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="inline-flex px-6 py-2.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 text-[9px] font-black uppercase tracking-widest"
+                        >
+                          {t.openLiveSandbox}
+                        </a>
+                      )}
+                      {projectData.storeUrl && (
+                        <a 
+                          href={projectData.storeUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="inline-flex px-6 py-2.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-[9px] font-black uppercase tracking-widest"
+                        >
+                          {t.storeLink}
+                        </a>
+                      )}
                     </div>
                   )}
                 </div>
