@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MailIcon, XIcon, ExternalLinkIcon, SparklesIcon, ChevronDownIcon } from './components/Icons.tsx';
+import { MailIcon, XIcon, ExternalLinkIcon, SparklesIcon, ChevronDownIcon, FileTextIcon } from './components/Icons.tsx';
 
 interface CaseStudyViewerProps {
   projectId: string;
@@ -14,6 +14,7 @@ interface CaseStudyType {
   tagline: string;
   liveUrl: string;
   walkthroughVideo?: string;
+  screenshots?: { label: string; url: string; subLabel?: string }[];
   stats: { label: string; value: string }[];
   problem: string[];
   solution: string[];
@@ -215,6 +216,18 @@ const studyDataEn: Record<string, CaseStudyType> = {
     title: "Benchmark Explorer",
     tagline: "Relational student performance tracking mapping observations directly to CEFR and Cambridge standards.",
     liveUrl: "https://education-benchmark-system.vercel.app/",
+    screenshots: [
+      { label: "Dashboard Performance", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.32.23_PM_lxnnmx.png", subLabel: "Overview" },
+      { label: "Dashboard Filters", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469515/Bench_Dash_2_txdlv5.png", subLabel: "Filtering & Metrics" },
+      { label: "Student Roster", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.32.45_PM_efb5dj.png", subLabel: "Enrollment & Classes" },
+      { label: "Student Profile", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469517/Screenshot_2026-06-03_at_3.33.30_PM_xram7p.png", subLabel: "Individual progress" },
+      { label: "Individual Report", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.43.00_PM_fulqsf.png", subLabel: "AI Multi-language Progress" },
+      { label: "Class Performance Report", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.43.40_PM_ja3zlx.png", subLabel: "Aggregate Cohort Analysis" },
+      { label: "Principal Briefing", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.44.09_PM_glxdms.png", subLabel: "Leadership Diagnostics" },
+      { label: "Learning Standards Map", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.44.41_PM_nqpx5n.png", subLabel: "CEFR & Cambridge Align" },
+      { label: "Benchmark Test Sheet", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469851/11_k6zxrc.png", subLabel: "Assessments Phase 1" },
+      { label: "Visual Comprehension Exam", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469852/6_gtubji.png", subLabel: "Assessments Phase 2" }
+    ],
     stats: [
       { label: "Weekly Admin Ingestion", value: "Zero CSV Uploads" },
       { label: "Teacher Reporting Time", value: "-12 Hrs/wk" },
@@ -290,6 +303,16 @@ const studyDataEn: Record<string, CaseStudyType> = {
     title: "EduPlanner Pro",
     tagline: "Automated, cognitive-aware scheduling scheduler resolving school bottlenecks under extreme constraints.",
     liveUrl: "https://scheduling-app-five.vercel.app/",
+    screenshots: [
+      { label: "Landing Feature Grid", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470613/Screenshot_2026-06-03_at_4.05.48_PM_rrbfxg.png", subLabel: "Landing Page 1" },
+      { label: "Constraint Settings View", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470612/Screenshot_2026-06-03_at_4.06.15_PM_lbjlt1.png", subLabel: "Landing Page 2" },
+      { label: "Interactive System Benefits", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470613/Screenshot_2026-06-03_at_4.05.57_PM_qkzdjm.png", subLabel: "Landing Page 3" },
+      { label: "Scheduling Dashboard", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470612/Screenshot_2026-06-03_at_4.06.51_PM_w7fop6.png", subLabel: "Primary App Dashboard" },
+      { label: "Rule Configuration Setup", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470611/Screenshot_2026-06-03_at_4.07.38_PM_hb49qm.png", subLabel: "Administration Hub" },
+      { label: "Class Timetable Grid", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470611/Screenshot_2026-06-03_at_4.08.03_PM_yaoj0u.png", subLabel: "Student Schedule" },
+      { label: "Syllabus Curriculum mapping", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780470611/Screenshot_2026-06-03_at_4.08.12_PM_nwevlx.png", subLabel: "Book List" },
+      { label: "Teacher Availability Matrix", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780470611/Screenshot_2026-06-03_at_4.08.24_PM_pauace.png", subLabel: "Faculty Burnout Panel" }
+    ],
     stats: [
       { label: "Scheduling Complexity", value: "Zero Conflicts" },
       { label: "Calculation Window", value: "<10 Mins" },
@@ -440,6 +463,11 @@ const studyDataEn: Record<string, CaseStudyType> = {
     title: "B2B Lead Enrichment & CRM",
     tagline: "Automated regional map directory parsing, real-time deduplication, and customized cold sales outreach.",
     liveUrl: "https://jason-benjamin.vercel.app/", 
+    screenshots: [
+      { label: "Dashboard Overview", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780467780/LG_Dashboard_New_joyuto.png" },
+      { label: "Dashboard with Lead Results", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780467780/LG_Dashboard_Results_y7lmku.png" },
+      { label: "Cold Email Lead Generation Panel", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780467780/LG_Cold_Email_xafr9c.png" }
+    ],
     stats: [
       { label: "B2B Lead Discoveries", value: "Real-time" },
       { label: "Outreach Personalization", value: "Highly Customized" },
@@ -598,6 +626,18 @@ const studyDataKo: Record<string, CaseStudyType> = {
     title: "Benchmark Explorer (학업 성취 벤치마크)",
     tagline: "전인 성정 관찰 노트를 완전 데이터화하여 CEFR 유럽공통기준 및 학업 변화 지표를 한눈에 도출합니다.",
     liveUrl: "https://education-benchmark-system.vercel.app/",
+    screenshots: [
+      { label: "학업 성취 대시보드", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.32.23_PM_lxnnmx.png", subLabel: "오버뷰" },
+      { label: "대시보드 실시간 필터", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469515/Bench_Dash_2_txdlv5.png", subLabel: "필터링 및 세부 메트릭" },
+      { label: "원생 명단 관리", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.32.45_PM_efb5dj.png", subLabel: "학급 배정" },
+      { label: "원생 상세 프로필 포트폴리오", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469517/Screenshot_2026-06-03_at_3.33.30_PM_xram7p.png", subLabel: "발달 경향 한눈에 분석" },
+      { label: "AI 다국어 종합 리포트", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.43.00_PM_fulqsf.png", subLabel: "학부모 공유용" },
+      { label: "학급 전체 성취 분석 보고서", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.43.40_PM_ja3zlx.png", subLabel: "원장 전용 대시보드" },
+      { label: "원장단 핵심 지표 브리핑 (Principal Briefing)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.44.09_PM_glxdms.png", subLabel: "기관 운영 통찰" },
+      { label: "교육 기준 성취도 매핑 (CEFR)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469516/Screenshot_2026-06-03_at_3.44.41_PM_nqpx5n.png", subLabel: "글로벌 학업 스키마 정합" },
+      { label: "벤치마크 실전 검사 양식 (Baseline)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469851/11_k6zxrc.png", subLabel: "학습 평가 레벨 1" },
+      { label: "청각/시각 다중 평가 시스템", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780469852/6_gtubji.png", subLabel: "학습 평가 레벨 2" }
+    ],
     stats: [
       { label: "행정 수지 보강 효율", value: "CSV 수동 취합 전면 소거" },
       { label: "교사 야근 행정 시간", value: "매주 12시간 감수" },
@@ -673,6 +713,16 @@ const studyDataKo: Record<string, CaseStudyType> = {
     title: "EduPlanner Pro (무인 제약 시간표)",
     tagline: "공간 수용 정원, 요일별 교원 일정, 피로 분포 등 마이크로 제약 조건을 분석하여 충돌 수치 0%의 최적의 시간표를 연산합니다.",
     liveUrl: "https://scheduling-app-five.vercel.app/",
+    screenshots: [
+      { label: "핵심 피처 소개 및 연동 소개", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470613/Screenshot_2026-06-03_at_4.05.48_PM_rrbfxg.png", subLabel: "랜딩 페이지 1" },
+      { label: "제약 조건 세부 상세 설명", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470612/Screenshot_2026-06-03_at_4.06.15_PM_lbjlt1.png", subLabel: "랜딩 페이지 2" },
+      { label: "시스템 상호작용 기대가치", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470613/Screenshot_2026-06-03_at_4.05.57_PM_qkzdjm.png", subLabel: "랜딩 페이지 3" },
+      { label: "전체 시간표 제어 대시보드", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470612/Screenshot_2026-06-03_at_4.06.51_PM_w7fop6.png", subLabel: "메인 어플리케이션" },
+      { label: "제약 조건 규칙 셋팅 제어판", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470611/Screenshot_2026-06-03_at_4.07.38_PM_hb49qm.png", subLabel: "관리자 설정 센터" },
+      { label: "학급별 수업 시간표 격자 뷰", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780470611/Screenshot_2026-06-03_at_4.08.03_PM_yaoj0u.png", subLabel: "클래스 시간표" },
+      { label: "커리큘럼 교재 및 강의 연동 정보", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780470611/Screenshot_2026-06-03_at_4.08.12_PM_nwevlx.png", subLabel: "교재 목록" },
+      { label: "강사진 가용 요일 및 주간 통찰", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780470611/Screenshot_2026-06-03_at_4.08.24_PM_pauace.png", subLabel: "강사진 복수 조건 검색" }
+    ],
     stats: [
       { label: "시간표 작성 결점도", value: "충돌 및 갈등 0건 달성" },
       { label: "시간표 완성 속도", value: "10분 미만 기계 편조" },
@@ -823,6 +873,11 @@ const studyDataKo: Record<string, CaseStudyType> = {
     title: "B2B Lead Enrichment (자동 파트너 발굴 CRM)",
     tagline: "지역 상권 가용 지도를 정화 및 중복 소탕하고, 제미나이 언어 가이드로 대표 맞춤 협업 이메일 딥링크를 즉석 생성합니다.",
     liveUrl: "https://jason-benjamin.vercel.app/", 
+    screenshots: [
+      { label: "대시보드 메인 화면 (Dashboard Overview)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780467780/LG_Dashboard_New_joyuto.png" },
+      { label: "수집 완료 및 분석 지표 화면 (Dashboard with Lead Results)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780467780/LG_Dashboard_Results_y7lmku.png" },
+      { label: "B2B 지메일 제안 원클릭 전송 (Cold Email Lead Generation Panel)", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780467780/LG_Cold_Email_xafr9c.png" }
+    ],
     stats: [
       { label: "타겟 데이터 수집 속도", value: "실시간 스캔 완료" },
       { label: "영업 이메일 맞춤 정성도", value: "베테랑 경격 이력 완벽 투화" },
@@ -909,6 +964,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
   const [isArchOpen, setIsArchOpen] = useState(false);
   const [isHurdlesOpen, setIsHurdlesOpen] = useState(false);
   const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
+  const [activeScreenshotIdx, setActiveScreenshotIdx] = useState(0);
 
   useEffect(() => {
     // Capture background scroll position; fall back to window.scrollY if undefined
@@ -926,6 +982,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
     setIsArchOpen(false);
     setIsHurdlesOpen(false);
     setIsBreakdownOpen(false);
+    setActiveScreenshotIdx(0);
 
     return () => {
       document.body.style.overflow = originalOverflow || 'unset';
@@ -1216,58 +1273,163 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
           }`}>
             {t.proofOfWorkTitle}
           </div>
-          <div className={`rounded-3xl border overflow-hidden aspect-video relative flex flex-col items-center justify-center bg-black/40 ${
-            theme === 'dark' ? 'border-white/10' : 'border-black/10'
-          }`}>
-            {projectData.walkthroughVideo ? (
-              (() => {
-                const url = projectData.walkthroughVideo.split('?')[0].split('#')[0].toLowerCase();
-                const isVideo = url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg') || url.includes('/video/upload/');
-                return isVideo ? (
-                  <video 
-                    src={projectData.walkthroughVideo} 
-                    controls 
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline 
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <img 
-                    src={projectData.walkthroughVideo} 
-                    alt={projectData.title}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-contain"
-                  />
-                );
-              })()
-            ) : (
-              <div className="p-8 text-center space-y-4 max-w-md animate-in fade-in duration-500">
-                <div className="w-16 h-16 rounded-full bg-accent-gold/10 flex items-center justify-center mx-auto">
-                  <ExternalLinkIcon className="w-6 h-6 text-accent-gold" />
+
+          {projectData.screenshots && projectData.screenshots.length > 0 ? (
+            <div className="space-y-4">
+              {/* Image Frame with Navigation */}
+              <div className={`rounded-3xl border overflow-hidden aspect-video relative flex items-center justify-center bg-black/85 group ${
+                theme === 'dark' ? 'border-white/10' : 'border-black/10'
+              }`}>
+                {/* Floating Index Tag */}
+                <div className="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-mono uppercase font-semibold text-accent-gold tracking-widest flex items-center gap-1.5 shadow-lg select-none">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent-gold animate-pulse"></span>
+                  {String(activeScreenshotIdx + 1).padStart(2, '0')} / {String(projectData.screenshots.length).padStart(2, '0')} • {projectData.screenshots[activeScreenshotIdx].label}
                 </div>
-                <h4 className="text-lg font-bold font-display uppercase tracking-wider">{t.productionWalkthrough}</h4>
-                <p className="text-xs text-white/50 leading-relaxed font-mono">
-                  {hasLiveApp 
-                    ? t.productionWalkthroughBodyLive
-                    : t.productionWalkthroughBodyBackground}
-                </p>
-                {hasLiveApp && (
-                  <div className="pt-2">
-                    <a 
-                      href={projectData.liveUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="inline-flex px-6 py-2.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 text-[9px] font-black uppercase tracking-widest"
-                    >
-                      {t.openLiveSandbox}
-                    </a>
-                  </div>
-                )}
+
+                {/* Main Image Slider Viewport */}
+                <div className="w-full h-full relative flex items-center justify-center select-none overflow-hidden p-2">
+                  <img 
+                    src={projectData.screenshots[activeScreenshotIdx].url} 
+                    alt={projectData.screenshots[activeScreenshotIdx].label}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-contain max-h-full transition-transform duration-700 ease-out hover:scale-[1.02]"
+                  />
+                </div>
+
+                {/* Left Arrow Button */}
+                <button
+                  onClick={() => setActiveScreenshotIdx(prev => (prev === 0 ? projectData.screenshots!.length - 1 : prev - 1))}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/80 backdrop-blur-md border border-white/10 text-white/70 hover:text-white transition-all scale-95 hover:scale-105 active:scale-95 shadow-md focus:outline-none"
+                  aria-label="Previous Slide"
+                >
+                  <span className="text-xl leading-none">‹</span>
+                </button>
+
+                {/* Right Arrow Button */}
+                <button
+                  onClick={() => setActiveScreenshotIdx(prev => (prev === projectData.screenshots!.length - 1 ? 0 : prev + 1))}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/80 backdrop-blur-md border border-white/10 text-white/70 hover:text-white transition-all scale-95 hover:scale-105 active:scale-95 shadow-md focus:outline-none"
+                  aria-label="Next Slide"
+                >
+                  <span className="text-xl leading-none">›</span>
+                </button>
               </div>
-            )}
-          </div>
+
+              {/* Bottom Interactive Thumbnail / Tab Track */}
+              <div className={`grid gap-2.5 pt-1 ${
+                projectData.screenshots.length > 4 
+                  ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-5' 
+                  : 'grid-cols-1 sm:grid-cols-3'
+              }`}>
+                {projectData.screenshots.map((scr, sIdx) => {
+                  const isActive = activeScreenshotIdx === sIdx;
+                  return (
+                    <button
+                      key={sIdx}
+                      onClick={() => setActiveScreenshotIdx(sIdx)}
+                      className={`text-left p-3.5 rounded-xl border transition-all duration-300 flex items-start gap-3 relative overflow-hidden ${
+                        isActive
+                          ? 'border-accent-gold bg-accent-gold/5 shadow-[0_0_15px_rgba(230,175,46,0.08)]'
+                          : theme === 'dark'
+                            ? 'border-white/5 bg-white/[0.01] hover:bg-white/[0.04]'
+                            : 'border-black/5 bg-black/[0.01] hover:bg-black/[0.03]'
+                      }`}
+                    >
+                      {/* Left accent color indicator bar for active slide */}
+                      <div className={`absolute top-0 bottom-0 left-0 w-1 transition-all ${isActive ? 'bg-accent-gold' : 'bg-transparent'}`}></div>
+                      <div className={`font-mono text-[9px] uppercase font-bold tracking-widest shrink-0 ${isActive ? 'text-accent-gold' : theme === 'dark' ? 'text-white/30' : 'text-alpine-950/30'}`}>
+                        {String(sIdx + 1).padStart(2, '0')}
+                      </div>
+                      <div className="space-y-0.5">
+                        <div className={`text-[11px] font-bold tracking-tight line-clamp-1 leading-snug ${isActive ? 'text-accent-gold' : theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>
+                          {scr.label}
+                        </div>
+                        <div className={`text-[9px] font-normal font-mono opacity-40 line-clamp-1 ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
+                          {scr.subLabel || (sIdx === 0 ? (locale === 'en' ? "Primary View" : "기본 대시보드") : sIdx === 1 ? (locale === 'en' ? "Data Processing" : "수집 분석 지표") : (locale === 'en' ? "Email Synthesizer" : "이메일 템플레이트"))}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* PDF AVAILABILITY NOTICE FOR BENCHMARK EXPLORER */}
+              {projectId === 'benchmark-explorer' && (
+                <div className={`p-5 rounded-2xl border flex items-center gap-4 animate-in fade-in duration-500 ${
+                  theme === 'dark' 
+                    ? 'bg-accent-gold/5 border-accent-gold/20 text-white/95' 
+                    : 'bg-accent-gold/10 border-accent-gold/30 text-alpine-950/95'
+                }`}>
+                  <div className="w-10 h-10 rounded-xl bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center shrink-0">
+                    <FileTextIcon className="w-5 h-5 text-accent-gold" />
+                  </div>
+                  <div className="space-y-0.5">
+                    <div className="text-[10px] font-bold uppercase tracking-wider font-mono text-accent-gold">
+                      {locale === 'en' ? "DOCUMENTATION REFERENCE" : "첨부 문서 자료 안내"}
+                    </div>
+                    <p className="text-xs leading-relaxed opacity-85">
+                      {locale === 'en' 
+                        ? "Please note: Complete Baseline, Midline, and Endline Benchmark test templates are fully cataloged, formatted, and available as professional PDF documents upon request." 
+                        : "안내 사항: Baseline, Midline 및 Endline 실전 벤치마크 평가 테스트 양식 및 시험 자료 목록은 인쇄용 PDF 형식 문서로 완전히 준비되어 있으며 즉시 제공 가능합니다."}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className={`rounded-3xl border overflow-hidden aspect-video relative flex flex-col items-center justify-center bg-black/40 ${
+              theme === 'dark' ? 'border-white/10' : 'border-black/10'
+            }`}>
+              {projectData.walkthroughVideo ? (
+                (() => {
+                  const url = projectData.walkthroughVideo.split('?')[0].split('#')[0].toLowerCase();
+                  const isVideo = url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg') || url.includes('/video/upload/');
+                  return isVideo ? (
+                    <video 
+                      src={projectData.walkthroughVideo} 
+                      controls 
+                      autoPlay 
+                      muted 
+                      loop 
+                      playsInline 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <img 
+                      src={projectData.walkthroughVideo} 
+                      alt={projectData.title}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-contain"
+                    />
+                  );
+                })()
+              ) : (
+                <div className="p-8 text-center space-y-4 max-w-md animate-in fade-in duration-500">
+                  <div className="w-16 h-16 rounded-full bg-accent-gold/10 flex items-center justify-center mx-auto">
+                    <ExternalLinkIcon className="w-6 h-6 text-accent-gold" />
+                  </div>
+                  <h4 className="text-lg font-bold font-display uppercase tracking-wider">{t.productionWalkthrough}</h4>
+                  <p className="text-xs text-white/50 leading-relaxed font-mono">
+                    {hasLiveApp 
+                      ? t.productionWalkthroughBodyLive
+                      : t.productionWalkthroughBodyBackground}
+                  </p>
+                  {hasLiveApp && (
+                    <div className="pt-2">
+                      <a 
+                        href={projectData.liveUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="inline-flex px-6 py-2.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 text-[9px] font-black uppercase tracking-widest"
+                      >
+                        {t.openLiveSandbox}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* THE CORE CONTENT BREAKDOWN */}
