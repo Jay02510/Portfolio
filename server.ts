@@ -37,8 +37,44 @@ async function startServer() {
     console.log(`Server listening on http://0.0.0.0:${PORT}`);
   });
 
+  // Trust nginx reverse proxy to extract the correct client IP for rate limiting
+  app.set("trust proxy", 1);
+
+  // Apply Helmet with contentSecurityPolicy disabled to verify compatibility with Vite Dev Server / iFrame
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      crossOriginEmbedderPolicy: false,
+    })
+  );
+
   app.use(cors());
-  app.use(express.json());
+
+  // Limit body payloads to 10kb to block massive JSON attacks
+  app.use(express.json({ limit: "10kb" }));
+
+  // General rate limits to defend overall server resources
+  const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 100, // Limit each IP to 100 requests per windowMs
+    standardHeaders: "draft-7",
+    legacyHeaders: false,
+    message: { error: "Too many requests to this server. Please try again after 15 minutes." },
+  });
+
+  // Strict rate limits targeting computationally expensive Gemini AI generation
+  const aiLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    limit: 15, // Limit each IP to 15 generation requests per 5 minutes
+    standardHeaders: "draft-7",
+    legacyHeaders: false,
+    message: { error: "You are generating ideas very quickly! Please pause for a moment to prevent server overload." },
+  });
+
+  // Apply rate limiting
+  app.use("/api/", apiLimiter);
+  app.use("/api/chat", aiLimiter);
+  app.use("/api/ideate", aiLimiter);
 
   // Gemini Initialization
   const getGeminiClient = () => {
@@ -54,6 +90,11 @@ async function startServer() {
     try {
       const { message } = req.body;
       if (!message) return res.status(400).json({ error: "Message is required" });
+
+      // Enforce strict length constraint
+      if (typeof message !== "string" || message.length > 2000) {
+        return res.status(400).json({ error: "Message is too long. Please restrict instructions to 2000 characters." });
+      }
 
       const ai = getGeminiClient();
       const response = await ai.models.generateContent({
@@ -77,6 +118,11 @@ async function startServer() {
     try {
       const { problem } = req.body;
       if (!problem) return res.status(400).json({ error: "Problem description is required" });
+
+      // Enforce strict length constraint
+      if (typeof problem !== "string" || problem.length > 2000) {
+        return res.status(400).json({ error: "Problem is too long. Please restrict descriptions to 2000 characters." });
+      }
 
       const ai = getGeminiClient();
       const response = await ai.models.generateContent({

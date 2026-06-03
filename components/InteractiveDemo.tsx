@@ -76,13 +76,47 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                   value={problem}
                   onChange={(e) => setProblem(e.target.value)}
                   placeholder="Example: It takes me too long to check if every student has handed in their permission slips..."
-                  className={`w-full rounded-2xl px-8 py-8 text-base placeholder-current focus:outline-none focus:ring-4 transition-all font-medium min-h-[220px] resize-none border ${
+                  className={`w-full rounded-2xl px-8 py-8 text-base placeholder-current focus:outline-none focus:ring-4 transition-all font-medium min-h-[200px] resize-none border ${
                     theme === 'dark' 
                       ? 'bg-white/[0.04] border-white/10 text-white placeholder-white/20 focus:ring-accent-gold/20' 
                       : 'bg-black/[0.05] border-black/10 text-alpine-950 placeholder-alpine-950/40 focus:ring-accent-clay/20'
                   }`}
                   aria-label="Describe your school problem"
                 />
+              </div>
+
+              <div className="flex flex-wrap gap-2 pt-1">
+                <span className={`text-[9px] font-black uppercase tracking-[0.15em] block w-full opacity-40 mb-1 ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>Or try an example challenge:</span>
+                <button 
+                  onClick={() => setProblem("It takes me 30 minutes per sheet to prepare Korean translation worksheets and matching audio pronunciation notes for my parents.")}
+                  className={`text-[10px] font-medium px-3.5 py-1.5 rounded-full border transition-all duration-300 ${
+                    theme === 'dark' 
+                      ? 'bg-white/[0.02] border-white/10 hover:bg-white/10 text-white hover:text-accent-gold hover:border-accent-gold/40' 
+                      : 'bg-black/[0.02] border-black/10 hover:bg-black/5 text-alpine-950/80 hover:text-accent-clay hover:border-accent-clay/40'
+                  }`}
+                >
+                  📝 Bilingual Prep
+                </button>
+                <button 
+                  onClick={() => setProblem("I spend 10+ hours a week copying student test results into spreadsheets and writing customized reports to parents.")}
+                  className={`text-[10px] font-medium px-3.5 py-1.5 rounded-full border transition-all duration-300 ${
+                    theme === 'dark' 
+                      ? 'bg-white/[0.02] border-white/10 hover:bg-white/10 text-white hover:text-accent-gold hover:border-accent-gold/40' 
+                      : 'bg-black/[0.02] border-black/10 hover:bg-black/5 text-alpine-950/80 hover:text-accent-clay hover:border-accent-clay/40'
+                  }`}
+                >
+                  📊 Auto Reports
+                </button>
+                <button 
+                  onClick={() => setProblem("Our school staff gets bogged down manually aligning rooms, substitute schedules, and staff rotations by hand every semester.")}
+                  className={`text-[10px] font-medium px-3.5 py-1.5 rounded-full border transition-all duration-300 ${
+                    theme === 'dark' 
+                      ? 'bg-white/[0.02] border-white/10 hover:bg-white/10 text-white hover:text-accent-gold hover:border-accent-gold/40' 
+                      : 'bg-black/[0.02] border-black/10 hover:bg-black/5 text-alpine-950/80 hover:text-accent-clay hover:border-accent-clay/40'
+                  }`}
+                >
+                  🕒 School Scheduling
+                </button>
               </div>
               
               <button 

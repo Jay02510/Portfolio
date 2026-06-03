@@ -33,8 +33,13 @@ const t = {
     storyTitle1: "Teacher who",
     storyTitle2: "builds tools.",
     storyBody: "Combining 10 years of classroom pedagogy with modern low-code & full-stack architecture to eliminate institutional waste. I engineer helpers that turn repetitive friction into automated pipelines.",
-    hoursSaved: "Hours Saved Weekly",
-    parentTrust: "Parent Trust Rating",
+    hoursSavedLabel: "Avg. Prep/Admin Saved",
+    hoursSavedValue: "15h+",
+    hoursSavedDesc: "Per classroom. Measured during school-wide trials.",
+    privacyLabel: "Data Privacy & Compliance",
+    privacyValue: "100%",
+    privacyDesc: "Strict Zero-Memory policy — student logs are never kept.",
+    integrityBadge: "Teacher-Vetted Benchmarks — 100% Real Trial Data",
     sayHi: "Come say hi.",
     startConv: "Start a Conversation",
     escapeBrowser: "Escape the In-App Browser"
@@ -52,6 +57,7 @@ const t = {
     toolsBadge: "01 / 프로젝트 도구",
     toolsTitle: "주요 포트폴리오",
     allSolutions: "전체 도구",
+    allSolutionsDesc: "전체 솔루션",
     aiEngines: "AI 솔루션",
     pipelines: "업무 자동화 파이프라인",
     sleekGrid: "한눈에 보는 그리드",
@@ -61,8 +67,13 @@ const t = {
     storyTitle1: "교실 연구를 도구로",
     storyTitle2: "만드는 교육 개발자.",
     storyBody: "10년간 교사로서 교육 현장에 있으면서, 행정 낭비와 비효율성을 해소하고자 로코드 및 풀스택 아키텍처를 도입했습니다. 단순 중복적 마찰을 자율적 자동화 파이프라인으로 전환합니다.",
-    hoursSaved: "매주 절약된 행정 시간",
-    parentTrust: "학부모 만족도 및 신뢰도",
+    hoursSavedLabel: "주당 평균 준비/행정 시간 단축",
+    hoursSavedValue: "15시간 이상",
+    hoursSavedDesc: "교실 및 교사 기준. 파일럿 과정 내 실시간 추적 수치.",
+    privacyLabel: "학습 데이터 보호 수준",
+    privacyValue: "100% 규정 준수",
+    privacyDesc: "Zero-Memory 엄격 가동 — 아동 학습 행동 로그 일체 영구 미저장.",
+    integrityBadge: "정량화된 교직 성과 지수 — 거짓 없는 실측 통계",
     sayHi: "언제든 의뢰하시거나 연락해주세요",
     startConv: "이메일로 대화 시작하기",
     escapeBrowser: "인앱 브라우저를 벗어나 환상적인 체험을 즐기세요"
@@ -84,6 +95,7 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'ai' | 'pipelines'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [showCompetencies, setShowCompetencies] = useState(false);
 
   // Synchronize case study state with URL Hash
   useEffect(() => {
@@ -509,75 +521,89 @@ function App() {
             </div>
 
             {/* CORE COMPETENCIES & TECHNOLOGY BOARD */}
-            <div className={`mb-16 p-8 md:p-14 rounded-[2rem] border relative overflow-hidden transition-all duration-300 ${
+            <div className={`mb-16 rounded-[2rem] border relative overflow-hidden transition-all duration-300 ${
               theme === 'dark' ? 'bg-[#12161A]/40 border-white/10 shadow-2xl' : 'bg-black/[0.01]/40 border-black/5 shadow-lg'
             }`}>
-              <div className="absolute top-0 right-0 w-64 h-64 bg-accent-gold/5 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-white/5">
-                <div>
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold font-mono">
-                    {locale === 'en' ? "CURRICULUM VITAE MATCH" : "핵심 역량 및 서칭 매트릭스"}
-                  </span>
-                  <h3 className="text-2xl md:text-4xl font-display font-medium tracking-tight text-gradient-white">
-                    {locale === 'en' ? "Core Competencies & Stack" : "핵심 전문 역량 (Core Competencies)"}
-                  </h3>
+              <button 
+                onClick={() => setShowCompetencies(!showCompetencies)}
+                className="w-full text-left p-8 md:p-12 flex items-center justify-between gap-6 hover:bg-white/[0.02]/20 active:bg-white/[0.04]/40 transition-all focus:outline-none relative z-10"
+              >
+                <div className="absolute top-0 right-0 w-64 h-64 bg-accent-gold/5 rounded-full blur-3xl pointer-events-none"></div>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 w-full pr-4">
+                  <div>
+                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold font-mono">
+                      {locale === 'en' ? "CURRICULUM VITAE MATCH" : "핵심 역량 및 서칭 매트릭스"}
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-gradient-white mt-1">
+                      {locale === 'en' ? "Core Competencies & Stack" : "핵심 전문 역량 (Core Competencies)"}
+                    </h3>
+                  </div>
+                  <div className={`text-xs max-w-md leading-relaxed hidden sm:block ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>
+                    {locale === 'en'
+                      ? "Targeted search keywords, hybrid platform expertise, and monetization infrastructures mapped to industry-level requirements. Click to expand."
+                      : "헤드헌터 및 채용 매니저 서칭 지표(Mobile, Data, Monetization)를 일치 기입한 보증판. 클릭해서 펼치기."}
+                  </div>
                 </div>
-                <div className={`text-xs max-w-md leading-relaxed ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>
-                  {locale === 'en'
-                    ? "Targeted search keywords, hybrid platform expertise, and monetization infrastructures mapped to industry-level requirements."
-                    : "헤드헌터 및 개발 매니저 채용 서칭 지표(Mobile, Data, Monetization)를 완벽 일치 기입한 검증 완료 보증판."}
+                <div className={`flex items-center justify-center w-10 h-10 rounded-full border shrink-0 transition-all duration-300 ${
+                  showCompetencies 
+                    ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
+                    : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
+                }`}>
+                  <ChevronDownIcon className={`w-4 h-4 transition-colors ${showCompetencies ? 'text-accent-gold' : 'text-white/40'}`} />
                 </div>
-              </div>
+              </button>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* COLUMN 1 */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl">📱</span>
-                    <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold">
-                      {locale === 'en' ? "Mobile & Frontend Bridges" : "모바일 및 하이브리드 프론트엔드"}
-                    </h4>
+              {showCompetencies && (
+                <div className="px-8 md:px-12 pb-12 pt-6 grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-white/5 animate-in fade-in slide-in-from-top-4 duration-300 relative z-10">
+                  {/* COLUMN 1 */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">📱</span>
+                      <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold">
+                        {locale === 'en' ? "Mobile & Frontend Bridges" : "모바일 및 하이브리드 프론트엔드"}
+                      </h4>
+                    </div>
+                    <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Capacitor SDK Bridge</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Native Device Android/iOS Integrations</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Bilingual UI Layout Engraving</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>React 18 & Vite Ecosystem</li>
+                    </ul>
                   </div>
-                  <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Capacitor SDK Bridge</li>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Native Device Android/iOS Integrations</li>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Bilingual UI Layout Engraving</li>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>React 18 & Vite Ecosystem</li>
-                  </ul>
-                </div>
 
-                {/* COLUMN 2 */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl">⚙️</span>
-                    <h4 className="text-xs font-black uppercase tracking-widest text-[#44D9C5]">
-                      {locale === 'en' ? "Data & Automation Architecture" : "데이터 및 자동화 아키텍처"}
-                    </h4>
+                  {/* COLUMN 2 */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">⚙️</span>
+                      <h4 className="text-xs font-black uppercase tracking-widest text-[#44D9C5]">
+                        {locale === 'en' ? "Data & Automation Architecture" : "데이터 및 자동화 아키텍처"}
+                      </h4>
+                    </div>
+                    <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Airtable Relational Clustering</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Make.com Automation Routers</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Fillout Dynamic Schema Mappings</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Secure Server-Side Webhook Controllers</li>
+                    </ul>
                   </div>
-                  <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Airtable Relational Clustering</li>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Make.com Automation Routers</li>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Fillout Dynamic Schema Mappings</li>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Secure Server-Side Webhook Controllers</li>
-                  </ul>
-                </div>
 
-                {/* COLUMN 3 */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl">💳</span>
-                    <h4 className="text-xs font-black uppercase tracking-widest text-[#E15A5A]">
-                      {locale === 'en' ? "Monetization & Store Deployments" : "수익화 및 앱스토어 배포"}
-                    </h4>
+                  {/* COLUMN 3 */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">💳</span>
+                      <h4 className="text-xs font-black uppercase tracking-widest text-[#E15A5A]">
+                        {locale === 'en' ? "Monetization & Store Deployments" : "수익화 및 앱스토어 배포"}
+                      </h4>
+                    </div>
+                    <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>RevenueCat Subscriptions Hub</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>Google Play Developer Ecosystem</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>App Store Connect Sandbox Suites</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>Secure Server-to-Server Ingestion</li>
+                    </ul>
                   </div>
-                  <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>RevenueCat Subscriptions Hub</li>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>Google Play Developer Ecosystem</li>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>App Store Connect Sandbox Suites</li>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>Secure Server-to-Server Ingestion</li>
-                  </ul>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* INTERACTIVE CONTROLS: CATEGORIES & LAYOUTS */}
@@ -740,12 +766,14 @@ function App() {
                  </p>
                  <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-10">
                    <div>
-                     <div className="text-4xl md:text-5xl font-mono text-accent-gold font-bold">2,400+</div>
-                     <span className={`text-[9px] font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/40'}`}>{t[locale].hoursSaved}</span>
+                     <div className="text-4xl md:text-5xl font-mono text-accent-gold font-bold">{t[locale].hoursSavedValue}</div>
+                     <span className={`text-[9px] font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/40'}`}>{t[locale].hoursSavedLabel}</span>
+                      <p className={`text-[11px] font-light mt-1.5 leading-relaxed ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>{t[locale].hoursSavedDesc}</p>
                    </div>
                    <div>
-                     <div className="text-4xl md:text-5xl font-mono text-accent-gold font-bold">98%</div>
-                     <span className={`text-[9px] font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/40'}`}>{t[locale].parentTrust}</span>
+                     <div className="text-4xl md:text-5xl font-mono text-accent-gold font-bold">{t[locale].privacyValue}</div>
+                     <span className={`text-[9px] font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/40'}`}>{t[locale].privacyLabel}</span>
+                      <p className={`text-[11px] font-light mt-1.5 leading-relaxed ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>{t[locale].privacyDesc}</p><div className="pt-4"><span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded bg-accent-gold/5 border border-accent-gold/10 text-[8px] font-mono uppercase text-accent-gold tracking-widest`}>✦ {t[locale].integrityBadge}</span></div>
                    </div>
                  </div>
             </div>
@@ -778,6 +806,7 @@ function App() {
           onClose={() => setActiveCaseStudyId(null)} 
           theme={theme} 
           locale={locale}
+          backgroundScrollY={scrollY}
         />
       )}
     </div>

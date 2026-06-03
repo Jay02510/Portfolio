@@ -1,11 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import { MailIcon, XIcon, ExternalLinkIcon, SparklesIcon } from './components/Icons.tsx';
+import React, { useEffect, useRef, useState } from 'react';
+import { MailIcon, XIcon, ExternalLinkIcon, SparklesIcon, ChevronDownIcon } from './components/Icons.tsx';
 
 interface CaseStudyViewerProps {
   projectId: string;
   onClose: () => void;
   theme?: 'light' | 'dark';
   locale?: 'en' | 'ko';
+  backgroundScrollY?: number;
 }
 
 interface CaseStudyType {
@@ -899,27 +900,47 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
   projectId, 
   onClose, 
   theme = 'dark',
-  locale = 'en'
+  locale = 'en',
+  backgroundScrollY
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  const [isArchOpen, setIsArchOpen] = useState(false);
+  const [isHurdlesOpen, setIsHurdlesOpen] = useState(false);
+  const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
+
   useEffect(() => {
+    // Capture background scroll position; fall back to window.scrollY if undefined
+    const prevScrollY = backgroundScrollY !== undefined ? backgroundScrollY : window.scrollY;
+
     // Scroll to the top when the viewer opens
     if (scrollRef.current) {
       scrollRef.current.scrollTop = 0;
     }
     // Prevent background scrolling
+    const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+
+    // Reset collapsible states when project changes
+    setIsArchOpen(false);
+    setIsHurdlesOpen(false);
+    setIsBreakdownOpen(false);
+
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = originalOverflow || 'unset';
+      // Restore background scroll position precisely
+      window.scrollTo(0, prevScrollY);
     };
-  }, [projectId]);
+  }, [projectId, backgroundScrollY]);
 
   const scrollToBreakdown = () => {
-    if (contentRef.current) {
-      contentRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    setIsBreakdownOpen(true);
+    setTimeout(() => {
+      if (contentRef.current) {
+        contentRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 120);
   };
 
   const studyData = locale === 'ko' ? studyDataKo : studyDataEn;
@@ -1039,124 +1060,152 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
 
         {/* BEHIND THE ARCHITECTURE Callout Insight Container */}
         {projectData.behindTheArchitecture && (
-          <div className={`p-8 md:p-12 rounded-[1.5rem] md:rounded-[2.5rem] border transition-all duration-300 lg:mx-0 ${
+          <div className={`rounded-[1.5rem] md:rounded-[2.5rem] border transition-all duration-300 lg:mx-0 ${
             theme === 'dark' 
               ? 'bg-white/[0.02] border-white/5 shadow-2xl relative overflow-hidden' 
               : 'bg-black/[0.02] border-black/5 shadow-lg relative overflow-hidden'
           }`}>
-            <div className="absolute top-0 right-0 w-32 h-32 bg-accent-gold/5 rounded-full blur-3xl pointer-events-none"></div>
-            <div className="flex items-center gap-3 mb-8 border-b pb-5 border-accent-gold/10">
-              <span className="text-2xl">🧠</span>
-              <div className="flex flex-col">
-                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold">{t.productMindset}</span>
-                <span className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'}`}>{t.behindTheArchitecture}</span>
+            <button 
+              onClick={() => setIsArchOpen(!isArchOpen)}
+              className="w-full text-left p-8 md:p-12 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-all relative z-10"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent-gold/5 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">🧠</span>
+                <div className="flex flex-col">
+                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold">{t.productMindset}</span>
+                  <span className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.behindTheArchitecture}</span>
+                </div>
               </div>
-            </div>
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-300 shrink-0 ${
+                isArchOpen 
+                  ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
+                  : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
+              }`}>
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isArchOpen ? 'text-accent-gold' : 'text-white/40'}`} />
+              </div>
+            </button>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-              {/* THE HUMAN PROBLEM */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">😫</span>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.humanProblem}</h4>
+            {isArchOpen && (
+              <div className="p-8 md:p-12 pt-0 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10">
+                {/* THE HUMAN PROBLEM */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">😫</span>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.humanProblem}</h4>
+                  </div>
+                  <p className={`text-xs md:text-sm leading-relaxed font-light ${
+                    theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
+                  }`}>
+                    {projectData.behindTheArchitecture.problem}
+                  </p>
                 </div>
-                <p className={`text-xs md:text-sm leading-relaxed font-light ${
-                  theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
-                }`}>
-                  {projectData.behindTheArchitecture.problem}
-                </p>
-              </div>
 
-              {/* THE PRODUCT VISION */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">💡</span>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.productVision}</h4>
+                {/* THE PRODUCT VISION */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">💡</span>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.productVision}</h4>
+                  </div>
+                  <p className={`text-xs md:text-sm leading-relaxed font-light ${
+                    theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
+                  }`}>
+                    {projectData.behindTheArchitecture.vision}
+                  </p>
                 </div>
-                <p className={`text-xs md:text-sm leading-relaxed font-light ${
-                  theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
-                }`}>
-                  {projectData.behindTheArchitecture.vision}
-                </p>
-              </div>
 
-              {/* THE CORE RATIONALE */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">🧠</span>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-[#44D9C5]">{t.coreRationale}</h4>
+                {/* THE CORE RATIONALE */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">🧠</span>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-[#44D9C5]">{t.coreRationale}</h4>
+                  </div>
+                  <p className={`text-xs md:text-sm leading-relaxed font-light ${
+                    theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
+                  }`}>
+                    {projectData.behindTheArchitecture.rationale}
+                  </p>
                 </div>
-                <p className={`text-xs md:text-sm leading-relaxed font-light ${
-                  theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
-                }`}>
-                  {projectData.behindTheArchitecture.rationale}
-                </p>
               </div>
-            </div>
+            )}
           </div>
         )}
 
         {/* TECHNICAL HURDLES / WHEN THINGS BREAK */}
         {projectData.technicalHurdles && (
-          <div className={`p-8 md:p-12 rounded-[1.5rem] md:rounded-[2.5rem] border transition-all duration-300 lg:mx-0 ${
+          <div className={`rounded-[1.5rem] md:rounded-[2.5rem] border transition-all duration-300 lg:mx-0 ${
             theme === 'dark' 
               ? 'bg-[#120D0D]/50 border-red-500/10 shadow-[0_20px_50px_rgba(239,68,68,0.05)] relative overflow-hidden' 
               : 'bg-[#FFF5F5]/60 border-red-500/10 shadow-lg relative overflow-hidden'
           }`}>
-            <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-3xl pointer-events-none"></div>
-            <div className="flex items-center justify-between gap-4 mb-8 border-b pb-5 border-red-500/10 flex-wrap">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🚨</span>
-                <div className="flex flex-col">
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-red-500">{locale === 'en' ? "WHEN THINGS BREAK" : "장애 및 결함 조치 진찰기"}</span>
-                  <span className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.technicalHurdles}</span>
+            <button 
+              onClick={() => setIsHurdlesOpen(!isHurdlesOpen)}
+              className="w-full text-left p-8 md:p-12 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-all relative z-10"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="flex items-center justify-between gap-4 w-full flex-wrap pr-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">🚨</span>
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-red-500">{locale === 'en' ? "WHEN THINGS BREAK" : "장애 및 결함 조치 진찰기"}</span>
+                    <span className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.technicalHurdles}</span>
+                  </div>
+                </div>
+                <div className="bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20 px-3 py-1 rounded-full text-[9px] font-mono uppercase font-black tracking-widest">
+                  {locale === 'en' ? "Production Diagnostic Win" : "프로덕션 실시간 완치 실적"}
                 </div>
               </div>
-              <div className="bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20 px-3 py-1 rounded-full text-[9px] font-mono uppercase font-black tracking-widest">
-                {locale === 'en' ? "Production Diagnostic Win" : "프로덕션 실시간 완치 실적"}
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-300 shrink-0 ${
+                isHurdlesOpen 
+                  ? 'rotate-180 bg-red-500/15 border-red-500/30' 
+                  : (theme === 'dark' ? 'border-red-500/10 hover:border-red-500/20' : 'border-red-500/10 hover:border-red-500/20')
+              }`}>
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isHurdlesOpen ? 'text-red-500' : 'text-white/40'}`} />
               </div>
-            </div>
+            </button>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-              {/* THE INCIDENT */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-xs text-red-500">❌</div>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.incident}</h4>
+            {isHurdlesOpen && (
+              <div className="p-8 md:p-12 pt-0 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 border-t border-red-500/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10">
+                {/* THE INCIDENT */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-xs text-red-500">❌</div>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.incident}</h4>
+                  </div>
+                  <p className={`text-xs md:text-sm leading-relaxed font-light ${
+                    theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
+                  }`}>
+                    {projectData.technicalHurdles.incident}
+                  </p>
                 </div>
-                <p className={`text-xs md:text-sm leading-relaxed font-light ${
-                  theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
-                }`}>
-                  {projectData.technicalHurdles.incident}
-                </p>
-              </div>
 
-              {/* THE DIAGNOSIS */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center text-xs text-orange-500">🔍</div>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-orange-500">{t.diagnosis}</h4>
+                {/* THE DIAGNOSIS */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center text-xs text-orange-500">🔍</div>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-orange-500">{t.diagnosis}</h4>
+                  </div>
+                  <p className={`text-xs md:text-sm leading-relaxed font-light ${
+                    theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
+                  }`}>
+                    {projectData.technicalHurdles.diagnosis}
+                  </p>
                 </div>
-                <p className={`text-xs md:text-sm leading-relaxed font-light ${
-                  theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
-                }`}>
-                  {projectData.technicalHurdles.diagnosis}
-                </p>
-              </div>
 
-              {/* THE RESOLUTION */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center text-xs text-green-500">✓</div>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-green-500">{t.resolution}</h4>
+                {/* THE RESOLUTION */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center text-xs text-green-500">✓</div>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-green-500">{t.resolution}</h4>
+                  </div>
+                  <p className={`text-xs md:text-sm leading-relaxed font-light ${
+                    theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
+                  }`}>
+                    {projectData.technicalHurdles.resolution}
+                  </p>
                 </div>
-                <p className={`text-xs md:text-sm leading-relaxed font-light ${
-                  theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
-                }`}>
-                  {projectData.technicalHurdles.resolution}
-                </p>
               </div>
-            </div>
+            )}
           </div>
         )}
 
@@ -1222,177 +1271,211 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
         </div>
 
         {/* THE CORE CONTENT BREAKDOWN */}
-        <div ref={contentRef} className="grid lg:grid-cols-12 gap-12 md:gap-20 pt-12">
-          {/* LEFT RAIL - THE STACK / INFO */}
-          <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-24 h-fit">
-            <div className="space-y-4">
-              <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.systemStack}</span>
-              <div className="flex flex-wrap gap-2 pt-2">
-                {projectData.stack.map((st, sidx) => (
-                  <span 
-                    key={sidx} 
-                    className={`px-4 py-2 rounded-lg border font-mono text-[9px] uppercase font-bold tracking-widest ${
-                      theme === 'dark' ? 'bg-white/5 border-white/5 text-white/60' : 'bg-black/5 border-black/5 text-alpine-950/70'
-                    }`}
-                  >
-                    {st}
-                  </span>
-                ))}
+        <div ref={contentRef} className="pt-12">
+          <div className={`rounded-[1.5rem] md:rounded-[2.5rem] border transition-all duration-300 ${
+            theme === 'dark' 
+              ? 'bg-white/[0.01] border-white/5' 
+              : 'bg-black/[0.01] border-black/5 shadow-md'
+          }`}>
+            <button 
+              onClick={() => setIsBreakdownOpen(!isBreakdownOpen)}
+              className="w-full text-left p-8 md:p-12 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-all relative z-10"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">🛠️</span>
+                <div className="flex flex-col">
+                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold">{locale === 'en' ? "DEEP ANALYSIS" : "심층 분석 매뉴얼"}</span>
+                  <span className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.technicalBreakdown}</span>
+                </div>
               </div>
-            </div>
-
-            <div className="space-y-4">
-              <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold font-display">{t.systemScopeOverview}</span>
-              <p className={`text-xs md:text-sm font-normal leading-relaxed ${
-                theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-300 shrink-0 ${
+                isBreakdownOpen 
+                  ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
+                  : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
               }`}>
-                {t.systemScopeBody}
-              </p>
-            </div>
-          </div>
-
-          {/* RIGHT RAIL - DETAILED ANALYSIS */}
-          <div className="lg:col-span-8 space-y-20">
-            {/* PROBLEM / SOLUTION */}
-            <div className="grid md:grid-cols-2 gap-12">
-              <div className="space-y-4">
-                <h3 className="text-xl md:text-2xl font-bold uppercase tracking-wider font-display">{t.theProblem}</h3>
-                <ul className="space-y-4">
-                  {projectData.problem.map((prob, pidx) => (
-                    <li key={pidx} className="flex gap-4 items-start">
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0"></span>
-                      <p className={`text-xs md:text-sm leading-relaxed ${
-                        theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
-                      }`}>
-                        {prob}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isBreakdownOpen ? 'text-accent-gold' : 'text-white/40'}`} />
               </div>
+            </button>
 
-              <div className="space-y-4">
-                <h3 className="text-xl md:text-2xl font-bold uppercase tracking-wider font-display">{t.theSolution}</h3>
-                <ul className="space-y-4">
-                  {projectData.solution.map((sol, sidx) => (
-                    <li key={sidx} className="flex gap-4 items-start">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 flex-shrink-0"></span>
-                      <p className={`text-xs md:text-sm leading-relaxed ${
-                        theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
-                      }`}>
-                        {sol}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            {isBreakdownOpen && (
+              <div className="p-8 md:p-12 pt-0 grid lg:grid-cols-12 gap-12 md:gap-20 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10">
+                {/* LEFT RAIL - THE STACK / INFO */}
+                <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-24 h-fit">
+                  <div className="space-y-4">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.systemStack}</span>
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {projectData.stack.map((st, sidx) => (
+                        <span 
+                          key={sidx} 
+                          className={`px-4 py-2 rounded-lg border font-mono text-[9px] uppercase font-bold tracking-widest ${
+                            theme === 'dark' ? 'bg-white/5 border-white/5 text-white/60' : 'bg-black/5 border-black/5 text-alpine-950/70'
+                          }`}
+                        >
+                          {st}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
 
-            {/* PIPELINE ARCHITECTURE */}
-            <div className="space-y-6">
-              <h3 className="text-xl md:text-3xl font-bold uppercase tracking-wider font-display border-b pb-4">
-                {t.technicalPipelineMap}
-              </h3>
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4">{t.pipelineExecutionLifecycle}</h4>
-                  <ol className="space-y-4">
-                    {projectData.architecture.lifecycle.map((lc, lidx) => (
-                      <li key={lidx} className="flex gap-4 items-start p-4 rounded-xl relative overflow-hidden font-mono text-xs border border-white/5 bg-white/[0.01]">
-                        <span className="text-accent-gold font-bold">0{lidx + 1}</span>
-                        <p className={theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}>{lc}</p>
-                      </li>
-                    ))}
-                  </ol>
+                  <div className="space-y-4">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold font-display">{t.systemScopeOverview}</span>
+                    <p className={`text-xs md:text-sm font-normal leading-relaxed ${
+                      theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'
+                    }`}>
+                      {t.systemScopeBody}
+                    </p>
+                  </div>
                 </div>
 
-                <div>
-                  <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4 mt-6">{t.pipelineEdgeCaseGuardrails}</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {projectData.architecture.guardrails.map((gr, gidx) => (
-                      <div key={gidx} className="p-5 rounded-xl border border-white/5 bg-white/[0.02]/50">
-                        <div className="text-xs font-mono font-bold uppercase tracking-wider mb-2 text-accent-gold opacity-90">{t.edgeCasePrefix} 0{gidx+1}</div>
-                        <p className={`text-xs ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'}`}>{gr}</p>
+                {/* RIGHT RAIL - DETAILED ANALYSIS */}
+                <div className="lg:col-span-8 space-y-20">
+                  {/* PROBLEM / SOLUTION */}
+                  <div className="grid md:grid-cols-2 gap-12">
+                    <div className="space-y-4">
+                      <h3 className="text-xl md:text-2xl font-bold uppercase tracking-wider font-display">{t.theProblem}</h3>
+                      <ul className="space-y-4">
+                        {projectData.problem.map((prob, pidx) => (
+                          <li key={pidx} className="flex gap-4 items-start">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0"></span>
+                            <p className={`text-xs md:text-sm leading-relaxed ${
+                              theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
+                            }`}>
+                              {prob}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h3 className="text-xl md:text-2xl font-bold uppercase tracking-wider font-display">{t.theSolution}</h3>
+                      <ul className="space-y-4">
+                        {projectData.solution.map((sol, sidx) => (
+                          <li key={sidx} className="flex gap-4 items-start">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 flex-shrink-0"></span>
+                            <p className={`text-xs md:text-sm leading-relaxed ${
+                              theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
+                            }`}>
+                              {sol}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* PIPELINE ARCHITECTURE */}
+                  <div className="space-y-6">
+                    <h3 className="text-xl md:text-3xl font-bold uppercase tracking-wider font-display border-b pb-4">
+                      {t.technicalPipelineMap}
+                    </h3>
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4">{t.pipelineExecutionLifecycle}</h4>
+                        <ol className="space-y-4">
+                          {projectData.architecture.lifecycle.map((lc, lidx) => (
+                            <li key={lidx} className={`flex gap-4 items-start p-4 rounded-xl relative overflow-hidden font-mono text-xs border ${
+                              theme === 'dark' ? 'border-white/5 bg-white/[0.01]' : 'border-black/5 bg-black/[0.01]'
+                            }`}>
+                              <span className="text-accent-gold font-bold">0{lidx + 1}</span>
+                              <p className={theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}>{lc}</p>
+                            </li>
+                          ))}
+                        </ol>
                       </div>
-                    ))}
+
+                      <div>
+                        <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4 mt-6">{t.pipelineEdgeCaseGuardrails}</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          {projectData.architecture.guardrails.map((gr, gidx) => (
+                            <div key={gidx} className={`p-5 rounded-xl border ${
+                              theme === 'dark' ? 'border-white/5 bg-white/[0.02]/50' : 'border-black/5 bg-black/[0.02]'
+                            }`}>
+                              <div className="text-xs font-mono font-bold uppercase tracking-wider mb-2 text-accent-gold opacity-90">{t.edgeCasePrefix} 0{gidx+1}</div>
+                              <p className={`text-xs ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'}`}>{gr}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* PROMPT ENGINEERING */}
+                  <div className="space-y-6">
+                    <h3 className="text-xl md:text-3xl font-bold uppercase tracking-wider font-display border-b pb-4">
+                      {t.promptOrchestration}
+                    </h3>
+                    <div className="space-y-6 font-mono">
+                      <div>
+                        <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.structuredInstruction}</h4>
+                        <pre className="p-6 md:p-8 rounded-2xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-green-400">
+                          <code>{projectData.promptEngineering.logic}</code>
+                        </pre>
+                      </div>
+
+                      <div>
+                        <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.runtimeEnforcedSchema}</h4>
+                        <pre className="p-6 md:p-8 rounded-2xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-blue-400">
+                          <code>{projectData.promptEngineering.schema}</code>
+                        </pre>
+                      </div>
+
+                      <div>
+                        <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4 font-display">{t.formattingConsistency}</h4>
+                        <ul className="space-y-3 font-sans">
+                          {projectData.promptEngineering.guardrails.map((gr, gidx) => (
+                            <li key={gidx} className="flex gap-4 items-center">
+                              <div className="w-1.5 h-1.5 rounded-full bg-accent-gold"></div>
+                              <p className={`text-xs ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'}`}>{gr}</p>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* QUANTIFIED BUSINESS IMPACT */}
+                  <div className="space-y-6">
+                    <h3 className="text-xl md:text-3xl font-bold uppercase tracking-wider font-display border-b pb-4">
+                      {t.productImpactScale}
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-8">
+                      <div className="space-y-4">
+                        <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-2 font-display">{t.quantifiedValue}</h4>
+                        <ul className="space-y-3">
+                          {projectData.impact.value.map((v, idx) => (
+                            <li key={idx} className="flex gap-4 items-start">
+                              <span className="text-accent-gold font-bold font-mono">✓</span>
+                              <p className={`text-xs md:text-sm leading-relaxed ${
+                                theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
+                              }`}>
+                                {v}
+                              </p>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="space-y-4">
+                        <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-2 font-display">{t.enterpriseSecurity}</h4>
+                        <ul className="space-y-3">
+                          {projectData.impact.security.map((s, idx) => (
+                            <li key={idx} className="flex gap-4 items-start">
+                              <span className="text-accent-gold font-bold font-mono">⚡</span>
+                              <p className={`text-xs md:text-sm leading-relaxed ${
+                                theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
+                              }`}>
+                                {s}
+                              </p>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* PROMPT ENGINEERING */}
-            <div className="space-y-6">
-              <h3 className="text-xl md:text-3xl font-bold uppercase tracking-wider font-display border-b pb-4">
-                {t.promptOrchestration}
-              </h3>
-              <div className="space-y-6 font-mono">
-                <div>
-                  <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.structuredInstruction}</h4>
-                  <pre className="p-6 md:p-8 rounded-2xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-green-400">
-                    <code>{projectData.promptEngineering.logic}</code>
-                  </pre>
-                </div>
-
-                <div>
-                  <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.runtimeEnforcedSchema}</h4>
-                  <pre className="p-6 md:p-8 rounded-2xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-blue-400">
-                    <code>{projectData.promptEngineering.schema}</code>
-                  </pre>
-                </div>
-
-                <div>
-                  <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4 font-display">{t.formattingConsistency}</h4>
-                  <ul className="space-y-3 font-sans">
-                    {projectData.promptEngineering.guardrails.map((gr, gidx) => (
-                      <li key={gidx} className="flex gap-4 items-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-accent-gold"></div>
-                        <p className={`text-xs ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'}`}>{gr}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            {/* QUANTIFIED BUSINESS IMPACT */}
-            <div className="space-y-6">
-              <h3 className="text-xl md:text-3xl font-bold uppercase tracking-wider font-display border-b pb-4">
-                {t.productImpactScale}
-              </h3>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-4">
-                  <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-2 font-display">{t.quantifiedValue}</h4>
-                  <ul className="space-y-3">
-                    {projectData.impact.value.map((v, idx) => (
-                      <li key={idx} className="flex gap-4 items-start">
-                        <span className="text-accent-gold font-bold font-mono">✓</span>
-                        <p className={`text-xs md:text-sm leading-relaxed ${
-                          theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
-                        }`}>
-                          {v}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="space-y-4">
-                  <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-2 font-display">{t.enterpriseSecurity}</h4>
-                  <ul className="space-y-3">
-                    {projectData.impact.security.map((s, idx) => (
-                      <li key={idx} className="flex gap-4 items-start">
-                        <span className="text-accent-gold font-bold font-mono">⚡</span>
-                        <p className={`text-xs md:text-sm leading-relaxed ${
-                          theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
-                        }`}>
-                          {s}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
