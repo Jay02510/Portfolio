@@ -19,6 +19,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const isEven = index % 2 === 0;
   const [copied, setCopied] = useState(false);
   const [activeMedia, setActiveMedia] = useState<any | null>(null);
+  const [currentSlideIdx, setCurrentSlideIdx] = useState(0);
 
   const handleCopy = () => {
     if (!project.betaCode) return;
@@ -50,17 +51,69 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
       {/* Background Image Container */}
       <div className={`w-full h-[350px] md:h-[700px] rounded-[1.5rem] md:rounded-[3rem] overflow-hidden border shadow-2xl relative transition-all duration-700 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
-          <img 
-            src={project.imageUrl} 
-            onClick={() => onOpenCaseStudy?.(project.id)}
-            className={`w-full h-full object-cover cursor-pointer ${project.imagePosition || 'object-center'} transition-all duration-700 ${
-              theme === 'dark' 
-                ? 'grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 scale-105 group-hover:scale-100' 
-                : 'opacity-90 group-hover:opacity-100 group-hover:scale-105'
-            }`} 
-            alt={project.title}
-            referrerPolicy="no-referrer"
-          />
+          {project.images && project.images.length > 0 ? (
+            <div className="absolute inset-0 w-full h-full group/carousel">
+              <img 
+                src={project.images[currentSlideIdx]} 
+                onClick={() => onOpenCaseStudy?.(project.id)}
+                className={`w-full h-full object-cover cursor-pointer transition-all duration-700 ${
+                  theme === 'dark' 
+                    ? 'grayscale opacity-40 hover:grayscale-0 hover:opacity-100 scale-105 hover:scale-100' 
+                    : 'opacity-90 hover:opacity-100 hover:scale-105'
+                }`} 
+                alt={`${project.title} - Slide ${currentSlideIdx + 1}`}
+                referrerPolicy="no-referrer"
+              />
+              
+              {/* Slide controls */}
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentSlideIdx(prev => (prev === 0 ? project.images.length - 1 : prev - 1));
+                }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-alpine-950/80 hover:bg-accent-gold hover:text-alpine-950 flex items-center justify-center text-white/80 transition-all z-10 opacity-0 group-hover/carousel:opacity-100 shadow-lg"
+              >
+                ◀
+              </button>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentSlideIdx(prev => (prev === project.images.length - 1 ? 0 : prev + 1));
+                }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-alpine-950/80 hover:bg-accent-gold hover:text-alpine-950 flex items-center justify-center text-white/80 transition-all z-10 opacity-0 group-hover/carousel:opacity-100 shadow-lg"
+              >
+                ▶
+              </button>
+
+              {/* Bullet Indicators */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10 bg-black/30 px-3 py-1.5 rounded-full backdrop-blur-sm">
+                {project.images.map((_: any, idx: number) => (
+                  <button 
+                    key={idx}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentSlideIdx(idx);
+                    }}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      idx === currentSlideIdx ? 'bg-accent-gold scale-125' : 'bg-white/40 hover:bg-white/70'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <img 
+              src={project.imageUrl} 
+              onClick={() => onOpenCaseStudy?.(project.id)}
+              className={`w-full h-full object-cover cursor-pointer ${project.imagePosition || 'object-center'} transition-all duration-700 ${
+                theme === 'dark' 
+                  ? 'grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 scale-105 group-hover:scale-100' 
+                  : 'opacity-90 group-hover:opacity-100 group-hover:scale-105'
+              }`} 
+              alt={project.title}
+              referrerPolicy="no-referrer"
+            />
+          )}
           <div className={`absolute inset-0 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-t from-alpine-950 via-transparent' : 'bg-gradient-to-t from-alpine-50/80 via-transparent'}`}></div>
           
           {project.maturityBadge && (

@@ -8,6 +8,7 @@ import InteractiveDemo from './components/InteractiveDemo.tsx';
 import ComplianceModal from './components/ComplianceModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import { CaseStudyViewer } from './CaseStudyViewer.tsx';
+import ResumeModal from './components/ResumeModal.tsx';
 import { MailIcon, SparklesIcon, SendIcon, BookOpenIcon, MapIcon, CodeIcon, ChevronDownIcon, ExternalLinkIcon, XIcon, FileTextIcon, SearchIcon } from './components/Icons.tsx';
 
 const t = {
@@ -15,13 +16,13 @@ const t = {
     projectsNav: "Projects",
     playgroundNav: "Live Playground",
     storyNav: "My Story",
-    heroBadge: "BUILDING HELPERS FOR SCHOOLS",
-    heroTitle1: "Real tools for",
-    heroTitle2: "real people.",
-    heroTagline: "Teacher turned EdTech creator — solving real pain points for teachers, students, and parents.",
-    viewProjectsBtn: "View Projects",
+    heroBadge: "JASON BENJAMIN — EDTECH FOUNDER & SOFTWARE BUILDER",
+    heroTitle1: "Classroom-Tested Tools",
+    heroTitle2: "built by a teacher.",
+    heroTagline: "I am a veteran educator and software builder. I design and scale custom full-stack engines like Chekki AI — now piloting with Korean bilingual families — and robust scheduling automations with strict student data compliance.",
+    viewProjectsBtn: "Explore Solutions",
     playgroundBtn: "Live No-Code AI Playground",
-    toolsBadge: "01 / The Tools",
+    toolsBadge: "PRODUCTION PORTFOLIO",
     toolsTitle: "The Collection",
     allSolutions: "All Solutions",
     aiEngines: "AI Engines",
@@ -29,32 +30,32 @@ const t = {
     sleekGrid: "Sleek Grid",
     continuousStory: "Continuous Storyboarding",
     noProjects: "No items found matching this filter combo.",
-    storyBadge: "03 / My Story",
-    storyTitle1: "Teacher who",
-    storyTitle2: "builds tools.",
-    storyBody: "Combining 10 years of classroom pedagogy with modern low-code & full-stack architecture to eliminate institutional waste. I engineer helpers that turn repetitive friction into automated pipelines.",
-    hoursSavedLabel: "Avg. Prep/Admin Saved",
+    storyBadge: "PRACTICAL JOURNEY",
+    storyTitle1: "From chalkboards to",
+    storyTitle2: "clean production code.",
+    storyBody: "I combined 10 years of classroom pedagogy with modern systems architecture to engineer real-world EdTech tools. I replace tedious manual operations and reporting bottlenecks with high-efficiency automated workflows.",
+    hoursSavedLabel: "Avg. Prep & Admin Saved",
     hoursSavedValue: "15h+",
-    hoursSavedDesc: "Per classroom. Measured during school-wide trials.",
+    hoursSavedDesc: "Per classroom. Measured during school-wide trials in Korea.",
     privacyLabel: "Data Privacy & Compliance",
     privacyValue: "100%",
-    privacyDesc: "Strict Zero-Memory policy — student logs are never kept.",
+    privacyDesc: "Strict GDPR & COPPA alignment — zero persistent classroom logs.",
     integrityBadge: "Teacher-Vetted Benchmarks — 100% Real Trial Data",
-    sayHi: "Come say hi.",
-    startConv: "Start a Conversation",
+    sayHi: "Let's build together.",
+    startConv: "Start a Conversation via Email",
     escapeBrowser: "Escape the In-App Browser"
   },
   ko: {
     projectsNav: "프로젝트",
     playgroundNav: "라이브 실험실",
     storyNav: "소개 및 스토리",
-    heroBadge: "학교 현장을 위한 에듀테크 도구 개발",
-    heroTitle1: "현장에 꼭 필요한",
-    heroTitle2: "실제 작동하는 도구.",
-    heroTagline: "교사 출신 에듀테크 크리에이터 — 학생, 학부모, 교사가 느끼는 한계와 문제들을 직접 코딩으로 해결합니다.",
-    viewProjectsBtn: "프로젝트 살펴보기",
+    heroBadge: "제이슨 벤자민 — 에듀테크 창업가 & 빌더",
+    heroTitle1: "학교 현장이 검증하고",
+    heroTitle2: "교사적 관점으로 코딩한 솔루션.",
+    heroTagline: "현직 10년 차 교사이자 풀스택 웹 빌더 제이슨 벤자민입니다. 실제 이중언어 가정에서 필드 테스트 중인 대표작 Chekki AI와 에듀테크 자동화 파이프라인으로 행정 낭비를 지워 교육의 가치를 찾습니다.",
+    viewProjectsBtn: "프로젝트 포트폴리오 ↓",
     playgroundBtn: "라이브 노코드 AI 시험장",
-    toolsBadge: "01 / 프로젝트 도구",
+    toolsBadge: "활성 프로덕션 목록",
     toolsTitle: "주요 포트폴리오",
     allSolutions: "전체 도구",
     allSolutionsDesc: "전체 솔루션",
@@ -63,18 +64,18 @@ const t = {
     sleekGrid: "한눈에 보는 그리드",
     continuousStory: "상세 스토리보드",
     noProjects: "해당 카테고리에 맞는 프로젝트가 발견되지 않았습니다.",
-    storyBadge: "03 / 마이 스토리",
-    storyTitle1: "교실 연구를 도구로",
-    storyTitle2: "만드는 교육 개발자.",
-    storyBody: "10년간 교사로서 교육 현장에 있으면서, 행정 낭비와 비효율성을 해소하고자 로코드 및 풀스택 아키텍처를 도입했습니다. 단순 중복적 마찰을 자율적 자동화 파이프라인으로 전환합니다.",
+    storyBadge: "엔지니어의 여정",
+    storyTitle1: "교정 분필에서",
+    storyTitle2: "실제 배포 가능한 코드로.",
+    storyBody: "10년간 교직에서 절감한 비효율을 직접 코딩하여 전수 자동화하였습니다. 반복 작업을 설계적 차원에서 제거하는 영구 자동화 연쇄망을 다져 학교의 소중한 시간을 보전합니다.",
     hoursSavedLabel: "주당 평균 준비/행정 시간 단축",
     hoursSavedValue: "15시간 이상",
-    hoursSavedDesc: "교실 및 교사 기준. 파일럿 과정 내 실시간 추적 수치.",
+    hoursSavedDesc: "실제 서울 지역 학원 연계 파일럿 연쇄 실측 분석 지표.",
     privacyLabel: "학습 데이터 보호 수준",
-    privacyValue: "100% 규정 준수",
-    privacyDesc: "Zero-Memory 엄격 가동 — 아동 학습 행동 로그 일체 영구 미저장.",
+    privacyValue: "100% 안심 가동",
+    privacyDesc: "매 수업 엄격 무저장 규약 완비 — 아동 행동학 로그의 영구 삭제.",
     integrityBadge: "정량화된 교직 성과 지수 — 거짓 없는 실측 통계",
-    sayHi: "언제든 의뢰하시거나 연락해주세요",
+    sayHi: "더 나은 생태계를 위해 소통해봐요",
     startConv: "이메일로 대화 시작하기",
     escapeBrowser: "인앱 브라우저를 벗어나 환상적인 체험을 즐기세요"
   }
@@ -96,6 +97,8 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [showCompetencies, setShowCompetencies] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [activePathfinderRole, setActivePathfinderRole] = useState<'recruiter' | 'director' | 'parent' | null>(null);
 
   // Synchronize case study state with URL Hash
   useEffect(() => {
@@ -203,9 +206,9 @@ function App() {
                 J. BENJAMIN
               </span>
               <nav className="hidden md:flex items-center gap-14 text-[10px] font-bold uppercase tracking-[0.5em]">
-                  <a href="#portfolio" onClick={scrollToSection('portfolio')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>{t[locale].projectsNav}</a>
-                  <a href="#lab" onClick={scrollToSection('lab')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>{t[locale].playgroundNav}</a>
-                  <a href="#about" onClick={scrollToSection('about')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>{t[locale].storyNav}</a>
+                  <a href="#portfolio" onClick={scrollToSection('portfolio')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/75 hover:text-white' : 'text-alpine-950/75 hover:text-alpine-950'}`}>{t[locale].projectsNav}</a>
+                  <a href="#lab" onClick={scrollToSection('lab')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/75 hover:text-white' : 'text-alpine-950/75 hover:text-alpine-950'}`}>{t[locale].playgroundNav}</a>
+                  <a href="#about" onClick={scrollToSection('about')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/75 hover:text-white' : 'text-alpine-950/75 hover:text-alpine-950'}`}>{t[locale].storyNav}</a>
                   
                   <div className="flex items-center gap-3">
                     {/* Search Icon / Sleek Expandable Input */}
@@ -472,43 +475,182 @@ function App() {
             </div>
 
             {/* Increased MT to push content down significantly from the top nav */}
-            <div className="max-w-7xl mx-auto flex flex-col items-center gap-12 md:gap-28 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-40 mt-20 md:mt-32">
-                <div className="space-y-8 md:space-y-16 w-full">
-                    <div className={`flex items-center justify-center gap-4 text-[9px] md:text-[12px] font-black tracking-[0.5em] md:tracking-[1em] uppercase ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'}`}>
-                      {t[locale].heroBadge}
+            <div className="max-w-7xl mx-auto flex flex-col items-center gap-8 md:gap-16 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-40 mt-20 md:mt-32">
+                <div className="space-y-6 md:space-y-10 w-full text-center">
+                    <div className={`flex items-center justify-center gap-2.5 sm:gap-4 text-[10px] md:text-[13px] font-black tracking-[0.3em] sm:tracking-[0.6em] uppercase px-4 leading-normal ${theme === 'dark' ? 'text-accent-gold/90' : 'text-accent-clay'}`}>
+                      <span>✦</span> {t[locale].heroBadge}
                     </div>
                     
                     <div className="relative">
-                      {locale === 'en' ? (
-                        <h1 className="text-4xl sm:text-7xl lg:text-[10rem] font-medium tracking-tight leading-[1.1] md:leading-[1] font-display text-gradient-white pb-6 px-2">
-                          Real tools for <br />
-                          <span className={`italic block tracking-tighter pt-2 md:pt-8 font-light ${theme === 'dark' ? 'text-white/20' : 'text-alpine-950/20'}`}>
-                            real people.
-                          </span>
-                        </h1>
-                      ) : (
-                        <h1 className="text-4xl sm:text-7xl lg:text-[6.5rem] font-medium tracking-tight leading-[1.2] md:leading-[1.1] font-display text-gradient-white pb-6 px-2">
-                          현장에 꼭 필요한 <br />
-                          <span className={`italic block tracking-tighter pt-2 md:pt-6 font-light ${theme === 'dark' ? 'text-white/20' : 'text-alpine-950/20'}`}>
-                            실제 작동하는 도구들.
-                          </span>
-                        </h1>
-                      )}
+                      <h1 
+                        className="font-medium tracking-tight font-display text-gradient-white pb-4 px-2"
+                        style={{ fontSize: 'clamp(2.2rem, 7.5vw, 5.5rem)', lineHeight: '1.05' }}
+                      >
+                        {t[locale].heroTitle1} <br />
+                        <span className={`italic block tracking-tighter pt-2 md:pt-4 font-light ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/30'}`}>
+                          {t[locale].heroTitle2}
+                        </span>
+                      </h1>
                     </div>
 
-                    <p className={`text-[10px] md:text-sm max-w-lg mx-auto leading-relaxed font-medium tracking-[0.1em] md:tracking-[0.15em] uppercase px-4 ${theme === 'dark' ? 'text-white/50' : 'text-black/50'}`}>
+                    <p className={`text-xs md:text-base max-w-2xl mx-auto leading-relaxed font-medium px-4 ${theme === 'dark' ? 'text-white/85' : 'text-alpine-950/85'}`}>
                       {t[locale].heroTagline}
                     </p>
+
+                    {/* AUDIENCE PATHFINDER GROUP */}
+                    <div className={`mt-8 max-w-2xl mx-auto rounded-2xl border p-5 transition-all text-left ${
+                      theme === 'dark' ? 'bg-[#101419]/90 border-white/10' : 'bg-[#faf9f6]/95 border-black/5 shadow-xl'
+                    }`}>
+                      <div className="flex flex-col sm:flex-row items-baseline gap-2 mb-3.5">
+                        <span className="text-[9px] font-black tracking-widest text-accent-gold uppercase font-mono">
+                          {locale === 'en' ? "✦ PATHFINDER ROUTING" : "✦ 방문자 맞춤 빠른 가방 경로"}
+                        </span>
+                        <span className={`text-[11px] font-bold ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}`}>
+                          {locale === 'en' ? "Who are you?" : "어느 소속의 파트너이신가요?"}
+                        </span>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        {[
+                          { id: 'recruiter', labelEn: 'Recruiter / Tech Lead', labelKo: '채용 담당자 / 테크 리더' },
+                          { id: 'director', labelEn: 'School Director / Principal', labelKo: '학교 원장 / 교육 행정자' },
+                          { id: 'parent', labelEn: 'Parent / Classroom Teacher', labelKo: '학부모 / 일선 교사' }
+                        ].map(role => {
+                          const isActive = activePathfinderRole === role.id;
+                          return (
+                            <button
+                              key={role.id}
+                              id={`pathfinder-role-${role.id}`}
+                              onClick={() => setActivePathfinderRole(isActive ? null : role.id as any)}
+                              className={`px-3 py-2 rounded-xl text-[10px] font-bold uppercase transition-all tracking-wider text-center border ${
+                                isActive 
+                                  ? 'bg-accent-gold border-accent-gold text-alpine-950 font-black shadow-lg scale-[1.02]' 
+                                  : theme === 'dark'
+                                    ? 'bg-white/5 border-white/5 text-white/80 hover:bg-white/10'
+                                    : 'bg-black/5 border-black/5 text-alpine-950/80 hover:bg-black/10'
+                              }`}
+                            >
+                              {locale === 'en' ? role.labelEn : role.labelKo}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {activePathfinderRole && (
+                        <div className="mt-4 pt-4 border-t border-white/5 animate-in fade-in duration-300">
+                          <p className={`text-xs leading-relaxed ${theme === 'dark' ? 'text-white/85' : 'text-alpine-950/85'}`}>
+                            {activePathfinderRole === 'recruiter' && (
+                              locale === 'en' 
+                                ? "💡 Target Fit: Evaluating full-stack architecture or custom B2B outreach pipeline? Explore direct-fit competencies, architectural case studies, or prompt me for an instant interactive CV."
+                                : "💡 채용 최적점: 풀스택 자동화 아키텍처 및 B2B 연결망이 필요하신가요? 핵심 역량 대조판을 확인하시거나, 원클릭 이력서 모달을 기동하세요."
+                            )}
+                            {activePathfinderRole === 'director' && (
+                              locale === 'en'
+                                ? "🏫 Operations Fit: Need to minimize student intake errors or conflict-resolution variables? Review EduPlanner (automated scheduling) or Automated Consult Pipeline (data systems saving 15h+/week)."
+                                : "🏫 학원 행정 최적화: 수강생 선제 등재나 야근을 줄일 일체 데이터 관리망이 필요하신가요? 무인 시간표 생성 조립기(EduPlanner) 및 주 15시간 가교 연쇄 장치들을 살펴보관하세요."
+                            )}
+                            {activePathfinderRole === 'parent' && (
+                              locale === 'en'
+                                ? "🎒 Learner Fit: Want to see the real classroom helpers built with strict Zero-Memory COPPA data safeguards? Explore Chekki AI for immediate, bilingual worksheet parsing."
+                                : "🎒 교직 및 교양: 아이들의 학업 데이터 주권을 100% 보장하는 무결점 교육 도구를 확인하세요. 스마트폰 카메라 스캔형 숙제 지시 비서 Chekki AI 기동이 준비되어 있습니다."
+                            )}
+                          </p>
+                          <div className="flex flex-wrap gap-2.5 mt-3">
+                            {activePathfinderRole === 'recruiter' && (
+                              <>
+                                <button
+                                  onClick={() => setIsResumeOpen(true)}
+                                  className="text-[9px] font-black uppercase tracking-widest text-[#44D9C5] hover:underline flex items-center gap-1 bg-[#44D9C5]/5 border border-[#44D9C5]/10 px-2.5 py-1.5 rounded-lg"
+                                >
+                                  <span>📄</span> {locale === 'en' ? "Open CV Statement" : "이력서/명세서 즉시 열기"}
+                                </button>
+                                <a
+                                  href="#portfolio"
+                                  onClick={scrollToSection('portfolio')}
+                                  className="text-[9px] font-black uppercase tracking-widest text-accent-gold hover:underline flex items-center gap-1 bg-accent-gold/5 border border-accent-gold/10 px-2.5 py-1.5 rounded-lg"
+                                >
+                                  <span>🔨</span> {locale === 'en' ? "Search Case Studies" : "포트폴리오 대조 ↓"}
+                                </a>
+                              </>
+                            )}
+                            {activePathfinderRole === 'director' && (
+                              <>
+                                <a
+                                  href="#portfolio"
+                                  onClick={(e) => {
+                                    setSelectedCategory('pipelines');
+                                    scrollToSection('portfolio')(e);
+                                  }}
+                                  className="text-[9px] font-black uppercase tracking-widest text-[#44D9C5] hover:underline flex items-center gap-1 bg-[#44D9C5]/5 border border-[#44D9C5]/10 px-2.5 py-1.5 rounded-lg"
+                                >
+                                  <span>⚙️</span> {locale === 'en' ? "Admin Pipelines ↓" : "자동화 도구 정렬 ↓"}
+                                </a>
+                                <a
+                                  href="#contact"
+                                  onClick={scrollToSection('contact')}
+                                  className="text-[9px] font-black uppercase tracking-widest text-accent-gold hover:underline flex items-center gap-1 bg-accent-gold/5 border border-accent-gold/10 px-2.5 py-1.5 rounded-lg"
+                                >
+                                  <span>✉️</span> {locale === 'en' ? "Book Setup Consult" : "구축 및 현장 배치 조율"}
+                                </a>
+                              </>
+                            )}
+                            {activePathfinderRole === 'parent' && (
+                              <>
+                                <a
+                                  href="https://chekki-ai.vercel.app/"
+                                  target="_blank"
+                                  className="text-[9px] font-black uppercase tracking-widest text-accent-gold hover:underline flex items-center gap-1 bg-accent-gold/5 border border-accent-gold/10 px-2.5 py-1.5 rounded-lg"
+                                >
+                                  <span>🚀</span> {locale === 'en' ? "Launch Chekki AI" : "Chekki AI 즉시 실행 ↗"}
+                                </a>
+                                <button
+                                  onClick={() => setModalType('privacy')}
+                                  className="text-[9px] font-black uppercase tracking-widest text-white/60 hover:underline flex items-center gap-1 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-lg"
+                                >
+                                  <span>🔒</span> {locale === 'en' ? "Read Privacy Guard" : "데이터 프라이버시 안심증명"}
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-10 w-full max-w-xl px-4 mx-auto">
-                    <a href="#portfolio" onClick={scrollToSection('portfolio')} className="shiny-cta w-full py-5 shadow-xl text-center">
-                        {t[locale].viewProjectsBtn}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 w-full max-w-3xl px-4 mx-auto">
+                    <a 
+                      href="https://chekki-ai.vercel.app/" 
+                      target="_blank"
+                      rel="noopener noreferrer" 
+                      className="shiny-cta py-4 px-6 text-center shadow-xl w-full sm:w-auto text-[10px] md:text-xs tracking-wider"
+                    >
+                      🚀 {locale === 'en' ? "Launch Chekki AI" : "Chekki AI 기동 ↗"}
                     </a>
-                    <button onClick={scrollToSection('lab')} className={`w-full flex items-center justify-center gap-3.5 px-6 py-5 rounded-xl border transition-all ${theme === 'dark' ? 'border-white/20 hover:bg-white/5 text-white' : 'border-black/20 hover:bg-black/5 text-alpine-950'}`}>
-                      <CodeIcon className="w-4 h-4 text-accent-gold shrink-0" /> 
-                      <span className="text-[10px] font-black uppercase tracking-wider sm:tracking-[0.2em] text-center leading-normal">{t[locale].playgroundBtn}</span>
+                    
+                    <button 
+                      onClick={() => setIsResumeOpen(true)} 
+                      className={`w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-xl border text-[10px] md:text-xs font-black uppercase tracking-wider transition-all ${
+                        theme === 'dark' 
+                          ? 'border-white/20 hover:bg-white/5 text-white' 
+                          : 'border-black/20 hover:bg-black/5 text-alpine-950'
+                      }`}
+                    >
+                      <span>📄</span> 
+                      <span>{locale === 'en' ? "Interactive CV" : "이력서 / 명세서 열기"}</span>
                     </button>
+
+                    <a 
+                      href="#portfolio" 
+                      onClick={scrollToSection('portfolio')} 
+                      className={`w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-xl border text-[10px] md:text-xs font-black uppercase tracking-wider transition-all ${
+                        theme === 'dark' 
+                          ? 'border-white/15 hover:bg-white/5 text-white/80' 
+                          : 'border-black/15 hover:bg-black/5 text-alpine-950/80'
+                      }`}
+                    >
+                      <span>🔨</span> 
+                      <span>{locale === 'en' ? "Explore Solutions" : "포트폴리오 탐색 ↓"}</span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -798,6 +940,7 @@ function App() {
       </footer>
 
       <ComplianceModal isOpen={!!modalType} onClose={() => setModalType(null)} type={modalType || 'privacy'} locale={locale} />
+      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} theme={theme} locale={locale} />
       <AIChat isOpen={isChatOpen} setIsOpen={setIsChatOpen} theme={theme} locale={locale} />
       
       {activeCaseStudyId && (
