@@ -539,9 +539,9 @@ const studyDataEn: Record<string, CaseStudyType> = {
     tagline: "An enterprise-grade, full-stack B2B prospecting workspace designed specifically for the Korean English education export market.",
     liveUrl: "https://jason-benjamin.vercel.app/", 
     screenshots: [
-      { label: "Dashboard Overview", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780467780/LG_Dashboard_New_joyuto.png" },
-      { label: "Dashboard with Lead Results", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780467780/LG_Dashboard_Results_y7lmku.png" },
-      { label: "Cold Email Lead Generation Panel", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780467780/LG_Cold_Email_xafr9c.png" }
+      { label: "Dashboard", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.17.21_PM_wsyzzu.png" },
+      { label: "Dashboard Search", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.29_PM_btxolx.png" },
+      { label: "Outreach", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.39_PM_nesi9y.png" }
     ],
     stats: [
       { label: "Target Scan Speed", value: "Real-time" },
@@ -1036,9 +1036,9 @@ const studyDataKo: Record<string, CaseStudyType> = {
     tagline: "지역 상권 가용 지도를 정화 및 중복 소탕하고, 제미나이 언어 가이드로 대표 맞춤 협업 이메일 딥링크를 즉석 생성합니다.",
     liveUrl: "https://jason-benjamin.vercel.app/", 
     screenshots: [
-      { label: "대시보드 메인 화면 (Dashboard Overview)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780467780/LG_Dashboard_New_joyuto.png" },
-      { label: "수집 완료 및 분석 지표 화면 (Dashboard with Lead Results)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780467780/LG_Dashboard_Results_y7lmku.png" },
-      { label: "B2B 지메일 제안 원클릭 전송 (Cold Email Lead Generation Panel)", url: "https://res.cloudinary.com/dec04iaht/image/upload/v1780467780/LG_Cold_Email_xafr9c.png" }
+      { label: "Dashboard", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.17.21_PM_wsyzzu.png" },
+      { label: "Dashboard Search", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.29_PM_btxolx.png" },
+      { label: "Outreach", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.39_PM_nesi9y.png" }
     ],
     stats: [
       { label: "타겟 데이터 수집 속도", value: "실시간 스캔 완료" },
@@ -1248,25 +1248,29 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
           </p>
 
           {/* DUAL BUTTON SPLIT CTA */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4 max-w-2xl">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 max-w-2xl w-full">
             <button 
               onClick={scrollToBreakdown}
-              className={`shiny-cta py-5 text-center shadow-2xl ${(hasLiveApp || projectData.storeUrl) ? 'w-full sm:w-auto px-8' : 'w-full sm:w-auto px-12'}`}
+              className={`shiny-cta py-4 sm:py-5 text-center shadow-2xl whitespace-normal sm:whitespace-nowrap ${
+                (hasLiveApp || projectData.storeUrl) 
+                  ? 'w-full sm:w-auto px-4 sm:px-8 text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest' 
+                  : 'w-full sm:w-auto px-6 sm:px-12 text-[10px] sm:text-[11px] tracking-wider sm:tracking-widest'
+              }`}
             >
-              {t.technicalBreakdown}
+              <span className="leading-snug text-center">{t.technicalBreakdown}</span>
             </button>
             {hasLiveApp && (
               <a 
                 href={projectData.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`w-full py-5 rounded-xl border flex items-center justify-center gap-3 font-extrabold uppercase text-[10px] tracking-widest transition-all ${
+                className={`w-full py-4 sm:py-5 px-4 rounded-xl border flex items-center justify-center gap-2 sm:gap-3 font-extrabold uppercase text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest transition-all text-center ${
                   theme === 'dark' 
                     ? 'border-white/20 hover:bg-white/5 text-white' 
                     : 'border-black/20 hover:bg-black/5 text-alpine-950'
                 }`}
               >
-                {t.launchLiveApp}
+                <span className="whitespace-normal sm:whitespace-nowrap leading-snug">{t.launchLiveApp}</span>
               </a>
             )}
             {projectData.storeUrl && (
@@ -1274,13 +1278,13 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                 href={projectData.storeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`w-full py-5 rounded-xl border flex items-center justify-center gap-3 font-extrabold uppercase text-[10px] tracking-widest transition-all ${
+                className={`w-full py-4 sm:py-5 px-4 rounded-xl border flex items-center justify-center gap-2 sm:gap-3 font-extrabold uppercase text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest transition-all text-center ${
                   theme === 'dark' 
                     ? 'border-accent-gold/30 hover:bg-accent-gold/5 text-accent-gold' 
                     : 'border-accent-gold/40 hover:bg-accent-gold/10 text-accent-gold'
                 }`}
               >
-                <span>🚀 {t.storeLink}</span>
+                <span className="whitespace-normal sm:whitespace-nowrap leading-snug">🚀 {t.storeLink}</span>
               </a>
             )}
           </div>
