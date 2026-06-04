@@ -559,32 +559,32 @@ const studyDataEn: Record<string, CaseStudyType> = {
       "Developed a 1-click mailto pre-composition deep link mechanism for hyper-personalized, zero-delay dispatch loops."
     ],
     stack: [
-      "React 18",
       "Vite & TypeScript",
-      "Express API Proxy",
-      "esbuild CJS Compiler",
-      "Leaflet.js Mapping",
-      "Google GenAI SDK",
+      "Tailwind CSS",
+      "React-Leaflet & Leaflet.js",
       "Framer Motion",
-      "Airtable Sync",
-      "Tailwind CSS"
+      "Custom Express API",
+      "esbuild Bundler",
+      "Naver Search Open API",
+      "Google GenAI SDK",
+      "Webhook CRM Dispatcher"
     ],
     behindTheArchitecture: {
       problem: "Scraping localized maps (Naver) manually to locate business entities ends up returning messy, unformatted, HTML-polluted contact entries and extremely slow CRM logging workflows.",
-      vision: "An enterprise-grade, full-stack B2B prospecting workspace designed specifically for the Korean English education export market. The platform intercepts raw, unformatted merchant geo-location records, enriches the listings, and exports fully formulated target payloads.",
-      rationale: "Chose an Express endpoint proxy running custom regex sweeps coupled with Google Gemini's structured JSON models and Leaflet.js rendering to populate error-free deep email compositions instantly."
+      vision: "An enterprise-grade, full-stack B2B prospecting workspace designed specifically for the Korean English education export market. The platform intercepts raw, unformatted merchant geo-location records from the Naver Local Search API, enriches the listings using a custom server-side Google Gemini 3.5 data-structuring pipeline, and exports fully formulated target payloads to an external CRM database (Airtable / Make.com Webhook integrations).",
+      rationale: "Selected a decoupled React + Express multi-page territory sweep running compound deduplication, strict Gemini structured output definitions, and localized Leaflet TM128 coordinate conversions to map and target prospective clients seamlessly."
     },
     architecture: {
       lifecycle: [
-        "1. Proxy Pipeline: Intercepts raw, unformatted merchant geo-location records from the Naver Local Search API, securely injecting parameters to avoid CORS and credential leaks.",
-        "2. Territory Sweep: Automatically loops query pagination up to 100 elements and performs client-side compound deduplication (combining title + address).",
-        "3. Geolocation Mapping: Translates localized coordinate grid points (TM128 format) to normalized standard WGS84 GPS floats ([lat, lng]) dynamically for Leaflet.",
+        "1. Client-Server Secret Guarding & Proxy Pipeline: Raw merchant geo-location requests from Naver Local Search are routed through custom intermediate backend proxies (/api/search-naver & /api/structure-lead) to inject critical parameters (X-Naver-Client-Id, X-Naver-Client-Secret, and GEMINI_API_KEY) out of browser reach.",
+        "2. Aggressive Multi-Page Territory Sweep: The sweep progression mechanism loops query pagination in increments of 5 up to bounds of 100 elements, automatically bypassing Naver's strict API pagination limit.",
+        "3. Leaflet Geolocation Mapping & Coordinate Translation: Local TM128 grid points from Naver maps are converted via high-precision floating-point conversions (convertCoords) to standard WGS84 GPS floats ([lat, lng]) to dynamically refocus maps around selected leads.",
         "4. Webhook CRM Dispatcher: Automatically validates destination CRM targets and fires JSON payloads to consumer Airtable / Make.com instances."
       ],
       guardrails: [
         "Client-Server Secret Guarding: Prevents payment/credential leaks by routing sensitive API parameters through custom intermediate backend proxies.",
-        "Airtable Synchronization Safeguard: Validates Webhooks and caches user configuration in localStorage for persistent state retention across reloads.",
-        "Compound Deduplication: Prevents double communication runs by checking cached states before commits."
+        "Aggressive Multi-Page Territory Sweep & Compound Deduplication: Loops pagination in increments of 5 up to bounds of 100 elements and performs client-side compound deduplication using title + address.",
+        "Airtable Synchronization Safeguard & State Retention: Runs validation checks against placeholder URLs and caches custom Webhook configuration natively in localStorage."
       ]
     },
     promptEngineering: {
@@ -606,8 +606,8 @@ responseSchema: {
 }`,
       guardrails: [
         "Strict JSON Schema Enforcement: Guarantees LLM payload matches the destination CRM database validation schema every time, preventing broken pipelines.",
-        "Context Boundary Shielding: Restricts prompt outputs strictly to Naver-derived variables without hallucinating fields.",
-        "Honorific Consistency Loop: Mandates precise formal honorific styling matching the recipient entity's demographic tier."
+        "Leaflet Geolocation Mapping & Coordinate Translation: Employs high-precision floating-point conversions (convertCoords(mapx, mapy)) to normalize Naver grid points back into standard standard WGS84 GPS Floats ([lat, lng]).",
+        "Airtable Synchronization Safeguard & State Retention: Automatically runs validation checks against placeholder URLs (like the default Make.com template link), prompting users with inline alerts before proceeding."
       ]
     },
     impact: {
@@ -1126,8 +1126,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [isArchOpen, setIsArchOpen] = useState(true);
-  const [isHurdlesOpen, setIsHurdlesOpen] = useState(true);
+  const [isArchOpen, setIsArchOpen] = useState(false);
+  const [isHurdlesOpen, setIsHurdlesOpen] = useState(false);
   const [isBreakdownOpen, setIsBreakdownOpen] = useState(true);
   const [activeScreenshotIdx, setActiveScreenshotIdx] = useState(0);
 
@@ -1144,8 +1144,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
     document.body.style.overflow = 'hidden';
 
     // Reset collapsible states when project changes
-    setIsArchOpen(true);
-    setIsHurdlesOpen(true);
+    setIsArchOpen(false);
+    setIsHurdlesOpen(false);
     setIsBreakdownOpen(true);
     setActiveScreenshotIdx(0);
 
@@ -1215,7 +1215,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
               href={projectData.storeUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-red-500 transition-colors hover:text-red-400"
+              className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent-gold transition-colors hover:text-accent-gold/80"
             >
               {t.storeLink}
             </a>
@@ -1274,7 +1274,11 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                 href={projectData.storeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-black uppercase text-[10px] tracking-widest transition-all shadow-lg hover:shadow-red-600/20 text-center flex items-center justify-center gap-1.5"
+                className={`w-full py-5 rounded-xl border flex items-center justify-center gap-3 font-extrabold uppercase text-[10px] tracking-widest transition-all ${
+                  theme === 'dark' 
+                    ? 'border-accent-gold/30 hover:bg-accent-gold/5 text-accent-gold' 
+                    : 'border-accent-gold/40 hover:bg-accent-gold/10 text-accent-gold'
+                }`}
               >
                 <span>🚀 {t.storeLink}</span>
               </a>
@@ -1643,7 +1647,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                           href={projectData.storeUrl} 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="inline-flex px-6 py-2.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-[9px] font-black uppercase tracking-widest"
+                          className="inline-flex px-6 py-2.5 rounded-lg border border-accent-gold/30 bg-accent-gold/5 hover:bg-accent-gold/10 text-accent-gold text-[9px] font-black uppercase tracking-widest transition-colors"
                         >
                           {t.storeLink}
                         </a>
