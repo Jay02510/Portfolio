@@ -129,7 +129,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       <div className={`mt-[-60px] md:mt-0 md:absolute ${isEven ? 'md:right-12' : 'md:left-12'} md:top-1/2 md:-translate-y-1/2 w-[90%] md:w-full md:max-w-xl glass-panel rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-14 space-y-6 md:space-y-10 z-20 transition-all duration-500 group-hover:shadow-accent-gold/5`}>
           <div className="space-y-2 md:space-y-6">
               <div className="flex flex-col gap-2">
-                <span className={`font-bold uppercase tracking-[0.4em] text-[8px] md:text-[11px] ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>Project 0{index + 1}</span>
+                <span className={`font-bold uppercase tracking-[0.4em] text-[8px] md:text-[11px] ${theme === 'dark' ? 'text-text-tert' : 'text-alpine-950/50'}`}>Project 0{index + 1}</span>
                 {project.tags?.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
                     {project.tags.map((tag: string, tIdx: number) => (
@@ -148,7 +148,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               >
                 {project.title}
               </h3>
-              <p className={`text-xs md:text-lg font-normal leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/80'}`}>
+              <p className={`text-xs md:text-lg font-normal leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
                 {project.longDescription}
               </p>
           </div>
@@ -158,7 +158,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             {project.features && (
               <div className="flex flex-wrap gap-2 md:gap-3">
                 {project.features.map((feature: string, fIdx: number) => (
-                  <span key={fIdx} className={`px-3 py-1.5 md:px-5 md:py-2 rounded-lg border text-[8px] md:text-[10px] font-black uppercase tracking-widest transition-all hover:border-accent-gold/50 ${theme === 'dark' ? 'bg-white/5 border-white/5 text-white/50' : 'bg-black/5 border-black/5 text-alpine-950/60'}`}>
+                  <span key={fIdx} className={`px-3 py-1.5 md:px-5 md:py-2 rounded-lg border text-[8px] md:text-[10px] font-black uppercase tracking-widest transition-all hover:border-accent-gold/50 ${theme === 'dark' ? 'bg-white/5 border-white/5 text-text-sec' : 'bg-black/5 border-black/5 text-alpine-950/60'}`}>
                     {feature}
                   </span>
                 ))}

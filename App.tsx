@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { PORTFOLIO_DATA } from './constants.ts';
 import ProjectCard from './components/ProjectCard.tsx';
 import { CompactProjectCard } from './components/CompactProjectCard.tsx';
@@ -9,7 +10,7 @@ import ComplianceModal from './components/ComplianceModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import { CaseStudyViewer } from './CaseStudyViewer.tsx';
 import ResumeModal from './components/ResumeModal.tsx';
-import { MailIcon, SparklesIcon, SendIcon, BookOpenIcon, MapIcon, CodeIcon, ChevronDownIcon, ExternalLinkIcon, XIcon, FileTextIcon, SearchIcon } from './components/Icons.tsx';
+import { MailIcon, SparklesIcon, SendIcon, BookOpenIcon, MapIcon, CodeIcon, ChevronDownIcon, ExternalLinkIcon, XIcon, FileTextIcon, SearchIcon, SunIcon, MoonIcon, DeviceMobileIcon, SettingsIcon, CreditCardIcon, LockIcon, LightbulbIcon, BriefcaseIcon, RocketIcon } from './components/Icons.tsx';
 
 const t = {
   en: {
@@ -99,6 +100,7 @@ function App() {
   const [showCompetencies, setShowCompetencies] = useState(false);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [activePathfinderRole, setActivePathfinderRole] = useState<'recruiter' | 'director' | 'parent' | null>(null);
+  const [activeSection, setActiveSection] = useState<string>('');
 
   // Synchronize case study state with URL Hash
   useEffect(() => {
@@ -144,6 +146,24 @@ function App() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
       setScrollY(window.scrollY);
+
+      // Viewport-based active navigation target tracking
+      const sections = ['portfolio', 'lab', 'about', 'contact'];
+      let currentSection = '';
+      const headerOffset = 150; // Compensates for top bar height
+
+      for (const sectionId of sections) {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          // If top of section is inside or above visible scroll zone, and bottom is below header offset
+          if (rect.top <= headerOffset + 80 && rect.bottom >= headerOffset) {
+            currentSection = sectionId;
+            break;
+          }
+        }
+      }
+      setActiveSection(currentSection);
     };
     window.addEventListener('scroll', handleScroll);
 
@@ -206,9 +226,54 @@ function App() {
                 J. BENJAMIN
               </span>
               <nav className="hidden md:flex items-center gap-14 text-[10px] font-bold uppercase tracking-[0.5em]">
-                  <a href="#portfolio" onClick={scrollToSection('portfolio')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/75 hover:text-white' : 'text-alpine-950/75 hover:text-alpine-950'}`}>{t[locale].projectsNav}</a>
-                  <a href="#lab" onClick={scrollToSection('lab')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/75 hover:text-white' : 'text-alpine-950/75 hover:text-alpine-950'}`}>{t[locale].playgroundNav}</a>
-                  <a href="#about" onClick={scrollToSection('about')} className={`transition-all hover:tracking-[0.6em] ${theme === 'dark' ? 'text-white/75 hover:text-white' : 'text-alpine-950/75 hover:text-alpine-950'}`}>{t[locale].storyNav}</a>
+                  <a 
+                    href="#portfolio" 
+                    onClick={scrollToSection('portfolio')} 
+                    className={`transition-all hover:tracking-[0.6em] relative pb-1 ${
+                      activeSection === 'portfolio' 
+                        ? 'text-accent-gold font-extrabold' 
+                        : theme === 'dark' 
+                          ? 'text-white/75 hover:text-white' 
+                          : 'text-alpine-950/75 hover:text-alpine-950'
+                    }`}
+                  >
+                    {t[locale].projectsNav}
+                    {activeSection === 'portfolio' && (
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-accent-gold animate-in fade-in duration-300"></span>
+                    )}
+                  </a>
+                  <a 
+                    href="#lab" 
+                    onClick={scrollToSection('lab')} 
+                    className={`transition-all hover:tracking-[0.6em] relative pb-1 ${
+                      activeSection === 'lab' 
+                        ? 'text-accent-gold font-extrabold' 
+                        : theme === 'dark' 
+                          ? 'text-white/75 hover:text-white' 
+                          : 'text-alpine-950/75 hover:text-alpine-950'
+                    }`}
+                  >
+                    {t[locale].playgroundNav}
+                    {activeSection === 'lab' && (
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-accent-gold animate-in fade-in duration-300"></span>
+                    )}
+                  </a>
+                  <a 
+                    href="#about" 
+                    onClick={scrollToSection('about')} 
+                    className={`transition-all hover:tracking-[0.6em] relative pb-1 ${
+                      activeSection === 'about' 
+                        ? 'text-accent-gold font-extrabold' 
+                        : theme === 'dark' 
+                          ? 'text-white/75 hover:text-white' 
+                          : 'text-alpine-950/75 hover:text-alpine-950'
+                    }`}
+                  >
+                    {t[locale].storyNav}
+                    {activeSection === 'about' && (
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-accent-gold animate-in fade-in duration-300"></span>
+                    )}
+                  </a>
                   
                   <div className="flex items-center gap-3">
                     {/* Search Icon / Sleek Expandable Input */}
@@ -275,13 +340,14 @@ function App() {
                       }`}
                       title={locale === 'en' ? 'Switch to Korean' : 'Switch to English'}
                     >
-                      {locale === 'en' ? '한글 🇰🇷' : 'ENGLISH 🇺🇸'}
+                      {locale === 'en' ? '한국어 (KO)' : 'ENGLISH (EN)'}
                     </button>
                     <button 
                       onClick={toggleTheme} 
-                      className={`p-2.5 rounded-full glass-panel hover:bg-accent-gold hover:text-alpine-950 transition-all transform active:scale-95 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}
+                      className={`p-2.5 rounded-full glass-panel hover:bg-accent-gold hover:text-alpine-950 transition-all transform active:scale-95 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'} flex items-center justify-center`}
+                      aria-label="Toggle theme"
                     >
-                      {theme === 'dark' ? '☀️' : '🌙'}
+                      {theme === 'dark' ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
                     </button>
                   </div>
               </nav>
@@ -349,10 +415,14 @@ function App() {
                           : 'border-black/15 text-alpine-950 hover:bg-black/5')
                   }`}
                 >
-                  {locale === 'en' ? '한글 🇰🇷' : 'EN 🇺🇸'}
+                  {locale === 'en' ? 'KO' : 'EN'}
                 </button>
-                <button onClick={toggleTheme} className="p-1 px-1.5 text-base">
-                  {theme === 'dark' ? '☀️' : '🌙'}
+                <button 
+                  onClick={toggleTheme} 
+                  className={`p-2 hover:opacity-85 transition-opacity flex items-center justify-center`}
+                  aria-label="Toggle theme"
+                >
+                  {theme === 'dark' ? <SunIcon className="w-4 h-4 text-white" /> : <MoonIcon className="w-4 h-4 text-alpine-950" />}
                 </button>
               </div>
           </div>
@@ -657,20 +727,18 @@ function App() {
 
         {/* PORTFOLIO SECTION */}
         <section id="portfolio" className="py-20 md:py-48 px-6 max-w-7xl mx-auto">
-            <div className="mb-20 md:mb-24 text-center space-y-6">
-                <div className="text-accent-gold text-[9px] md:text-[11px] font-black tracking-[1em] uppercase">{t[locale].toolsBadge}</div>
+            <div className="mb-20 md:mb-24 text-center">
                 <h2 className="text-5xl md:text-8xl font-medium tracking-tighter font-display text-gradient-white leading-none">{t[locale].toolsTitle}</h2>
             </div>
 
-            {/* CORE COMPETENCIES & TECHNOLOGY BOARD */}
-            <div className={`mb-16 rounded-[2rem] border relative overflow-hidden transition-all duration-300 ${
-              theme === 'dark' ? 'bg-[#12161A]/40 border-white/10 shadow-2xl' : 'bg-black/[0.01]/40 border-black/5 shadow-lg'
+            {/* CORE COMPETENCIES & TECHNOLOGY BOARD (FLATTENED LAYOUT) */}
+            <div className={`mb-16 border-t relative transition-all duration-300 ${
+              theme === 'dark' ? 'border-white/10' : 'border-black/10'
             }`}>
               <button 
                 onClick={() => setShowCompetencies(!showCompetencies)}
-                className="w-full text-left p-8 md:p-12 flex items-center justify-between gap-6 hover:bg-white/[0.02]/20 active:bg-white/[0.04]/40 transition-all focus:outline-none relative z-10"
+                className="w-full text-left py-8 flex items-center justify-between gap-6 hover:opacity-80 transition-all focus:outline-none relative z-10"
               >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-accent-gold/5 rounded-full blur-3xl pointer-events-none"></div>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 w-full pr-4">
                   <div>
                     <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold font-mono">
@@ -680,7 +748,7 @@ function App() {
                       {locale === 'en' ? "Core Competencies & Stack" : "핵심 전문 역량 (Core Competencies)"}
                     </h3>
                   </div>
-                  <div className={`text-xs max-w-md leading-relaxed hidden sm:block ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>
+                  <div className={`text-xs max-w-md leading-relaxed hidden sm:block ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/60'}`}>
                     {locale === 'en'
                       ? "Targeted search keywords, hybrid platform expertise, and monetization infrastructures mapped to industry-level requirements. Click to expand."
                       : "헤드헌터 및 채용 매니저 서칭 지표(Mobile, Data, Monetization)를 일치 기입한 보증판. 클릭해서 펼치기."}
@@ -691,21 +759,21 @@ function App() {
                     ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
                     : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
                 }`}>
-                  <ChevronDownIcon className={`w-4 h-4 transition-colors ${showCompetencies ? 'text-accent-gold' : 'text-white/40'}`} />
+                  <ChevronDownIcon className={`w-4 h-4 transition-colors ${showCompetencies ? 'text-accent-gold' : 'text-text-tert'}`} />
                 </div>
               </button>
               
               {showCompetencies && (
-                <div className="px-8 md:px-12 pb-12 pt-6 grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-white/5 animate-in fade-in slide-in-from-top-4 duration-300 relative z-10">
+                <div className="pb-12 pt-6 grid grid-cols-1 md:grid-cols-3 gap-8 animate-in fade-in slide-in-from-top-4 duration-300 relative z-10">
                   {/* COLUMN 1 */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <span className="text-xl">📱</span>
+                      <DeviceMobileIcon className="w-5 h-5 text-accent-gold shrink-0" />
                       <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold">
                         {locale === 'en' ? "Mobile & Frontend Bridges" : "모바일 및 하이브리드 프론트엔드"}
                       </h4>
                     </div>
-                    <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
+                    <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
                       <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Capacitor SDK Bridge</li>
                       <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Native Device Android/iOS Integrations</li>
                       <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Bilingual UI Layout Engraving</li>
@@ -716,32 +784,32 @@ function App() {
                   {/* COLUMN 2 */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <span className="text-xl">⚙️</span>
-                      <h4 className="text-xs font-black uppercase tracking-widest text-[#44D9C5]">
+                      <SettingsIcon className="w-5 h-5 text-accent-gold shrink-0" />
+                      <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold">
                         {locale === 'en' ? "Data & Automation Architecture" : "데이터 및 자동화 아키텍처"}
                       </h4>
                     </div>
-                    <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Airtable Relational Clustering</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Make.com Automation Routers</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Fillout Dynamic Schema Mappings</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#44D9C5]/60"></div>Secure Server-Side Webhook Controllers</li>
+                    <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Airtable Relational Clustering</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Make.com Automation Routers</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Fillout Dynamic Schema Mappings</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Secure Server-Side Webhook Controllers</li>
                     </ul>
                   </div>
 
                   {/* COLUMN 3 */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <span className="text-xl">💳</span>
-                      <h4 className="text-xs font-black uppercase tracking-widest text-[#E15A5A]">
+                      <CreditCardIcon className="w-5 h-5 text-accent-gold shrink-0" />
+                      <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold">
                         {locale === 'en' ? "Monetization & Store Deployments" : "수익화 및 앱스토어 배포"}
                       </h4>
                     </div>
-                    <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/85'}`}>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>RevenueCat Subscriptions Hub</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>Google Play Developer Ecosystem</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>App Store Connect Sandbox Suites</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#E15A5A]/60"></div>Secure Server-to-Server Ingestion</li>
+                    <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>RevenueCat Subscriptions Hub</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Google Play Developer Ecosystem</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>App Store Connect Sandbox Suites</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Secure Server-to-Server Ingestion</li>
                     </ul>
                   </div>
                 </div>
@@ -851,34 +919,68 @@ function App() {
 
               if (portfolioLayout === 'grid') {
                 return (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredProjects.map((project, idx) => (
-                      <CompactProjectCard 
-                        key={project.id} 
-                        project={project} 
-                        index={activeProjects.findIndex(p => p.id === project.id)} 
-                        theme={theme} 
-                        locale={locale}
-                        onOpenCaseStudy={setActiveCaseStudyId} 
-                      />
-                    ))}
-                  </div>
+                  <motion.div 
+                    layout
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                  >
+                    <AnimatePresence mode="popLayout">
+                      {filteredProjects.map((project, idx) => (
+                        <motion.div
+                          key={project.id}
+                          layout
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{ 
+                            duration: 0.35, 
+                            ease: "easeOut",
+                            delay: Math.min(idx * 0.04, 0.2)
+                          }}
+                        >
+                          <CompactProjectCard 
+                            project={project} 
+                            index={activeProjects.findIndex(p => p.id === project.id)} 
+                            theme={theme} 
+                            locale={locale}
+                            onOpenCaseStudy={setActiveCaseStudyId} 
+                          />
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </motion.div>
                 );
               }
 
               return (
-                <div className="space-y-[10rem] md:space-y-[20rem]">
-                  {filteredProjects.map((project, idx) => (
-                    <ProjectCard 
-                      key={project.id} 
-                      project={project} 
-                      index={activeProjects.findIndex(p => p.id === project.id)} 
-                      theme={theme} 
-                      locale={locale}
-                      onOpenCaseStudy={setActiveCaseStudyId} 
-                    />
-                  ))}
-                </div>
+                <motion.div 
+                  layout
+                  className="space-y-[10rem] md:space-y-[20rem]"
+                >
+                  <AnimatePresence mode="popLayout">
+                    {filteredProjects.map((project, idx) => (
+                      <motion.div
+                        key={project.id}
+                        layout
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
+                        transition={{ 
+                          duration: 0.45, 
+                          ease: "easeOut",
+                          delay: Math.min(idx * 0.08, 0.4)
+                        }}
+                      >
+                        <ProjectCard 
+                          project={project} 
+                          index={activeProjects.findIndex(p => p.id === project.id)} 
+                          theme={theme} 
+                          locale={locale}
+                          onOpenCaseStudy={setActiveCaseStudyId} 
+                        />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
               );
             })()}
         </section>
@@ -897,7 +999,6 @@ function App() {
                </div>
             </div>
             <div className="space-y-10 order-1 lg:order-2">
-                 <div className="text-accent-gold text-[9px] font-black tracking-[1em] uppercase">{t[locale].storyBadge}</div>
                  {locale === 'en' ? (
                    <h2 className="text-5xl md:text-8xl font-medium font-display tracking-tighter text-gradient-white leading-none">Teacher who <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>builds tools.</span></h2>
                  ) : (

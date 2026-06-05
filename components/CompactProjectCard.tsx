@@ -48,7 +48,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
         <div className="absolute bottom-3 left-3">
           <span className={`px-2 py-1 text-[8px] font-black uppercase tracking-widest rounded border ${
             theme === 'dark' 
-              ? 'bg-black/60 border-white/10 text-white/50' 
+              ? 'bg-black/60 border-white/10 text-text-sec' 
               : 'bg-white/80 border-black/5 text-alpine-950/60'
           }`}>
             Project 0{index + 1}
@@ -78,13 +78,13 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
           >
             {project.title}
           </h3>
-          <p className={`text-xs ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>
+          <p className={`text-xs ${theme === 'dark' ? 'text-text-tert' : 'text-alpine-950/50'}`}>
             {project.description}
           </p>
         </div>
 
         <p className={`text-xs font-light leading-relaxed flex-1 ${
-          theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
+          theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/70'
         }`}>
           {project.longDescription}
         </p>
@@ -97,7 +97,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
                 key={fIdx} 
                 className={`px-2.5 py-1 rounded font-mono text-[8px] font-bold uppercase tracking-widest ${
                   theme === 'dark' 
-                    ? 'bg-white/5 border border-white/5 text-white/40' 
+                    ? 'bg-white/5 border border-white/5 text-text-tert' 
                     : 'bg-black/5 border border-black/5 text-alpine-950/50'
                 }`}
               >
@@ -131,7 +131,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
               target="_blank" 
               rel="noopener noreferrer"
               className={`flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider transition-all ${
-                theme === 'dark' ? 'text-white/50 hover:text-accent-gold' : 'text-alpine-950/60 hover:text-accent-clay'
+                theme === 'dark' ? 'text-text-sec hover:text-accent-gold' : 'text-alpine-950/60 hover:text-accent-clay'
               }`}
             >
               {project.websiteUrl 
