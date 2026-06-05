@@ -522,7 +522,7 @@ function App() {
         {/* REFINED HERO SECTION - INCREASED PADDING FOR SUBSTANTIAL BREATHING ROOM */}
         <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-72 md:pt-64 pb-24">
             <div className="absolute inset-0 pointer-events-none z-0">
-                <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#0a0c10]' : 'bg-[#faf9f6]'}`}></div>
+                <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#14171d]' : 'bg-[#faf9f6]'}`}></div>
                 
                 {/* Background Media Container */}
                 <div className="absolute inset-0">
@@ -728,7 +728,7 @@ function App() {
         {/* PORTFOLIO SECTION */}
         <section id="portfolio" className="py-20 md:py-48 px-6 max-w-7xl mx-auto">
             <div className="mb-20 md:mb-24 text-center">
-                <h2 className="text-5xl md:text-8xl font-medium tracking-tighter font-display text-gradient-white leading-none">{t[locale].toolsTitle}</h2>
+                <h2 className="text-3xl sm:text-5xl md:text-8xl font-medium tracking-tighter font-display text-gradient-white leading-tight sm:leading-none">{t[locale].toolsTitle}</h2>
             </div>
 
             {/* CORE COMPETENCIES & TECHNOLOGY BOARD (FLATTENED LAYOUT) */}
@@ -1000,9 +1000,9 @@ function App() {
             </div>
             <div className="space-y-10 order-1 lg:order-2">
                  {locale === 'en' ? (
-                   <h2 className="text-5xl md:text-8xl font-medium font-display tracking-tighter text-gradient-white leading-none">Teacher who <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>builds tools.</span></h2>
+                   <h2 className="text-3xl sm:text-5xl md:text-8xl font-medium font-display tracking-tighter text-gradient-white leading-tight sm:leading-none">Teacher who <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>builds tools.</span></h2>
                  ) : (
-                   <h2 className="text-5xl md:text-[5.5rem] font-medium font-display tracking-tighter text-gradient-white leading-[1.1]">교육적 한계를 <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>도구로 깨는 교사.</span></h2>
+                   <h2 className="text-3xl sm:text-5xl md:text-[5.5rem] font-medium font-display tracking-tighter text-gradient-white leading-tight md:leading-[1.1]">교육적 한계를 <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>도구로 깨는 교사.</span></h2>
                  )}
                  <p className={`text-base md:text-xl font-light leading-relaxed max-w-xl ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/80'}`}>
                    {t[locale].storyBody}
@@ -1027,7 +1027,7 @@ function App() {
 
         {/* CONNECT SECTION */}
         <section id="contact" className="py-32 md:py-64 px-6 text-center">
-            <h2 className="text-6xl md:text-9xl font-medium font-display tracking-tighter leading-none text-gradient-white">{t[locale].sayHi}</h2>
+            <h2 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-medium font-display tracking-tighter leading-tight sm:leading-none text-gradient-white">{t[locale].sayHi}</h2>
             <div className="pt-16">
                 <a href="mailto:jsn.benjamin@gmail.com" className="shiny-cta px-12 py-6">
                     {t[locale].startConv}

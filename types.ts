@@ -25,6 +25,48 @@ export interface ChatMessage {
   timestamp: Date;
 }
 
+export interface CaseStudyType {
+  title: string;
+  tagline: string;
+  liveUrl: string;
+  storeUrl?: string;
+  walkthroughVideo?: string;
+  screenshots?: { label: string; url: string; subLabel?: string }[];
+  stats: { label: string; value: string }[];
+  problem: string[];
+  solution: string[];
+  stack: string[];
+  behindTheArchitecture?: {
+    problem: string;
+    vision: string;
+    rationale: string;
+  };
+  architecture: {
+    lifecycle: string[];
+    guardrails: string[];
+  };
+  promptEngineering: {
+    logic: string;
+    schema: string;
+    guardrails: string[];
+  };
+  impact: {
+    value: string[];
+    security: string[];
+  };
+  technicalHurdles?: {
+    title?: string;
+    incident: string;
+    diagnosis: string;
+    resolution: string;
+  } | {
+    title?: string;
+    incident: string;
+    diagnosis: string;
+    resolution: string;
+  }[];
+}
+
 export interface PortfolioData {
   name: string;
   role: string;
