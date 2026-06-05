@@ -60,19 +60,19 @@ async function startServer() {
   // Limit body payloads to 10kb to block massive JSON attacks
   app.use(express.json({ limit: "10kb" }));
 
-  // General rate limits to defend overall server resources
+  // General rate limits to defend overall server resources (made very high for proxied containers)
   const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: 100, // Limit each IP to 100 requests per windowMs
+    limit: 1000, // Limit each IP to 1000 requests per windowMs
     standardHeaders: "draft-7",
     legacyHeaders: false,
     message: { error: "Too many requests to this server. Please try again after 15 minutes." },
   });
 
-  // Strict rate limits targeting computationally expensive Gemini AI generation
+  // Strict rate limits targeting computationally expensive Gemini AI generation (high for proxied containers)
   const aiLimiter = rateLimit({
     windowMs: 5 * 60 * 1000, // 5 minutes
-    limit: 15, // Limit each IP to 15 generation requests per 5 minutes
+    limit: 500, // Limit each IP to 500 generation requests per 5 minutes
     standardHeaders: "draft-7",
     legacyHeaders: false,
     message: { error: "You are generating ideas very quickly! Please pause for a moment to prevent server overload." },

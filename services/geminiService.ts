@@ -44,6 +44,7 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
     // Final safety strip of any markdown the model might have used despite instructions
     return text.replace(/\*\*/g, '').replace(/\*\*/g, '').replace(/\*/g, '').replace(/#/g, '').trim();
   } catch (error) {
+    console.error("sendMessageToGemini error:", error);
     return "I am having a slight connection delay. Perhaps you could try again in a moment, or reach out to Jason via email?";
   }
 };
