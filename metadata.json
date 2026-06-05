@@ -1,5 +1,6 @@
 {
   "name": "Jason Benjamin | Teacher & Builder",
   "description": "Simple tools for smarter schools. A collection of real, working helpers for parents and teachers based on a decade of classroom experience.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

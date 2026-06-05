@@ -14,7 +14,6 @@ const sanitizeInput = (input: string): string => {
   if (!input) return "";
   return input
     .replace(/<[^>]*>?/gm, '') // Remove HTML tags
-    .replace(/[^\w\s\d.,!?'"()-]/gi, ' ') // Allow only basic safe characters
     .trim();
 };
 
