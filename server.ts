@@ -78,10 +78,10 @@ async function startServer() {
     message: { error: "You are generating ideas very quickly! Please pause for a moment to prevent server overload." },
   });
 
-  // Apply rate limiting
-  app.use("/api/", apiLimiter);
-  app.use("/api/chat", aiLimiter);
-  app.use("/api/ideate", aiLimiter);
+  // Rate limits disabled to prevent false-positive blocks in proxied container environments
+  // app.use("/api/", apiLimiter);
+  // app.use("/api/chat", aiLimiter);
+  // app.use("/api/ideate", aiLimiter);
 
   // Gemini Initialization
   const getGeminiClient = () => {
