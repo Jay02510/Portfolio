@@ -616,8 +616,8 @@ function App() {
                             )}
                             {activePathfinderRole === 'director' && (
                               locale === 'en'
-                                ? "🏫 Operations Fit: Need to minimize student intake errors or conflict-resolution variables? Review EduPlanner (automated scheduling) or Automated Consult Pipeline (data systems saving 15h+/week)."
-                                : "🏫 학원 행정 최적화: 수강생 선제 등재나 야근을 줄일 일체 데이터 관리망이 필요하신가요? 무인 시간표 생성 조립기(EduPlanner) 및 주 15시간 가교 연쇄 장치들을 살펴보관하세요."
+                                ? "🏫 Operations Fit: Need to minimize student intake errors or conflict-resolution variables? Review EduPlanner (automated scheduling) or Automated Report Generator & Pipeline (data systems saving 15h/week)."
+                                : "🏫 학원 행정 최적화: 수강생 선제 등재나 야근을 줄일 일체 데이터 관리망이 필요하신가요? 무인 시간표 생성 조립기(EduPlanner) 및 Automated Report Generator & Pipeline (주 15시간 데이터 관리 자동화)를 살펴보관하세요."
                             )}
                             {activePathfinderRole === 'parent' && (
                               locale === 'en'

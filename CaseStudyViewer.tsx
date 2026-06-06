@@ -148,30 +148,35 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
     };
   }, []);
 
+  // 1. Manage body scroll lock and restore precisely on mount/unmount
   useEffect(() => {
-    // Capture background scroll position; fall back to window.scrollY if undefined
-    const prevScrollY = backgroundScrollY !== undefined ? backgroundScrollY : window.scrollY;
+    // Record current scroll position once on mount
+    const prevScrollY = window.scrollY;
 
-    // Scroll to the top when the viewer opens
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = 0;
-    }
     // Prevent background scrolling
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = originalOverflow || 'unset';
+      // Restore background scroll position precisely on unmount
+      window.scrollTo(0, prevScrollY);
+    };
+  }, []); // Run strictly once on mount and once on unmount
+
+  // 2. Manage content transitions and states when project selection changes
+  useEffect(() => {
+    // Scroll the modal container viewport to the top
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
 
     // Reset collapsible states when project changes
     setIsArchOpen(false);
     setIsHurdlesOpen(false);
     setIsBreakdownOpen(true);
     setActiveScreenshotIdx(0);
-
-    return () => {
-      document.body.style.overflow = originalOverflow || 'unset';
-      // Restore background scroll position precisely
-      window.scrollTo(0, prevScrollY);
-    };
-  }, [projectId, backgroundScrollY]);
+  }, [projectId]);
 
   const scrollToBreakdown = () => {
     setIsBreakdownOpen(true);

@@ -21,7 +21,7 @@ SYSTEM DATA & KNOWLEDGE:
 - Chekki AI (체키): Bilingual mobile camera web app that scans printed worksheets, instantly outputting 100% compliant, bilingual parents guides & Korean/English phonetics keys under a zero-memory policy. Built with React, TypeScript, Vite, Gemini, and Tailwind CSS.
 - Benchmark Explorer (학업 벤치마크): CEFR & Cambridge aligned evaluation portal. Turns subjective student observations into actionable radar chart maps, saving 8-10 hours weekly of administrative spreadsheet overhead. Built with React, Tailwind CSS, Recharts, and Airtable.
 - EduPlanner Pro (무인 스케줄러): Conflict-free scheduling engine resolving institutional, teacher, room, and curriculum constraints. Uses Gemini-guided conflict-resolution re-weaving.
-- Automated Consult Pipeline: Zero-maintenance CRM flow connecting Fillout intake forms to Airtable, driving Make.com automation nodes to render results on Softr dashboards. Saves 15+ hours weekly.
+- Automated Report Generator & Pipeline: Zero-maintenance CRM flow connecting Fillout intake forms to Airtable, driving Make.com automation nodes to render results on Softr dashboards. Saves 15+ hours weekly.
 - B2B Lead Enrichment CRM: Full-stack prospecting CRM compiling Naver Map directory data inside Express proxy routes, filtering duplicates in Firebase database, and writing custom personalized bilingual emails.
 
 CORE VALUES:

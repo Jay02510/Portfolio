@@ -16,7 +16,7 @@ A production-ready, modular EdTech suite designed to eliminate operational frict
 ### The Solution
 *   **EduPlanner Pro**: An automated scheduling engine utilizing a tiered "Draft & Weave" LLM pipeline to autonomously resolve resource overlaps and construct highly optimized timetable structures.
 *   **Chekki AI & B2B Lead enrichment**: A dual-purpose, mobile-responsive optical worksheet scanner and sales CRM that processes raw documents to instantly generate bilingual learning scripts and extracts local geographical leads into hyper-personalized campaigns.
-*   **Automated Consult Pipeline**: A zero-maintenance reporting engine built on Airtable and Make.com that transforms raw teacher observation metrics into secure, context-aware student summaries.
+*   **Automated Report Generator & Pipeline**: A zero-maintenance reporting engine built on Airtable and Make.com that transforms raw teacher observation metrics into secure, context-aware student summaries.
 *   **Benchmark AI**: A responsive continuous ESL assessment suite mapping real-time mastery growth directly to international standards (CEFR/Cambridge YLE) to provide early intervention warnings.
 
 ### The Stack

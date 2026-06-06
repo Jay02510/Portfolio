@@ -99,7 +99,7 @@ export const PORTFOLIO_DATA = {
       },
       {
         id: "consultation-pipeline",
-        title: "Automated Consult Pipeline",
+        title: "Automated Report Generator & Pipeline",
         category: "Tools" as const,
         description: "Zero-maintenance admin data operations.",
         longDescription: "Eliminated manual data entry errors and reduced teacher admin reporting time by an estimated 80% (saving 15+ hours weekly) by architecting a relational database cluster with strict class-level row segregation controls.",
@@ -198,7 +198,7 @@ export const PORTFOLIO_DATA = {
       },
       {
         id: "consultation-pipeline",
-        title: "Automated Consult Pipeline",
+        title: "Automated Report Generator & Pipeline",
         category: "Tools" as const,
         description: "보고서 중복 취합 없는 완벽 데이터 가교.",
         longDescription: "수강 상담 수집 직후 한/영 맞춤 분석 보고서를 합성하여 자동 전달하는 파이프라인입니다. 데이터 입력 수동 실수를 전면 소거하고, 담당 교원만 소속 클래스 자료를 접근하도록 격리 구성해 야근 시간을 80%(주 15시간) 감소시켰습니다.",
@@ -296,7 +296,7 @@ export const PORTFOLIO_DATA = {
     },
     {
       id: "consultation-pipeline",
-      title: "Automated Consult Pipeline",
+      title: "Automated Report Generator & Pipeline",
       category: "Tools" as const,
       description: "Zero-maintenance admin data operations.",
       longDescription: "Eliminated manual data entry errors and reduced teacher admin reporting time by an estimated 80% (saving 15+ hours weekly) by architecting a relational database cluster with strict class-level row segregation controls.",
