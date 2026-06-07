@@ -36,11 +36,10 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
           {!isSent ? (
             <div className="space-y-10 relative z-10">
               <div className="space-y-4">
-                <div className={`text-[9px] font-bold tracking-[0.8em] uppercase ${theme === 'dark' ? 'text-accent-gold/60' : 'text-accent-clay/80'}`}>Honest Feedback</div>
                 <h3 className="text-4xl font-light font-display tracking-tight text-gradient-white">
                   See a gap?
                 </h3>
-                <p className={`text-xs font-medium leading-relaxed max-w-md transition-colors ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/70'}`}>
+                <p className={`text-xs font-medium leading-relaxed max-w-md transition-colors ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'}`}>
                   I'm always refining these tools. If you have an idea for an improvement or just want to call out a bug, I'm all ears.
                 </p>
               </div>

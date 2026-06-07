@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { PORTFOLIO_DATA } from './constants.ts';
 import ProjectCard from './components/ProjectCard.tsx';
 import { CompactProjectCard } from './components/CompactProjectCard.tsx';
@@ -20,7 +20,7 @@ const t = {
     heroBadge: "JASON BENJAMIN — EDTECH FOUNDER & SOFTWARE BUILDER",
     heroTitle1: "Classroom-Tested Tools",
     heroTitle2: "built by a teacher.",
-    heroTagline: "I am a veteran educator and software builder. I design and scale custom full-stack engines like Chekki AI — now piloting with Korean bilingual families — and robust scheduling automations with strict student data compliance.",
+    heroTagline: "I am an educator and software builder who designs real-world educational tools. I engineer custom full-stack applications like Chekki AI, currently piloting with bilingual families in Korea.",
     viewProjectsBtn: "Explore Solutions",
     playgroundBtn: "Live No-Code AI Playground",
     toolsBadge: "PRODUCTION PORTFOLIO",
@@ -43,7 +43,7 @@ const t = {
     privacyDesc: "Strict GDPR & COPPA alignment — zero persistent classroom logs.",
     integrityBadge: "Teacher-Vetted Benchmarks — 100% Real Trial Data",
     sayHi: "Let's build together.",
-    startConv: "Start a Conversation via Email",
+    startConv: "Send Project Inquiry via Email",
     escapeBrowser: "Escape the In-App Browser"
   },
   ko: {
@@ -53,7 +53,7 @@ const t = {
     heroBadge: "제이슨 벤자민 — 에듀테크 창업가 & 빌더",
     heroTitle1: "학교 현장이 검증하고",
     heroTitle2: "교사적 관점으로 코딩한 솔루션.",
-    heroTagline: "현직 10년 차 교사이자 풀스택 웹 빌더 제이슨 벤자민입니다. 실제 이중언어 가정에서 필드 테스트 중인 대표작 Chekki AI와 에듀테크 자동화 파이프라인으로 행정 낭비를 지워 교육의 가치를 찾습니다.",
+    heroTagline: "교육 현장의 목소리를 해결하는 소프트웨어 빌더입니다. 실제 bilingual 가정에서 필드 테스트 중인 대표작 Chekki AI를 개발하여 성취를 입증하고 있습니다.",
     viewProjectsBtn: "프로젝트 포트폴리오 ↓",
     playgroundBtn: "라이브 노코드 AI 시험장",
     toolsBadge: "활성 프로덕션 목록",
@@ -77,12 +77,13 @@ const t = {
     privacyDesc: "매 수업 엄격 무저장 규약 완비 — 아동 행동학 로그의 영구 삭제.",
     integrityBadge: "정량화된 교직 성과 지수 — 거짓 없는 실측 통계",
     sayHi: "더 나은 생태계를 위해 소통해봐요",
-    startConv: "이메일로 대화 시작하기",
+    startConv: "프로젝트 협업 제안 및 메일 문의하기",
     escapeBrowser: "인앱 브라우저를 벗어나 환상적인 체험을 즐기세요"
   }
 };
 
 function App() {
+  const shouldReduceMotion = useReducedMotion();
   const [locale, setLocale] = useState<'en' | 'ko'>('en');
   const [isScrolled, setIsScrolled] = useState(false);
   const [modalType, setModalType] = useState<'privacy' | 'terms' | null>(null);
@@ -225,11 +226,11 @@ function App() {
               <span className={`font-display font-medium text-[10px] md:text-[13px] tracking-[0.5em] md:tracking-[0.8em] uppercase whitespace-nowrap leading-none transition-colors ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
                 J. BENJAMIN
               </span>
-              <nav className="hidden md:flex items-center gap-14 text-[10px] font-bold uppercase tracking-[0.5em]">
+              <nav className="hidden md:flex items-center gap-14 text-[13px] font-semibold tracking-[0.05em]">
                   <a 
                     href="#portfolio" 
                     onClick={scrollToSection('portfolio')} 
-                    className={`transition-all hover:tracking-[0.6em] relative pb-1 ${
+                    className={`transition-all hover:opacity-85 relative pb-1 ${
                       activeSection === 'portfolio' 
                         ? 'text-accent-gold font-extrabold' 
                         : theme === 'dark' 
@@ -245,7 +246,7 @@ function App() {
                   <a 
                     href="#lab" 
                     onClick={scrollToSection('lab')} 
-                    className={`transition-all hover:tracking-[0.6em] relative pb-1 ${
+                    className={`transition-all hover:opacity-85 relative pb-1 ${
                       activeSection === 'lab' 
                         ? 'text-accent-gold font-extrabold' 
                         : theme === 'dark' 
@@ -261,7 +262,7 @@ function App() {
                   <a 
                     href="#about" 
                     onClick={scrollToSection('about')} 
-                    className={`transition-all hover:tracking-[0.6em] relative pb-1 ${
+                    className={`transition-all hover:opacity-85 relative pb-1 ${
                       activeSection === 'about' 
                         ? 'text-accent-gold font-extrabold' 
                         : theme === 'dark' 
@@ -489,14 +490,14 @@ function App() {
       )}
 
       {/* UNIFIED MOBILE NAVIGATION */}
-      <nav className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] glass-panel rounded-[2rem] px-4 py-3 flex items-center gap-2 shadow-[0_20px_60px_rgba(0,0,0,0.5)] w-[90%] max-w-[380px] transition-all duration-500 ${theme === 'dark' ? 'border-white/20' : 'border-black/10'} pb-[env(safe-area-inset-bottom,0.75rem)]`}>
+      <nav className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] glass-panel rounded-[2rem] px-4 py-3 flex items-center gap-2 shadow-[0_20px_60px_rgba(0,0,0,0.5)] w-[90%] max-w-[385px] transition-all duration-500 ${theme === 'dark' ? 'border-white/20' : 'border-black/10'} pb-[env(safe-area-inset-bottom,0.75rem)]`}>
           <button onClick={scrollToSection('portfolio')} className={`flex-1 flex flex-col items-center gap-1 p-1 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
             <BookOpenIcon className="w-5 h-5" />
-            <span className="text-[7px] font-black uppercase tracking-widest">{locale === 'en' ? 'Tools' : '도구'}</span>
+            <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide">{locale === 'en' ? 'Tools' : '도구'}</span>
           </button>
           <button onClick={scrollToSection('lab')} className={`flex-1 flex flex-col items-center gap-1 p-1 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
             <CodeIcon className="w-5 h-5" />
-            <span className="text-[7px] font-black uppercase tracking-widest">{locale === 'en' ? 'Lab' : '실험실'}</span>
+            <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide">{locale === 'en' ? 'Lab' : '실험실'}</span>
           </button>
           
           <div className="px-1">
@@ -510,11 +511,11 @@ function App() {
 
           <button onClick={scrollToSection('about')} className={`flex-1 flex flex-col items-center gap-1 p-1 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
             <MapIcon className="w-5 h-5" />
-            <span className="text-[7px] font-black uppercase tracking-widest">{locale === 'en' ? 'Story' : '스토리'}</span>
+            <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide">{locale === 'en' ? 'Story' : '스토리'}</span>
           </button>
           <button onClick={scrollToSection('contact')} className={`flex-1 flex flex-col items-center gap-1 p-1 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
             <MailIcon className="w-5 h-5" />
-            <span className="text-[7px] font-black uppercase tracking-widest">{locale === 'en' ? 'Connect' : '연락처'}</span>
+            <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide">{locale === 'en' ? 'Connect' : '연락처'}</span>
           </button>
       </nav>
 
@@ -535,6 +536,9 @@ function App() {
                       loop 
                       muted 
                       playsInline 
+                      preload="none"
+                      aria-hidden="true"
+                      role="presentation"
                       poster={heroFallbackImage}
                       className="w-full h-full object-cover"
                     >
@@ -554,16 +558,16 @@ function App() {
                     <div className="relative">
                       <h1 
                         className="font-medium tracking-tight font-display text-gradient-white pb-4 px-2"
-                        style={{ fontSize: 'clamp(2.2rem, 7.5vw, 5.5rem)', lineHeight: '1.05' }}
+                        style={{ fontSize: 'clamp(2.2rem, 7.5vw, 5.5rem)', lineHeight: '1.05', textWrap: 'balance' }}
                       >
                         {t[locale].heroTitle1} <br />
-                        <span className={`italic block tracking-tighter pt-2 md:pt-4 font-light ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/30'}`}>
+                        <span className={`italic block tracking-tight pt-2 md:pt-4 font-light ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/50'}`}>
                           {t[locale].heroTitle2}
                         </span>
                       </h1>
                     </div>
 
-                    <p className={`text-xs md:text-base max-w-2xl mx-auto leading-relaxed font-medium px-4 ${theme === 'dark' ? 'text-white/85' : 'text-alpine-950/85'}`}>
+                    <p className={`text-xs md:text-base max-w-2xl mx-auto leading-relaxed font-medium px-4 ${theme === 'dark' ? 'text-white/85' : 'text-alpine-950/85'}`} style={{ textWrap: 'pretty' }}>
                       {t[locale].heroTagline}
                     </p>
 
@@ -728,7 +732,7 @@ function App() {
         {/* PORTFOLIO SECTION */}
         <section id="portfolio" className="py-20 md:py-48 px-6 max-w-7xl mx-auto">
             <div className="mb-20 md:mb-24 text-center">
-                <h2 className="text-3xl sm:text-5xl md:text-8xl font-medium tracking-tighter font-display text-gradient-white leading-tight sm:leading-none">{t[locale].toolsTitle}</h2>
+                <h2 className="text-3xl sm:text-5xl font-medium tracking-tight font-display text-gradient-white leading-tight sm:leading-none" style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', textWrap: 'balance' }}>{t[locale].toolsTitle}</h2>
             </div>
 
             {/* CORE COMPETENCIES & TECHNOLOGY BOARD (FLATTENED LAYOUT) */}
@@ -911,7 +915,7 @@ function App() {
 
               if (filteredProjects.length === 0) {
                 return (
-                  <div className="text-center py-24 font-mono text-xs text-white/40">
+                  <div className={`text-center py-24 font-mono text-xs ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'}`}>
                     {t[locale].noProjects}
                   </div>
                 );
@@ -931,7 +935,7 @@ function App() {
                           initial={{ opacity: 0, y: 15 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, scale: 0.95 }}
-                          transition={{ 
+                          transition={shouldReduceMotion ? { duration: 0 } : { 
                             duration: 0.35, 
                             ease: "easeOut",
                             delay: Math.min(idx * 0.04, 0.2)
@@ -964,7 +968,7 @@ function App() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.98 }}
-                        transition={{ 
+                        transition={shouldReduceMotion ? { duration: 0 } : { 
                           duration: 0.45, 
                           ease: "easeOut",
                           delay: Math.min(idx * 0.08, 0.4)
@@ -1000,9 +1004,9 @@ function App() {
             </div>
             <div className="space-y-10 order-1 lg:order-2">
                  {locale === 'en' ? (
-                   <h2 className="text-3xl sm:text-5xl md:text-8xl font-medium font-display tracking-tighter text-gradient-white leading-tight sm:leading-none">Teacher who <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>builds tools.</span></h2>
+                   <h2 className="text-3xl sm:text-5xl font-medium font-display tracking-tight text-gradient-white leading-tight sm:leading-none" style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', textWrap: 'balance' }}>Teacher who <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>builds tools.</span></h2>
                  ) : (
-                   <h2 className="text-3xl sm:text-5xl md:text-[5.5rem] font-medium font-display tracking-tighter text-gradient-white leading-tight md:leading-[1.1]">교육적 한계를 <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>도구로 깨는 교사.</span></h2>
+                   <h2 className="text-3xl sm:text-5xl font-medium font-display tracking-tight text-gradient-white leading-tight md:leading-[1.1]" style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', textWrap: 'balance' }}>교육적 한계를 <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>도구로 깨는 교사.</span></h2>
                  )}
                  <p className={`text-base md:text-xl font-light leading-relaxed max-w-xl ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/80'}`}>
                    {t[locale].storyBody}
@@ -1010,13 +1014,13 @@ function App() {
                  <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-10">
                    <div>
                      <div className="text-4xl md:text-5xl font-mono text-accent-gold font-bold">{t[locale].hoursSavedValue}</div>
-                     <span className={`text-[9px] font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/40'}`}>{t[locale].hoursSavedLabel}</span>
-                      <p className={`text-[11px] font-light mt-1.5 leading-relaxed ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>{t[locale].hoursSavedDesc}</p>
+                     <span className={`text-[9px] font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/65'}`}>{t[locale].hoursSavedLabel}</span>
+                      <p className={`text-[11px] font-light mt-1.5 leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/65'}`}>{t[locale].hoursSavedDesc}</p>
                    </div>
                    <div>
                      <div className="text-4xl md:text-5xl font-mono text-accent-gold font-bold">{t[locale].privacyValue}</div>
-                     <span className={`text-[9px] font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/40'}`}>{t[locale].privacyLabel}</span>
-                      <p className={`text-[11px] font-light mt-1.5 leading-relaxed ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'}`}>{t[locale].privacyDesc}</p><div className="pt-4"><span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded bg-accent-gold/5 border border-accent-gold/10 text-[8px] font-mono uppercase text-accent-gold tracking-widest`}>✦ {t[locale].integrityBadge}</span></div>
+                     <span className={`text-[9px] font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/65'}`}>{t[locale].privacyLabel}</span>
+                      <p className={`text-[11px] font-light mt-1.5 leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/65'}`}>{t[locale].privacyDesc}</p>
                    </div>
                  </div>
             </div>
@@ -1027,7 +1031,7 @@ function App() {
 
         {/* CONNECT SECTION */}
         <section id="contact" className="py-32 md:py-64 px-6 text-center">
-            <h2 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-medium font-display tracking-tighter leading-tight sm:leading-none text-gradient-white">{t[locale].sayHi}</h2>
+            <h2 className={`text-4xl sm:text-6xl font-medium font-display tracking-tight leading-tight sm:leading-none ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'}`} style={{ fontSize: 'clamp(2.5rem, 7vw, 6rem)', textWrap: 'balance' }}>{t[locale].sayHi}</h2>
             <div className="pt-16">
                 <a href="mailto:jsn.benjamin@gmail.com" className="shiny-cta px-12 py-6">
                     {t[locale].startConv}

@@ -127,14 +127,14 @@ const AIChat: React.FC<AIChatProps> = ({
               <h3 className={`font-display font-light text-sm tracking-widest uppercase ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
                 {locale === 'ko' ? 'AI 어시스턴트' : 'Assistant'}
               </h3>
-              <p className={`text-[8px] font-bold uppercase tracking-[0.3em] mt-1 ${theme === 'dark' ? 'text-white/30' : 'text-black/30'}`}>
+              <p className={`text-[8px] font-bold uppercase tracking-[0.3em] mt-1 ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>
                 {isLimitReached 
                   ? (locale === 'ko' ? '세션 대화 종료' : 'Session Complete') 
                   : (locale === 'ko' ? '대화 준비 완료' : 'Online & Ready')}
               </p>
             </div>
           </div>
-          <button onClick={() => setIsOpen(false)} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${theme === 'dark' ? 'hover:bg-white/5 text-white/30 hover:text-white' : 'hover:bg-black/5 text-black/30 hover:text-black'}`}>
+          <button onClick={() => setIsOpen(false)} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${theme === 'dark' ? 'hover:bg-white/5 text-white/50 hover:text-white' : 'hover:bg-black/5 text-black/50 hover:text-black'}`}>
             <XIcon className="w-5 h-5" />
           </button>
         </div>
@@ -164,7 +164,7 @@ const AIChat: React.FC<AIChatProps> = ({
           {isLimitReached && (
             <div className="pt-4 flex flex-col items-center gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
                <div className={`w-12 h-px ${theme === 'dark' ? 'bg-white/10' : 'bg-black/10'}`}></div>
-               <p className={`text-[11px] font-bold uppercase tracking-widest text-center px-8 leading-relaxed ${theme === 'dark' ? 'text-white/30' : 'text-black/40'}`}>
+               <p className={`text-[11px] font-bold uppercase tracking-widest text-center px-8 leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>
                  {locale === 'ko' 
                    ? "금일 권장 대화수 회수에 도달했습니다. 언제든 제이슨에게 편한 메일 전송으로 협의해 보세요!" 
                    : "You've reached the conversation limit. Jason would love to hear from you directly!"}
@@ -222,7 +222,7 @@ const AIChat: React.FC<AIChatProps> = ({
               <button 
                 onClick={() => handleSend()} 
                 disabled={isLoading || !input.trim()}
-                className={`absolute right-4 p-2 transition-all disabled:opacity-20 ${theme === 'dark' ? 'text-white/40 hover:text-accent-gold' : 'text-black/40 hover:text-accent-gold'}`}
+                className={`absolute right-4 p-2 transition-all disabled:opacity-20 ${theme === 'dark' ? 'text-white/60 hover:text-accent-gold' : 'text-black/60 hover:text-accent-gold'}`}
               >
                 <SendIcon className="w-5 h-5" />
               </button>
@@ -230,7 +230,7 @@ const AIChat: React.FC<AIChatProps> = ({
           </div>
           
           {!isLimitReached && messageCount > 0 && (
-            <p className={`text-[8px] font-bold uppercase tracking-[0.2em] mt-4 text-center opacity-30 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+            <p className={`text-[8px] font-bold uppercase tracking-[0.2em] mt-4 text-center opacity-60 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
               {locale === 'ko' 
                 ? `앞으로 가용대화 ${MAX_MESSAGES - messageCount}회 가능` 
                 : `${MAX_MESSAGES - messageCount} messages remaining`}

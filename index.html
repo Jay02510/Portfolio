@@ -3,7 +3,7 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Jason Benjamin | Teacher & Builder</title>
     
     <!-- Security Headers (Content Security Policy) -->
@@ -18,7 +18,7 @@
 
     <!-- Open Graph / Facebook / Instagram / KakaoTalk -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://jason-benjamin.vercel.app/" />
+    <meta property="og:url" content="https://jason-portfolio-live.vercel.app/" />
     <meta property="og:title" content="Jason Benjamin | Teacher & Builder" />
     <meta property="og:description" content="I build simple tools that help parents and schools solve everyday problems. Explore the Idea Explorer and live app demos." />
     <meta property="og:image" content="https://res.cloudinary.com/dginphpy4/image/upload/v1765770525/Chekki_Futuristic_Background_i8foqe.png" />
@@ -115,14 +115,12 @@
         ::-webkit-scrollbar-thumb { background: #e2b87d66; border-radius: 10px; }
 
         .glass-panel {
-            background: rgba(22, 25, 32, 0.6);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(250, 249, 246, 0.1);
+            background: #121418; /* Solid deep charcoal canvas tone */
+            border: 1px solid rgba(250, 249, 246, 0.08);
         }
 
         body.light .glass-panel {
-            background: rgba(255, 255, 255, 0.9);
+            background: #ffffff; /* Solid white canvas tone */
             border: 1px solid rgba(0, 0, 0, 0.08);
             box-shadow: 0 12px 40px -10px rgba(0,0,0,0.05);
         }
@@ -168,15 +166,11 @@
         }
 
         .text-gradient-white {
-            background: linear-gradient(135deg, #ffffff 0%, #e2b87d 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
         }
 
         body.light .text-gradient-white {
-            background: linear-gradient(135deg, #1a1c23 0%, #8c6239 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #1a1c23;
         }
 
         @keyframes banner-flash {
@@ -189,6 +183,15 @@
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
   <script type="importmap">
 {
@@ -206,7 +209,6 @@
 </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="./index.tsx"></script>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>

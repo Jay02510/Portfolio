@@ -125,19 +125,19 @@ Users agree not to use the AI Assistant or tools to generate harmful, illegal, o
             <div className="flex bg-white/5 rounded-full p-1 border border-white/10">
               <button 
                 onClick={() => setLang('EN')}
-                className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'EN' ? 'bg-accent-gold text-alpine-950' : 'text-white/40 hover:text-white'}`}
+                className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'EN' ? 'bg-accent-gold text-alpine-950' : 'text-white/65 hover:text-white'}`}
               >
                 EN
               </button>
               <button 
                 onClick={() => setLang('KR')}
-                className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'KR' ? 'bg-accent-gold text-alpine-950' : 'text-white/40 hover:text-white'}`}
+                className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'KR' ? 'bg-accent-gold text-alpine-950' : 'text-white/65 hover:text-white'}`}
               >
                 KR
               </button>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 text-white/40 hover:text-white transition-all">
+          <button onClick={onClose} className="p-2 text-white/60 hover:text-white transition-all">
             <XIcon className="w-5 h-5" />
           </button>
         </div>

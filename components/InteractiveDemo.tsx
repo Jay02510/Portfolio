@@ -61,8 +61,8 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                 Live No-Code AI Playground
               </div>
               
-              <h2 className="text-4xl md:text-6xl font-medium tracking-tighter font-display leading-[1.1] text-gradient-white">
-                Describe a <br/><span className={`italic font-light ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/20'}`}>problem.</span>
+              <h2 className="text-4xl md:text-6xl font-medium tracking-tight font-display leading-[1.1] text-gradient-white">
+                Describe a <br/><span className={`italic font-light ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/40'}`}>problem.</span>
               </h2>
               
               <p className={`text-base md:text-lg font-normal leading-relaxed max-w-sm ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/70'}`}>
