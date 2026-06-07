@@ -43,9 +43,13 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
 
     // Final safety strip of any markdown the model might have used despite instructions
     return text.replace(/\*\*/g, '').replace(/\*\*/g, '').replace(/\*/g, '').replace(/#/g, '').trim();
-  } catch (error) {
+  } catch (error: any) {
     console.error("sendMessageToGemini error:", error);
-    return "I am having a slight connection delay. Perhaps you could try again in a moment, or reach out to Jason via email?";
+    const errMsg = error.message || "";
+    if (errMsg.includes("GEMINI_API_KEY")) {
+      return "Assistant Config Notice: GEMINI_API_KEY is not defined in the backend. To enable the chatbot, please add your GEMINI_API_KEY under Settings > Secrets in the AI Studio editor panel.";
+    }
+    return `Delay Notice: I'm experiencing a bit of trouble responding right now (${errMsg || "network connection issue"}). Please try entering your message again, or feel free to email Jason at jsn.benjamin@gmail.com!`;
   }
 };
 

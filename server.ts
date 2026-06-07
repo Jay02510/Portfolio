@@ -87,7 +87,7 @@ async function startServer() {
   const getGeminiClient = () => {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      throw new Error("GEMINI_API_KEY is not configured on the server.");
+      throw new Error("GEMINI_API_KEY is not configured on the server. Please define GEMINI_API_KEY in the Settings > Secrets configuration panel.");
     }
     return new GoogleGenAI({ 
       apiKey,
@@ -113,7 +113,7 @@ async function startServer() {
       const ai = getGeminiClient();
       const response = await ai.models.generateContent({
         model: 'gemini-3.5-flash',
-        contents: [{ parts: [{ text: message }] }],
+        contents: message,
         config: {
           systemInstruction: CHAT_SYSTEM_INSTRUCTION,
           temperature: 0.7,
@@ -124,7 +124,7 @@ async function startServer() {
       res.json({ text: response.text });
     } catch (error: any) {
       console.error("Server Chat Error:", error.message);
-      res.status(500).json({ error: "Internal server error. Please try again later." });
+      res.status(500).json({ error: error.message || "Internal server error. Please try again later." });
     }
   });
 
@@ -141,11 +141,7 @@ async function startServer() {
       const ai = getGeminiClient();
       const response = await ai.models.generateContent({
         model: 'gemini-3.5-flash',
-        contents: [{ 
-          parts: [{ 
-            text: `A teacher is struggling with this problem: "${problem}". Suggest 3 simple digital helpers to fix it.` 
-          }] 
-        }],
+        contents: `A teacher is struggling with this problem: "${problem}". Suggest 3 simple digital helpers to fix it.`,
         config: {
           responseMimeType: "application/json",
           responseSchema: {
@@ -164,10 +160,10 @@ async function startServer() {
         }
       });
 
-      res.json(JSON.parse(response.text));
+      res.json(JSON.parse(response.text || "[]"));
     } catch (error: any) {
       console.error("Server Ideate Error:", error.message);
-      res.status(500).json({ error: "Internal server error. Please try again later." });
+      res.status(500).json({ error: error.message || "Internal server error. Please try again later." });
     }
   });
 
