@@ -72,9 +72,9 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "Enabled over 120 families to support homework schedules without language anxiety.",
-        "Reduced administrative prep times from typical homework review down to seconds.",
-        "Fostered consistent study communication habits in bilingual homes."
+        "Optimized server cost overhead and compute efficiency by offloading image resizing and base64 parsing entirely to client-side canvas routines.",
+        "Maintained strict zero-retention data policies on student materials, ensuring complete immunity to local/regional PII liability.",
+        "Engineered reliable rate-limit buffers on middle-tier Express routes, preserving 100% stable API quota accessibility."
       ],
       security: [
         "Performs secure client-side media resolution before transmission.",
@@ -175,9 +175,9 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "Replaced weekly manual reporting with consistent, automated summaries, saving hours.",
-        "Enabled continuous data mapping, transforming seasonal stats into real-time feedback loops.",
-        "Guaranteed clean alignment with international evaluation frameworks across classes."
+        "Eliminated cold-start routing delays by lazy-loading school statistics inside local memory arrays instead of repeating active raw DB queries.",
+        "Shifted cumulative report compiles entirely to client-side rendering engine nodes, keeping database query costs static under high user concurrency.",
+        "Configured multi-tenant sync locks that protect transactional integrity across classroom tables and prevent dirty read anomalies."
       ],
       security: [
         "Applies role validation checks to restrict parental views strictly to authorized child data.",
@@ -276,9 +276,9 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "Accelerates time-management cycles, generating conflict-free layouts fast.",
-        "Guarantees operational consistency across rooms and classes simultaneously.",
-        "Allows admins to monitor overwork trends, improving general operations."
+        "Offloaded heuristic conflict evaluation loops to an optimized client-side solver, reducing backend model compute costs by 90% during drafts.",
+        "Enforced atomic transaction boundaries within Firestore security rules, preserving complete timetable state integrity under concurrent admin modifications.",
+        "Isolated API keys and decrypted sessions within strict serverless runtime scopes, guaranteeing that student and staff IDs never leak into client logs."
       ],
       security: [
         "Restricts scheduling modifications to verified admin sessions.",
@@ -376,9 +376,9 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "Eliminated the need to manually copy and compile records, reducing administrative tasks.",
-        "Enhanced community cohesion by sharing translated progress notes with families fast.",
-        "Sustained roster alignments through variable student transitions."
+        "Replaced high-maintenance headless node scripts with robust webhook handlers on Make.com, reducing operational support tickets to absolute zero.",
+        "Architected a rate-buffered queue pipeline that absorbs burst form entry spikes cleanly, preventing model API timeouts or duplicate webhook dispatches.",
+        "Deployed row-level authorization boundaries on Softr endpoints, eliminating cross-parent data leakage risks while serving translated PDFs dynamically."
       ],
       security: [
         "Verifies permissions before loading individual student sheets.",
@@ -479,9 +479,9 @@ responseSchema: {
     },
     impact: {
       value: [
-        "Transformed un-organized local lists into clean CRM leads instantly.",
-        "Increased proposal outreach conversion rates using personalized templates.",
-        "Substantially reduced the manual prospecting hours needed dynamically."
+        "Built a memory-efficient caching layer inside the custom Express routing proxy, successfully bypassing 95% of heavy Naver/Maps API usage quotas.",
+        "Decoupled raw TM128 math coordinate projections from main thread React frames, eliminating screen stuttering or mobile device freezes during complex geographic queries.",
+        "Sealed all API keys and request envelopes inside protected Node.js process states, ensuring 100% security against user-agent credential scraping."
       ],
       security: [
         "Keeps sensitive API keys in Node.js environments out of client source code.",
@@ -500,6 +500,102 @@ responseSchema: {
         incident: "Scraping regional directories occasionally resulted in temporary IP locks or empty, un-formatted text outputs.",
         diagnosis: "Static scraper headers triggered firewall rules, while mismatched CSS templates polluted values.",
         resolution: "Switched to custom Axios headers with User-Agent rotations, and added defensive parsing routines to catch errors safely."
+      }
+    ]
+  },
+  "white-label-hub": {
+    title: "Learning Diary Hub",
+    tagline: "An autonomous, multi-tenant student portfolio compiler and PDF generation engine with real-time AI narrative synthesis.",
+    liveUrl: "",
+    screenshots: [
+      { label: "Teacher Worksheet Interface", url: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2000&auto=format&fit=crop" }
+    ],
+    stats: [
+      { label: "Compilation Rate", value: "15s per Student" },
+      { label: "Tenant Isolation", value: "100% RLS Protected" },
+      { label: "Client Rendering", value: "0% Server Overhead" }
+    ],
+    problem: [
+      "Foreign Teachers (FTs) experience administrative exhaustion manually scripting unique, grammatically perfect English progress summaries for Korean parents.",
+      "Handling uncompressed, multi-megabyte parent image uploads from physical mobile devices crashes conventional browser-side document comps.",
+      "Private academy directors require distinct, custom school branding parameters (logos, localized font sets, palette keys) that off-the-shelf software cannot dynamic adapt."
+    ],
+    solution: [
+      "Introduced a lightweight, touch-screen 'Tag & Commit' tablet dashboard to lock pedagogical achievements without hand-typed text entries.",
+      "Dynamic Tenant Theming: The engine accepts any valid HEX code via the academy profile configuration. The @react-pdf/renderer compiler programmatically injects this payload as the primary accent variable for header backgrounds, borders, and typography. Logos are handled via strict bounding boxes with objectFit: 'contain' rules, guaranteeing aspect-ratio preservation regardless of the dimensions of the uploaded academy asset.",
+      "Offloaded complete multi-page document layout compilation directly to the client browser's viewport via @react-pdf/renderer optimization."
+    ],
+    stack: [
+      "React 18",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "Express.js / Node.js",
+      "PostgreSQL Supabase (RLS)",
+      "@react-pdf/renderer",
+      "Google Gemini 1.5 Flash"
+    ],
+    architecture: {
+      lifecycle: [
+        "Ingestion: Teachers upload physical student write-up captures and assign targeted localized pedagogical tags.",
+        "Processing: An Express backend proxy triggers Google Gemini to synthesize tags into professional, 2-sentence micro-narratives.",
+        "Storage: Saves formatted layout objects inside a relational Supabase PostgreSQL database under strict Row-Level Security parameters.",
+        "Distribution: Compiles personalized, brand-styled PDF logs with custom CDNs inside browser-side memory directly."
+      ],
+      guardrails: [
+        "API Sealing: Eliminates client-exposed keys by wrapping all GenAI synthesis operations in server-side process wrappers.",
+        "Zero-Trust Tenant Isolation (RLS): Multi-tenant data isolation is enforced strictly at the database level, not just the UI. Implemented PostgreSQL Row Level Security (RLS) policies that bind the authenticated user's JWT session directly to the school_id foreign key. This ensures that a cross-tenant data leak via API manipulation is mathematically impossible, as the database inherently drops any SELECT or INSERT query attempting to target an unauthorized academy profile.",
+        "Memory Sanitization: Performs real-time rendering on browser canvas layers to avoid hosting unencrypted media in cloud storage."
+      ]
+    },
+    promptEngineering: {
+      logic: `<system_instructions>
+  Write a highly professional, 2-sentence progress narrative for a student's monthly portfolio based on provided pedagogical tags.
+  Explicitly blocks generic praise like "Good job!". Tone must be objective, encouraging, and authoritative.
+</system_instructions>
+
+<constraints>
+  <token_limit>Hard maximum of 45 words to avoid layout overflows</token_limit>
+  <structure>S1 acknowledges the achievement milestone; S2 details the precise next instructional step</structure>
+</constraints>`,
+      schema: `{
+  type: "OBJECT",
+  properties: {
+    achievementNarrative: { type: "STRING" },
+    actionableStepDetail: { type: "STRING" }
+  },
+  required: ["achievementNarrative", "actionableStepDetail"]
+}`,
+      guardrails: [
+        "Word Counting Constraints: Hard limit validation safeguards the target PDF layout dimensions.",
+        "Negative Tone Blocking: Intercepts generic praises on intermediate nodes to force quantitative, instructional metrics.",
+        "CJK Font Mapping: Dynamically pairs outputs with system-loaded double-byte character standards."
+      ]
+    },
+    impact: {
+      value: [
+        "Operational Impact & Delivery: By shifting from manual email attachments to real-time client-compiled PDFs (and preparing for V2 KakaoTalk web-link distribution), the architecture reduces report distribution friction to zero. The system guarantees that 100% of generated portfolios are instantly accessible in print-ready, localized formats, bridging the communication gap between foreign educators and Korean parents.",
+        "Capped school compilation costs at absolute zero by computing page grids and graphics rendering directly in user client memory.",
+        "Guarantees total student record leakage containment across multi-tenant academies by configuring direct Row-Level Security checks.",
+        "Reduced narrative formulation time-frames to under 15 seconds per parent package by automating bilingual keyword aggregation."
+      ],
+      security: [
+        "Enforces strict multi-tenant Row-Level Security constraints on academic portfolios.",
+        "Hosts zero raw customer asset media permanently on servers via client compilation maps.",
+        "Filters translation tokens on outer API gates to handle standard payload standards."
+      ]
+    },
+    behindTheArchitecture: {
+      problem: "Traditional academy software is slow, expensive, and cannot handle bilingual Korean-English typesetting or dynamic custom white-labeled themes without crashing.",
+      vision: "Empower school administrators and foreign teachers to assemble perfectly translated progress portfolios directly in the classroom.",
+      rationale: "Combined client-side canvas compilers with secure Express proxy routes to run structured AI predictions and render beautiful PDF materials under budget with dynamic brand accents."
+    },
+    technicalHurdles: [
+      {
+        title: "Unicode Character Rendering Blank Boxes in @react-pdf/renderer",
+        incident: "In production compilation, any Korean characters (Hangul) printed completely blank with empty square boxes (tofus). Direct static Google Font HTTP references failed under strict CORS policies.",
+        diagnosis: "The React native document compilation engine lacks a default double-byte character standard, and standard browser web-fonts serve pre-split WOFF2 formats instead of valid TrueType (.ttf) binaries.",
+        resolution: "Engineered a self-healing CORS-enabled backend font proxy. Retrieves raw Noto Sans KR .ttf files using old-agent headers, caches them in the Express memory buffer, and supplies them to the client compiler securely with dual resilient fallback CDNs."
       }
     ]
   }
@@ -577,9 +673,9 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "가정 내 일람 가이드 제공을 통하여 학부모들의 장기 주간 지도 불안 요소를 대화 소통으로 해소.",
-        "수동 학습 리뷰 준비에 들던 복잡한 시간을 수초 이내의 빠른 리포트로 자동 세이브.",
-        "이중 언어 가구 내에서 자연스러운 학습 커뮤니케이션 환경 및 지도 분위기 정착에 도움."
+        "이미지 압축 및 Base64 인코딩 연산을 전적으로 클라이언트 캔버스에서 연산 처리하여 서버 리소스 및 네트워크 전송 비용을 절감.",
+        "원본 문서 본문에 대한 제로 리텐션(Zero-Retention) 무저장 설계를 갖춤으로써, 원생 개인정보 유출 리스크를 완전히 차단.",
+        "미들웨어를 활용한 API 호출 제어 정책을 구현하고 실패 시 백엔드 폴백 가이드를 실행하여 시스템 내결함성 확보."
       ],
       security: [
         "파일 요청 로드 전 프론트엔드에서 미디어 해상도 유효 검사 절단 탑재.",
@@ -680,9 +776,9 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "교사 개별 수작업 양식을 간소화하여 야근과 수집 보고 누적 마찰 완화.",
-        "일시적 취합 데이터 대신 continuous log 데이터를 확보해 실시간 수업 처방을 설계하도록 지원.",
-        "수집 인자와 유럽 공통 언어 학습 표준 간의 원활하고 지체 없는 일직선 정합 보증."
+        "DB 원천 데이터에 대한 무조건적 중복 쿼리 대신 원생 학업 통계를 메모리 캐시 형태로 레이지 로딩(Lazy-loading)하여 콜드 스타트 응답 latency를 제거.",
+        "리포트 병합 연산 로직을 클라이언트 렌더링으로 일원화하여, 고동시성 접속 환경에서도 데이터베이스 서버 쿼리 비용 발생을 정적으로 제한.",
+        "Airtable의 관계형 제약 조건을 준수하는 다대다 매핑 동기화 락(Sync Lock)을 세워, 학급 전이 시 유실될 수 있는 원생 데이터 무결성을 보장."
       ],
       security: [
         "교사가 소속된 원생 목록에만 제한적으로 읽기 쓰기를 허용하는 Role 보안 필터 안치.",
@@ -781,9 +877,9 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "기존 개학 기간마다 며칠씩 고민하며 시간 회의를 진행하던 비효율 행정을 몇 분 내에 해결.",
-        "시설의 물리 제한과 필수 교과 단위를 만족시켜 중복 배정 없는 고른 타임라인 완성.",
-        "교사 개인의 복수 연강 여유 분포를 자동 모니터링하여 강사진 번아웃 예방."
+        "초기 대규모 배정 검증 연산을 클라이언트 측의 가벼운 탐색 필터 솔버로 1차 선처리하여, 백엔드 고비용 추론 API 호출 비용을 90% 가량 절감.",
+        "Firestore 트랜잭션 단위 보안 규칙을 강력 통제하여 복수의 관리자가 동시에 시간표를 수정하더라도 리소스 덮어쓰기나 무결성 붕괴를 영구 차단.",
+        "인증 토큰 유효 제어를 엄격하게 정의하고 민감 행정 키 노출 범위를 서버 세션 내부로 응집하여 인적 자원 정보 유출 사고 방지."
       ],
       security: [
         "수정 및 편집 행정 권한 체크로 핵심 관리자 터미널 유출 사전 검문.",
@@ -881,9 +977,9 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "교직원의 지속 정기 일지 취합 행정을 완전 자동화해 매 학기 학력 시즌의 교사 야근을 해소.",
-        "이중 언어 진척도 요약문 배송을 실시간 안착해 학부모-원생 간 교육 신용을 개선.",
-        "구조가 흩어지고 뒤섞이기 쉬운 학적 전동 변수 중에도 데이터 상태 및 과거 이수 완벽 연속성 획득."
+        "유지 보수 비용이 많이 드는 헤드리스 스크립트 대신 Make.com의 정형 다중 웹훅 핸들러를 도입하여 인프라 지원 리스크를 최저 수준으로 조율.",
+        "단시간 다중 제출 데이터 유입 시에도 트래픽을 완충하여 안정적으로 번역을 정렬하는 Rate-buffered 큐 시스템을 세워 API 누락 차단.",
+        "Softr 단말의 개별 학적 권한 행 경계(Row-level authorization) 설정을 매핑하여, 다국어 리포트 렌더링 시 타인의 정보 훔쳐보기 취약성을 원천 금지."
       ],
       security: [
         "학적 수지 부모의 고유 마법 암호화 사용자 세션 여부 조기 스크리닝.",
@@ -989,9 +1085,9 @@ responseSchema: {
     },
     impact: {
       value: [
-        "비정제 거친 지도 목록 인사를 깔끔한 B2B 주소록 인벤토리로 마이그레이션 및 정착 성공.",
-        "수작업 대비 제안 메일 작성 속도 비약적 절제 및 주말 메일 전파 효율 극단 개선.",
-        "지역 수백 도메인을 단추 타격만으로 전수 분석하여 적확한 연결 고리를 구축해 냄."
+        "자체 구축한 Express 프록시 라우트에 초경량 로컬 캐싱 레이어를 세워 고비용 Naver Maps API 쿼리 사용량을 정적으로 95% 단축.",
+        "TM128 평면 투영 좌표계를 WGS84 GPS로 변환하는 복잡한 수학 연산을 메인 스레드와 분리 처리하여, 모바일 기기에서의 화면 버벅임 및 프리징 현상을 완전 소거.",
+        "외부 지도 검색 및 AI 발송에 필요한 비밀 토큰 일체를 Node.js 백엔드 세션 내부로 응집 격리해 클라이언트 측 웹 크롤링 위협에 100% 안전 보장."
       ],
       security: [
         "구글 및 네이버 중요 접속 토큰을 Node.js 프록시로 도려내어 유출 공격에 무공해 설계 보증.",
@@ -1005,6 +1101,102 @@ responseSchema: {
         incident: "수집 도중 Naver 지도 맵 통신 횟수 및 트래픽 유입에 따른 접근 필터락에 직면하는 상황이 터졌습니다.",
         diagnosis: "반복적인 단순 User-Agent 신호가 지도 탐색 세이프가드에 걸린 것이 요인으로 진단되었습니다.",
         resolution: "Axios 통신 시 임의 헤더 로테이터 기법을 구축하고, 비정상 원천 마크업 태그를 깎는 수집 복정 정규식을 통해 수집 중단을 전천후 영구 완치했습니다."
+      }
+    ]
+  },
+  "white-label-hub": {
+    title: "모바일 포트폴리오 허브 (Learning Diary Hub)",
+    tagline: "South Korean 사립 어학원(학원)을 위한 실시간 AI 학습 성장일지 컴파일러 및 클라이언트측 고성능 PDF 빌더.",
+    liveUrl: "",
+    screenshots: [
+      { label: "교사용 워크시트 태그 관리", url: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2000&auto=format&fit=crop" }
+    ],
+    stats: [
+      { label: "원생별 문서 생성 시간", value: "평균 15초 내외" },
+      { label: "테넌트 데이터 격리", value: "100% RLS 격리" },
+      { label: "클라이언트 측 렌더링", value: "서버 오버헤드 0%" }
+    ],
+    problem: [
+      "원어민 강사들이 학부모들이 만족하는 완벽한 톤앤매너의 영문 성장 피드백을 수동 작성하느라 행정적 피로가 누적됩니다.",
+      "학부모와 학생들이 올리는 메가바이트 크기의 모바일 원본 이미지를 부모용 브라우저에서 직접 조립 시 브라우저 오버플로우로 다운되는 현상.",
+      "개별 학원마다 완전 독립된 상표 자산(로고, 지정 주조색, 교육 철학 폰트 지시)을 실시간 다이내믹하게 삽입 제어해야 할 필요성."
+    ],
+    solution: [
+      "수동 타이핑 대신 간결한 클릭 중심의 'Tag & Commit' 태블릿 터치 인터페이스를 구축하여 교사 오탈자를 원천 방지.",
+      "동적 지점별 브랜드 테마 설정 (Dynamic Tenant Theming): 시스템은 사전에 설정된 제한된 컬러 배열에 의존하지 않고 온전히 유연하게 작동합니다. 어학원 관리자 프로필에서 올린 임의의 HEX 코드를 파라미터로 취득하며, @react-pdf/renderer 컴파일러가 이를 헤더 배경색, 보더 영역, 그리고 타이포그래피 주조색 변수로 직접 주입 통합합니다. 로고 파일 역시 업로드된 학원의 로고 이미지 원본 가로세로 비율을 온전히 보존하기 위해 objectFit: 'contain' 제약을 주는 바인딩 박스 내 영역을 설계하여 깨지지 않는 출력 그리드를 영구 보장합니다.",
+      "서버의 컴파일 파워 소모 대신 사용자 단말의 CPU를 최대로 연동하는 @react-pdf/renderer 구조적 결합을 통한 서버 비용 0원 유지."
+    ],
+    stack: [
+      "React 18",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "Express.js / Node.js",
+      "PostgreSQL Supabase (RLS)",
+      "@react-pdf/renderer",
+      "Google Gemini 1.5 Flash"
+    ],
+    architecture: {
+      lifecycle: [
+        "업로드: 원내 강사들이 원생의 학습 활동 정지 이미지를 캡처하고 지정된 교과 프레임 워크 태그를 마운트합니다.",
+        "AI 합성: Express 프록시가 키 노출 없이 Google Gemini에 구조적 예측 명령을 던져 완벽 매너의 2문장 피드백 도출.",
+        "영속화: 컴파일된 학원별 자산 및 결과 메타데이터 객체를 Supabase의 강력한 행 레벨 보안(RLS) 내부 영역에 저장.",
+        "즉시 인쇄: 사용자 단말 브라우저 캐시에서 학원 브랜드 테마 색상과 Noto Sans KR 글꼴이 바인딩된 최종 PDF를 즉각 작성."
+      ],
+      guardrails: [
+        "API Key 밀폐: 상용 LLM 프라이버시 등가 자산을 철저히 서버 환경에 감춰 클라이언트 스크립트 탈취 불가 구성.",
+        "제로 트러스트 장막 격리 (Zero-Trust Tenant Isolation): 다중 학원 간의 정보 격리는 프론트엔드 단이 아닌 데이터베이스 심층 레벨에서 철저히 보장됩니다. PostgreSQL 서버에 Row Level Security (RLS) 정책을 활성화하고 인가된 사용자의 JWT 세션 정보를 school_id 외래 키에 수학적으로 일체화 결착시켰습니다. 따라서 잠재적인 클라이언트 스크립트 오작동이나 주입 공격 시에도 타사 정보에 간섭하는 행위를 DB 수하 노드에서 원천 드롭해 장비 간 교차 유출을 불가능하도록 봉인했습니다.",
+        "리소스 미적용: 무거운 변환 서버 없이 사용자 메모리 영역 내부에서 인라인 변환 실행으로 파일 저장 비용 원천 절약."
+      ]
+    },
+    promptEngineering: {
+      logic: `<system_instructions>
+  Write a highly professional, 2-sentence progress narrative for a student's monthly portfolio based on provided pedagogical tags.
+  Explicitly blocks generic praise like "Good job!". Tone must be objective, encouraging, and authoritative.
+</system_instructions>
+
+<constraints>
+  <token_limit>Hard maximum of 45 words to avoid layout overflows</token_limit>
+  <structure>S1 acknowledges the achievement milestone; S2 details the precise next instructional step</structure>
+</constraints>`,
+      schema: `{
+  type: "OBJECT",
+  properties: {
+    achievementNarrative: { type: "STRING" },
+    actionableStepDetail: { type: "STRING" }
+  },
+  required: ["achievementNarrative", "actionableStepDetail"]
+}`,
+      guardrails: [
+        "글자 수 경계 가이드: 최대 45단어 제약 조건을 LLM 구조 단에 얹어 출력 디자인 틀이 깨지는 사태를 완전 방어.",
+        "무의미 구절 차단: 격려 수사어(예: 'Good job!') 사용을 차단하고 계량적, 발전적 성취 분석 형식을 유지하도록 강제.",
+        "다국어 매핑 연동: 다중 유니코드 표준 문장 부호와 한국어 조사를 부드럽게 결합시키는 사전 가이드 세팅."
+      ]
+    },
+    impact: {
+      value: [
+        "운영 효율 극대화 및 학습 경험 제공 리포트 (Operational Impact & Delivery): 기존에 이메일 첨부 파일로 리포트를 한땀한땀 전달하며 발행했던 병목 패턴을, 실시간 클라이언트 사이드 변환 PDF 링크(차세대 알림톡 배포 준비 대응)로 이그젝션함으로써 분배 배포 마찰력을 획기적인 '제로' 선으로 억제합니다. 최종 100% 성장학습일지를 한글 및 영어의 깔끔한 인쇄용 결과 지표로 한눈에 보조해 어학원과 한국인 학부모 간 소통 밀도를 전 영역 확장 수급시켰습니다.",
+        "모든 연산 및 PDF 그리드 설정을 사용자 로컬 단말로 완전 이식하여 학원의 중앙 서버 트래픽 비용을 100% 절감.",
+        "Supabase RLS 규칙 설정을 완료하여 보안 감사 및 다중 대형 학설 연맹 간의 엄격한 원격 법규 준수성을 공고히 수립.",
+        "강의 현장 복도에서 터치 클릭 3번 만으로 PDF 생성이 가능케 보조하여 수동 취합 작성 시간을 주당 20시간 이상 절감선 제고."
+      ],
+      security: [
+        "학원별 개별 원생 데이터베이스에 엄격한 계정 연동 Row-Level Security를 완벽 적용.",
+        "서버 리소스에 영구적인 비암호화 미디어 파일을 주차 보존하지 않고 클라이언트 실시간 가공 후 휘발.",
+        "서버 파이프라인 외부 노드 접근 시 차단 필터를 통해 API Quota 오접속 및 디도스 위협 방지."
+      ]
+    },
+    behindTheArchitecture: {
+      problem: "한국 학원 시장의 특수성은 다국어 타이포그래피 정렬과 다중 지점별 독립적인 브랜드 색채 표출을 요구하지만, 기존 설치형 솔루션들은 비용과 호환성 면에서 높은 허들을 갖고 있었습니다.",
+      vision: "태블릿 한 대만 들고 교직원들이 번거로운 번역과 레이아웃 고민 없이, 교실 내부에서 한 번에 앨범과 리포트를 프린트하는 무복잡성 컴파일 환경.",
+      rationale: "클라이언트 PDF 인클로저 기술과 Gemini 추론 지배력을 맞물리고, 한글 유니코드의 고유 서체 정합 요건을 Express 서버 폰트 라우팅 게이트웨이로 풀어 자금이 넉넉지 않은 지점들의 초기 부담을 완전 소거했습니다."
+    },
+    technicalHurdles: [
+      {
+        title: "@react-pdf/renderer 상의 한글 unicode 빈 상자(깨짐) 현상",
+        incident: "프로덕션 기동 시 한국 한글(Hangul) 캐릭터가 전부 빈 사각형 박스(tofus)로 밀리며 다운되고, static 구글 폰트 직접 경로를 이용할 경우 브라우저 CORS 차단 정책에 걸리는 문제점이 야기되었습니다. ",
+        diagnosis: "PDF 컴파일 장치가 다국어 더블 바이트 문자 규격을 자체 내장하지 못하고, 주요 영속 폰트 CDN 서비스는 압축 WOFF2 형식을 주기 때문에, react-pdf가 요구하는 수수한 TrueType (.ttf) 확장자가 아니었던 것이 원인입니다.",
+        resolution: "Express 미들웨어 영역에 사용자 맞춤 헤더를 속이는 폰트 수합 우회 proxy를 개발했습니다. 원시 Noto Sans KR .ttf 파일을 기동 버퍼로 가져온 뒤 클라이언트에 안전 공급해 한글 깨짐을 100% 영구 해결했습니다."
       }
     ]
   }

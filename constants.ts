@@ -133,6 +133,27 @@ export const PORTFOLIO_DATA = {
           "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.29_PM_btxolx.png",
           "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.39_PM_nesi9y.png"
         ],
+      },
+      {
+        id: "white-label-hub",
+        title: "Learning Diary Hub",
+        category: "Tools" as const,
+        description: "Autonomous, multi-tenant student portfolio generation.",
+        longDescription: "Engineered a student learning diary compiler that transforms classroom physical task photos and selected pedagogical tags into beautifully aligned, high-resolution PDFs. Combines an Express.js server-side font-retrieval proxy with structured Google Gemini AI prompts to synthesize customized progress reports securely.",
+        friction: "Foreign teachers experience administrative exhaustion manually scripting progress papers, while large image uploads crash conventional browser compilers.",
+        flow: "A touch-optimized tablet dashboard allows teachers to 'Tag & Commit' artifacts, routing compressed keys to an Express gateway that integrates Gemini and outputs print-ready PDFs instantly.",
+        impactLabel: "Workflow Time",
+        impactValue: "15s per student",
+        maturityBadge: "MVP | ARCHITECTURAL BLUPRINT",
+        engineDetails: "Engine: Express/Node proxy cache coupled with Gemini 1.5 Flash, Supabase containing RLS, and @react-pdf/renderer.",
+        features: [
+          "Multi-Tenant Support",
+          "Express Font & API Proxy",
+          "Supabase db with RLS",
+          "@react-pdf/renderer Engine"
+        ],
+        tags: ["Multi-Tenant SaaS", "Bilingual Support"],
+        imageUrl: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2000&auto=format&fit=crop"
       }
     ]
   },
@@ -232,6 +253,27 @@ export const PORTFOLIO_DATA = {
           "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.29_PM_btxolx.png",
           "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.39_PM_nesi9y.png"
         ],
+      },
+      {
+        id: "white-label-hub",
+        title: "모바일 포트폴리오 허브 (Learning Diary Hub)",
+        category: "Tools" as const,
+        description: "학원 전용 자율형 다중 테넌트 모바일 성장학습일지 생성기.",
+        longDescription: "학습 활동 인쇄 기록 전형과 교육 관찰 태그를 조합하여 인쇄 규격용 포트폴리오로 원격 컴파일하는 클라이언트 사이드 PDF 생성 엔진입니다. 백엔드 Express 폰트 프록시를 통해 Hangul(한글) 깨짐 및 CORS 예외를 우산형 방어하고, Google Gemini 기반 2문장 피드백 합성을 탑재했습니다.",
+        friction: "행동 마일스톤 서술에 막막함을 느끼는 원어민 교사들의 서류 피로와 대용량 이미지 일괄 정렬 업로드 시 터지는 단말 브라우저 프리징.",
+        flow: "태블릿 화면 터치만으로 아티팩트 등록 및 교육 태그 배정, 프록시가 중요 API 키 노출 없이 신속하고 타이트한 PDF 인쇄물 생성을 15초 만에 컴파일 완료.",
+        impactLabel: "인력 소요 시간",
+        impactValue: "원생당 15초 해결",
+        maturityBadge: "MVP | 아키텍처 실체 분석",
+        engineDetails: "컴팩트: Express 프록시 및 Google Gemini 1.5 Flash 추론, Supabase RLS 연계, 브라우저 메모리 컴파일러.",
+        features: [
+          "멀티 테넌트 완주",
+          "서버 폰트 프록시",
+          "Supabase RLS 보안",
+          "메모리 PDF 컴파일"
+        ],
+        tags: ["다중 테넌트 SaaS", "이중언어 지원"],
+        imageUrl: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2000&auto=format&fit=crop"
       }
     ]
   },
@@ -330,6 +372,27 @@ export const PORTFOLIO_DATA = {
         "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.29_PM_btxolx.png",
         "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.39_PM_nesi9y.png"
       ],
+    },
+    {
+      id: "white-label-hub",
+      title: "Learning Diary Hub",
+      category: "Tools" as const,
+      description: "Autonomous, multi-tenant student portfolio generation.",
+      longDescription: "Engineered a student learning diary compiler that transforms classroom physical task photos and selected pedagogical tags into beautifully aligned, high-resolution PDFs. Combines an Express.js server-side font-retrieval proxy with structured Google Gemini AI prompts to synthesize customized progress reports securely.",
+      friction: "Foreign teachers experience administrative exhaustion manually scripting progress papers, while large image uploads crash conventional browser compilers.",
+      flow: "A touch-optimized tablet dashboard allows teachers to 'Tag & Commit' artifacts, routing compressed keys to an Express gateway that integrates Gemini and outputs print-ready PDFs instantly.",
+      impactLabel: "Workflow Time",
+      impactValue: "15s per student",
+      maturityBadge: "MVP | ARCHITECTURAL BLUPRINT",
+      engineDetails: "Engine: Express/Node proxy cache coupled with Gemini 1.5 Flash, Supabase containing RLS, and @react-pdf/renderer.",
+      features: [
+        "Multi-Tenant Support",
+        "Express Font & API Proxy",
+        "Supabase db with RLS",
+        "@react-pdf/renderer Engine"
+      ],
+      tags: ["Multi-Tenant SaaS", "Bilingual Support"],
+      imageUrl: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2000&auto=format&fit=crop"
     }
   ]
 };

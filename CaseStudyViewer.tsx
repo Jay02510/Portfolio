@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MailIcon, XIcon, ExternalLinkIcon, SparklesIcon, ChevronDownIcon, FileTextIcon } from './components/Icons.tsx';
+import { MailIcon, XIcon, ExternalLinkIcon, SparklesIcon, ChevronDownIcon, FileTextIcon, DeviceMobileIcon, SettingsIcon, LockIcon, CodeIcon } from './components/Icons.tsx';
 import { CaseStudyType } from './types.ts';
 import { studyDataEn, studyDataKo } from './components/caseStudyData.ts';
 
@@ -98,6 +98,399 @@ const uiTranslation = {
     resolution: "프로덕션 조치 (Resolution)",
     storeLink: "스토어 둘러보기 ↗"
   }
+};
+
+const stackExplains: Record<string, { en: string; ko: string }> = {
+  "React 18": {
+    en: "Core state hydration and rendering lifecycle for mobile viewport agility.",
+    ko: "모바일 뷰포트 기민성에 대응하는 컴포넌트 하이드레이션 및 상태 생명주기 관리."
+  },
+  "React 19": {
+    en: "Native action handlers for async transitions.",
+    ko: "비동기 상태 전이를 매끄럽게 핸들링하는 네이티브 액션 핸들러 탑재."
+  },
+  "TypeScript": {
+    en: "Type-safety contracts that eliminate runtime layout exceptions during builds.",
+    ko: "발생 가능한 컴포넌트 런타임 오류를 차단하는 엄격한 타입 계약 정의."
+  },
+  "Vite": {
+    en: "Bundling environment providing optimized code delivery with minimal footprint.",
+    ko: "최소한의 파일 구성 요소로 모바일 번들 크기를 최적화하는 빌드 도구."
+  },
+  "Google GenAI API (Claude 3.5 Sonnet proxy)": {
+    en: "Advanced layout and vision-processing model API proxied behind express server.",
+    ko: "익스프레스 프록시 서버 백단에서 조율되는 어드밴스드 비전 및 레이아웃 분석 API."
+  },
+  "Google GenAI SDK (gemini-3-pro-preview)": {
+    en: "High-reasoning SDK selected to resolve NP-complete scheduling branches.",
+    ko: "조율하기 까다로운 자원 분배 조합 최적화를 위해 실시간 호출되는 지능형 SDK."
+  },
+  "Google GenAI SDK": {
+    en: "Enterprise server-side SDK to secure connections with Gemini endpoints.",
+    ko: "AI 모델 엔드포인트와 안전하고 유연하게 고성능 통신을 수행할 수 있는 SDK."
+  },
+  "Google Gemini API": {
+    en: "Deep reasoning engine to normalize unstructured text inputs securely.",
+    ko: "비정형 교사 관찰 데이터를 글로벌 벤치마크 기준 언어로 변환하는 핵심 엔진."
+  },
+  "Tailwind CSS": {
+    en: "Design consistency utilizing structural theme variables and zero CSS overhead.",
+    ko: "스타일 크기 오버헤드를 제로로 유도하며 일관된 변수를 보장하는 유틸리티 테마."
+  },
+  "Recharts & D3": {
+    en: "Visualizing CEFR speaking, reading, and listening domains in custom radar charts.",
+    ko: "원생별 특성을 언어 공인 척도로 대조하여 반응형 다각 레이더 그래프로 시각화."
+  },
+  "Airtable Relational Sheets": {
+    en: "Unified relational schema backplane ensuring direct multi-table student rosters.",
+    ko: "여러 테이블 간의 상호 참조 정합성을 강력 유지하는 실시간 데이터베이스."
+  },
+  "Airtable Relational DB": {
+    en: "Normalized CRM record storage that keeps direct cross-table alignments.",
+    ko: "상호 연결된 고객 및 기록 테두리를 견고하게 엮어주는 다대다 참조형 DB."
+  },
+  "Make.com Automation Nodes": {
+    en: "Headless webhook orchestrators automating backend flow routing and triggers.",
+    ko: "백엔드 트리거 처리와 API 데이터 전처리를 담당하는 자동화 분산 워크플로 노드."
+  },
+  "Make.com Nodes": {
+    en: "Scalable async webhook handlers evaluating student feedback pipelines.",
+    ko: "원생별 개별 피드백 파이프라인의 안전 전송 및 흐름 제어를 처리하는 비동기 핸들러."
+  },
+  "Framer Motion": {
+    en: "Hardware-accelerated animations reinforcing route transitions and UX hierarchy.",
+    ko: "화면 전이와 뷰포트 레이아웃 우선순위 변화를 깔끔하게 처리하는 저지연 애니메이션."
+  },
+  "Fillout Forms": {
+    en: "Dynamic multi-page intake forms feeding schema-validated databases.",
+    ko: "데이터베이스 자료 필드 명세와 100% 대응되어 에러를 사전 방지하는 고성능 폼."
+  },
+  "Softr Portal": {
+    en: "Authorized parent access gateway rendering records with row-level view boundaries.",
+    ko: "개별 계정별 행 수준 권한 경계를 설정하여 타 사용자 데이터 유출을 막는 보안 포털."
+  },
+  "React-Leaflet & Leaflet.js": {
+    en: "Dynamic coordinate mappings visualizer optimized for mobile touch inputs.",
+    ko: "모바일 터치 환경에 완벽 대응하는 저지연 위치 마커 시각화 지도 라이브러리."
+  },
+  "Custom Express API": {
+    en: "Handles API key shielding, request sanitization, and CORS headers resolution.",
+    ko: "안전하게 비밀 API 키를 차단하고, 요청 정화 및 교차 크레덴셜 이슈를 조율하는 백엔드."
+  },
+  "esbuild": {
+    en: "High-performance bundler compiling express routes into single stable bundles.",
+    ko: "여러 서버 사이드 모듈을 하나의 경량 CJS 스크립트로 압축해 기동 latency를 단축하는 컴파일러."
+  },
+  "Naver Search API": {
+    en: "Live coordinate and localized geographic directory lookup for prospects indexing.",
+    ko: "지도 타운 및 신규 고객 주소지의 정확한 하드웨어 공간 좌표를 가져오는 지리 데이터 조회 API."
+  },
+  "Firebase v11 Suite": {
+    en: "Row-isolated cloud storage and encrypted session tokens for user security.",
+    ko: "세션 유효 체크 및 사용자 데이터 격리를 통해 고신뢰성 다중 인증을 보조하는 인프라."
+  },
+  "Express.js / Node.js": {
+    en: "Provides zero-expose routing with process-level key caching and stable file proxies.",
+    ko: "프로세스 수준의 API 키 캐싱 및 안정적 한글 글꼴 프록시를 보장하는 무노출 백엔드."
+  },
+  "PostgreSQL Supabase (RLS)": {
+    en: "Durable database engine applying Row-Level Security policies to keep school records completely isolated.",
+    ko: "행 레벨 보안(RLS) 정책을 통해 학원별 데이터베이스 기록을 영구 격리 보장하는 정밀 DB."
+  },
+  "@react-pdf/renderer": {
+    en: "Direct in-browser print compiler creating beautifully structured documents with dynamic custom brand parameters.",
+    ko: "학원별 고유 브랜드 테마 및 Noto Sans KR 서체를 결합해 즉각적인 인쇄용 PDF를 만드는 엔진."
+  },
+  "Google Gemini 1.5 Flash": {
+    en: "High-throughput vision/text model utilized to normalize pedagogical notes into rigid 2-sentence narratives.",
+    ko: "단 두 문장의 엄격한 피드백 명세 구조로 교육 내용을 정형 완수하는 고성능 추론 모델."
+  }
+};
+
+interface FlowchartNode {
+  title: string;
+  subtitle: string;
+  tech: string;
+  icon: 'mobile' | 'settings' | 'sparkles' | 'fileText' | 'code' | 'lock';
+}
+
+const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
+  const nodesMap: Record<string, FlowchartNode[]> = {
+    'chekki': [
+      {
+        title: lang === 'en' ? "React UI App" : "모바일 React 클라이언트",
+        subtitle: lang === 'en' ? "Captures and resizes raw paper worksheet stream" : "사용자 카메라 제어 및 학습지 이미지 로컬 압축",
+        tech: "React 18 / Tailwind",
+        icon: "mobile"
+      },
+      {
+        title: lang === 'en' ? "Server Gateway" : "Express 백엔드 미들웨어",
+        subtitle: lang === 'en' ? "Protects API credentials & proxies payloads" : "보안 토큰 은폐, 요청 검증 및 우회 호출 실행",
+        tech: "Express / Node.js",
+        icon: "settings"
+      },
+      {
+        title: lang === 'en' ? "Gemini Vision Engine" : "Google Gemini LLM",
+        subtitle: lang === 'en' ? "Classifies text & exports validated JSON keys" : "학습지 비전 분석, 텍스트 추출 및 정형 데이터 변환",
+        tech: "gemini-3.5-flash",
+        icon: "sparkles"
+      },
+      {
+        title: lang === 'en' ? "Operational Output" : "클라이언트 다국어 뷰어",
+        subtitle: lang === 'en' ? "Renders step-by-step parent overlays & TTS" : "이중언어 지도안 오버레이, 학습 가이드 표기",
+        tech: "Client Canvas / TTS",
+        icon: "fileText"
+      }
+    ],
+    'benchmark-explorer': [
+      {
+        title: lang === 'en' ? "Teacher Ingest Form" : "교사 저널 입력 단말",
+        subtitle: lang === 'en' ? "Captures qualitative review items in real-time" : "실시간 정성적 서술지 입력 및 비동기 Webhook 발행",
+        tech: "Fillout Ingest Node",
+        icon: "fileText"
+      },
+      {
+        title: lang === 'en' ? "Orchestrator Nodes" : "Make.com 자동화 엔진",
+        subtitle: lang === 'en' ? "Sequences webhook triggers & triggers Gemini" : "웹훅 완충 대기, 프롬프트 병합 및 데이터 번역 조율",
+        tech: "Make.com Flow Nodes",
+        icon: "settings"
+      },
+      {
+        title: lang === 'en' ? "CEFR Database" : "Airtable 관계형 DB",
+        subtitle: lang === 'en' ? "Stores student records, rosters & histories" : "클래스 마스터 테이블, 원생 발달 인덱스 매핑 보관",
+        tech: "Airtable Sheets",
+        icon: "lock"
+      },
+      {
+        title: lang === 'en' ? "Principal Dashboard" : "교원 평가 대시보드",
+        subtitle: lang === 'en' ? "Renders D3 speaking / reading radar matrices" : "실시간 D3 다각 방사선 평가 차트 조감 렌더링",
+        tech: "React / Recharts / D3",
+        icon: "sparkles"
+      }
+    ],
+    'eduplanner': [
+      {
+        title: lang === 'en' ? "Scheduler Input UI" : "시간표 조건 설정 뷰",
+        subtitle: lang === 'en' ? "Pushes room sizes, course targets & slots" : "교과 시수 배정, 시설 정원, 교사 제약 입력 수집",
+        tech: "React 19 Frontend",
+        icon: "settings"
+      },
+      {
+        title: lang === 'en' ? "Local Pre-Compiler" : "성능 최적화 TS 솔버",
+        subtitle: lang === 'en' ? "Prunes trivial overlapping conflicts inline" : "수학적 탐색 루프 사전 가동으로 명백한 충돌 병목 제거",
+        tech: "TypeScript Class Solver",
+        icon: "code"
+      },
+      {
+        title: lang === 'en' ? "Gemini API Engine" : "Gemini Dense Reasoner",
+        subtitle: lang === 'en' ? "Solves high-complexity NP-hard combinations" : "해결이 까다로운 복합 제약 충돌 조정 결과 자동 조립",
+        tech: "gemini-3-pro-preview",
+        icon: "sparkles"
+      },
+      {
+        title: lang === 'en' ? "Durable Auth Memory" : "파이어베이스 DB 통합",
+        subtitle: lang === 'en' ? "Saves schedules & manages secure admin sessions" : "시간표 영속 일지 작성 및 원 로그인 세션 권한 조율",
+        tech: "Firebase v11 & Firestore",
+        icon: "lock"
+      }
+    ],
+    'consultation-pipeline': [
+      {
+        title: lang === 'en' ? "Evaluation Form" : "학습 진단 양식",
+        subtitle: lang === 'en' ? "Fires instant validation events on commit" : "평가 보고 폼 제출 감지 및 트래픽 webhook 전달",
+        tech: "Fillout Assessment",
+        icon: "fileText"
+      },
+      {
+        title: lang === 'en' ? "Routing Middleware" : "경로 제어 노드",
+        subtitle: lang === 'en' ? "Deduplicates notes & buffers payload calls" : "이중 중복 제출 거부, 프롬프트 주입 방지 완충 연산",
+        tech: "Make.com Automation",
+        icon: "settings"
+      },
+      {
+        title: lang === 'en' ? "Relational Sheets" : "Airtable DB",
+        subtitle: lang === 'en' ? "Applies lookup hooks to track historical metrics" : "데이터 일관성과 무결성이 보증되는 중앙 장부 기록",
+        tech: "Airtable Relational Sheets",
+        icon: "lock"
+      },
+      {
+        title: lang === 'en' ? "Softr Parent Portal" : "원 부모 성취 포털",
+        subtitle: lang === 'en' ? "Row-level isolated bilingual progress view" : "개인인별 완벽 격리 보호 및 translated 리포트 열람",
+        tech: "Softr Client Web App",
+        icon: "sparkles"
+      }
+    ],
+    'lead-enrichment': [
+      {
+        title: lang === 'en' ? "Interactive Map UI" : "Geographic Map 대시보드",
+        subtitle: lang === 'en' ? "Plots coordinate locations & user maps" : "지역 및 수집 기준 입력 수집, 지도 마커 실시간 표기",
+        tech: "React-Leaflet / Leaflet.js",
+        icon: "mobile"
+      },
+      {
+        title: lang === 'en' ? "Proxy API Backend" : "Express 좌표 서버",
+        subtitle: lang === 'en' ? "Shields API keys & handles coordinate projections" : "외부 Naver API 키 보안 밀폐, 구글 통신 CORS 조율",
+        tech: "Custom Express Proxy",
+        icon: "settings"
+      },
+      {
+        title: lang === 'en' ? "Naver Directory API" : "네이버 지도 데이터",
+        subtitle: lang === 'en' ? "Compiles live local businesses & map addresses" : "실시간 정확한 장소 및 지역 비즈니스 상호 위치 수합",
+        tech: "Naver Search Maps API",
+        icon: "fileText"
+      },
+      {
+        title: lang === 'en' ? "Outreach AI Engine" : "Gemini 메일 제너레이터",
+        subtitle: lang === 'en' ? "Translates details and outputs polite proposals" : "데이터 통합 번역, 공익 성격 맞춤 한국어 존댓말 제안 조합",
+        tech: "Google GenAI API (Gemini)",
+        icon: "sparkles"
+      }
+    ],
+    'white-label-hub': [
+      {
+        title: lang === 'en' ? "Teacher Tagging UI" : "교사용 태그 입력 단말",
+        subtitle: lang === 'en' ? "Vite app to upload student work & assign localized didactic tags" : "교사가 학습 결과물 사진을 올리고 한/영 교육적 태그 선택",
+        tech: "Vite / React 18",
+        icon: "mobile"
+      },
+      {
+        title: lang === 'en' ? "Express.js Proxy Server" : "Express 백엔드 미들웨어",
+        subtitle: lang === 'en' ? "Masks proprietary API keys & guides structured Gemini synthesis requests" : "상용 API 키 은폐 및 Gemini 인접 문단 일직선 합성 조율",
+        tech: "Express / Node.js",
+        icon: "settings"
+      },
+      {
+        title: lang === 'en' ? "Supabase Postgres DB" : "Supabase 관계형 DB",
+        subtitle: lang === 'en' ? "Locks relational academic portfolios behind strict Row Level Security" : "철저한 행 레벨 보안(RLS)으로 다중 학교 간 학생 기록 완벽 격리",
+        tech: "Postgres / Supabase RLS",
+        icon: "lock"
+      },
+      {
+        title: lang === 'en' ? "Dynamic PDF Compiler" : "Direct 브라우저 렌더러",
+        subtitle: lang === 'en' ? "Executes custom @react-pdf/renderer compiler to build fully-branded bilingual PDFs" : "브라우저 단에서 직접 브랜드 맞춤 색상 및 글꼴의 PDF 즉시 인쇄 컴파일",
+        tech: "@react-pdf/renderer",
+        icon: "sparkles"
+      }
+    ]
+  };
+
+  return nodesMap[pId] || nodesMap['chekki'];
+};
+
+const ArchitectureFlowchart: React.FC<{ projectId: string; theme: 'light' | 'dark'; locale: 'en' | 'ko' }> = ({
+  projectId,
+  theme,
+  locale
+}) => {
+  const nodes = getFlowchartNodes(projectId, locale);
+  
+  const getIcon = (type: string) => {
+    switch (type) {
+      case 'mobile':
+        return <DeviceMobileIcon className="w-5 h-5 text-accent-gold" />;
+      case 'settings':
+        return <SettingsIcon className="w-5 h-5 text-accent-gold" />;
+      case 'sparkles':
+        return <SparklesIcon className="w-5 h-5 text-accent-gold animate-pulse" />;
+      case 'fileText':
+        return <FileTextIcon className="w-5 h-5 text-accent-gold" />;
+      case 'code':
+        return <CodeIcon className="w-5 h-5 text-accent-gold" />;
+      case 'lock':
+        return <LockIcon className="w-5 h-5 text-accent-gold" />;
+      default:
+        return <SettingsIcon className="w-5 h-5 text-accent-gold" />;
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <style>{`
+        @keyframes flow-line-motion {
+          to {
+            stroke-dashoffset: -20;
+          }
+        }
+        .animated-flow-line {
+          animation: flow-line-motion 1.5s linear infinite;
+        }
+      `}</style>
+
+      <div className={`rounded-xl border p-6 overflow-hidden relative z-10 transition-all ${
+        theme === 'dark' 
+          ? 'bg-black/30 border-white/5 shadow-2xl shadow-black/80' 
+          : 'bg-black/[0.01] shadow border-black/5'
+      }`}>
+        {/* Connection flow lines absolute decoration for desktop */}
+        <svg className="absolute top-1/2 left-0 w-full h-8 -translate-y-1/2 pointer-events-none hidden lg:block z-0" viewBox="0 0 1000 32" fill="none" preserveAspectRatio="none">
+          <path d="M 80 16 L 920 16" stroke="url(#glowing-line-gradient)" strokeWidth="1.5" strokeDasharray="6,4" className="animated-flow-line" />
+          <defs>
+            <linearGradient id="glowing-line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.1" />
+              <stop offset="30%" stopColor="#D4AF37" stopOpacity="0.8" />
+              <stop offset="70%" stopColor="#D4AF37" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#D4AF37" stopOpacity="0.1" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        {/* Content list */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 relative z-10">
+          {nodes.map((node, index) => (
+            <div key={index} className="flex flex-col items-center">
+              <div className={`w-full p-4 rounded-xl border flex flex-col items-center text-center space-y-3 relative transition-all duration-300 md:hover:scale-[1.02] ${
+                theme === 'dark' 
+                  ? 'bg-white/[0.01] border-white/5 hover:border-accent-gold/40 hover:bg-white/[0.03]' 
+                  : 'bg-white border-black/5 shadow-sm hover:border-accent-gold/50 hover:bg-black/[0.01]'
+              }`}>
+                {/* Node counter */}
+                <div className="absolute top-2 left-2.5 font-mono text-[9px] font-bold text-accent-gold/60">
+                  0{index + 1}
+                </div>
+
+                {/* Badge Icon wrapper */}
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center border transition-all ${
+                  theme === 'dark' 
+                    ? 'bg-white/5 border-white/10' 
+                    : 'bg-black/5 border-black/5 shadow-inner'
+                }`}>
+                  {getIcon(node.icon)}
+                </div>
+
+                {/* Labels */}
+                <div className="space-y-1">
+                  <h5 className={`text-[11px] font-bold uppercase tracking-wider font-display ${
+                    theme === 'dark' ? 'text-white' : 'text-alpine-950'
+                  }`}>
+                    {node.title}
+                  </h5>
+                  <p className={`text-[9px] leading-relaxed max-w-[200px] mx-auto opacity-60 ${
+                    theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'
+                  }`}>
+                    {node.subtitle}
+                  </p>
+                </div>
+
+                {/* Tech specifications label */}
+                <div className={`px-2 py-0.5 rounded font-mono text-[7px] uppercase font-bold tracking-widest ${
+                  theme === 'dark' 
+                    ? 'bg-accent-gold/10 border border-accent-gold/20 text-accent-gold' 
+                    : 'bg-accent-gold/5 border border-accent-gold/15 text-accent-gold/90'
+                }`}>
+                  {node.tech}
+                </div>
+              </div>
+
+              {/* Connecting dashed elements for mobile responsive timelines */}
+              {index < 3 && (
+                <div className="h-6 w-0.5 border-r border-dashed border-accent-gold lg:hidden mt-2"></div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({ 
@@ -443,7 +836,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
               
               return (
                 <div className="border-t border-red-500/5 divide-y divide-red-500/5 relative z-10 animate-in fade-in slide-in-from-top-2 duration-300">
-                  {hurdlelist => {}}
                   {hurdlesList.map((hurdle, hIdx) => (
                     <div key={hIdx} className={`${hIdx > 0 ? 'pt-8 md:pt-12' : ''} p-6 md:p-10 pb-8 md:pb-12 space-y-6`}>
                       {hurdle.title && (
@@ -720,17 +1112,35 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                 <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-24 h-fit">
                   <div className="space-y-4">
                     <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.systemStack}</span>
-                    <div className="flex flex-wrap gap-2 pt-2">
-                       {projectData.stack.map((st, sidx) => (
-                        <span 
-                          key={sidx} 
-                          className={`px-3 py-1.5 rounded-lg border font-mono text-[9px] uppercase font-bold tracking-widest ${
-                            theme === 'dark' ? 'bg-white/5 border-white/5 text-white/60' : 'bg-black/5 border-black/5 text-alpine-950/70'
-                          }`}
-                        >
-                          {st}
-                        </span>
-                      ))}
+                    <div className="grid grid-cols-1 gap-3 pt-2">
+                       {projectData.stack.map((st, sidx) => {
+                        const explanation = stackExplains[st]
+                          ? (locale === 'ko' ? stackExplains[st].ko : stackExplains[st].en)
+                          : (locale === 'ko' ? "프로덕션 아키텍처 지원 요소." : "Production capability supporter.");
+                        return (
+                          <div 
+                            key={sidx} 
+                            className={`p-3 rounded-lg border transition-all ${
+                              theme === 'dark' 
+                                ? 'bg-white/[0.01] border-white/5 hover:bg-white/[0.02]/80 hover:border-accent-gold/20' 
+                                : 'bg-black/[0.01] border-black/5 hover:bg-black/[0.02]/80 hover:border-accent-gold/30'
+                            }`}
+                          >
+                            <span 
+                              className={`inline-block px-2 py-0.5 rounded font-mono text-[8px] uppercase font-bold tracking-wider ${
+                                theme === 'dark' ? 'bg-white/5 text-white/80 border border-white/5' : 'bg-black/5 text-alpine-950/80 border border-black/5'
+                              }`}
+                            >
+                              {st}
+                            </span>
+                            <p className={`text-[10px] leading-relaxed mt-2 select-text font-normal ${
+                              theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'
+                            }`}>
+                              {explanation}
+                            </p>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
 
@@ -787,6 +1197,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                       {t.technicalPipelineMap}
                     </h3>
                     <div className="space-y-6">
+                      {/* Visual Architecture Flow Blueprint */}
+                      <ArchitectureFlowchart projectId={projectId} theme={theme} locale={locale || 'en'} />
+
                       <div>
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4">{t.pipelineExecutionLifecycle}</h4>
                         <ol className="space-y-4">
