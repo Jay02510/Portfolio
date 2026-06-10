@@ -759,7 +759,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                     <span className="text-xl">😫</span>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.humanProblem}</h4>
                   </div>
-                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty font-light ${
+                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
                     theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
                   }`}>
                     {projectData.behindTheArchitecture.problem}
@@ -772,7 +772,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                     <span className="text-xl">💡</span>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.productVision}</h4>
                   </div>
-                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty font-light ${
+                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
                     theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
                   }`}>
                     {projectData.behindTheArchitecture.vision}
@@ -785,7 +785,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                     <span className="text-xl">🧠</span>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-[#44D9C5]">{t.coreRationale}</h4>
                   </div>
-                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty font-light ${
+                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
                     theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
                   }`}>
                     {projectData.behindTheArchitecture.rationale}
@@ -853,7 +853,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                             <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-xs text-red-500">❌</div>
                             <h4 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.incident}</h4>
                           </div>
-                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty font-light ${
+                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
                             theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
                           }`}>
                             {hurdle.incident}
@@ -866,7 +866,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                             <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center text-xs text-orange-500">🔍</div>
                             <h4 className="text-[10px] font-black uppercase tracking-widest text-orange-500">{t.diagnosis}</h4>
                           </div>
-                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty font-light ${
+                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
                             theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
                           }`}>
                             {hurdle.diagnosis}
@@ -879,7 +879,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                             <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center text-xs text-green-500 font-bold">✓</div>
                             <h4 className="text-[10px] font-black uppercase tracking-widest text-green-500">{t.resolution}</h4>
                           </div>
-                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty font-light ${
+                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
                             theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
                           }`}>
                             {hurdle.resolution}
@@ -1133,7 +1133,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                             >
                               {st}
                             </span>
-                            <p className={`text-[10px] leading-relaxed mt-2 select-text font-normal ${
+                            <p className={`text-[10px] leading-relaxed mt-2 select-text font-normal text-pretty break-words whitespace-normal w-full min-w-0 ${
                               theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'
                             }`}>
                               {explanation}
@@ -1164,7 +1164,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                         {projectData.problem.map((prob, pidx) => (
                           <li key={pidx} className="flex gap-4 items-start">
                             <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0"></span>
-                            <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty ${
+                            <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${
                               theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
                             }`}>
                               {prob}
@@ -1180,7 +1180,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                         {projectData.solution.map((sol, sidx) => (
                           <li key={sidx} className="flex gap-4 items-start">
                             <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 flex-shrink-0"></span>
-                            <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty ${
+                            <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${
                               theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
                             }`}>
                               {sol}
@@ -1219,7 +1219,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full min-w-0">
                           {projectData.architecture.guardrails.map((gr, gidx) => (
                             <div key={gidx} className={`p-4 rounded-xl border w-full min-w-0 ${
-                              theme === 'dark' ? 'border-white/5 bg-white/[0.02]/50' : 'border-black/5 bg-black/[0.02]'
+                              theme === 'dark' ? 'border-white/5 bg-white/[0.02]' : 'border-black/5 bg-black/[0.02]'
                             }`}>
                               <div className="text-xs font-mono font-bold uppercase tracking-wider mb-2 text-accent-gold opacity-90">{t.edgeCasePrefix} 0{gidx+1}</div>
                               <p className={`text-xs max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/66'}`}>{gr}</p>
@@ -1276,7 +1276,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                           {projectData.impact.value.map((v, idx) => (
                             <li key={idx} className="flex gap-4 items-start">
                               <span className="text-accent-gold font-bold font-mono">✓</span>
-                              <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty ${
+                              <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${
                                 theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
                               }`}>
                                 {v}
@@ -1292,7 +1292,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                           {projectData.impact.security.map((s, idx) => (
                             <li key={idx} className="flex gap-4 items-start">
                               <span className="text-accent-gold font-bold font-mono">⚡</span>
-                              <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty ${
+                              <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${
                                 theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
                               }`}>
                                 {s}
