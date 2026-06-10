@@ -598,7 +598,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
   return (
     <div 
       ref={scrollRef}
-      className={`fixed inset-0 z-[200] overflow-y-auto transition-all duration-300 ${
+      className={`fixed inset-0 z-[200] overflow-y-auto overflow-x-hidden w-full min-w-0 transition-all duration-300 ${
         theme === 'dark' ? 'bg-alpine-950 text-white' : 'bg-alpine-50 text-alpine-950'
       }`}
     >
@@ -1107,9 +1107,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
             </button>
 
             {isBreakdownOpen && (
-              <div className="p-6 md:p-10 pt-0 grid lg:grid-cols-12 gap-12 md:gap-20 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10">
+              <div className="p-4 sm:p-6 md:p-10 pt-0 grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 w-full min-w-0 overflow-hidden">
                 {/* LEFT RAIL - THE STACK / INFO */}
-                <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-24 h-fit">
+                <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-24 h-fit w-full min-w-0">
                   <div className="space-y-4">
                     <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.systemStack}</span>
                     <div className="grid grid-cols-1 gap-3 pt-2">
@@ -1155,7 +1155,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                 </div>
 
                 {/* RIGHT RAIL - DETAILED ANALYSIS */}
-                <div className="lg:col-span-8 space-y-20">
+                <div className="lg:col-span-8 space-y-20 w-full min-w-0">
                   {/* PROBLEM / SOLUTION */}
                   <div className="grid md:grid-cols-2 gap-12">
                     <div className="space-y-4">
@@ -1202,13 +1202,13 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
 
                       <div>
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4">{t.pipelineExecutionLifecycle}</h4>
-                        <ol className="space-y-4">
+                        <ol className="space-y-4 w-full min-w-0">
                           {projectData.architecture.lifecycle.map((lc, lidx) => (
-                            <li key={lidx} className={`flex gap-4 items-start p-4 rounded-xl relative overflow-hidden font-mono text-xs border ${
+                            <li key={lidx} className={`flex gap-4 items-start p-4 rounded-xl relative overflow-hidden font-mono text-xs border w-full min-w-0 ${
                               theme === 'dark' ? 'border-white/5 bg-white/[0.01]' : 'border-black/5 bg-black/[0.01]'
                             }`}>
                               <span className="text-accent-gold font-bold">0{lidx + 1}</span>
-                              <p className={`max-w-prose text-pretty ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}`}>{lc}</p>
+                              <p className={`max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}`}>{lc}</p>
                             </li>
                           ))}
                         </ol>
@@ -1216,13 +1216,13 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
 
                       <div>
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4 mt-6">{t.pipelineEdgeCaseGuardrails}</h4>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full min-w-0">
                           {projectData.architecture.guardrails.map((gr, gidx) => (
-                            <div key={gidx} className={`p-4 rounded-xl border ${
+                            <div key={gidx} className={`p-4 rounded-xl border w-full min-w-0 ${
                               theme === 'dark' ? 'border-white/5 bg-white/[0.02]/50' : 'border-black/5 bg-black/[0.02]'
                             }`}>
                               <div className="text-xs font-mono font-bold uppercase tracking-wider mb-2 text-accent-gold opacity-90">{t.edgeCasePrefix} 0{gidx+1}</div>
-                              <p className={`text-xs max-w-prose text-pretty ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/66'}`}>{gr}</p>
+                              <p className={`text-xs max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/66'}`}>{gr}</p>
                             </div>
                           ))}
                         </div>
@@ -1236,16 +1236,16 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                       {t.promptOrchestration}
                     </h3>
                     <div className="space-y-6 font-mono font-light text-pretty">
-                      <div>
+                      <div className="w-full min-w-0">
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.structuredInstruction}</h4>
-                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-green-400">
+                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-green-400 w-full max-w-full whitespace-pre-wrap break-all md:whitespace-pre md:break-normal">
                           <code>{projectData.promptEngineering.logic}</code>
                         </pre>
                       </div>
 
-                      <div>
+                      <div className="w-full min-w-0">
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.runtimeEnforcedSchema}</h4>
-                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-blue-400">
+                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-blue-400 w-full max-w-full whitespace-pre-wrap break-all md:whitespace-pre md:break-normal">
                           <code>{projectData.promptEngineering.schema}</code>
                         </pre>
                       </div>
