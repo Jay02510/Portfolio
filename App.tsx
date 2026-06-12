@@ -558,11 +558,11 @@ function App() {
                     
                     <div className="relative">
                       <h1 
-                        className="font-medium tracking-tight font-display text-gradient-white pb-4 px-2"
+                        className={`font-medium tracking-tight font-display ${theme === 'dark' ? 'text-white' : 'text-alpine-950'} pb-4 px-2`}
                         style={{ fontSize: 'clamp(2.2rem, 7.5vw, 5.5rem)', lineHeight: '1.05', textWrap: 'balance' }}
                       >
                         {t[locale].heroTitle1} <br />
-                        <span className={`italic block tracking-tight pt-2 md:pt-4 font-light ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/50'}`}>
+                        <span className={`italic block tracking-tight pt-2 md:pt-4 font-light ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'}`}>
                           {t[locale].heroTitle2}
                         </span>
                       </h1>
@@ -683,7 +683,7 @@ function App() {
         {/* PORTFOLIO SECTION */}
         <section id="portfolio" className="py-36 md:py-48 px-6 max-w-7xl mx-auto">
             <div className="mb-10 md:mb-14 text-center">
-                <h2 className="text-3xl sm:text-5xl font-medium tracking-tight font-display text-gradient-white leading-tight sm:leading-none" style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', textWrap: 'balance' }}>{t[locale].toolsTitle}</h2>
+                <h2 className={`text-3xl sm:text-5xl font-medium tracking-tight font-display ${theme === 'dark' ? 'text-white' : 'text-alpine-950'} leading-tight sm:leading-none`} style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', textWrap: 'balance' }}>{t[locale].toolsTitle}</h2>
             </div>
 
             {/* CORE COMPETENCIES & TECHNOLOGY BOARD (FLATTENED LAYOUT) */}
@@ -699,7 +699,7 @@ function App() {
                     <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold font-mono">
                       {locale === 'en' ? "CURRICULUM VITAE MATCH" : "핵심 역량 및 서칭 매트릭스"}
                     </span>
-                    <h3 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-gradient-white mt-1">
+                    <h3 className={`text-2xl md:text-3xl font-display font-medium tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'} mt-1`}>
                       {locale === 'en' ? "Core Competencies & Stack" : "핵심 전문 역량 (Core Competencies)"}
                     </h3>
                   </div>
@@ -955,9 +955,9 @@ function App() {
             </div>
             <div className="space-y-10 order-1 lg:order-2">
                  {locale === 'en' ? (
-                   <h2 className="text-3xl sm:text-5xl font-medium font-display tracking-tight text-gradient-white leading-tight sm:leading-none" style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', textWrap: 'balance' }}>Teacher who <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>builds tools.</span></h2>
+                   <h2 className="text-3xl sm:text-5xl font-medium font-display tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'} leading-tight sm:leading-none" style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', textWrap: 'balance' }}>Teacher who <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>builds tools.</span></h2>
                  ) : (
-                   <h2 className="text-3xl sm:text-5xl font-medium font-display tracking-tight text-gradient-white leading-tight md:leading-[1.1]" style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', textWrap: 'balance' }}>교육적 한계를 <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>도구로 깨는 교사.</span></h2>
+                   <h2 className="text-3xl sm:text-5xl font-medium font-display tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'} leading-tight md:leading-[1.1]" style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', textWrap: 'balance' }}>교육적 한계를 <br /><span className={`${theme === 'dark' ? 'text-white/20' : 'text-black/10'} italic font-light`}>도구로 깨는 교사.</span></h2>
                  )}
                  <p className={`text-base md:text-xl font-light leading-relaxed max-w-xl ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/80'}`}>
                    {t[locale].storyBody}

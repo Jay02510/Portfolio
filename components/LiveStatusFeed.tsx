@@ -10,8 +10,6 @@ interface BuildItem {
   descEn: string;
   descKo: string;
   relatedProjectId?: string;
-  timeAgoEn: string;
-  timeAgoKo: string;
 }
 
 const LIVE_UPDATES_DATA: BuildItem[] = [
@@ -23,9 +21,7 @@ const LIVE_UPDATES_DATA: BuildItem[] = [
     titleKo: "상세 시연 비디오 가동",
     descEn: "Integrated the 1-minute 4-second interactive walkthrough video for the 'Automated Report Generator & Pipeline' project, with cross-origin sandboxing protections for secure preview rendering.",
     descKo: "Airtable-Make-Softr 연동 데이터 파이프라인의 1분 4초 분량 상세 작동 시연 영상을 softr 전용 포털과 연쇄 가동하도록 연결하였습니다. 보안 샌드박스를 구성해 끊김 없는 시청이 보장됩니다.",
-    relatedProjectId: "consultation-pipeline",
-    timeAgoEn: "Just now",
-    timeAgoKo: "방금 전"
+    relatedProjectId: "consultation-pipeline"
   },
   {
     id: "sandbox-iframe-resolution",
@@ -35,9 +31,7 @@ const LIVE_UPDATES_DATA: BuildItem[] = [
     titleKo: "시연 비디오 플레이어 샌드박스 차단 해결",
     descEn: "Fixed cross-origin rendering restrictions on video widgets by adding a fully sandboxed fallback. Added a direct secondary window launcher to bypass strict browser privacy frames.",
     descKo: "일부 보안 브라우저의 아이프레임 격리 환경에서 가이드 플레이어 실행이 가로막히는 문제를 우회하기 위해 샌드박스 매개 변수를 조정하고 직접 시청용 새 창 기동 장치를 가설했습니다.",
-    relatedProjectId: "consultation-pipeline",
-    timeAgoEn: "Yesterday",
-    timeAgoKo: "어제"
+    relatedProjectId: "consultation-pipeline"
   },
   {
     id: "korean-phonetics",
@@ -47,9 +41,7 @@ const LIVE_UPDATES_DATA: BuildItem[] = [
     titleKo: "Chekki AI 영어 발음 정밀 한글 합성 탑재",
     descEn: "Overhauled the translation parsing step under the Chekki AI project. Configured Gemini structured JSON prompts to generate flawless Korean phonetic guidelines for ESL learners.",
     descKo: "Chekki AI 숙제 판독 엔진을 고도화하여 제미나이 정형 데이터 규약에 맞춰 영어 문장의 한글 발음 독음 가이드가 무누수로 완전 조합되도록 파이프라인을 안정화했습니다.",
-    relatedProjectId: "chekki",
-    timeAgoEn: "3 days ago",
-    timeAgoKo: "3일 전"
+    relatedProjectId: "chekki"
   },
   {
     id: "case-study-pdf-templates",
@@ -59,9 +51,7 @@ const LIVE_UPDATES_DATA: BuildItem[] = [
     titleKo: "Benchmark Explorer 성과측정 리포트 견본 배포",
     descEn: "Released direct PDF assessment print-out samples for the Benchmark Explorer case study, demonstrating multi-point evaluation matrices across Baseline, Midline, and Endline test scenarios.",
     descKo: "Benchmark Explorer 사례분석 탭 내에 학습 성과 측정 결과물(Baseline/Midline/Endline)을 정식 출력 양식에 맞춘 고품질 PDF 자료로 다운로드 요청할 수 있도록 연동을 완료했습니다.",
-    relatedProjectId: "benchmark-explorer",
-    timeAgoEn: "1 week ago",
-    timeAgoKo: "1주일 전"
+    relatedProjectId: "benchmark-explorer"
   },
   {
     id: "zero-memory-hardening",
@@ -71,11 +61,35 @@ const LIVE_UPDATES_DATA: BuildItem[] = [
     titleKo: "이중 아동정보보호 무저장 아키텍처 완료",
     descEn: "Enforced compliance with COPPA children data rules by implementing backend route safety pipelines that instantly discard student worksheets post-evaluation. No personal records are persisted.",
     descKo: "미 아동 온라인 개인정보 보호법(COPPA) 기준을 실가동에서 충족하도록 게이트웨이 단계에서 임시 숙제 이미지가 전송 즉시 삭제되는 영구 무저장 휘발성 처리를 탑재했습니다.",
-    relatedProjectId: "chekki",
-    timeAgoEn: "2 weeks ago",
-    timeAgoKo: "2주일 전"
+    relatedProjectId: "chekki"
   }
 ];
+
+function getRelativeTime(dateStr: string, locale: 'en' | 'ko'): string {
+  const itemDate = new Date(dateStr + "T00:00:00");
+  const today = new Date();
+  
+  // Set times to midnight to calculate absolute day-to-day diff
+  const itemMidnight = new Date(itemDate.getFullYear(), itemDate.getMonth(), itemDate.getDate());
+  const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  
+  const diffTime = todayMidnight.getTime() - itemMidnight.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays <= 0) {
+    return locale === 'en' ? "Just now" : "방금 전";
+  } else if (diffDays === 1) {
+    return locale === 'en' ? "Yesterday" : "어제";
+  } else if (diffDays < 7) {
+    return locale === 'en' ? `${diffDays} days ago` : `${diffDays}일 전`;
+  } else {
+    const weeks = Math.floor(diffDays / 7);
+    if (weeks === 1) {
+      return locale === 'en' ? "1 week ago" : "1주일 전";
+    }
+    return locale === 'en' ? `${weeks} weeks ago` : `${weeks}주일 전`;
+  }
+}
 
 interface LiveStatusFeedProps {
   locale: 'en' | 'ko';
@@ -129,7 +143,7 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
             <span className={`text-[10px] font-mono whitespace-nowrap shrink-0 px-2 py-0.5 rounded-full ${
               theme === 'dark' ? 'bg-white/5 text-white/40' : 'bg-black/5 text-alpine-950/40'
             }`}>
-              {locale === 'en' ? latestItem.timeAgoEn : latestItem.timeAgoKo}
+              {getRelativeTime(latestItem.date, locale)}
             </span>
           </div>
 
@@ -211,7 +225,7 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
                             {item.date}
                           </span>
                           <span className={`text-[9px] font-mono font-semibold uppercase ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/30'}`}>
-                            ({locale === 'en' ? item.timeAgoEn : item.timeAgoKo})
+                            ({getRelativeTime(item.date, locale)})
                           </span>
                         </div>
 
