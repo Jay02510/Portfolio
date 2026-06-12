@@ -521,8 +521,8 @@ function App() {
       </nav>
 
       <main>
-        {/* REFINED HERO SECTION - INCREASED PADDING FOR SUBSTANTIAL BREATHING ROOM */}
-        <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-72 md:pt-64 pb-24">
+        {/* REFINED HERO SECTION */}
+        <section className="relative min-h-[85vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-44 md:pt-48 pb-12">
             <div className="absolute inset-0 pointer-events-none z-0">
                 <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#14171d]' : 'bg-[#faf9f6]'}`}></div>
                 
@@ -549,8 +549,8 @@ function App() {
                 </div>
             </div>
 
-            {/* Increased MT to push content down significantly from the top nav */}
-            <div className="max-w-7xl mx-auto flex flex-col items-center gap-8 md:gap-16 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-40 mt-20 md:mt-32">
+            {/* Balanced MT to keep content elegant from the top nav */}
+            <div className="max-w-7xl mx-auto flex flex-col items-center gap-8 md:gap-16 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-40 mt-10 md:mt-16">
                 <div className="space-y-6 md:space-y-10 w-full text-center">
                     <div className={`flex items-center justify-center gap-2.5 sm:gap-4 text-[10px] md:text-[13px] font-black tracking-[0.3em] sm:tracking-[0.6em] uppercase px-4 leading-normal ${theme === 'dark' ? 'text-accent-gold/90' : 'text-accent-clay'}`}>
                       <span>✦</span> {t[locale].heroBadge}
@@ -738,8 +738,8 @@ function App() {
         />
 
         {/* PORTFOLIO SECTION */}
-        <section id="portfolio" className="py-20 md:py-48 px-6 max-w-7xl mx-auto">
-            <div className="mb-20 md:mb-24 text-center">
+        <section id="portfolio" className="py-12 md:py-24 px-6 max-w-7xl mx-auto">
+            <div className="mb-10 md:mb-14 text-center">
                 <h2 className="text-3xl sm:text-5xl font-medium tracking-tight font-display text-gradient-white leading-tight sm:leading-none" style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', textWrap: 'balance' }}>{t[locale].toolsTitle}</h2>
             </div>
 
@@ -998,12 +998,12 @@ function App() {
         </section>
 
         {/* LAB SECTION */}
-        <section id="lab" className={`py-20 md:py-48 transition-all duration-700 ${theme === 'dark' ? 'bg-black/20' : 'bg-alpine-100/20'}`}>
+        <section id="lab" className={`py-12 md:py-24 transition-all duration-700 ${theme === 'dark' ? 'bg-black/20' : 'bg-alpine-100/20'}`}>
             <InteractiveDemo theme={theme} />
         </section>
 
         {/* STORY SECTION */}
-        <section id="about" className="py-20 md:py-52 px-6 max-w-7xl mx-auto">
+        <section id="about" className="py-12 md:py-24 px-6 max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div className="relative order-2 lg:order-1">
                <div className={`relative z-10 rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden aspect-[4/5] border ${theme === 'dark' ? 'border-white/10' : 'border-black/5 shadow-2xl'}`}>
@@ -1038,9 +1038,9 @@ function App() {
         <FeedbackBox theme={theme} />
 
         {/* CONNECT SECTION */}
-        <section id="contact" className="py-32 md:py-64 px-6 text-center">
+        <section id="contact" className="py-16 md:py-28 px-6 text-center">
             <h2 className={`text-4xl sm:text-6xl font-medium font-display tracking-tight leading-tight sm:leading-none ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'}`} style={{ fontSize: 'clamp(2.5rem, 7vw, 6rem)', textWrap: 'balance' }}>{t[locale].sayHi}</h2>
-            <div className="pt-16">
+            <div className="pt-8 md:pt-10">
                 <a href="mailto:jsn.benjamin@gmail.com" className="shiny-cta px-12 py-6">
                     {t[locale].startConv}
                 </a>

@@ -92,7 +92,7 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
   if (isDismissed) return null;
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 md:px-8 mt-32 md:mt-40 relative z-50">
+    <div className="w-full max-w-7xl mx-auto px-6 md:px-8 mt-10 md:mt-12 relative z-50">
       {/* Outer Banner Wrapper */}
       <div 
         className={`rounded-3xl border transition-all duration-300 relative overflow-hidden backdrop-blur-xl ${
