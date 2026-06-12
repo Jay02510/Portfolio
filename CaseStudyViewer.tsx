@@ -117,9 +117,13 @@ const stackExplains: Record<string, { en: string; ko: string }> = {
     en: "Bundling environment providing optimized code delivery with minimal footprint.",
     ko: "최소한의 파일 구성 요소로 모바일 번들 크기를 최적화하는 빌드 도구."
   },
-  "Google GenAI API (Claude 3.5 Sonnet proxy)": {
-    en: "Advanced layout and vision-processing model API proxied behind express server.",
-    ko: "익스프레스 프록시 서버 백단에서 조율되는 어드밴스드 비전 및 레이아웃 분석 API."
+  "Gemini Flash Pipeline (Gemini 1.5 & 2.0 Flash)": {
+    en: "Gemini 1.5 Flash for precise layout extraction -> Gemini 2.0 Flash for high-fidelity bilingual script synthesis.",
+    ko: "Gemini 1.5 Flash를 통한 정밀 레이아웃 인식기 및 Gemini 2.0 Flash 기반 이중언어 맞춤 스크립트 도출."
+  },
+  "제미나이 플래시 파이프라인 (Gemini 1.5 & 2.0 Flash)": {
+    en: "Gemini 1.5 Flash for precise layout extraction -> Gemini 2.0 Flash for high-fidelity bilingual script synthesis.",
+    ko: "Gemini 1.5 Flash를 통한 정밀 레이아웃 인식기 및 Gemini 2.0 Flash 기반 이중언어 맞춤 스크립트 도출."
   },
   "Google GenAI SDK (gemini-3-pro-preview)": {
     en: "High-reasoning SDK selected to resolve NP-complete scheduling branches.",
@@ -503,10 +507,11 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [isArchOpen, setIsArchOpen] = useState(false);
-  const [isHurdlesOpen, setIsHurdlesOpen] = useState(false);
+  const [isArchOpen, setIsArchOpen] = useState(true);
+  const [isHurdlesOpen, setIsHurdlesOpen] = useState(true);
   const [isBreakdownOpen, setIsBreakdownOpen] = useState(true);
   const [activeScreenshotIdx, setActiveScreenshotIdx] = useState(0);
+  const [proofOfWorkTab, setProofOfWorkTab] = useState<'screenshots' | 'video'>('screenshots');
 
   // Focus trap implementation for enhanced accessibility (WCAG 2.1.2)
   useEffect(() => {
@@ -564,12 +569,20 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
       scrollRef.current.scrollTop = 0;
     }
 
-    // Reset collapsible states when project changes
-    setIsArchOpen(false);
-    setIsHurdlesOpen(false);
+    // Reset collapsible states when project changes - keep open as requested
+    setIsArchOpen(true);
+    setIsHurdlesOpen(true);
     setIsBreakdownOpen(true);
     setActiveScreenshotIdx(0);
-  }, [projectId]);
+
+    const studyData = locale === 'ko' ? studyDataKo : studyDataEn;
+    const project = studyData[projectId];
+    if (project && (!project.screenshots || project.screenshots.length === 0)) {
+      setProofOfWorkTab('video');
+    } else {
+      setProofOfWorkTab('screenshots');
+    }
+  }, [projectId, locale]);
 
   const scrollToBreakdown = () => {
     setIsBreakdownOpen(true);
@@ -666,7 +679,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 max-w-2xl w-full">
             <button 
               onClick={scrollToBreakdown}
-              className={`shiny-cta py-4 sm:py-5 text-center shadow-2xl whitespace-nowrap rounded-xl ${
+              className={`shiny-cta py-4 sm:py-5 text-center shadow-2xl whitespace-normal break-words leading-tight rounded-xl ${
                 (hasLiveApp || projectData.storeUrl) 
                   ? 'w-full sm:w-auto px-4 sm:px-8 text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest' 
                   : 'w-full sm:w-auto px-6 sm:px-12 text-[10px] sm:text-[11px] tracking-wider sm:tracking-widest'
@@ -896,13 +909,45 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
 
         {/* PROOF OF WORK / VIDEO SECTION */}
         <div className="space-y-6">
-          <div className={`text-[10px] font-black uppercase tracking-[0.4em] ${
-            theme === 'dark' ? 'text-white/40' : 'text-alpine-950/40'
-          }`}>
-            {t.proofOfWorkTitle}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4">
+            <div className={`text-[10px] font-black uppercase tracking-[0.4em] ${
+              theme === 'dark' ? 'text-white/40' : 'text-alpine-950/40'
+            }`}>
+              {t.proofOfWorkTitle}
+            </div>
+
+            {/* Sub-tab switcher to toggle between Interactive Screenshots and Walkthrough Video */}
+            {projectData.screenshots && projectData.screenshots.length > 0 && (projectData.walkthroughVideo !== undefined || projectId === 'consultation-pipeline') && (
+              <div className="flex rounded-xl p-1 border border-white/10 bg-black/40 text-[10px] font-bold uppercase tracking-wider overflow-hidden max-w-full self-start sm:self-auto shadow-2xl">
+                <button
+                  type="button"
+                  onClick={() => setProofOfWorkTab('screenshots')}
+                  className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${
+                    proofOfWorkTab === 'screenshots'
+                      ? 'bg-accent-gold text-black shadow-md'
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <span>📸</span>
+                  <span>{locale === 'en' ? "Screenshots" : "스크린샷"}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setProofOfWorkTab('video')}
+                  className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${
+                    proofOfWorkTab === 'video'
+                      ? 'bg-accent-gold text-black shadow-md'
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <span>🎥</span>
+                  <span>{locale === 'en' ? "Walkthrough Video" : "데모영상 시연"}</span>
+                </button>
+              </div>
+            )}
           </div>
 
-          {projectData.screenshots && projectData.screenshots.length > 0 ? (
+          {proofOfWorkTab === 'screenshots' && projectData.screenshots && projectData.screenshots.length > 0 ? (
             <div className="space-y-4">
               {/* Preload container to cache all project screenshots for instant slide transitions */}
               <div className="absolute top-0 left-0 w-1 h-1 opacity-0 pointer-events-none overflow-hidden select-none" aria-hidden="true">
@@ -953,8 +998,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
               {/* Bottom Interactive Thumbnail / Tab Track */}
               <div className={`grid gap-2.5 pt-1 ${
                 projectData.screenshots.length > 4 
-                  ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-5' 
-                  : 'grid-cols-1 sm:grid-cols-3'
+                   ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-5' 
+                   : 'grid-cols-1 sm:grid-cols-3'
               }`}>
                 {projectData.screenshots.map((scr, sIdx) => {
                   const isActive = activeScreenshotIdx === sIdx;
@@ -1018,6 +1063,45 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
               {projectData.walkthroughVideo ? (
                 (() => {
                   const url = projectData.walkthroughVideo.split('?')[0].split('#')[0].toLowerCase();
+                  
+                  // Helper function to extract and convert youtube/loom/vimeo share links to embeddable player links
+                  const getEmbedUrl = (rawUrl: string) => {
+                    if (!rawUrl) return '';
+                    if (rawUrl.includes('guidde.com') || rawUrl.includes('embed') || rawUrl.includes('playbooks')) {
+                      return rawUrl;
+                    }
+                    if (rawUrl.includes('youtube.com/watch')) {
+                      const videoId = rawUrl.split('v=')[1]?.split('&')[0];
+                      return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}` : rawUrl;
+                    }
+                    if (rawUrl.includes('youtu.be/')) {
+                      const videoId = rawUrl.split('youtu.be/')[1]?.split('?')[0];
+                      return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}` : rawUrl;
+                    }
+                    if (rawUrl.includes('loom.com/share/')) {
+                      const videoId = rawUrl.split('loom.com/share/')[1]?.split('?')[0];
+                      return videoId ? `https://www.loom.com/embed/${videoId}?autoplay=1` : rawUrl;
+                    }
+                    if (rawUrl.includes('vimeo.com/')) {
+                      const videoId = rawUrl.split('vimeo.com/')[1]?.split('?')[0];
+                      return videoId ? `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1` : rawUrl;
+                    }
+                    return '';
+                  };
+
+                  const embedUrl = getEmbedUrl(projectData.walkthroughVideo);
+                  if (embedUrl) {
+                    return (
+                      <iframe
+                        src={embedUrl}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        className="w-full h-full absolute inset-0"
+                      />
+                    );
+                  }
+
                   const isVideo = url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg') || url.includes('/video/upload/');
                   return isVideo ? (
                     <video 
@@ -1039,40 +1123,23 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                   );
                 })()
               ) : (
-                <div className="p-8 text-center space-y-4 max-w-md animate-in fade-in duration-500">
+                <div className="p-8 text-center space-y-4 max-w-lg animate-in fade-in duration-500">
                   <div className="w-16 h-16 rounded-full bg-accent-gold/10 flex items-center justify-center mx-auto animate-pulse">
-                    <ExternalLinkIcon className="w-6 h-6 text-accent-gold" />
+                    <span className="text-2xl">📽️</span>
                   </div>
-                  <h4 className="text-lg font-bold font-display uppercase tracking-wider text-pretty">{t.productionWalkthrough}</h4>
-                  <p className="text-xs text-white/50 leading-relaxed font-mono max-w-prose text-pretty">
-                    {(hasLiveApp || projectData.storeUrl) 
-                      ? t.productionWalkthroughBodyLive
-                      : t.productionWalkthroughBodyBackground}
+                  <h4 className="text-base font-bold font-display uppercase tracking-wider text-pretty text-accent-gold">
+                    {locale === 'en' ? "Walkthrough Video Slot Ready" : "비동기 파이프라인 시연 준비 완료"}
+                  </h4>
+                  <p className="text-xs text-white/70 leading-relaxed font-sans max-w-prose text-pretty">
+                    {locale === 'en' 
+                      ? "The embedded media interface is ready. This space is reserved for the automated report builder video demo (Loom/YouTube walkthrough) being published soon!" 
+                      : "비디오 임베드 인터페이스 구성이 완비되었습니다. 곧 업로드될 데이터 통합 생성 흐름 가이드(Loom/YouTube 녹화본)를 바로 시청하실 수 있도록 준비된 전용 영역입니다."}
                   </p>
-                  {(hasLiveApp || projectData.storeUrl) && (
-                    <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center items-center">
-                      {hasLiveApp && (
-                        <a 
-                          href={projectData.liveUrl} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="inline-flex px-6 py-2.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 text-[9px] font-black uppercase tracking-widest"
-                        >
-                          {t.openLiveSandbox}
-                        </a>
-                      )}
-                      {projectData.storeUrl && (
-                        <a 
-                          href={projectData.storeUrl} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="inline-flex px-6 py-2.5 rounded-lg border border-accent-gold/30 bg-accent-gold/5 hover:bg-accent-gold/10 text-accent-gold text-[9px] font-black uppercase tracking-widest transition-colors"
-                        >
-                          {t.storeLink}
-                        </a>
-                      )}
-                    </div>
-                  )}
+                  <div className="pt-2">
+                    <span className="inline-flex px-4 py-1.5 rounded-full border border-accent-gold/20 bg-accent-gold/5 text-accent-gold text-[9px] font-mono uppercase tracking-widest animate-pulse">
+                      {locale === 'en' ? "Video Mount Awaiting Link..." : "링크 연동 대기 중..."}
+                    </span>
+                  </div>
                 </div>
               )}
             </div>
@@ -1092,9 +1159,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
             >
               <div className="flex items-center gap-3">
                 <span className="text-2xl">🛠️</span>
-                <div className="flex flex-col">
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold">{locale === 'en' ? "DEEP ANALYSIS" : "심층 분석 매뉴얼"}</span>
-                  <span className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.technicalBreakdown}</span>
+                <div className="flex flex-col min-w-0 w-full">
+                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold whitespace-normal break-words">{locale === 'en' ? "DEEP ANALYSIS" : "심층 분석 매뉴얼"}</span>
+                  <span className={`text-[11px] font-bold uppercase tracking-widest whitespace-normal break-words text-pretty ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.technicalBreakdown}</span>
                 </div>
               </div>
               <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-300 shrink-0 ${
@@ -1127,7 +1194,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                             }`}
                           >
                             <span 
-                              className={`inline-block px-2 py-0.5 rounded font-mono text-[8px] uppercase font-bold tracking-wider ${
+                              className={`inline-block max-w-full whitespace-normal break-words px-2 py-0.5 rounded font-mono text-[8px] uppercase font-bold tracking-wider ${
                                 theme === 'dark' ? 'bg-white/5 text-white/80 border border-white/5' : 'bg-black/5 text-alpine-950/80 border border-black/5'
                               }`}
                             >

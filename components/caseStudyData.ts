@@ -33,7 +33,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
       "Instantly converts raw worksheet layouts into bilingual explanation scripts and answer keys.",
       "Provides responsive typography and legible scaling across a wide variety of mobile viewports."
     ],
-    stack: ["React 18", "TypeScript", "Vite", "Google GenAI API (Claude 3.5 Sonnet proxy)", "Tailwind CSS"],
+    stack: ["React 18", "TypeScript", "Vite", "Gemini Flash Pipeline (Gemini 1.5 & 2.0 Flash)", "Tailwind CSS"],
     architecture: {
       lifecycle: [
         "Upload: User captures or uploads a physical worksheet image directly from the workspace view.",
@@ -85,7 +85,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     behindTheArchitecture: {
       problem: "Bilingual families and non-native speaking parents frequently struggle to navigate or review schools' printed worksheet tasks.",
       vision: "Capture and parse paper handouts securely via standard phones, producing a guided translation and phonetic companion.",
-      rationale: "Used Google Gemini vision capability to understand worksheet positions, while leveraging custom prompts to handle Korean polite honorific formats."
+      rationale: "Leveraged Gemini's Native Multimodal Capabilities: Gemini 1.5 Flash handles high-resolution layout and coordinate extraction, passing parsed bounding structures directly to Gemini 2.0 Flash for structured bilingual script compilation."
     },
     technicalHurdles: [
       {
@@ -317,6 +317,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     title: "Automated Report Generator & Pipeline",
     tagline: "A zero-maintenance relational data pipeline automating student intake, report generation, and portal visualization.",
     liveUrl: "https://jason-benjamin.vercel.app/",
+    walkthroughVideo: "https://embed.app.guidde.com/playbooks/fXwhH7ayipdTFcXASDJx5K?mode=videoOnly",
     screenshots: [
       { label: "Airtable Preview", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.35.34_PM_susvx4.png", subLabel: "Relational Database Backend" },
       { label: "FT Fillout form", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757946/Screenshot_2026-06-03_at_5.35.38_PM_wywtjr.png", subLabel: "Dynamic Assessment Form" },
@@ -634,7 +635,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
       "수집된 문서 구조에서 문제 영역을 식별해 답안 정보와 이중 언어 보완 가이드를 제공.",
       "모바일 웹 반응형 환경에 대응하여, 깔끔하고 일관성 있게 화면 레이아웃 지원."
     ],
-    stack: ["React 18", "TypeScript", "Vite", "Google GenAI API (Claude 3.5 Sonnet 프록시 구성)", "Tailwind CSS"],
+    stack: ["React 18", "TypeScript", "Vite", "제미나이 플래시 파이프라인 (Gemini 1.5 & 2.0 Flash)", "Tailwind CSS"],
     architecture: {
       lifecycle: [
         "촬영: 사용자가 모바일 뷰포트에서 영어 학습지를 촬영한 후 업로드합니다.",
@@ -686,7 +687,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     behindTheArchitecture: {
       problem: "영어 과제 지도가 어려운 다문화 가구나 비영어권 학부모의 자녀 학습 관리 소외감 해소.",
       vision: "가정 스마트폰으로 학습 자료를 확인하는 편한 사용 환경 설계와 간결한 해설 출력 지원.",
-      rationale: "구조 인식이 결합된 정밀 언어 모델의 비전 응답을 활용하여, 학부모 친화적인 한국어 존댓말 규칙으로 설명문 구성."
+      rationale: "제미나이 네이티브 멀티모달 역량 극대화: Gemini 1.5 Flash가 고해상도 이미지 레이아웃의 좌표 영역 및 정합 정답지를 직접 추출하고, 연쇄적으로 Gemini 2.0 Flash 모델이 엄격한 JSON 스키마 구조 아래 학부모 전용 초정밀 이중언어 설명 지침문을 수립하도록 구성했습니다."
     },
     technicalHurdles: [
       {
@@ -918,6 +919,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     title: "Automated Report Generator & Pipeline",
     tagline: "상담 신청서 수집 즉시 데이터 구조에 정합하고 이중 언어 보고서를 추출해 전용 포털과 동기화하는 정보 전송 파이프라인입니다.",
     liveUrl: "https://jason-benjamin.vercel.app/",
+    walkthroughVideo: "https://embed.app.guidde.com/playbooks/fXwhH7ayipdTFcXASDJx5K?mode=videoOnly",
     screenshots: [
       { label: "Airtable 데이터베이스", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.35.34_PM_susvx4.png", subLabel: "관계형 데이터 백엔드" },
       { label: "FT Fillout 양식", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757946/Screenshot_2026-06-03_at_5.35.38_PM_wywtjr.png", subLabel: "설문 취합 및 평가 템플릿" },
