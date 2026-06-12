@@ -1098,6 +1098,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
                         className="w-full h-full absolute inset-0"
+                        referrerPolicy="unsafe-url"
+                        sandbox="allow-popups allow-popups-to-escape-sandbox allow-scripts allow-forms allow-same-origin allow-presentation"
                       />
                     );
                   }
@@ -1142,6 +1144,30 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                   </div>
                 </div>
               )}
+            </div>
+          )}
+
+          {proofOfWorkTab === 'video' && projectData.walkthroughVideo && (
+            <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-2xl border transition-all ${
+              theme === 'dark' ? 'bg-white/[0.02] border-white/5' : 'bg-black/[0.01] border-black/5'
+            }`}>
+              <div className="flex gap-2.5 items-start">
+                <span className="text-sm shrink-0">💡</span>
+                <p className={`text-[11px] leading-relaxed select-none ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/75'}`}>
+                  {locale === 'en' 
+                    ? "If the embedded walkthrough doesn't render due to third-party cookie restrictions or browser sandboxing within the preview frames, open it directly."
+                    : "브라우저 보안 가드 및 Iframe 제약 조건으로 인해 뷰어가 보이지 않는 경우, 아래 단추를 클릭해 실시간 시연을 시청하실 수 있습니다."}
+                </p>
+              </div>
+              <a
+                href={projectData.walkthroughVideo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-accent-gold/45 bg-accent-gold/5 hover:bg-accent-gold/15 text-accent-gold text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap self-stretch sm:self-auto text-center shadow-lg"
+              >
+                <span>{locale === 'en' ? "Open Direct Walkthrough" : "실시간 데모 새 창으로 보기"}</span>
+                <span className="text-[12px]">↗</span>
+              </a>
             </div>
           )}
         </div>
