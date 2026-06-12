@@ -142,7 +142,7 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
 
   return (
     <div id="resume-modal-overlay" className="fixed inset-0 z-[300] flex items-center justify-center p-4 md:p-6 bg-black/80 backdrop-blur-md overflow-y-auto print:static print:bg-white print:p-0">
-      <div className={`relative w-full max-w-4xl rounded-3xl border shadow-2xl overflow-hidden transition-all duration-300 max-h-[90vh] flex flex-col ${
+      <div className={`relative w-full max-w-4xl rounded-2xl border shadow-2xl overflow-hidden transition-all duration-300 max-h-[90vh] flex flex-col ${
         isDark 
           ? 'bg-alpine-950 border-white/10 text-white' 
           : 'bg-[#faf9f6] border-black/10 text-alpine-950'

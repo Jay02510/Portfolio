@@ -29,7 +29,7 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
   return (
     <section className="py-24 px-6">
       <div className="max-w-3xl mx-auto">
-        <div className={`glass-panel rounded-[2.5rem] p-10 md:p-16 relative overflow-hidden group transition-all duration-500 border ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+        <div className={`glass-panel rounded-2xl p-10 md:p-16 relative overflow-hidden group transition-all duration-500 border ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
           {/* Decorative background element */}
           <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-all duration-1000 ${theme === 'dark' ? 'bg-accent-gold/5 group-hover:bg-accent-gold/10' : 'bg-accent-clay/5 group-hover:bg-accent-clay/10'}`}></div>
 

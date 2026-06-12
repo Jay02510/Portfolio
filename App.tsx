@@ -227,7 +227,7 @@ function App() {
               <span className={`font-display font-medium text-[10px] md:text-[13px] tracking-[0.5em] md:tracking-[0.8em] uppercase whitespace-nowrap leading-none transition-colors ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
                 J. BENJAMIN
               </span>
-              <nav className="hidden md:flex items-center gap-14 text-[13px] font-semibold tracking-[0.05em]">
+              <nav className="hidden md:flex items-center gap-12 text-[13px] font-semibold tracking-[0.05em]">
                   <a 
                     href="#portfolio" 
                     onClick={scrollToSection('portfolio')} 
@@ -435,7 +435,7 @@ function App() {
       {isBrowserModalOpen && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">
           <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl" onClick={() => setIsBrowserModalOpen(false)}></div>
-          <div className="relative w-full max-w-md bg-white rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl animate-in zoom-in duration-300">
+          <div className="relative w-full max-w-md bg-white rounded-2xl overflow-hidden flex flex-col shadow-2xl animate-in zoom-in duration-300">
             <div className="p-8 pb-4 flex justify-between items-start">
                <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-500">
                   <ExternalLinkIcon className="w-6 h-6" />
@@ -522,7 +522,7 @@ function App() {
 
       <main>
         {/* REFINED HERO SECTION */}
-        <section className="relative min-h-[85vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-44 md:pt-48 pb-12">
+        <section className="relative min-h-[85vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-36 md:pt-48 pb-16">
             <div className="absolute inset-0 pointer-events-none z-0">
                 <div className={`absolute inset-0 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#14171d]' : 'bg-[#faf9f6]'}`}></div>
                 
@@ -550,9 +550,9 @@ function App() {
             </div>
 
             {/* Balanced MT to keep content elegant from the top nav */}
-            <div className="max-w-7xl mx-auto flex flex-col items-center gap-8 md:gap-16 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-40 mt-10 md:mt-16">
+            <div className="max-w-7xl mx-auto flex flex-col items-center gap-8 md:gap-16 animate-in fade-in slide-in-from-bottom-16 duration-1000 relative z-40">
                 <div className="space-y-6 md:space-y-10 w-full text-center">
-                    <div className={`flex items-center justify-center gap-2.5 sm:gap-4 text-[10px] md:text-[13px] font-black tracking-[0.3em] sm:tracking-[0.6em] uppercase px-4 leading-normal ${theme === 'dark' ? 'text-accent-gold/90' : 'text-accent-clay'}`}>
+                    <div className={`flex items-center justify-center gap-2 sm:gap-4 text-[10px] md:text-[13px] font-black tracking-[0.3em] sm:tracking-[0.6em] uppercase px-4 leading-normal ${theme === 'dark' ? 'text-accent-gold/90' : 'text-accent-clay'}`}>
                       <span>✦</span> {t[locale].heroBadge}
                     </div>
                     
@@ -630,63 +630,6 @@ function App() {
                                 : "🎒 교직 및 교양: 아이들의 학업 데이터 주권을 100% 보장하는 무결점 교육 도구를 확인하세요. 스마트폰 카메라 스캔형 숙제 지시 비서 Chekki AI 기동이 준비되어 있습니다."
                             )}
                           </p>
-                          <div className="flex flex-wrap gap-2.5 mt-3">
-                            {activePathfinderRole === 'recruiter' && (
-                              <>
-                                <button
-                                  onClick={() => setIsResumeOpen(true)}
-                                  className="text-[9px] font-black uppercase tracking-widest text-[#44D9C5] hover:underline flex items-center gap-1 bg-[#44D9C5]/5 border border-[#44D9C5]/10 px-2.5 py-1.5 rounded-lg"
-                                >
-                                  <span>📄</span> {locale === 'en' ? "Open CV Statement" : "이력서/명세서 즉시 열기"}
-                                </button>
-                                <a
-                                  href="#portfolio"
-                                  onClick={scrollToSection('portfolio')}
-                                  className="text-[9px] font-black uppercase tracking-widest text-accent-gold hover:underline flex items-center gap-1 bg-accent-gold/5 border border-accent-gold/10 px-2.5 py-1.5 rounded-lg"
-                                >
-                                  <span>🔨</span> {locale === 'en' ? "Search Case Studies" : "포트폴리오 대조 ↓"}
-                                </a>
-                              </>
-                            )}
-                            {activePathfinderRole === 'director' && (
-                              <>
-                                <a
-                                  href="#portfolio"
-                                  onClick={(e) => {
-                                    setSelectedCategory('pipelines');
-                                    scrollToSection('portfolio')(e);
-                                  }}
-                                  className="text-[9px] font-black uppercase tracking-widest text-[#44D9C5] hover:underline flex items-center gap-1 bg-[#44D9C5]/5 border border-[#44D9C5]/10 px-2.5 py-1.5 rounded-lg"
-                                >
-                                  <span>⚙️</span> {locale === 'en' ? "Admin Pipelines ↓" : "자동화 도구 정렬 ↓"}
-                                </a>
-                                <a
-                                  href="#contact"
-                                  onClick={scrollToSection('contact')}
-                                  className="text-[9px] font-black uppercase tracking-widest text-accent-gold hover:underline flex items-center gap-1 bg-accent-gold/5 border border-accent-gold/10 px-2.5 py-1.5 rounded-lg"
-                                >
-                                  <span>✉️</span> {locale === 'en' ? "Book Setup Consult" : "구축 및 현장 배치 조율"}
-                                </a>
-                              </>
-                            )}
-                            {activePathfinderRole === 'parent' && (
-                              <>
-                                <a
-                                  href="https://chekki-ai.vercel.app/"
-                                  target="_blank"
-                                  className="text-[9px] font-black uppercase tracking-widest text-accent-gold hover:underline flex items-center gap-1 bg-accent-gold/5 border border-accent-gold/10 px-2.5 py-1.5 rounded-lg"
-                                >
-                                  <span>🚀</span> {locale === 'en' ? "Launch Chekki AI" : "Chekki AI 즉시 실행 ↗"}
-                                </a>
-                                <button
-                                  onClick={() => setModalType('privacy')}
-                                  className="text-[9px] font-black uppercase tracking-widest text-white/60 hover:underline flex items-center gap-1 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-lg"
-                                >
-                                  <span>🔒</span> {locale === 'en' ? "Read Privacy Guard" : "데이터 프라이버시 안심증명"}
-                                </button>
-                              </>
-                            )}
-                          </div>
                         </div>
                       )}
                     </div>
@@ -738,7 +681,7 @@ function App() {
         />
 
         {/* PORTFOLIO SECTION */}
-        <section id="portfolio" className="py-12 md:py-24 px-6 max-w-7xl mx-auto">
+        <section id="portfolio" className="py-36 md:py-48 px-6 max-w-7xl mx-auto">
             <div className="mb-10 md:mb-14 text-center">
                 <h2 className="text-3xl sm:text-5xl font-medium tracking-tight font-display text-gradient-white leading-tight sm:leading-none" style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', textWrap: 'balance' }}>{t[locale].toolsTitle}</h2>
             </div>
@@ -966,7 +909,7 @@ function App() {
               return (
                 <motion.div 
                   layout
-                  className="space-y-[10rem] md:space-y-[20rem]"
+                  className="space-y-12 md:space-y-16"
                 >
                   <AnimatePresence mode="popLayout">
                     {filteredProjects.map((project, idx) => (
@@ -998,15 +941,15 @@ function App() {
         </section>
 
         {/* LAB SECTION */}
-        <section id="lab" className={`py-12 md:py-24 transition-all duration-700 ${theme === 'dark' ? 'bg-black/20' : 'bg-alpine-100/20'}`}>
+        <section id="lab" className={`py-36 md:py-48 transition-all duration-700 ${theme === 'dark' ? 'bg-black/20' : 'bg-alpine-100/20'}`}>
             <InteractiveDemo theme={theme} />
         </section>
 
         {/* STORY SECTION */}
-        <section id="about" className="py-12 md:py-24 px-6 max-w-7xl mx-auto">
+        <section id="about" className="py-36 md:py-48 px-6 max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div className="relative order-2 lg:order-1">
-               <div className={`relative z-10 rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden aspect-[4/5] border ${theme === 'dark' ? 'border-white/10' : 'border-black/5 shadow-2xl'}`}>
+               <div className={`relative z-10 rounded-3xl overflow-hidden aspect-[4/5] border ${theme === 'dark' ? 'border-white/10' : 'border-black/5 shadow-2xl'}`}>
                   <img src={PORTFOLIO_DATA.profileImageUrl} className="w-full h-full object-cover" alt="Jason Benjamin" />
                </div>
             </div>
@@ -1022,13 +965,13 @@ function App() {
                  <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-10">
                    <div>
                      <div className="text-4xl md:text-5xl font-mono text-accent-gold font-bold">{t[locale].hoursSavedValue}</div>
-                     <span className={`text-[9px] font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/65'}`}>{t[locale].hoursSavedLabel}</span>
-                      <p className={`text-[11px] font-light mt-1.5 leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/65'}`}>{t[locale].hoursSavedDesc}</p>
+                     <span className={`text-xs font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'}`}>{t[locale].hoursSavedLabel}</span>
+                      <p className={`text-[13px] font-light mt-1.5 leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'}`}>{t[locale].hoursSavedDesc}</p>
                    </div>
                    <div>
                      <div className="text-4xl md:text-5xl font-mono text-accent-gold font-bold">{t[locale].privacyValue}</div>
-                     <span className={`text-[9px] font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/65'}`}>{t[locale].privacyLabel}</span>
-                      <p className={`text-[11px] font-light mt-1.5 leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/65'}`}>{t[locale].privacyDesc}</p>
+                     <span className={`text-xs font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'}`}>{t[locale].privacyLabel}</span>
+                      <p className={`text-[13px] font-light mt-1.5 leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'}`}>{t[locale].privacyDesc}</p>
                    </div>
                  </div>
             </div>
@@ -1038,7 +981,7 @@ function App() {
         <FeedbackBox theme={theme} />
 
         {/* CONNECT SECTION */}
-        <section id="contact" className="py-16 md:py-28 px-6 text-center">
+        <section id="contact" className="py-36 md:py-48 px-6 text-center">
             <h2 className={`text-4xl sm:text-6xl font-medium font-display tracking-tight leading-tight sm:leading-none ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'}`} style={{ fontSize: 'clamp(2.5rem, 7vw, 6rem)', textWrap: 'balance' }}>{t[locale].sayHi}</h2>
             <div className="pt-8 md:pt-10">
                 <a href="mailto:jsn.benjamin@gmail.com" className="shiny-cta px-12 py-6">

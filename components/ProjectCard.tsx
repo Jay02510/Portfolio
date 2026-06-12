@@ -50,7 +50,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       )}
 
       {/* Background Image Container */}
-      <div className={`w-full h-[350px] md:h-[700px] rounded-[1.5rem] md:rounded-[3rem] overflow-hidden border shadow-2xl relative transition-all duration-700 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+      <div className={`w-full h-[350px] md:h-[700px] rounded-2xl overflow-hidden border shadow-2xl relative transition-all duration-700 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
           {project.images && project.images.length > 0 ? (
             <div className="absolute inset-0 w-full h-full group/carousel">
               <img 
@@ -126,7 +126,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       </div>
 
       {/* Detail Panel */}
-      <div className={`mt-[-60px] md:mt-0 md:absolute ${isEven ? 'md:right-12' : 'md:left-12'} md:top-1/2 md:-translate-y-1/2 w-[90%] md:w-full md:max-w-xl glass-panel rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-14 space-y-6 md:space-y-10 z-20 transition-all duration-500 group-hover:shadow-accent-gold/5`}>
+      <div className={`mt-[-60px] md:mt-0 md:absolute ${isEven ? 'md:right-12' : 'md:left-12'} md:top-1/2 md:-translate-y-1/2 w-[90%] md:w-full md:max-w-xl glass-panel rounded-2xl p-6 md:p-14 space-y-6 md:space-y-10 z-20 transition-all duration-500 group-hover:shadow-accent-gold/5`}>
           <div className="space-y-2 md:space-y-6">
               <div className="flex flex-col gap-2">
                 <span className={`font-bold uppercase tracking-[0.4em] text-[8px] md:text-[11px] ${theme === 'dark' ? 'text-text-tert' : 'text-alpine-950/50'}`}>Project 0{index + 1}</span>

@@ -115,7 +115,7 @@ Users agree not to use the AI Assistant or tools to generate harmful, illegal, o
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 md:p-12">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
-      <div className="relative w-full max-w-2xl glass-panel rounded-[2rem] overflow-hidden flex flex-col max-h-[80vh]">
+      <div className="relative w-full max-w-2xl glass-panel rounded-2xl overflow-hidden flex flex-col max-h-[80vh]">
         {/* Header */}
         <div className="p-8 border-b border-white/10 flex justify-between items-center bg-alpine-950/50">
           <div className="flex items-center gap-6">
