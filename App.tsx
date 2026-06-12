@@ -10,6 +10,7 @@ import ComplianceModal from './components/ComplianceModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import { CaseStudyViewer } from './CaseStudyViewer.tsx';
 import ResumeModal from './components/ResumeModal.tsx';
+import LiveStatusFeed from './components/LiveStatusFeed.tsx';
 import { MailIcon, SparklesIcon, SendIcon, BookOpenIcon, MapIcon, CodeIcon, ChevronDownIcon, ExternalLinkIcon, XIcon, FileTextIcon, SearchIcon, SunIcon, MoonIcon, DeviceMobileIcon, SettingsIcon, CreditCardIcon, LockIcon, LightbulbIcon, BriefcaseIcon, RocketIcon } from './components/Icons.tsx';
 
 const t = {
@@ -728,6 +729,13 @@ function App() {
                 </div>
             </div>
         </section>
+
+        {/* LIVE STATUS UPDATE & BUILD TIMELINE */}
+        <LiveStatusFeed 
+          locale={locale} 
+          theme={theme} 
+          onOpenCaseStudy={setActiveCaseStudyId} 
+        />
 
         {/* PORTFOLIO SECTION */}
         <section id="portfolio" className="py-20 md:py-48 px-6 max-w-7xl mx-auto">
