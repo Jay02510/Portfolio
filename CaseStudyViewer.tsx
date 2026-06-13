@@ -512,6 +512,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
   const [isBreakdownOpen, setIsBreakdownOpen] = useState(true);
   const [activeScreenshotIdx, setActiveScreenshotIdx] = useState(0);
   const [proofOfWorkTab, setProofOfWorkTab] = useState<'screenshots' | 'video'>('screenshots');
+  const [lightboxImage, setLightboxImage] = useState<{ url: string; label: string } | null>(null);
 
   // Focus trap implementation for enhanced accessibility (WCAG 2.1.2)
   useEffect(() => {
@@ -545,6 +546,22 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
       document.removeEventListener('keydown', handleFocusTrap);
     };
   }, []);
+
+  // Lightbox escape key handler
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && lightboxImage) {
+        setLightboxImage(null);
+        e.preventDefault();
+      }
+    };
+    if (lightboxImage) {
+      document.addEventListener('keydown', handleEscape);
+    }
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [lightboxImage]);
 
   // 1. Manage body scroll lock and restore precisely on mount/unmount
   useEffect(() => {
@@ -967,14 +984,30 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                 </div>
 
                 {/* Main Image Slider Viewport */}
-                <div className="w-full h-full relative flex items-center justify-center select-none overflow-hidden p-2">
+                <button 
+                  type="button"
+                  onClick={() => setLightboxImage({ url: projectData.screenshots![activeScreenshotIdx].url, label: projectData.screenshots![activeScreenshotIdx].label })}
+                  className="w-full h-full relative flex items-center justify-center select-none overflow-hidden p-2 cursor-zoom-in group/img focus:outline-none"
+                  aria-label={locale === 'ko' ? "현재 이미지 전체 화면으로 보기" : "View current image in full screen"}
+                >
                   <img 
                     src={projectData.screenshots[activeScreenshotIdx].url} 
                     alt={projectData.screenshots[activeScreenshotIdx].label}
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-contain max-h-full transition-transform duration-700 ease-out hover:scale-[1.02]"
+                    className="w-full h-full object-contain max-h-full transition-transform duration-700 ease-out group-hover/img:scale-[1.02]"
                   />
-                </div>
+                  
+                  {/* Zoom Badge Indicator */}
+                  <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-mono uppercase font-semibold text-white/80 tracking-widest flex items-center gap-1.5 shadow-lg opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 pointer-events-none select-none">
+                    <span>🔍</span>
+                    <span>{locale === 'en' ? "Expand View" : "전체화면"}</span>
+                  </div>
+                  
+                  {/* Mobile always-visible scale expand button icon */}
+                  <div className="md:hidden absolute bottom-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/15 flex items-center justify-center text-white/90 shadow-lg" aria-hidden="true">
+                    <span className="text-[10px]">🔍</span>
+                  </div>
+                </button>
 
                 {/* Left Arrow Button */}
                 <button
@@ -1116,12 +1149,22 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <img 
-                      src={projectData.walkthroughVideo} 
-                      alt={projectData.title}
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-contain"
-                    />
+                    <button
+                      type="button"
+                      onClick={() => setLightboxImage({ url: projectData.walkthroughVideo!, label: projectData.title })}
+                      className="w-full h-full relative flex items-center justify-center select-none overflow-hidden cursor-zoom-in group/img focus:outline-none"
+                      aria-label={locale === 'ko' ? "데모 이미지 전체 화면으로 보기" : "View walkthrough image in full screen"}
+                    >
+                      <img 
+                        src={projectData.walkthroughVideo} 
+                        alt={projectData.title}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover/img:scale-[1.02]"
+                      />
+                      <div className="md:hidden absolute bottom-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/15 flex items-center justify-center text-white/90 shadow-lg" aria-hidden="true">
+                        <span className="text-[10px]">🔍</span>
+                      </div>
+                    </button>
                   );
                 })()
               ) : (
@@ -1425,6 +1468,42 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
           </div>
         </div>
       </div>
+
+      {lightboxImage && (
+        <div 
+          id="case-study-lightbox"
+          className="fixed inset-0 z-[300] bg-black/95 backdrop-blur-md flex flex-col items-center justify-center p-4 animate-in fade-in duration-300"
+          onClick={() => setLightboxImage(null)}
+        >
+          {/* Close button with high-contrast indicator */}
+          <button 
+            type="button"
+            id="close-lightbox-btn"
+            onClick={() => setLightboxImage(null)}
+            className="absolute top-6 right-6 z-[320] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 flex items-center justify-center text-white transition-all shadow-xl hover:rotate-90 duration-300"
+            aria-label={locale === 'ko' ? "전체화면 닫기" : "Close full screen view"}
+          >
+            <XIcon className="w-6 h-6" />
+          </button>
+          
+          {/* Label Banner */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[310] px-5 py-2.5 rounded-full bg-black/80 border border-white/10 text-xs text-white/90 text-center shadow-2xl max-w-[90%] pointer-events-none font-sans flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent-gold animate-ping"></span>
+            <span>{lightboxImage.label}</span>
+          </div>
+
+          {/* Full scale image area */}
+          <div className="relative max-w-full max-h-full flex items-center justify-center cursor-zoom-out select-none p-4">
+            <img 
+              id="lightbox-fullspace-img"
+              src={lightboxImage.url} 
+              alt={lightboxImage.label}
+              referrerPolicy="no-referrer"
+              className="max-w-[100vw] max-h-[100vh] md:max-w-[95vw] md:max-h-[95vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
