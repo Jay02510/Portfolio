@@ -98,7 +98,8 @@ const AIChat: React.FC<AIChatProps> = ({
       <div className="hidden md:block fixed bottom-10 right-10 z-[100]">
         <button
           onClick={() => setIsOpen(true)}
-          className={`w-16 h-16 rounded-full glass-panel flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all group ${theme === 'dark' ? 'border-white/10' : 'border-black/5'}`}
+          className={`w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all group border ${theme === 'dark' ? 'bg-alpine-900 border-white/10' : 'bg-white border-black/5'}`}
+          aria-label={locale === 'ko' ? "AI 어시스턴트 열기" : "Open AI assistant"}
         >
           <SparklesIcon className="w-5 h-5 group-hover:rotate-12 transition-transform text-accent-gold" />
           {messageCount > 0 && !isLimitReached && (
@@ -116,7 +117,7 @@ const AIChat: React.FC<AIChatProps> = ({
       {/* Mobile Backdrop */}
       <div className={`md:hidden absolute inset-0 transition-opacity duration-500 ${theme === 'dark' ? 'bg-alpine-950/90 backdrop-blur-xl' : 'bg-white/80 backdrop-blur-lg'}`} onClick={() => setIsOpen(false)}></div>
       
-      <div className={`w-full h-full md:w-[400px] md:h-[650px] glass-panel md:rounded-3xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-500 shadow-2xl relative z-10 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+      <div className={`w-full h-full md:w-[400px] md:h-[650px] md:rounded-3xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-500 shadow-2xl relative z-10 border ${theme === 'dark' ? 'bg-alpine-950 border-white/10' : 'bg-white border-black/10'}`}>
         {/* Header */}
         <div className={`p-8 flex justify-between items-center border-b ${theme === 'dark' ? 'bg-alpine-900/40 border-white/5' : 'bg-white/40 border-black/5'}`}>
           <div className="flex items-center gap-4">
@@ -134,7 +135,11 @@ const AIChat: React.FC<AIChatProps> = ({
               </p>
             </div>
           </div>
-          <button onClick={() => setIsOpen(false)} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${theme === 'dark' ? 'hover:bg-white/5 text-white/50 hover:text-white' : 'hover:bg-black/5 text-black/50 hover:text-black'}`}>
+          <button 
+            onClick={() => setIsOpen(false)} 
+            className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${theme === 'dark' ? 'hover:bg-white/5 text-white/50 hover:text-white' : 'hover:bg-black/5 text-black/50 hover:text-black'}`}
+            aria-label={locale === 'ko' ? "AI 어시스턴트 닫기" : "Close AI assistant"}
+          >
             <XIcon className="w-5 h-5" />
           </button>
         </div>

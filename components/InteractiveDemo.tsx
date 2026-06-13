@@ -51,7 +51,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
     <div className="max-w-7xl mx-auto px-4 md:px-8 relative">
       <div className={`absolute inset-0 rounded-[3rem] blur-[120px] opacity-20 pointer-events-none transition-all duration-1000 ${theme === 'dark' ? 'bg-accent-gold/10' : 'bg-accent-clay/10'}`}></div>
       
-      <div className={`glass-panel rounded-[2rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl relative z-10 lab-blueprint-bg min-h-[650px] border transition-all duration-500 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+      <div className={`rounded-2xl overflow-hidden shadow-2xl relative z-10 lab-blueprint-bg min-h-[650px] border transition-all duration-500 ${theme === 'dark' ? 'bg-alpine-950 border-white/10' : 'bg-white border-black/8 shadow-2xl'}`}>
         <div className="grid lg:grid-cols-12 min-h-[inherit]">
           {/* Input Panel */}
           <div className={`lg:col-span-5 p-8 md:p-16 border-r flex flex-col justify-between transition-colors duration-500 ${theme === 'dark' ? 'bg-alpine-950/80 border-white/10' : 'bg-white/95 border-black/10'}`}>
@@ -61,7 +61,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                 Live No-Code AI Playground
               </div>
               
-              <h2 className="text-4xl md:text-6xl font-medium tracking-tight font-display leading-[1.1] text-gradient-white">
+              <h2 className={`text-4xl md:text-6xl font-medium tracking-tight font-display leading-[1.1] ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
                 Describe a <br/><span className={`italic font-light ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/40'}`}>problem.</span>
               </h2>
               
@@ -76,7 +76,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                   value={problem}
                   onChange={(e) => setProblem(e.target.value)}
                   placeholder="Example: It takes me too long to check if every student has handed in their permission slips..."
-                  className={`w-full rounded-2xl px-8 py-8 text-base placeholder-current focus:outline-none focus:ring-4 transition-all font-medium min-h-[200px] resize-none border ${
+                  className={`w-full rounded-2xl px-8 py-8 text-base placeholder-current focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-alpine-950 transition-all font-medium min-h-[200px] resize-none border ${
                     theme === 'dark' 
                       ? 'bg-white/[0.04] border-white/10 text-white placeholder-white/20 focus:ring-accent-gold/20' 
                       : 'bg-black/[0.05] border-black/10 text-alpine-950 placeholder-alpine-950/40 focus:ring-accent-clay/20'
@@ -134,7 +134,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
           <div className={`lg:col-span-7 p-8 md:p-16 relative flex flex-col transition-colors duration-500 ${theme === 'dark' ? 'bg-black/30' : 'bg-alpine-100/40'}`}>
              {!solutions && !loading && (
                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-10 animate-in fade-in duration-1000">
-                  <div className={`w-24 h-24 rounded-[2rem] border flex items-center justify-center transition-all ${theme === 'dark' ? 'border-white/10 bg-white/[0.02]' : 'border-black/5 bg-white shadow-xl'}`}>
+                  <div className={`w-24 h-24 rounded-full border flex items-center justify-center transition-all ${theme === 'dark' ? 'border-white/10 bg-white/[0.02]' : 'border-black/5 bg-white shadow-xl'}`}>
                       <CodeIcon className={`w-10 h-10 ${theme === 'dark' ? 'text-white/10' : 'text-black/10'} shrink-0`} />
                   </div>
                   <div className="space-y-4">
@@ -154,7 +154,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
              {solutions && (
                <div className="space-y-12 animate-in fade-in slide-in-from-right-8 duration-700 flex-1 overflow-y-auto pr-4 custom-scrollbar">
                   <div className={`flex flex-col md:flex-row md:items-end justify-between border-b pb-10 gap-6 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
-                    <h3 className="text-4xl md:text-5xl font-medium font-display tracking-tight text-gradient-white">Ways I can help</h3>
+                    <h3 className={`text-4xl md:text-5xl font-medium font-display tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>Ways I can help</h3>
                     <div className={`text-[11px] font-bold uppercase tracking-[0.5em] ${theme === 'dark' ? 'text-white/30' : 'text-black/40'}`}>Helper Idea</div>
                   </div>
 
@@ -162,7 +162,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                     {solutions.map((sol, i) => (
                       <div 
                         key={i} 
-                        className={`group p-8 md:p-10 rounded-[2.5rem] border transition-all duration-500 cursor-pointer relative overflow-hidden ${
+                        className={`group p-8 md:p-10 rounded-2xl border transition-all duration-500 cursor-pointer relative overflow-hidden ${
                           selectedSolution === i 
                           ? (theme === 'dark' ? 'bg-accent-gold border-accent-gold shadow-2xl scale-[1.02]' : 'bg-accent-clay border-accent-clay shadow-2xl scale-[1.02] text-white') 
                           : (theme === 'dark' ? 'bg-white/[0.04] border-white/5 hover:border-white/20' : 'bg-white border-black/10 hover:border-black/20 shadow-lg')
@@ -174,7 +174,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                         )}
 
                         <div className="flex justify-between items-start mb-6 gap-6 relative z-10">
-                          <h5 className={`text-2xl md:text-3xl font-medium font-display transition-colors ${selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950' : 'text-white') : 'text-gradient-white'}`}>
+                          <h5 className={`text-2xl md:text-3xl font-medium font-display transition-colors ${selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950' : 'text-white') : (theme === 'dark' ? 'text-white' : 'text-alpine-950')}`}>
                             {sol.title}
                           </h5>
                           <button 

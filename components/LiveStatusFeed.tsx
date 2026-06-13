@@ -109,10 +109,10 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
     <div className="w-full max-w-7xl mx-auto px-6 md:px-8 mt-10 md:mt-12 relative z-50">
       {/* Outer Banner Wrapper */}
       <div 
-        className={`rounded-3xl border transition-all duration-300 relative overflow-hidden backdrop-blur-xl ${
+        className={`rounded-3xl border transition-all duration-300 relative overflow-hidden ${
           theme === 'dark' 
-            ? 'bg-black/40 border-white/10 shadow-[0_15px_30px_rgba(0,0,0,0.4)]' 
-            : 'bg-white/60 border-black/5 shadow-xl'
+            ? 'bg-alpine-900 border-white/10 shadow-[0_15px_30px_rgba(0,0,0,0.4)]' 
+            : 'bg-white border-black/8 shadow-xl'
         }`}
       >
         {/* Banner Quick Strip */}

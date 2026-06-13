@@ -29,7 +29,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
         <img 
           src={project.imageUrl} 
           onClick={() => onOpenCaseStudy?.(project.id)}
-          className={`w-full h-full object-cover cursor-pointer ${project.imagePosition || 'object-center'} transition-all duration-500 group-hover:scale-105 ${
+          className={`w-full h-full object-cover cursor-pointer ${project.imagePosition || 'object-center'} transition-all duration-500 ${
             theme === 'dark' ? 'opacity-80 group-hover:opacity-100' : 'opacity-90 group-hover:opacity-100'
           }`} 
           alt={project.title}

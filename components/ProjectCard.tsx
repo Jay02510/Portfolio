@@ -34,8 +34,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       {activeMedia && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-alpine-950/95 backdrop-blur-xl" onClick={() => setActiveMedia(null)}></div>
-          <div className="relative w-full max-w-5xl aspect-video glass-panel rounded-[1.5rem] overflow-hidden flex flex-col shadow-2xl">
-            <button onClick={() => setActiveMedia(null)} className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white">
+          <div className={`relative w-full max-w-5xl aspect-video rounded-[1.5rem] overflow-hidden flex flex-col shadow-2xl border ${theme === 'dark' ? 'bg-alpine-900 border-white/10' : 'bg-white border-black/8'}`}>
+            <button onClick={() => setActiveMedia(null)} className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white" aria-label={locale === 'ko' ? "미디어 보기 닫기" : "Close media viewer"}>
               <XIcon className="w-5 h-5" />
             </button>
             <div className="flex-1 bg-black">
@@ -58,10 +58,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 onClick={() => onOpenCaseStudy?.(project.id)}
                 className={`w-full h-full object-cover cursor-pointer transition-all duration-700 ${
                   theme === 'dark' 
-                    ? 'grayscale opacity-40 hover:grayscale-0 hover:opacity-100 scale-105 hover:scale-100' 
-                    : 'opacity-90 hover:opacity-100 hover:scale-105'
+                    ? 'grayscale opacity-40 hover:grayscale-0 hover:opacity-100' 
+                    : 'opacity-90 hover:opacity-100'
                 }`} 
-                alt={`${project.title} - Slide ${currentSlideIdx + 1}`}
+                alt={project.title}
                 referrerPolicy="no-referrer"
               />
               
@@ -72,6 +72,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   setCurrentSlideIdx(prev => (prev === 0 ? project.images.length - 1 : prev - 1));
                 }}
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-alpine-950/80 hover:bg-accent-gold hover:text-alpine-950 flex items-center justify-center text-white/80 transition-all z-10 opacity-0 group-hover/carousel:opacity-100 shadow-lg"
+                aria-label={locale === 'ko' ? "이전 슬라이드" : "Previous slide"}
               >
                 ◀
               </button>
@@ -81,6 +82,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   setCurrentSlideIdx(prev => (prev === project.images.length - 1 ? 0 : prev + 1));
                 }}
                 className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-alpine-950/80 hover:bg-accent-gold hover:text-alpine-950 flex items-center justify-center text-white/80 transition-all z-10 opacity-0 group-hover/carousel:opacity-100 shadow-lg"
+                aria-label={locale === 'ko' ? "다음 슬라이드" : "Next slide"}
               >
                 ▶
               </button>
@@ -97,6 +99,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     className={`w-2 h-2 rounded-full transition-all ${
                       idx === currentSlideIdx ? 'bg-accent-gold scale-125' : 'bg-white/40 hover:bg-white/70'
                     }`}
+                    aria-label={locale === 'ko' ? `${idx + 1}번 슬라이드로 이동` : `Go to slide ${idx + 1}`}
                   />
                 ))}
               </div>
@@ -107,8 +110,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               onClick={() => onOpenCaseStudy?.(project.id)}
               className={`w-full h-full object-cover cursor-pointer ${project.imagePosition || 'object-center'} transition-all duration-700 ${
                 theme === 'dark' 
-                  ? 'grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 scale-105 group-hover:scale-100' 
-                  : 'opacity-90 group-hover:opacity-100 group-hover:scale-105'
+                  ? 'grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100' 
+                  : 'opacity-90 group-hover:opacity-100'
               }`} 
               alt={project.title}
               referrerPolicy="no-referrer"
@@ -126,7 +129,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       </div>
 
       {/* Detail Panel */}
-      <div className={`mt-[-60px] md:mt-0 md:absolute ${isEven ? 'md:right-12' : 'md:left-12'} md:top-1/2 md:-translate-y-1/2 w-[90%] md:w-full md:max-w-xl glass-panel rounded-2xl p-6 md:p-14 space-y-6 md:space-y-10 z-20 transition-all duration-500 group-hover:shadow-accent-gold/5`}>
+      <div className={`mt-[-60px] md:mt-0 md:absolute ${isEven ? 'md:right-12' : 'md:left-12'} md:top-1/2 md:-translate-y-1/2 w-[90%] md:w-full md:max-w-xl rounded-2xl p-6 md:p-14 space-y-6 md:space-y-10 z-20 transition-all duration-500 group-hover:shadow-accent-gold/5 border ${theme === 'dark' ? 'bg-alpine-900 border-white/10' : 'bg-white border-black/8 shadow-2xl'}`}>
           <div className="space-y-2 md:space-y-6">
               <div className="flex flex-col gap-2">
                 <span className={`font-bold uppercase tracking-[0.4em] text-[8px] md:text-[11px] ${theme === 'dark' ? 'text-text-tert' : 'text-alpine-950/50'}`}>Project 0{index + 1}</span>
@@ -144,7 +147,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               </div>
               <h3 
                 onClick={() => onOpenCaseStudy?.(project.id)}
-                className="text-2xl md:text-5xl lg:text-6xl font-medium tracking-tighter leading-none text-gradient-white cursor-pointer hover:text-accent-gold transition-colors"
+                className={`text-2xl md:text-5xl lg:text-6xl font-medium tracking-tighter leading-none cursor-pointer hover:text-accent-gold transition-colors ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}
               >
                 {project.title}
               </h3>

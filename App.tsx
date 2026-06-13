@@ -346,8 +346,8 @@ function App() {
                     </button>
                     <button 
                       onClick={toggleTheme} 
-                      className={`p-2.5 rounded-full glass-panel hover:bg-accent-gold hover:text-alpine-950 transition-all transform active:scale-95 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'} flex items-center justify-center`}
-                      aria-label="Toggle theme"
+                      className={`p-2.5 rounded-full hover:bg-accent-gold hover:text-alpine-950 transition-all transform active:scale-95 flex items-center justify-center border shadow-sm ${theme === 'dark' ? 'bg-alpine-900 border-white/10 text-white' : 'bg-white border-black/10 text-alpine-950'}`}
+                      aria-label={theme === 'dark' ? "Switch to light theme" : "Switch to dark theme"}
                     >
                       {theme === 'dark' ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
                     </button>
@@ -422,7 +422,7 @@ function App() {
                 <button 
                   onClick={toggleTheme} 
                   className={`p-2 hover:opacity-85 transition-opacity flex items-center justify-center`}
-                  aria-label="Toggle theme"
+                  aria-label={theme === 'dark' ? "Switch to light theme" : "Switch to dark theme"}
                 >
                   {theme === 'dark' ? <SunIcon className="w-4 h-4 text-white" /> : <MoonIcon className="w-4 h-4 text-alpine-950" />}
                 </button>
@@ -440,7 +440,11 @@ function App() {
                <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-500">
                   <ExternalLinkIcon className="w-6 h-6" />
                </div>
-               <button onClick={() => setIsBrowserModalOpen(false)} className="p-2 text-black/20 hover:text-black transition-colors">
+               <button 
+                 onClick={() => setIsBrowserModalOpen(false)} 
+                 className="p-2 text-black/20 hover:text-black transition-colors"
+                 aria-label={locale === 'ko' ? "브라우저 유의문 닫기" : "Close browser modal warning"}
+               >
                   <XIcon className="w-6 h-6" />
                </button>
             </div>
@@ -491,7 +495,9 @@ function App() {
       )}
 
       {/* UNIFIED MOBILE NAVIGATION */}
-      <nav className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] glass-panel rounded-[2rem] px-4 py-3 flex items-center gap-2 shadow-[0_20px_60px_rgba(0,0,0,0.5)] w-[90%] max-w-[385px] transition-all duration-500 ${theme === 'dark' ? 'border-white/20' : 'border-black/10'} pb-[env(safe-area-inset-bottom,0.75rem)]`}>
+      <nav className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] rounded-[2rem] px-4 py-3 flex items-center gap-2 transition-all duration-500 border shadow-[0_20px_60px_rgba(0,0,0,0.5)] w-[90%] max-w-[385px] pb-[env(safe-area-inset-bottom,0.75rem)] ${
+        theme === 'dark' ? 'bg-alpine-900 border-white/20' : 'bg-white border-black/10 shadow-xl'
+      }`}>
           <button onClick={scrollToSection('portfolio')} className={`flex-1 flex flex-col items-center gap-1 p-1 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
             <BookOpenIcon className="w-5 h-5" />
             <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide">{locale === 'en' ? 'Tools' : '도구'}</span>
@@ -505,6 +511,7 @@ function App() {
             <button 
               onClick={() => setIsChatOpen(!isChatOpen)} 
               className={`w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-2xl border-4 transform active:scale-90 ${theme === 'dark' ? 'border-alpine-900 bg-accent-gold text-alpine-950' : 'border-white bg-alpine-950 text-accent-gold'}`}
+              aria-label={locale === 'ko' ? "AI 어시스턴트 토글" : "Toggle AI assistant"}
             >
               <SparklesIcon className="w-6 h-6" />
             </button>

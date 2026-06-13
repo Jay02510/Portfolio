@@ -29,14 +29,14 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
   return (
     <section className="py-24 px-6">
       <div className="max-w-3xl mx-auto">
-        <div className={`glass-panel rounded-2xl p-10 md:p-16 relative overflow-hidden group transition-all duration-500 border ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+        <div className={`rounded-2xl p-10 md:p-16 relative overflow-hidden group transition-all duration-500 border ${theme === 'dark' ? 'bg-alpine-900 border-white/10' : 'bg-white border-black/8'}`}>
           {/* Decorative background element */}
           <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-all duration-1000 ${theme === 'dark' ? 'bg-accent-gold/5 group-hover:bg-accent-gold/10' : 'bg-accent-clay/5 group-hover:bg-accent-clay/10'}`}></div>
 
           {!isSent ? (
             <div className="space-y-10 relative z-10">
               <div className="space-y-4">
-                <h3 className="text-4xl font-light font-display tracking-tight text-gradient-white">
+                <h3 className={`text-4xl font-light font-display tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
                   See a gap?
                 </h3>
                 <p className={`text-xs font-medium leading-relaxed max-w-md transition-colors ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'}`}>
@@ -49,7 +49,7 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
                   placeholder="Tell it to me straight..."
-                  className={`w-full border rounded-2xl px-8 py-6 text-sm focus:outline-none transition-all font-light min-h-[140px] resize-none ${
+                  className={`w-full border rounded-2xl px-8 py-6 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-alpine-950 transition-all font-light min-h-[140px] resize-none ${
                     theme === 'dark' 
                       ? 'bg-white/[0.03] border-white/10 text-white placeholder-white/20 focus:border-accent-gold/50' 
                       : 'bg-black/[0.04] border-black/20 text-alpine-950 placeholder-alpine-950/50 focus:border-accent-clay/50'
