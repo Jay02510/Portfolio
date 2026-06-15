@@ -1132,7 +1132,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                         allowFullScreen
                         className="w-full h-full absolute inset-0"
                         referrerPolicy="unsafe-url"
-                        sandbox="allow-popups allow-popups-to-escape-sandbox allow-scripts allow-forms allow-same-origin allow-presentation"
                       />
                     );
                   }

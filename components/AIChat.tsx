@@ -26,7 +26,7 @@ const SUGGESTIONS_KO = [
   "왜 직접 에듀테크 도구를 제작하나요?"
 ];
 
-const MAX_MESSAGES = 10;
+const MAX_MESSAGES = 30;
 
 const AIChat: React.FC<AIChatProps> = ({ 
   isOpen, 
@@ -90,6 +90,21 @@ const AIChat: React.FC<AIChatProps> = ({
     setIsLoading(false);
   };
 
+  const handleReset = () => {
+    setMessageCount(0);
+    setMessages([
+      {
+        id: 'welcome',
+        role: 'model',
+        text: locale === 'ko' 
+          ? "안녕하세요! 저는 제이슨의 디지털 비서입니다. 제이슨의 교육 솔루션, 10년 교직 스토리, 또는 기술 스택에 대해 무엇이든 편안하게 물어보세요."
+          : "Hi there. I'm Jason's digital helper. If you have questions about how these tools work or what Jason did while teaching in Seoul, just ask.",
+        timestamp: new Date()
+      }
+    ]);
+    setInput('');
+  };
+
   const isLimitReached = messageCount >= MAX_MESSAGES;
   const activeSuggestions = locale === 'ko' ? SUGGESTIONS_KO : SUGGESTIONS_EN;
 
@@ -135,13 +150,28 @@ const AIChat: React.FC<AIChatProps> = ({
               </p>
             </div>
           </div>
-          <button 
-            onClick={() => setIsOpen(false)} 
-            className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${theme === 'dark' ? 'hover:bg-white/5 text-white/50 hover:text-white' : 'hover:bg-black/5 text-black/50 hover:text-black'}`}
-            aria-label={locale === 'ko' ? "AI 어시스턴트 닫기" : "Close AI assistant"}
-          >
-            <XIcon className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            {messageCount > 0 && (
+              <button
+                onClick={handleReset}
+                className={`text-[9px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-full border transition-all ${
+                  theme === 'dark'
+                    ? 'border-white/10 text-white/60 hover:border-accent-gold hover:text-accent-gold hover:bg-white/5'
+                    : 'border-black/10 text-black/60 hover:border-accent-clay hover:text-accent-clay hover:bg-black/5'
+                }`}
+                title={locale === 'ko' ? "대화 초기화" : "Clear chat"}
+              >
+                {locale === 'ko' ? "초기화" : "Reset"}
+              </button>
+            )}
+            <button 
+              onClick={() => setIsOpen(false)} 
+              className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${theme === 'dark' ? 'hover:bg-white/5 text-white/50 hover:text-white' : 'hover:bg-black/5 text-black/50 hover:text-black'}`}
+              aria-label={locale === 'ko' ? "AI 어시스턴트 닫기" : "Close AI assistant"}
+            >
+              <XIcon className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Messages */}
@@ -174,13 +204,25 @@ const AIChat: React.FC<AIChatProps> = ({
                    ? "금일 권장 대화수 회수에 도달했습니다. 언제든 제이슨에게 편한 메일 전송으로 협의해 보세요!" 
                    : "You've reached the conversation limit. Jason would love to hear from you directly!"}
                </p>
-               <a 
-                href="mailto:jsn.benjamin@gmail.com" 
-                className="flex items-center gap-3 px-6 py-3 bg-accent-gold text-alpine-950 rounded-full text-[11px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl"
-               >
-                 <MailIcon className="w-4 h-4" />
-                 {locale === 'ko' ? "제이슨과 메일 대화 나누기" : "Contact Jason"}
-               </a>
+               <div className="flex flex-col items-center gap-4 w-full px-8">
+                 <a 
+                  href="mailto:jsn.benjamin@gmail.com" 
+                  className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-accent-gold text-alpine-950 rounded-full text-[11px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl"
+                 >
+                   <MailIcon className="w-4 h-4" />
+                   {locale === 'ko' ? "제이슨과 메일 대화 나누기" : "Contact Jason"}
+                 </a>
+                 <button
+                   onClick={handleReset}
+                   className={`text-[11px] uppercase tracking-widest font-extrabold px-6 py-3 rounded-full border transition-all hover:scale-105 active:scale-95 w-full text-center ${
+                     theme === 'dark'
+                       ? 'border-white/15 text-white/80 hover:border-accent-gold hover:text-accent-gold hover:bg-white/5'
+                       : 'border-black/15 text-black/80 hover:border-accent-clay hover:text-accent-clay hover:bg-black/5'
+                   }`}
+                 >
+                   {locale === 'ko' ? "대화 새로 시작하기" : "Restart Conversation"}
+                 </button>
+               </div>
             </div>
           )}
           <div ref={messagesEndRef} />

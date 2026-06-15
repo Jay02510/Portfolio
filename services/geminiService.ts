@@ -31,12 +31,26 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
       body: JSON.stringify({ message: cleanMessage })
     });
 
+    const responseText = await response.text();
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Server error");
+      let errorMsg = "Server error";
+      try {
+        const errorJson = JSON.parse(responseText);
+        errorMsg = errorJson.error || errorJson.message || errorMsg;
+      } catch {
+        errorMsg = responseText || errorMsg;
+      }
+      throw new Error(errorMsg);
     }
 
-    const data = await response.json();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      throw new Error("Invalid response format received from server.");
+    }
+    
     const text = data.text;
     
     if (!text) return "I am a little stuck for words. Should we try again, or would you like to email Jason?";
