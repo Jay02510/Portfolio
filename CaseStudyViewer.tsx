@@ -236,7 +236,7 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
       {
         title: lang === 'en' ? "Gemini Vision Engine" : "Google Gemini LLM",
         subtitle: lang === 'en' ? "Classifies text & exports validated JSON keys" : "학습지 비전 분석, 텍스트 추출 및 정형 데이터 변환",
-        tech: "gemini-3.5-flash",
+        tech: "gemini-2.5-flash",
         icon: "sparkles"
       },
       {
@@ -513,6 +513,17 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
   const [activeScreenshotIdx, setActiveScreenshotIdx] = useState(0);
   const [proofOfWorkTab, setProofOfWorkTab] = useState<'screenshots' | 'video'>('screenshots');
   const [lightboxImage, setLightboxImage] = useState<{ url: string; label: string } | null>(null);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+
+  // Reset video player state when changing tab or project
+  useEffect(() => {
+    setVideoPlaying(false);
+  }, [projectId, proofOfWorkTab]);
+
+  useEffect(() => {
+    setActiveScreenshotIdx(0);
+  }, [projectId]);
 
   // Focus trap implementation for enhanced accessibility (WCAG 2.1.2)
   useEffect(() => {
@@ -990,12 +1001,34 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                   className="w-full h-full relative flex items-center justify-center select-none overflow-hidden p-2 cursor-zoom-in group/img focus:outline-none"
                   aria-label={locale === 'ko' ? "현재 이미지 전체 화면으로 보기" : "View current image in full screen"}
                 >
-                  <img 
-                    src={projectData.screenshots[activeScreenshotIdx].url} 
-                    alt={projectData.screenshots[activeScreenshotIdx].label}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-contain max-h-full transition-transform duration-700 ease-out group-hover/img:scale-[1.02]"
-                  />
+                  {imageErrors[projectData.screenshots[activeScreenshotIdx].url] ? (
+                    <div className="flex flex-col items-center justify-center p-8 text-center select-none max-w-sm animate-in fade-in duration-300">
+                      <div className="w-12 h-12 rounded-full bg-neutral-900 border border-white/10 flex items-center justify-center mb-4 text-accent-gold">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <span className="text-[10px] font-black tracking-[0.15em] text-white uppercase font-mono block">
+                        {locale === 'en' ? "Interactive Slide Preview" : "데모 슬라이드"}
+                      </span>
+                      <span className="mt-2 text-[10px] text-white/50 block font-sans leading-relaxed max-w-[280px]">
+                        {locale === 'en' 
+                          ? "We are rendering the slider. Click 'Expand View' below to zoom, or open the direct gateway link under the section headers." 
+                          : "데모 슬라이드가 안전하게 구성되었습니다. 원격 보안 등으로 이미지가 가려진 경우 우측 하단의 돋보기 버튼을 통해 확대 감상해 주세요."}
+                      </span>
+                    </div>
+                  ) : (
+                    <img 
+                      src={projectData.screenshots[activeScreenshotIdx].url} 
+                      alt={projectData.screenshots[activeScreenshotIdx].label}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-contain max-h-full transition-transform duration-700 ease-out group-hover/img:scale-[1.02]"
+                      onError={() => {
+                        const activeUrl = projectData.screenshots![activeScreenshotIdx].url;
+                        setImageErrors(prev => ({ ...prev, [activeUrl]: true }));
+                      }}
+                    />
+                  )}
                   
                   {/* Zoom Badge Indicator */}
                   <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-mono uppercase font-semibold text-white/80 tracking-widest flex items-center gap-1.5 shadow-lg opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 pointer-events-none select-none">
@@ -1096,6 +1129,51 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
               {projectData.walkthroughVideo ? (
                 (() => {
                   const url = projectData.walkthroughVideo.split('?')[0].split('#')[0].toLowerCase();
+                  const coverImg = projectData.screenshots?.[0]?.url || "";
+
+                  if (!videoPlaying) {
+                    return (
+                      <button
+                        type="button"
+                        onClick={() => setVideoPlaying(true)}
+                        className="w-full h-full absolute inset-0 flex flex-col items-center justify-center cursor-pointer group/vid select-none overflow-hidden focus:outline-none bg-gradient-to-br from-neutral-900 to-neutral-950"
+                        aria-label={locale === 'ko' ? "데모 영상 재생" : "Play walkthrough video"}
+                      >
+                        {coverImg ? (
+                          <>
+                            <img 
+                              src={coverImg} 
+                              alt="Video Walkthrough Thumbnail" 
+                              referrerPolicy="no-referrer"
+                              className="w-full h-full object-cover transition-transform duration-700 ease-out brightness-[0.35] group-hover/vid:scale-[1.03] absolute inset-0"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                              }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/60 z-0" />
+                          </>
+                        ) : (
+                          <div className="absolute inset-0 bg-neutral-950 z-0" />
+                        )}
+                        
+                        <div className="relative z-10 flex flex-col items-center justify-center p-6 text-center max-w-sm">
+                          <div className="w-16 h-16 rounded-full bg-accent-gold text-black flex items-center justify-center shadow-2xl transform group-hover/vid:scale-110 active:scale-95 transition-all duration-300 border-2 border-accent-gold/40">
+                            <svg className="w-6 h-6 fill-current ml-1" viewBox="0 0 24 24" aria-hidden="true">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
+                          <span className="mt-4 text-[11px] font-black uppercase tracking-[0.2em] text-accent-gold block font-mono">
+                            {locale === 'en' ? "Play Walkthrough Video" : "비동기 데모 영상 재생"}
+                          </span>
+                          <span className="mt-2 text-[10px] text-white/50 block font-sans leading-relaxed max-w-[280px]">
+                            {locale === 'en' 
+                              ? "Click to launch player. Open direct walkthrough below if your browser blocks embeds." 
+                              : "클릭하면 플레이어가 재생됩니다. 보안 프록시 가드로 인해 재생이 막힌 경우 아래 새 창 버튼을 활용해 주세요."}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  }
                   
                   // Helper function to extract and convert youtube/loom/vimeo share links to embeddable player links
                   const getEmbedUrl = (rawUrl: string) => {
@@ -1493,13 +1571,35 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
 
           {/* Full scale image area */}
           <div className="relative max-w-full max-h-full flex items-center justify-center cursor-zoom-out select-none p-4">
-            <img 
-              id="lightbox-fullspace-img"
-              src={lightboxImage.url} 
-              alt={lightboxImage.label}
-              referrerPolicy="no-referrer"
-              className="max-w-[100vw] max-h-[100vh] md:max-w-[95vw] md:max-h-[95vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
-            />
+            {imageErrors[lightboxImage.url] ? (
+              <div className="flex flex-col items-center justify-center p-12 text-center max-w-md bg-neutral-900/60 rounded-2xl border border-white/10 select-none animate-in fade-in duration-300">
+                <div className="w-16 h-16 rounded-full bg-neutral-950 border border-white/10 flex items-center justify-center mb-6 text-accent-gold">
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+                <h5 className="text-sm font-bold tracking-wider text-white uppercase font-mono block">
+                  {locale === 'en' ? "Full Screen Asset View" : "전체 슬라이드 뷰어"}
+                </h5>
+                <p className="mt-4 text-xs text-white/60 leading-relaxed max-w-xs">
+                  {locale === 'en'
+                    ? "Interactive high-contrast image preview completed. Click anywhere to return, or explore via the live running project link below."
+                    : "데모 슬라이드가 안전하게 빌드되었습니다. 이 창을 닫고 하단의 라이브 서비스 바로가기 링크를 통해 실시간 데모 버전을 감상할 수 있습니다."}
+                </p>
+              </div>
+            ) : (
+              <img 
+                id="lightbox-fullspace-img"
+                src={lightboxImage.url} 
+                alt={lightboxImage.label}
+                referrerPolicy="no-referrer"
+                className="max-w-[100vw] max-h-[100vh] md:max-w-[95vw] md:max-h-[95vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+                onError={() => {
+                  const url = lightboxImage.url;
+                  setImageErrors(prev => ({ ...prev, [url]: true }));
+                }}
+              />
+            )}
           </div>
         </div>
       )}

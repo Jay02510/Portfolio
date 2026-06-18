@@ -6,10 +6,6 @@ import { rateLimit } from "express-rate-limit";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type } from "@google/genai";
 import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const isProd = process.env.NODE_ENV === "production";
 const PORT = 3000;
@@ -113,7 +109,7 @@ async function startServer() {
 
       const ai = getGeminiClient();
       const response = await ai.models.generateContent({
-        model: 'gemini-3.5-flash',
+        model: 'gemini-2.5-flash',
         contents: message,
         config: {
           systemInstruction: CHAT_SYSTEM_INSTRUCTION,
@@ -141,7 +137,7 @@ async function startServer() {
 
       const ai = getGeminiClient();
       const response = await ai.models.generateContent({
-        model: 'gemini-3.5-flash',
+        model: 'gemini-2.5-flash',
         contents: `A teacher is struggling with this problem: "${problem}". Suggest 3 simple digital helpers to fix it.`,
         config: {
           responseMimeType: "application/json",
