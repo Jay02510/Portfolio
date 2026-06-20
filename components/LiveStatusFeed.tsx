@@ -14,6 +14,16 @@ interface BuildItem {
 
 const LIVE_UPDATES_DATA: BuildItem[] = [
   {
+    id: "chekki-guidde-video",
+    date: "2026-06-20",
+    type: "feature",
+    titleEn: "Chekki AI Interactive Playbook Embedded",
+    titleKo: "Chekki AI 인터랙티브 시연 가이드북 탑재",
+    descEn: "Upgraded the Chekki AI mobile worksheet parsing walkthrough to use an interactive Guidde Video Playbook, resolving potential cross-origin iframe security blocks elegantly across all browsers.",
+    descKo: "Chekki AI 종이 시험지 인식 솔루션의 동영상 시연을 브라우저 보안 이슈 걱정 없는 최신 인터랙티브 Guidde 비디오 플레이메이커 가이드북으로 일괄 전환 탑재 완료했습니다.",
+    relatedProjectId: "chekki"
+  },
+  {
     id: "guidde-video-add",
     date: "2026-06-12",
     type: "feature",

@@ -1,5 +1,6 @@
 import React from 'react';
 import { MailIcon, XIcon, FileTextIcon } from './Icons.tsx';
+import RoleSwitchResume from './RoleSwitchResume.tsx';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -189,93 +190,8 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
         {/* SCROLLABLE BODY */}
         <div className="p-6 md:p-10 overflow-y-auto space-y-8 md:space-y-12 shrink print:overflow-visible print:p-0 print:space-y-8">
           
-          {/* PROFILE SUMMARY */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold border-b pb-1.5 border-accent-gold/20 flex items-center gap-2 print:text-black print:border-black">
-              <span>✦</span> {curr.profileTitle}
-            </h4>
-            <p className={`text-xs md:text-sm leading-relaxed ${isDark ? 'text-white/80' : 'text-alpine-950/80'} print:text-black print:text-xs`}>
-              {curr.profileText}
-            </p>
-          </div>
-
-          {/* TWO COLUMN CONTENT */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12 print:grid-cols-3 print:gap-8">
-            
-            {/* COLUMN 1 & 2: RECENT EXPERIENCE */}
-            <div className="lg:col-span-2 space-y-6 md:space-y-8 print:col-span-2">
-              <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold border-b pb-1.5 border-accent-gold/20 flex items-center gap-2 print:text-black print:border-black">
-                <span>🔧</span> {curr.experienceTitle}
-              </h4>
-              <div className="space-y-6 md:space-y-8">
-                {curr.roles.map((r, rIdx) => (
-                  <div key={rIdx} className="space-y-2">
-                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                      <h5 className="text-sm font-black font-display print:text-black">{r.company}</h5>
-                      <span className="text-[10px] font-mono opacity-60 print:text-black/60 print:text-[9px]">{r.period}</span>
-                    </div>
-                    <div className="text-xs font-semibold text-accent-gold/90 print:text-black/80">{r.title}</div>
-                    <ul className={`space-y-1.5 text-xs font-light leading-relaxed list-disc list-inside ${isDark ? 'text-white/70' : 'text-alpine-950/70'} print:text-black print:text-[11px]`}>
-                      {r.bulletPoints.map((bp, bpIdx) => (
-                        <li key={bpIdx} className="indent-[-1.2rem] pl-5">
-                          {bp}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* COLUMN 3: STACK & CONTACT */}
-            <div className="space-y-8">
-              {/* CORE COMPETENCIES */}
-              <div className="space-y-6">
-                <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold border-b pb-1.5 border-accent-gold/20 flex items-center gap-2 print:text-black print:border-black">
-                  <span>⚓</span> {curr.skillsTitle}
-                </h4>
-                <div className="space-y-4">
-                  {curr.skills.map((cat, catIdx) => (
-                    <div key={catIdx} className="space-y-1.5">
-                      <div className="text-[10px] font-black uppercase tracking-wider text-accent-gold/90 print:text-black">{cat.category}</div>
-                      <div className="flex flex-wrap gap-1.5">
-                        {cat.items.map((item, iIdx) => (
-                          <span 
-                            key={iIdx} 
-                            className={`px-2 py-0.5 rounded text-[9px] font-mono border ${
-                              isDark 
-                                ? 'bg-white/5 border-white/10 text-white/80' 
-                                : 'bg-black/5 border-black/5 text-alpine-950/80'
-                            } print:bg-none print:border-black/20 print:text-black print:text-[8px]`}
-                          >
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* EDUCATION */}
-              <div className="space-y-4">
-                <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold border-b pb-1.5 border-accent-gold/20 flex items-center gap-2 print:text-black print:border-black">
-                  <span>🎓</span> {curr.educationTitle}
-                </h4>
-                <div className="space-y-3">
-                  {curr.education.map((edu, eduIdx) => (
-                    <div key={eduIdx} className="text-xs">
-                      <div className="font-bold print:text-black">{edu.institution}</div>
-                      <div className="opacity-70 print:text-black/80">{edu.degree}</div>
-                      <div className="text-[9px] font-mono opacity-50 print:text-black/50">{edu.period}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-
-          </div>
+          {/* DYNAMIC ROLE SWITCHABLE RESUME */}
+          <RoleSwitchResume locale={locale} theme={theme} />
 
           {/* CONTACT INFO CONTAINER */}
           <div className={`p-6 rounded-2xl border flex flex-col md:flex-row md:items-center justify-between gap-6 ${

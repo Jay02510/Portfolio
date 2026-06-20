@@ -6,7 +6,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     tagline: "Designed an instant mobile camera parsing web app to transform printed school worksheets into digital bilingual tutoring keys.",
     liveUrl: "https://chekki-ai.vercel.app/",
     storeUrl: "https://urlgeni.us/chekki",
-    walkthroughVideo: "https://res.cloudinary.com/dginphpy4/video/upload/v1769504113/Chekki_AI_V0_fkdlyx.mp4",
+    walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
     screenshots: [
       { label: "Homescreen", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/2_lbk8kt.png", subLabel: "Active Lesson Portal" },
       { label: "Login", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/3_nqxlza.png", subLabel: "Secure Access Gateway" },
@@ -608,7 +608,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     tagline: "종이 학습지를 찍어서 업로드하면 원어민의 지도 가이드를 이중 언어로 즉각 제공합니다.",
     liveUrl: "https://chekki-ai.vercel.app/",
     storeUrl: "https://urlgeni.us/chekki",
-    walkthroughVideo: "https://res.cloudinary.com/dginphpy4/video/upload/v1769504113/Chekki_AI_V0_fkdlyx.mp4",
+    walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
     screenshots: [
       { label: "홈화면", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/2_lbk8kt.png", subLabel: "학습 지도 포털" },
       { label: "로그인", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/3_nqxlza.png", subLabel: "로그인 보안 게이트웨이" },
