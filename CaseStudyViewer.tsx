@@ -514,11 +514,13 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
   const [proofOfWorkTab, setProofOfWorkTab] = useState<'screenshots' | 'video'>('screenshots');
   const [lightboxImage, setLightboxImage] = useState<{ url: string; label: string } | null>(null);
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   // Reset video player state when changing tab or project
   useEffect(() => {
     setVideoPlaying(false);
+    setVideoError(false);
   }, [projectId, proofOfWorkTab]);
 
   useEffect(() => {
@@ -1200,6 +1202,79 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                     return '';
                   };
 
+                  const isGuidde = projectData.walkthroughVideo.includes('guidde.com') || projectData.walkthroughVideo.includes('playbooks');
+                  
+                  if (isGuidde) {
+                    return (
+                      <div className="w-full h-full relative flex flex-col items-center justify-center p-6 text-center select-none rounded-[15px] overflow-hidden bg-neutral-950">
+                        {coverImg && (
+                          <div className="absolute inset-0 z-0 opacity-15">
+                            <img 
+                              src={coverImg} 
+                              alt="Background Preview" 
+                              className="w-full h-full object-cover blur-md"
+                              referrerPolicy="no-referrer"
+                            />
+                            <div className="absolute inset-0 bg-neutral-950/80" />
+                          </div>
+                        )}
+                        <div className="relative z-10 flex flex-col items-center max-w-sm px-4">
+                          <div className="w-14 h-14 rounded-full bg-accent-gold/10 border border-accent-gold/25 flex items-center justify-center mb-4 text-accent-gold shadow-lg animate-in fade-in duration-500">
+                            <span className="text-xl">📽️</span>
+                          </div>
+                          <h4 className="text-xs font-bold tracking-wider text-accent-gold uppercase font-mono block">
+                            {locale === 'en' ? "Guidde Video Playbook" : "인터랙티브 데모 가이드북"}
+                          </h4>
+                          <p className="mt-3 text-[11px] text-white/70 leading-relaxed">
+                            {locale === 'en'
+                              ? "To bypass strict browser sandbox security blocks and access full step-by-step interactive hotspots, please launch the playbook in a secure, direct browser window."
+                              : "브라우저 보안 가드 및 아이프레임 차단 정책 우회 및 실시간 가이드 툴팁 감상을 위해, 아래 단추를 활용하여 다이렉트 창에서 비디오를 시청해 주세요."}
+                          </p>
+                          <a
+                            href={projectData.walkthroughVideo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-5 inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-accent-gold hover:bg-accent-gold/90 text-black text-[10px] font-black uppercase tracking-wider transition-all duration-150 shadow-md transform hover:scale-[1.02] active:scale-95 group"
+                          >
+                            <span>{locale === 'en' ? "Launch Playbook Demo" : "가이드북 데모 실행"}</span>
+                            <span className="text-xs transition-transform group-hover:translate-x-0.5">↗</span>
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  if (videoError) {
+                    return (
+                      <div className="w-full h-full relative flex flex-col items-center justify-center p-6 text-center select-none rounded-[15px] overflow-hidden bg-neutral-950">
+                        <div className="relative z-10 flex flex-col items-center max-w-sm px-4">
+                          <div className="w-12 h-12 rounded-full bg-neutral-900 border border-white/10 flex items-center justify-center mb-4 text-accent-gold shadow-lg">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                          </div>
+                          <h4 className="text-xs font-bold tracking-wider text-accent-gold uppercase font-mono block">
+                            {locale === 'en' ? "Full Screen Demo Stream" : "데모 스트림 연동 완료"}
+                          </h4>
+                          <p className="mt-3 text-[11px] text-white/60 leading-relaxed">
+                            {locale === 'en'
+                              ? "Browser canvas shielding detected. Launch the direct video stream securely in a fresh dashboard window."
+                              : "보안 프라이버시 쉴드로 인해 인라인 재생이 제한되었습니다. 아래 버튼을 눌러 데모 동영상을 단독 창에서 실시간 감상하실 수 있습니다."}
+                          </p>
+                          <a
+                            href={projectData.walkthroughVideo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-5 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-accent-gold hover:bg-accent-gold/90 text-black text-[10px] font-black uppercase tracking-wider transition-all duration-150 shadow-md transform hover:scale-[1.02] active:scale-95 group"
+                          >
+                            <span>{locale === 'en' ? "Open Walkthrough" : "직접 데모 시청"}</span>
+                            <span className="text-xs transition-transform group-hover:translate-x-0.5">↗</span>
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  }
+
                   const embedUrl = getEmbedUrl(projectData.walkthroughVideo);
                   if (embedUrl) {
                     return (
@@ -1224,6 +1299,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                       loop 
                       playsInline 
                       className="w-full h-full object-cover"
+                      onError={() => setVideoError(true)}
                     />
                   ) : (
                     <button
