@@ -129,14 +129,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       </div>
 
       {/* Detail Panel */}
-      <div className={`mt-[-60px] md:mt-0 md:absolute ${isEven ? 'md:right-12' : 'md:left-12'} md:top-1/2 md:-translate-y-1/2 w-[90%] md:w-full md:max-w-xl rounded-2xl p-6 md:p-14 space-y-6 md:space-y-10 z-20 transition-all duration-500 group-hover:shadow-accent-gold/5 border ${theme === 'dark' ? 'bg-alpine-900 border-white/10' : 'bg-white border-black/8 shadow-2xl'}`}>
+      <div className={`mt-[-60px] md:mt-0 md:absolute ${isEven ? 'md:right-12' : 'md:left-12'} md:top-1/2 md:-translate-y-1/2 w-[90%] md:w-full md:max-w-xl rounded-[2.4rem] p-2.5 z-20 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] border ${
+        theme === 'dark' 
+          ? 'bg-neutral-900/30 border-white/5 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.55)]' 
+          : 'bg-neutral-200/50 border-black/5 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15)]'
+      }`}>
+        <div className={`rounded-[2rem] p-6 md:p-12 space-y-6 md:space-y-10 border ${
+          theme === 'dark'
+            ? 'bg-alpine-900 border-white/5'
+            : 'bg-white border-black/5'
+        }`}>
           <div className="space-y-2 md:space-y-6">
               <div className="flex flex-col gap-2">
-                <span className={`font-bold uppercase tracking-[0.4em] text-[8px] md:text-[11px] ${theme === 'dark' ? 'text-text-tert' : 'text-alpine-950/50'}`}>Project 0{index + 1}</span>
+                <span className={`font-mono font-bold uppercase tracking-[0.4em] text-[8px] md:text-[11px] ${theme === 'dark' ? 'text-text-tert' : 'text-alpine-950/50'}`}>Project 0{index + 1}</span>
                 {project.tags?.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
                     {project.tags.map((tag: string, tIdx: number) => (
-                      <span key={tIdx} className={`text-[7px] md:text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${
+                      <span key={tIdx} className={`text-[7px] md:text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded ${
                         theme === 'dark' ? 'bg-accent-gold/10 text-accent-gold border border-accent-gold/20' : 'bg-accent-clay/15 text-accent-clay border border-accent-clay/25'
                       }`}>
                         #{tag}
@@ -151,7 +160,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               >
                 {project.title}
               </h3>
-              <p className={`text-xs md:text-lg font-normal leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
+              <p className={`text-xs md:text-lg font-light leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
                 {project.longDescription}
               </p>
           </div>
@@ -170,7 +179,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
             {project.engineDetails && (
               <p className={`text-[10px] md:text-[11px] font-mono tracking-wide leading-relaxed p-4 rounded-xl border ${
-                theme === 'dark' ? 'bg-white/5 border-white/5 text-accent-gold/90' : 'bg-black/5 border-black/5 text-accent-clay'
+                theme === 'dark' ? 'bg-black/25 border-white/5 text-accent-gold/90' : 'bg-black/5 border-black/5 text-accent-clay'
               }`}>
                 {project.engineDetails}
               </p>
@@ -204,10 +213,22 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               <div className="flex flex-wrap items-center gap-4">
                 <button 
                   onClick={() => onOpenCaseStudy?.(project.id)}
-                  className="shiny-cta py-3 px-6 text-[10px] md:text-[11px]"
+                  className={`group relative rounded-full pl-6 pr-4 py-3 text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center justify-between gap-4 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] ${
+                    theme === 'dark' 
+                      ? 'bg-accent-gold text-alpine-950 hover:bg-white hover:text-alpine-950 hover:shadow-lg' 
+                      : 'bg-accent-clay text-white hover:bg-alpine-950 hover:text-white hover:shadow-lg'
+                  }`}
                 >
-                  {locale === 'ko' ? "케이스 스터디 읽기" : "Read Case Study"}
+                  <span>{locale === 'ko' ? "케이스 스터디 읽기" : "Read Case Study"}</span>
+                  <span className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] shrink-0 ${
+                    theme === 'dark' ? 'bg-alpine-950/10 group-hover:bg-alpine-950/20' : 'bg-white/15 group-hover:bg-white/20'
+                  }`}>
+                    <span className="transform group-hover:translate-x-1 group-hover:-translate-y-[1px] group-hover:scale-110 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] font-bold">
+                      →
+                    </span>
+                  </span>
                 </button>
+                
                 {(project.demoUrl || project.websiteUrl) && (
                   <a 
                     href={project.demoUrl || project.websiteUrl || "#"} 
@@ -236,7 +257,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 )}
               </div>
 
-              <span className={`text-[8px] md:text-[10px] border px-3 md:px-5 py-1.5 rounded-full uppercase tracking-widest font-black self-start sm:self-auto ${theme === 'dark' ? 'text-accent-gold border-accent-gold/30' : 'text-accent-clay border-accent-clay/30'}`}>
+              <span className={`text-[8px] md:text-[10px] border px-3 md:px-5 py-1.5 rounded-full uppercase tracking-widest font-black self-start sm:self-auto ${theme === 'dark' ? 'text-accent-gold/80 border-accent-gold/30' : 'text-accent-clay/80 border-accent-clay/30'}`}>
                 {project.betaCode 
                   ? (locale === 'ko' ? '초대 전용 베타' : 'Restricted Beta') 
                   : (project.collaborationUrl 
@@ -244,6 +265,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                       : (locale === 'ko' ? '공동 베타' : 'Public Beta'))}
               </span>
           </div>
+        </div>
       </div>
     </article>
   );

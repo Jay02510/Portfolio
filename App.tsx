@@ -205,12 +205,12 @@ function App() {
     <div className={`min-h-screen selection:bg-accent-gold/30 font-sans transition-colors duration-500 ${theme === 'dark' ? 'bg-alpine-950 text-white' : 'bg-alpine-50 text-alpine-950'}`}>
       
       {/* FROZEN TOP BAR CONTAINER */}
-      <div className="fixed top-0 left-0 w-full z-[100]">
+      <div className="fixed top-0 left-0 w-full z-[100] pointer-events-none flex flex-col items-center">
         {/* IN-APP BROWSER ALERT - Now Interactive */}
         {isInAppBrowser && (
           <button 
             onClick={() => setIsBrowserModalOpen(true)}
-            className="w-full bg-red-600/95 hover:bg-red-500 backdrop-blur-md text-white py-2 px-4 text-[9px] font-black uppercase tracking-[0.2em] text-center flex items-center justify-center gap-3 transition-colors group"
+            className="w-full bg-red-600/95 hover:bg-red-500 backdrop-blur-md text-white py-2 px-4 text-[9px] font-black uppercase tracking-[0.2em] text-center flex items-center justify-center gap-3 transition-colors group pointer-events-auto"
           >
              <span className="group-hover:translate-x-1 transition-transform">Optimization Required: Open in Safari/Chrome</span>
              <ExternalLinkIcon className="w-3.5 h-3.5 animate-pulse" />
@@ -218,12 +218,20 @@ function App() {
         )}
 
         {/* MAIN NAVIGATION HEADER */}
-        <header className={`w-full transition-all duration-500 flex items-center ${
+        <header className={`pointer-events-auto transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] flex items-center ${
           isScrolled 
-            ? (theme === 'dark' ? 'bg-alpine-950/98 border-b border-white/10' : 'bg-white/98 border-b border-black/10') + ' backdrop-blur-3xl py-3 md:py-4 shadow-2xl' 
-            : 'bg-transparent py-6 md:py-12'
+            ? `w-[92%] md:w-[85%] max-w-5xl mt-3 rounded-full border backdrop-blur-2xl py-3 px-6 md:px-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] ${
+                theme === 'dark' 
+                  ? 'bg-alpine-950/85 border-white/10 shadow-black' 
+                  : 'bg-white/90 border-black/10 shadow-black/10'
+              }`
+            : `w-[95%] max-w-7xl mt-4 md:mt-8 rounded-[1.8rem] border backdrop-blur-md py-4 md:py-5 px-6 md:px-10 ${
+                theme === 'dark' 
+                  ? 'bg-[#14171d]/40 border-white/5' 
+                  : 'bg-white/40 border-black/5'
+              }`
         }`}>
-          <div className="max-w-7xl mx-auto px-6 md:px-8 w-full flex items-center justify-between h-full">
+          <div className="w-full flex items-center justify-between h-full">
               <span className={`font-display font-medium text-[10px] md:text-[13px] tracking-[0.5em] md:tracking-[0.8em] uppercase whitespace-nowrap leading-none transition-colors ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
                 J. BENJAMIN
               </span>

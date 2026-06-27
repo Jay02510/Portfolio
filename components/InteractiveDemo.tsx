@@ -162,55 +162,61 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                     {solutions.map((sol, i) => (
                       <div 
                         key={i} 
-                        className={`group p-8 md:p-10 rounded-2xl border transition-all duration-500 cursor-pointer relative overflow-hidden ${
-                          selectedSolution === i 
-                          ? (theme === 'dark' ? 'bg-accent-gold border-accent-gold shadow-2xl scale-[1.02]' : 'bg-accent-clay border-accent-clay shadow-2xl scale-[1.02] text-white') 
-                          : (theme === 'dark' ? 'bg-white/[0.04] border-white/5 hover:border-white/20' : 'bg-white border-black/10 hover:border-black/20 shadow-lg')
-                        }`}
                         onClick={() => handleSelect(i)}
+                        className={`rounded-[2.2rem] border p-2 cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-[1.01] ${
+                          selectedSolution === i 
+                          ? (theme === 'dark' ? 'bg-accent-gold/25 border-accent-gold/40 shadow-2xl shadow-accent-gold/5' : 'bg-accent-clay/20 border-accent-clay/35 shadow-2xl shadow-accent-clay/5') 
+                          : (theme === 'dark' ? 'bg-white/[0.01] border-white/5 hover:border-white/15' : 'bg-black/[0.02] border-black/5 hover:border-black/10')
+                        }`}
                       >
-                        {selectedSolution === i && (
-                          <div className="absolute top-0 right-0 w-48 h-48 bg-white/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-                        )}
-
-                        <div className="flex justify-between items-start mb-6 gap-6 relative z-10">
-                          <h5 className={`text-2xl md:text-3xl font-medium font-display transition-colors ${selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950' : 'text-white') : (theme === 'dark' ? 'text-white' : 'text-alpine-950')}`}>
-                            {sol.title}
-                          </h5>
-                          <button 
-                            onClick={(e) => handleCopySummary(i, e)}
-                            className={`p-3 rounded-xl border transition-all ${
-                              selectedSolution === i 
-                              ? (theme === 'dark' ? 'border-black/10 hover:bg-black/10 text-black' : 'border-white/20 hover:bg-white/10 text-white') 
-                              : (theme === 'dark' ? 'border-white/10 hover:bg-white/10 text-white/40' : 'border-black/10 hover:bg-black/5 text-black/40')
-                            }`}
-                            title="Copy Summary"
-                            aria-label="Copy solution summary"
-                          >
-                            <FileTextIcon className="w-5 h-5" />
-                          </button>
-                        </div>
-
-                        {copiedIndex === i && (
-                          <div className="absolute top-6 right-20 animate-in fade-in zoom-in duration-300 z-20">
-                             <span className={`text-[10px] font-bold uppercase px-4 py-1.5 rounded-full shadow-2xl ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}>Copied to Clipboard</span>
-                          </div>
-                        )}
-                        
-                        <p className={`text-base md:text-lg font-normal leading-relaxed mb-10 relative z-10 transition-colors ${selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950/90' : 'text-white/95') : (theme === 'dark' ? 'text-white/60' : 'text-alpine-950/80')}`}>
-                          {sol.description}
-                        </p>
-
-                        <div className={`flex items-center gap-6 text-[11px] font-bold uppercase tracking-[0.4em] transition-all duration-500 relative z-10 ${
-                          selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950' : 'text-white') : (theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay')
+                        <div className={`rounded-[1.8rem] p-6 md:p-10 relative overflow-hidden h-full border transition-all duration-500 ${
+                          selectedSolution === i 
+                          ? (theme === 'dark' ? 'bg-accent-gold border-accent-gold text-alpine-950' : 'bg-accent-clay border-accent-clay text-white') 
+                          : (theme === 'dark' ? 'bg-white/[0.04] border-white/5' : 'bg-white border-black/5 shadow-inner')
                         }`}>
-                          <div className={`px-5 py-3 rounded-xl border flex items-center gap-4 ${selectedSolution === i ? 'border-current' : (theme === 'dark' ? 'border-white/10' : 'border-black/10')}`}>
-                             <MailIcon className="w-5 h-5" />
-                             <span>Discuss this idea</span>
+                          {selectedSolution === i && (
+                            <div className="absolute top-0 right-0 w-48 h-48 bg-white/25 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+                          )}
+
+                          <div className="flex justify-between items-start mb-6 gap-6 relative z-10">
+                            <h5 className={`text-2xl md:text-3xl font-medium font-display transition-colors ${selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950' : 'text-white') : (theme === 'dark' ? 'text-white' : 'text-alpine-950')}`}>
+                              {sol.title}
+                            </h5>
+                            <button 
+                              onClick={(e) => handleCopySummary(i, e)}
+                              className={`p-3 rounded-xl border transition-all ${
+                                selectedSolution === i 
+                                ? (theme === 'dark' ? 'border-black/15 hover:bg-black/10 text-black' : 'border-white/20 hover:bg-white/10 text-white') 
+                                : (theme === 'dark' ? 'border-white/10 hover:bg-white/10 text-white/40' : 'border-black/10 hover:bg-black/5 text-black/40')
+                              }`}
+                              title="Copy Summary"
+                              aria-label="Copy solution summary"
+                            >
+                              <FileTextIcon className="w-5 h-5" />
+                            </button>
                           </div>
-                          <span className={`ml-auto hidden sm:inline-block px-4 py-1.5 rounded-full border text-[10px] font-bold ${selectedSolution === i ? 'border-current' : 'border-current opacity-40'}`}>
-                             {sol.impact}
-                          </span>
+
+                          {copiedIndex === i && (
+                            <div className="absolute top-6 right-20 animate-in fade-in zoom-in duration-300 z-20">
+                               <span className={`text-[10px] font-bold uppercase px-4 py-1.5 rounded-full shadow-2xl ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}>Copied to Clipboard</span>
+                            </div>
+                          )}
+                          
+                          <p className={`text-base md:text-lg font-normal leading-relaxed mb-10 relative z-10 transition-colors ${selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950/90' : 'text-white/95') : (theme === 'dark' ? 'text-white/60' : 'text-alpine-950/80')}`}>
+                            {sol.description}
+                          </p>
+
+                          <div className={`flex items-center gap-6 text-[11px] font-bold uppercase tracking-[0.4em] transition-all duration-500 relative z-10 ${
+                            selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950' : 'text-white') : (theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay')
+                          }`}>
+                            <div className={`px-5 py-3 rounded-xl border flex items-center gap-4 ${selectedSolution === i ? 'border-current' : (theme === 'dark' ? 'border-white/10' : 'border-black/10')}`}>
+                               <MailIcon className="w-5 h-5" />
+                               <span>Discuss this idea</span>
+                            </div>
+                            <span className={`ml-auto hidden sm:inline-block px-4 py-1.5 rounded-full border text-[10px] font-bold ${selectedSolution === i ? 'border-current' : 'border-current opacity-40'}`}>
+                               {sol.impact}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     ))}
