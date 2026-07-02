@@ -236,7 +236,7 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
       {
         title: lang === 'en' ? "Gemini Vision Engine" : "Google Gemini LLM",
         subtitle: lang === 'en' ? "Classifies text & exports validated JSON keys" : "학습지 비전 분석, 텍스트 추출 및 정형 데이터 변환",
-        tech: "gemini-2.5-flash",
+        tech: "gemini-3.5-flash",
         icon: "sparkles"
       },
       {

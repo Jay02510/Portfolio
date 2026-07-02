@@ -1,9 +1,7 @@
-
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
-import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type } from "@google/genai";
 import path from "path";
 
@@ -32,155 +30,137 @@ STRICT STYLE & INTERACTION GUIDELINES:
 5. NO MARKDOWN: Never use bold (**), italics (*), or bullets. Use plain paragraphs without symbols.
 `;
 
-async function startServer() {
-  const app = express();
+const app = express();
 
-  // Bind port immediately to prevent connection refusal during initialization
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server listening on http://0.0.0.0:${PORT}`);
-  });
+// Trust nginx reverse proxy to extract the correct client IP for rate limiting
+app.set("trust proxy", 1);
 
-  // Trust nginx reverse proxy to extract the correct client IP for rate limiting
-  app.set("trust proxy", 1);
+// Apply Helmet with contentSecurityPolicy disabled to verify compatibility with Vite Dev Server / iFrame
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    frameguard: false, // Disable Frameguard SAMEORIGIN to allow preview within iframes on different origins
+  })
+);
 
-  // Apply Helmet with contentSecurityPolicy disabled to verify compatibility with Vite Dev Server / iFrame
-  app.use(
-    helmet({
-      contentSecurityPolicy: false,
-      crossOriginEmbedderPolicy: false,
-      frameguard: false, // Disable Frameguard SAMEORIGIN to allow preview within iframes on different origins
-    })
-  );
+app.use(cors());
 
-  app.use(cors());
+// Limit body payloads to 10kb to block massive JSON attacks
+app.use(express.json({ limit: "10kb" }));
 
-  // Limit body payloads to 10kb to block massive JSON attacks
-  app.use(express.json({ limit: "10kb" }));
-
-  // General rate limits to defend overall server resources (made very high for proxied containers)
-  const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: 1000, // Limit each IP to 1000 requests per windowMs
-    standardHeaders: "draft-7",
-    legacyHeaders: false,
-    message: { error: "Too many requests to this server. Please try again after 15 minutes." },
-  });
-
-  // Strict rate limits targeting computationally expensive Gemini AI generation (high for proxied containers)
-  const aiLimiter = rateLimit({
-    windowMs: 5 * 60 * 1000, // 5 minutes
-    limit: 500, // Limit each IP to 500 generation requests per 5 minutes
-    standardHeaders: "draft-7",
-    legacyHeaders: false,
-    message: { error: "You are generating ideas very quickly! Please pause for a moment to prevent server overload." },
-  });
-
-  // Rate limits disabled to prevent false-positive blocks in proxied container environments
-  // app.use("/api/", apiLimiter);
-  // app.use("/api/chat", aiLimiter);
-  // app.use("/api/ideate", aiLimiter);
-
-  // Gemini Initialization
-  const getGeminiClient = () => {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      throw new Error("GEMINI_API_KEY is not configured on the server. Please define GEMINI_API_KEY in the Settings > Secrets configuration panel.");
+// Gemini Initialization
+const getGeminiClient = () => {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new Error("GEMINI_API_KEY is not configured on the server. Please define GEMINI_API_KEY in the Settings > Secrets configuration panel.");
+  }
+  return new GoogleGenAI({ 
+    apiKey,
+    httpOptions: {
+      headers: {
+        'User-Agent': 'aistudio-build',
+      }
     }
-    return new GoogleGenAI({ 
-      apiKey,
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build',
+  });
+};
+
+// API Routes
+app.post("/api/chat", async (req, res) => {
+  try {
+    const { message } = req.body;
+    if (!message) return res.status(400).json({ error: "Message is required" });
+
+    // Enforce strict length constraint
+    if (typeof message !== "string" || message.length > 2000) {
+      return res.status(400).json({ error: "Message is too long. Please restrict instructions to 2000 characters." });
+    }
+
+    const ai = getGeminiClient();
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.5-flash',
+      contents: message,
+      config: {
+        systemInstruction: CHAT_SYSTEM_INSTRUCTION,
+        temperature: 0.7,
+        topP: 0.9,
+      }
+    });
+
+    res.json({ text: response.text });
+  } catch (error: any) {
+    console.error("Server Chat Error:", error.message);
+    res.status(500).json({ error: error.message || "Internal server error. Please try again later." });
+  }
+});
+
+app.post("/api/ideate", async (req, res) => {
+  try {
+    const { problem } = req.body;
+    if (!problem) return res.status(400).json({ error: "Problem description is required" });
+
+    // Enforce strict length constraint
+    if (typeof problem !== "string" || problem.length > 2000) {
+      return res.status(400).json({ error: "Problem is too long. Please restrict descriptions to 2000 characters." });
+    }
+
+    const ai = getGeminiClient();
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.5-flash',
+      contents: `A teacher is struggling with this problem: "${problem}". Suggest 3 simple digital helpers to fix it.`,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              title: { type: Type.STRING },
+              description: { type: Type.STRING },
+              technicalStack: { type: Type.ARRAY, items: { type: Type.STRING } },
+              impact: { type: Type.STRING }
+            },
+            required: ["title", "description", "technicalStack", "impact"]
+          }
         }
       }
+    });
+
+    res.json(JSON.parse(response.text || "[]"));
+  } catch (error: any) {
+    console.error("Server Ideate Error:", error.message);
+    res.status(500).json({ error: error.message || "Internal server error. Please try again later." });
+  }
+});
+
+// Standalone server initialization (only run when not on Vercel serverless platform)
+if (!process.env.VERCEL) {
+  const startStandalone = async () => {
+    // Vite Integration for dev or static server for production
+    if (!isProd) {
+      const { createServer: createViteServer } = await import("vite");
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa",
+      });
+      app.use(vite.middlewares);
+    } else {
+      const distPath = path.join(process.cwd(), "dist");
+      app.use(express.static(distPath));
+      app.get("*", (req, res) => {
+        res.sendFile(path.join(distPath, "index.html"));
+      });
+    }
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server listening on http://0.0.0.0:${PORT}`);
     });
   };
 
-  // API Routes
-  app.post("/api/chat", async (req, res) => {
-    try {
-      const { message } = req.body;
-      if (!message) return res.status(400).json({ error: "Message is required" });
-
-      // Enforce strict length constraint
-      if (typeof message !== "string" || message.length > 2000) {
-        return res.status(400).json({ error: "Message is too long. Please restrict instructions to 2000 characters." });
-      }
-
-      const ai = getGeminiClient();
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: message,
-        config: {
-          systemInstruction: CHAT_SYSTEM_INSTRUCTION,
-          temperature: 0.7,
-          topP: 0.9,
-        }
-      });
-
-      res.json({ text: response.text });
-    } catch (error: any) {
-      console.error("Server Chat Error:", error.message);
-      res.status(500).json({ error: error.message || "Internal server error. Please try again later." });
-    }
+  startStandalone().catch((err) => {
+    console.error("FAILED TO START SERVER:", err);
+    process.exit(1);
   });
-
-  app.post("/api/ideate", async (req, res) => {
-    try {
-      const { problem } = req.body;
-      if (!problem) return res.status(400).json({ error: "Problem description is required" });
-
-      // Enforce strict length constraint
-      if (typeof problem !== "string" || problem.length > 2000) {
-        return res.status(400).json({ error: "Problem is too long. Please restrict descriptions to 2000 characters." });
-      }
-
-      const ai = getGeminiClient();
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: `A teacher is struggling with this problem: "${problem}". Suggest 3 simple digital helpers to fix it.`,
-        config: {
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.ARRAY,
-            items: {
-              type: Type.OBJECT,
-              properties: {
-                title: { type: Type.STRING },
-                description: { type: Type.STRING },
-                technicalStack: { type: Type.ARRAY, items: { type: Type.STRING } },
-                impact: { type: Type.STRING }
-              },
-              required: ["title", "description", "technicalStack", "impact"]
-            }
-          }
-        }
-      });
-
-      res.json(JSON.parse(response.text || "[]"));
-    } catch (error: any) {
-      console.error("Server Ideate Error:", error.message);
-      res.status(500).json({ error: error.message || "Internal server error. Please try again later." });
-    }
-  });
-
-  // Vite Integration
-  if (!isProd) {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
-  }
 }
 
-startServer().catch((err) => {
-  console.error("FAILED TO START SERVER:", err);
-  process.exit(1);
-});
+export default app;
