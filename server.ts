@@ -51,9 +51,9 @@ app.use(express.json({ limit: "10kb" }));
 
 // Gemini Initialization
 const getGeminiClient = () => {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
   if (!apiKey) {
-    throw new Error("GEMINI_API_KEY is not configured on the server. Please define GEMINI_API_KEY in the Settings > Secrets configuration panel.");
+    throw new Error("GEMINI_API_KEY or API_KEY is not configured on the server. Please define GEMINI_API_KEY or API_KEY in the Settings > Secrets configuration panel.");
   }
   return new GoogleGenAI({ 
     apiKey,
