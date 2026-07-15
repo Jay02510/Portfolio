@@ -10,6 +10,16 @@ interface ResumeModalProps {
 }
 
 export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeModalProps) {
+  const [isInIframe, setIsInIframe] = React.useState(false);
+
+  React.useEffect(() => {
+    try {
+      setIsInIframe(window.self !== window.top);
+    } catch (e) {
+      setIsInIframe(true);
+    }
+  }, []);
+
   if (!isOpen) return null;
 
   const handlePrint = () => {
@@ -183,6 +193,23 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
         {/* SCROLLABLE BODY */}
         <div className="p-6 md:p-10 overflow-y-auto space-y-8 md:space-y-12 shrink print:overflow-visible print:p-0 print:space-y-8">
           
+          {/* IFRAME NOTICE BANNER */}
+          {isInIframe && (
+            <div className="p-4 bg-amber-500/10 border border-amber-500/25 text-amber-200 text-xs rounded-xl flex items-start gap-3 print:hidden shadow-inner">
+              <span className="text-base leading-none">⚠️</span>
+              <div className="space-y-1">
+                <p className="font-extrabold uppercase tracking-wide text-amber-400">
+                  {locale === 'en' ? "Running in AI Studio Preview Iframe" : "AI Studio 프리뷰 화면 실행 중"}
+                </p>
+                <p className="opacity-90 leading-relaxed text-[11px]">
+                  {locale === 'en' 
+                    ? "Standard browser print dialogs are restricted inside preview panels. To download this highly polished resume as a clean PDF: Please open the app in a new tab by clicking the external link icon (arrow icon in the top-right corner of the AI Studio preview pane), then open the resume modal and click download/print!" 
+                    : "브라우저 보안 샌드박스로 인해 프리뷰 화면 내에서는 인쇄 및 PDF 저장(window.print()) 호출이 제한됩니다. 고해상도 PDF 이력서를 온전히 다운로드 받으시려면, 프리뷰 우측 상단의 새 창에서 열기(화살표 아이콘) 버튼을 누른 뒤 이력서 인쇄 단추를 눌러주세요!"}
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* DYNAMIC ROLE SWITCHABLE RESUME */}
           <RoleSwitchResume locale={locale} theme={theme} />
 

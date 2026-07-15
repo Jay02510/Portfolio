@@ -236,6 +236,14 @@
                 overflow: visible !important;
             }
 
+            /* Reset framer motion and other transition offsets during print to prevent vertical white space gaps */
+            #resume-modal-overlay * {
+                transform: none !important;
+                transition: none !important;
+                animation: none !important;
+                opacity: 1 !important;
+            }
+
             /* Hide buttons, navigations, sidebars, other interactive controls */
             .print\:hidden,
             button,

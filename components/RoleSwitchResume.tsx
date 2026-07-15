@@ -220,31 +220,110 @@ const PRODUCTS: ProductItem[] = [
   }
 ];
 
+const VODABI_BULLETS: { category: { en: string; ko: string }; en: string; ko: string; weight: Record<ActiveRole, number> }[] = [
+  {
+    category: { en: "Product Strategy & UX Leadership", ko: "제품 전략 및 UX 리더십" },
+    en: "Spearheaded Product Vision: Authored the core product brief and directed the pivot from a legacy, analytics-heavy dashboard to a clean, 3-step interactive AI context aware coaching widget (Role Selection ➝ Upload ➝ Chat), significantly reducing user cognitive load.",
+    ko: "제품 비전 주도: 핵심 제품 브리프 작성 및 데이터가 무거운 기존 대시보드에서 3단계(역할 선택 ➝ 업로드 ➝ 채팅) 대화형 대안 AI 맥락 인지 코칭 위젯으로의 피봇 지휘, 사용자 인지 부하 대폭 감축.",
+    weight: { pm: 5, eng: 2, edtech: 4 }
+  },
+  {
+    category: { en: "Product Strategy & UX Leadership", ko: "제품 전략 및 UX 리더십" },
+    en: "Phased Product Roadmap: Mapped and executed a multi-phase deployment strategy, securing immediate stakeholder ROI with a lightweight, stateless MVP before architecting the transition to a stateful, enterprise-grade cloud ecosystem.",
+    ko: "단계별 제품 로드맵: 다단계 배포 전략을 수립하여 가벼운 비상태형 MVP로 이해관계자에게 즉각적인 ROI를 증명하고, 상태형 엔터프라이즈급 클라우드 에코시스템 전환 설계.",
+    weight: { pm: 5, eng: 1, edtech: 3 }
+  },
+  {
+    category: { en: "AI Architecture & Prompt Engineering", ko: "AI 아키텍처 및 프롬프트 엔지니어링" },
+    en: "Engineered Coaching Frameworks: Designed the pedagogical 'Fact-Impact-Fix' logic model, successfully transforming rigid, integer-based scoring rubrics into empathetic, actionable micro-learning interventions.",
+    ko: "코칭 프레임워크 구축: 교육학적 'Fact-Impact-Fix' 논리 모델 설계, 엄격한 숫자 기반 채점표를 공감형이고 조치 가능한 마이크로 러닝 중재 프레임워크로 혁신 변환.",
+    weight: { pm: 4, eng: 3, edtech: 5 }
+  },
+  {
+    category: { en: "AI Architecture & Prompt Engineering", ko: "AI 아키텍처 및 프롬프트 엔지니어링" },
+    en: "Dynamic Prompt Integration: Partnered with research teams to translate a complex keyword data dictionary into a dynamic, 4-persona LLM system prompt matrix. Strategized the ingestion of proprietary B2B sales telemetry into the LLM context window to generate highly personalized feedback.",
+    ko: "동적 프롬프트 연동: 리서치 부서와 협력하여 복잡한 키워드 사전 사양을 동적인 4개 페르소나 LLM 시스템 프롬프트 매트릭스로 변환하고, 자체 B2B 영업 텔레메트리 데이터를 LLM 컨텍스트 윈도우에 연동하여 고도로 맞춤화된 피드백 기획.",
+    weight: { pm: 4, eng: 4, edtech: 2 }
+  },
+  {
+    category: { en: "AI Architecture & Prompt Engineering", ko: "AI 아키텍처 및 프롬프트 엔지니어링" },
+    en: "Hybrid Evaluation Architecture: Designed a deterministic evaluation framework that decoupled immutable behavioral scoring from dynamic, client-defined compliance matrices, effectively eliminating LLM hallucinations and ensuring enterprise trust.",
+    ko: "하이브리드 평가 아키텍처: 불변 행동 평가 점수와 동적 고객 맞춤형 컴플라이언스 매트릭스를 완벽 분리하는 결정론적 평가 프레임워크 설계, LLM 환각(hallucination)을 근본 방지하여 기업 신뢰도 확보.",
+    weight: { pm: 3, eng: 5, edtech: 1 }
+  },
+  {
+    category: { en: "AI Architecture & Prompt Engineering", ko: "AI 아키텍처 및 프롬프트 엔지니어링" },
+    en: "Enterprise AI Guardrails: Established strict compliance protocols ensuring the LLM operated securely within proprietary boundaries, restricting outputs to concise, high-impact bursts, and preventing hallucinated business decisions.",
+    ko: "엔터프라이즈 AI 가드레일: 자체 정보 보호 경계 내에서 LLM이 안전하게 작동하도록 엄격한 규격 준수 프로토콜을 정립하여, 출력을 간결하고 압축된 고임팩트 형태로 제어하며 잘못된 비즈니스 판단을 차단.",
+    weight: { pm: 3, eng: 5, edtech: 2 }
+  },
+  {
+    category: { en: "Cross-Functional Execution & Technical Scoping", ko: "교차 기능 실행 및 기술 스코핑" },
+    en: "Prototyping & Validation: Designed and executed a 'Wizard of Oz' prototyping demonstration to validate frontend UX and backend conversational logic with executive stakeholders prior to full database integration.",
+    ko: "프로토타이핑 및 검증: 데이터베이스 전면 연동 이전에 경영진 등 핵심 이해관계자들을 대상으로 프론트엔드 UX 및 백엔드 대화 로직을 입증하는 'Wizard of Oz' 프로토타입 시연 기획 및 성공적 수행.",
+    weight: { pm: 4, eng: 3, edtech: 4 }
+  },
+  {
+    category: { en: "Cross-Functional Execution & Technical Scoping", ko: "교차 기능 실행 및 기술 스코핑" },
+    en: "Zero-Day Deployment Pipeline: Architected a webhook-driven backend logic pipeline using Make.com and Airtable. This enabled administrators to deploy instant, 'zero-day' scenario updates without requiring backend developer intervention.",
+    ko: "제로데이 배포 파이프라인: Make.com 및 Airtable을 연동한 웹훅 기반 백엔드 로직 설계, 개발자 개입 없이 관리자가 즉각적으로 코칭 시나리오를 배포할 수 있는 '제로데이' 운영 유연성 수립.",
+    weight: { pm: 4, eng: 4, edtech: 3 }
+  },
+  {
+    category: { en: "Cross-Functional Execution & Technical Scoping", ko: "교차 기능 실행 및 기술 스코핑" },
+    en: "Engineering Alignment: Defined strict JSON data contracts, state management flows, and API routing logic to guide UI/UX designers and AWS engineers in translating complex LLM behaviors into production code.",
+    ko: "엔지니어링 사양 정렬: 정교한 LLM 동작 모델이 안전한 프론트 UI 및 AWS 인프라 환경에서 작동하도록 JSON 데이터 규격 계약, 상태 관리 흐름, API 라우팅 스펙 정의 및 전달.",
+    weight: { pm: 3, eng: 5, edtech: 1 }
+  },
+  {
+    category: { en: "Cross-Functional Execution & Technical Scoping", ko: "교차 기능 실행 및 기술 스코핑" },
+    en: "GTM & Client Enablement: Aligned the AI coaching features directly to existing revenue-generating reports and provided strategic positioning materials to successfully support high-stakes B2B sales demonstrations for Tier-1 enterprise clients.",
+    ko: "GTM 및 파트너 영업 활성화: 개발된 AI 코칭 기능을 기존 유료 리포트 지표들과 직결시키고, 1티어 대기업 파트너를 위한 고성공율 B2B 세일즈 데모용 핵심 가이드와 포지셔닝 머티리얼 지원.",
+    weight: { pm: 5, eng: 2, edtech: 4 }
+  }
+];
+
 const SKILLS: SkillCategory[] = [
   {
     id: "pm",
     category: { en: "Product Management", ko: "프로덕트 매니지먼트" },
-    items: ["AI Product Strategy", "Product Roadmap", "Product Lifecycle Management", "User Stories", "Acceptance Criteria", "KPI Definition", "A/B Testing", "Data-Driven Decision Making", "Go-to-Market Strategy", "Agile", "Sprint Planning", "Backlog Management", "Stakeholder Management", "Cross-Functional Collaboration", "B2B SaaS", "Enterprise SaaS", "B2C Mobile"]
+    items: [
+      "AI Product Strategy", "Product Roadmap", "Acceptance Criteria", "Discovery & Scoping", 
+      "Product Lifecycle Management", "Cross-Functional Collaboration", "Go-to-Market Strategy", 
+      "B2B SaaS", "Enterprise AI SaaS", "Sales Enablement", "B2C Mobile", 
+      "Multi-Tenant Architecture", "RBAC", "Agile", "OKRs", "Stakeholder Management", 
+      "UX Cognitive Load Reduction"
+    ]
   },
   {
     id: "ai",
-    category: { en: "AI & Generative AI", ko: "생성형 AI & 거대언어모델" },
-    items: ["Generative AI", "LLM Integration", "AI Agent Design", "Prompt Engineering", "Google Gemini (Flash / Pro / Ultra)", "Multi-LLM Orchestration", "Google AI Studio", "Bilingual AI", "Responsible AI", "Model Bias Mitigation", "Structured JSON Schema Enforcement", "Prompt Injection Hardening"]
+    category: { en: "Generative AI & LLM", ko: "생성형 AI & 거대언어모델" },
+    items: [
+      "Generative AI", "LLM Integration", "Prompt Engineering", "Multi-Model Pipeline Orchestration", 
+      "Gemini AI", "Claude AI", "Google AI Studio", "Structured Output Enforcement", 
+      "AI Guardrails", "Prompt Injection Hardening", "Bilingual AI", "Automated Reporting Pipelines", 
+      "AI Agent Design", "Deterministic AI Architecture", "Context Window Optimization", 
+      "Hallucination Mitigation", "Persona Matrix Design"
+    ]
   },
   {
-    id: "engineering",
-    category: { en: "Engineering & Stack", ko: "기술 스택 및 아키텍처" },
-    items: ["React 18/19", "TypeScript", "Vite", "Next.js", "Tailwind CSS", "Node.js", "Express.js", "Firebase (Firestore, Auth, Security Rules)", "Supabase (PostgreSQL, RLS)", "@react-pdf/renderer", "Vercel", "HTML", "CSS", "API Integration"]
-  },
-  {
-    id: "automation",
-    category: { en: "No-Code & Automation", ko: "자동화 및 노코드 연동" },
-    items: ["Make.com", "Airtable", "Softr", "Fillout", "Workflow Automation", "API Webhooks", "RBAC", "Magic Link Authentication", "Zero-Storage Architecture"]
+    id: "technical",
+    category: { en: "Technical & Tooling", ko: "기술 및 도구" },
+    items: [
+      "React", "TypeScript", "Firebase", "Vercel", "Supabase", "Make.com", "Airtable", 
+      "Softr", "Fillout", "API Webhooks", "JSON Data Contracts", "Stateful & Stateless Architecture", 
+      "AWS Integration & Handover", "Magic Links", "Passwordless Authentication", 
+      "Zero-Storage Architecture", "App Store Compliance", "Child Data Privacy"
+    ]
   },
   {
     id: "domain",
-    category: { en: "EdTech & Domain", ko: "에듀테크 및 교육 도메인" },
-    items: ["EdTech", "K-12", "Instructional Design", "Learning Outcomes", "Student Engagement", "EFL/ESL", "Bilingual Product Localisation", "CEFR", "Cambridge YLE", "LMS Concepts", "App Store Compliance", "Child Data Privacy (COPPA)"]
+    category: { en: "Domain", ko: "도메인 분야 지식" },
+    items: [
+      "EdTech", "Educational Technology", "B2B Revenue Intelligence", "South Korea Market", 
+      "Bilingual Product Design", "English-Korean Localisation", "Language Academy Operations", 
+      "EFL", "ESL"
+    ]
   }
 ];
 
@@ -258,7 +337,7 @@ const ROLES: Record<ActiveRole, RoleConfig> = {
       en: "EdTech founder and AI product manager with a decade of classroom experience in South Korea and a portfolio of six production-ready AI-powered products. Proven track record of defining product strategy, shipping cross-functional generative AI features from zero to launch, and driving measurable improvements in learning outcomes and operational efficiency. Uniquely positioned at the intersection of bilingual EdTech product design, LLM integration, and institutional operations — with hands-on experience across the full AI product lifecycle: discovery, agent design, go-to-market, and post-launch iteration.",
       ko: "한국 교육 현장에서의 10년 경력과 6개의 완성도 높은 실무형 AI 제품 포트폴리오를 보유한 에듀테크 창업가이자 AI 프로덕트 매니저입니다. 핵심 프로덕트 전략 수립부터 크로스 기능 기반 생성형 AI 피처 배포 완료, 그리고 학원 현장 업무 시간 매주 15시간 이상 저감 등 측정 가능 고효율 비즈니스 임팩트를 확보해 왔습니다. 다국어 마켓 번역 설계, 대형 언어 모델 프롬프트 조합 가이드라인 엔지니어링, 복잡한 비즈니스 요건의 정밀 제품 스펙 변형을 강점으로 합니다."
     },
-    skillsOrder: ["pm", "ai", "domain", "automation", "engineering"],
+    skillsOrder: ["pm", "ai", "domain", "technical"],
     academyBulletOrder: [0, 1, 2] // scheduling system, assessment system, textbook authoring
   },
   eng: {
@@ -270,7 +349,7 @@ const ROLES: Record<ActiveRole, RoleConfig> = {
       en: "Technical solutions architect and AI integration engineer specialising in full-stack LLM orchestration, secure database designs, and automated serverless workflows. Developer of multi-tier generative models (such as the Gemini Flash/Pro 'Draft and Weave' system), robust PostgreSQL row-level security (RLS) policies, secure role-based access tokens, and containerised deployments. Passionate about engineering high-compliance zero-storage application boundaries that enforce rigorous client-side PDF compilation, preventing cloud exposure of sensitive child records.",
       ko: "대형 생성형 모델 오케스트레이션, 비비동기 이벤트 연동, 데이터 접근 경계 설계를 전문화한 프리미엄 AI 인티그레이션 솔루션 에이전트 엔지니어입니다. Gemini Flash/Pro 복합 'Draft and Weave' 가이드 2단계 컴파일 파이프라인 수립, Supabase PostgreSQL RLS 보안 시나리오 구축, 클라이언트 브라우저 인클래스 @react-pdf/renderer 독립 연산 구현 등을 소유했습니다. 민감 유저 데이터를 완전히 기기 엣지 방향에서 안전 필터 처리하는 저비용 고보안 환경 구축에 능숙합니다."
     },
-    skillsOrder: ["engineering", "ai", "automation", "pm", "domain"],
+    skillsOrder: ["technical", "ai", "pm", "domain"],
     academyBulletOrder: [1, 0, 2] // assessment system, scheduling system, textbook authoring
   },
   edtech: {
@@ -282,7 +361,7 @@ const ROLES: Record<ActiveRole, RoleConfig> = {
       en: "Bilingual EdTech product specialist and veteran EFL homeroom manager in Seoul, holding over 10 years of experience managing core student life cycle and instructional designs. Expert in crafting responsive assessment modules synced with international standard indices (CEFR / Cambridge YLE), releasing highly rated children's English educational products targeted at local families, and coordinating complex academic resource scheduling. Co-author of a widely popular 20-volume English language learning textbook set adopted at prime private academies.",
       ko: "국내 미취학 아동 및 케이포 교육 실무 분야에서 10년 이상 영어 담임 및 아카데믹 커리큘럼 디자인 총괄을 마친 에듀테크 및 현지 마켓 특화 기획형 PM입니다. 실제 어학원들이 필수적으로 요구하는 상시 인텔리전스 평가 기준과 CEFR/Cambridge YLE 레벨 시스템을 제품에 가공 삽입하는 기법을 가지며, 아동용 모바일 안전 규정(COPPA) 준수 제품 고안, 6개 언어 영역을 망라하는 20권 어학원 전문 정규 서적 일지 구축 등을 도맡았습니다."
     },
-    skillsOrder: ["domain", "pm", "ai", "automation", "engineering"],
+    skillsOrder: ["domain", "pm", "ai", "technical"],
     academyBulletOrder: [2, 1, 0] // textbook authoring, assessment system, scheduling system
   }
 };
@@ -436,6 +515,43 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
               <div className="space-y-5">
                 <div className="border-l border-accent-gold/25 pl-4 sm:pl-5 space-y-5 print:border-black/30">
                   
+                  {/* VODABI EXPERIENCE BLOCK */}
+                  <div className="p-3.5 rounded-xl border border-accent-gold/35 bg-accent-gold/[0.03] shadow-[0_2px_12px_rgba(212,163,89,0.08)] print-avoid-break print:bg-transparent print:border-0 print:border-b print:border-black/10 print:p-0 print:pb-3 print:mb-4 print:opacity-100">
+                    <div className="space-y-1">
+                      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                        <span className="text-[11.5px] font-black uppercase text-accent-gold print:text-black flex items-center gap-1.5 font-display">
+                          <span>🚀</span> {locale === 'en' ? "AI Product Manager (Internship) · VodaBi SaaS Startup" : "AI 프로덕트 매니저 (인턴십) · VodaBi SaaS 스타트업"}
+                        </span>
+                        <span className="text-[9.5px] font-mono opacity-50 print:text-black/60 print:text-[9px]">
+                          {locale === 'en' ? "July 2026 – Present" : "2026년 7월 – 현재"}
+                        </span>
+                      </div>
+                      <span className={`text-[10px] block font-light font-display opacity-80 ${isDark ? 'text-white' : 'text-black'}`}>
+                        {locale === 'en' 
+                          ? "Lead product architect for an enterprise B2B conversational AI and automated evaluation platform." 
+                          : "엔터프라이즈 B2B 대화형 AI 및 자동 평가 플랫폼 개발 리드 프로덕트 아키텍트."}
+                      </span>
+                    </div>
+
+                    {/* BULLETS */}
+                    <ul className="list-disc list-inside space-y-1.5 pl-2 mt-2.5">
+                      {VODABI_BULLETS
+                        .filter(bullet => bullet.weight[activeRole] >= 3)
+                        .sort((a, b) => b.weight[activeRole] - a.weight[activeRole])
+                        .map((bullet, idx) => (
+                          <li 
+                            key={idx} 
+                            className={`text-[10.5px] leading-relaxed font-light ${isDark ? 'text-white/70' : 'text-neutral-800'} print:text-black print:text-[9px] indent-[-0.75rem] pl-3`}
+                          >
+                            <span className="font-bold text-accent-gold/90 print:text-black/80 font-mono text-[9px] uppercase mr-1.5">
+                              [{bullet.category[locale]}]
+                            </span>
+                            {bullet[locale]}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+
                   {/* CHEKKI PORTFOLIO PARENT */}
                   <div className="space-y-1">
                     <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
