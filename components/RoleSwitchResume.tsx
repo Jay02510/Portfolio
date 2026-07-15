@@ -334,8 +334,8 @@ const ROLES: Record<ActiveRole, RoleConfig> = {
       ko: "제이슨 벤자민 — AI 프로덕트 매니저 · 에듀테크 지향 전문가"
     },
     profileText: {
-      en: "EdTech founder and AI product manager with a decade of classroom experience in South Korea and a portfolio of six production-ready AI-powered products. Proven track record of defining product strategy, shipping cross-functional generative AI features from zero to launch, and driving measurable improvements in learning outcomes and operational efficiency. Uniquely positioned at the intersection of bilingual EdTech product design, LLM integration, and institutional operations — with hands-on experience across the full AI product lifecycle: discovery, agent design, go-to-market, and post-launch iteration.",
-      ko: "한국 교육 현장에서의 10년 경력과 6개의 완성도 높은 실무형 AI 제품 포트폴리오를 보유한 에듀테크 창업가이자 AI 프로덕트 매니저입니다. 핵심 프로덕트 전략 수립부터 크로스 기능 기반 생성형 AI 피처 배포 완료, 그리고 학원 현장 업무 시간 매주 15시간 이상 저감 등 측정 가능 고효율 비즈니스 임팩트를 확보해 왔습니다. 다국어 마켓 번역 설계, 대형 언어 모델 프롬프트 조합 가이드라인 엔지니어링, 복잡한 비즈니스 요건의 정밀 제품 스펙 변형을 강점으로 합니다."
+      en: "AI Product Manager and EdTech founder with a proven track record of shipping enterprise B2B conversational SaaS, multi-persona coaching agents, and educational technology products. Adept at leading product vision, authoring product briefs, and designing interactive widgets that drastically reduce cognitive load. Uniquely positioned at the intersection of bilingual EdTech product design, generative AI integration, and cross-functional leadership — with hands-on experience across the full AI product lifecycle: from initial discovery and 'Wizard of Oz' validation to automated webhook pipelines and database scoping.",
+      ko: "엔터프라이즈 B2B 대화형 AI SaaS 및 자동 평가 코칭 플랫폼을 설계하는 AI 프로덕트 매니저이자 에듀테크 창업가입니다. 핵심 제품 비전 및 사양 수립, 초기 무상태성 MVP 설계부터 다단계 배포 전략을 거쳐 상태형 클라우드 에코시스템 설계까지 이끌었습니다. 한국 교육 현장에서의 10년 경력과 다국어 마켓 현지화 제품 기획, 정교한 4개 페르소나 LLM 동작 모델링, 그리고 Make.com/Airtable을 활용한 제로데이 배포 파이프라인 설계를 통해 비즈니스 임팩트를 확보해 왔습니다."
     },
     skillsOrder: ["pm", "ai", "domain", "technical"],
     academyBulletOrder: [0, 1, 2] // scheduling system, assessment system, textbook authoring
@@ -346,8 +346,8 @@ const ROLES: Record<ActiveRole, RoleConfig> = {
       ko: "제이슨 벤자민 — AI 인티그레이션 엔지니어 · 클라우드 솔루션 아키텍트"
     },
     profileText: {
-      en: "Technical solutions architect and AI integration engineer specialising in full-stack LLM orchestration, secure database designs, and automated serverless workflows. Developer of multi-tier generative models (such as the Gemini Flash/Pro 'Draft and Weave' system), robust PostgreSQL row-level security (RLS) policies, secure role-based access tokens, and containerised deployments. Passionate about engineering high-compliance zero-storage application boundaries that enforce rigorous client-side PDF compilation, preventing cloud exposure of sensitive child records.",
-      ko: "대형 생성형 모델 오케스트레이션, 비비동기 이벤트 연동, 데이터 접근 경계 설계를 전문화한 프리미엄 AI 인티그레이션 솔루션 에이전트 엔지니어입니다. Gemini Flash/Pro 복합 'Draft and Weave' 가이드 2단계 컴파일 파이프라인 수립, Supabase PostgreSQL RLS 보안 시나리오 구축, 클라이언트 브라우저 인클래스 @react-pdf/renderer 독립 연산 구현 등을 소유했습니다. 민감 유저 데이터를 완전히 기기 엣지 방향에서 안전 필터 처리하는 저비용 고보안 환경 구축에 능숙합니다."
+      en: "Technical solutions architect and AI integration engineer specializing in full-stack LLM orchestration, enterprise B2B conversational AI, and secure serverless logic pipelines. Experienced in designing deterministic evaluation frameworks that decouple behavioral scoring from client compliance to eliminate hallucinations, and managing JSON data contracts for high-trust environments. Proven track record of architecting scalable webhook-driven pipelines (Make.com, Airtable, AWS) and robust database/RLS security policies, bridging the gap between complex LLM behaviors and production code.",
+      ko: "대형 언어 모델(LLM) 오케스트레이션, 복합 프롬프트 매트릭스 설계, 그리고 결정론적 평가 하이브리드 아키텍처 구축을 전문으로 하는 기술 솔루션 아키텍트이자 AI 인티그레이션 엔지니어입니다. VodaBi SaaS의 프론트엔드 UX 및 백엔드 로직 검증용 프로토타입 시연, Make.com과 Airtable을 연동한 웹훅 기반 제로데이 배포 파이프라인, 그리고 엄격한 JSON 데이터 규격 계약 및 API 라우팅을 설계하여 고도의 성능과 기업 보안 컴플라이언스를 충족합니다."
     },
     skillsOrder: ["technical", "ai", "pm", "domain"],
     academyBulletOrder: [1, 0, 2] // assessment system, scheduling system, textbook authoring
@@ -358,8 +358,8 @@ const ROLES: Record<ActiveRole, RoleConfig> = {
       ko: "제이슨 벤자민 — 에듀테크 프로덕트 매니저 · EFL 교육 과정 총괄 디렉터"
     },
     profileText: {
-      en: "Bilingual EdTech product specialist and veteran EFL homeroom manager in Seoul, holding over 10 years of experience managing core student life cycle and instructional designs. Expert in crafting responsive assessment modules synced with international standard indices (CEFR / Cambridge YLE), releasing highly rated children's English educational products targeted at local families, and coordinating complex academic resource scheduling. Co-author of a widely popular 20-volume English language learning textbook set adopted at prime private academies.",
-      ko: "국내 미취학 아동 및 케이포 교육 실무 분야에서 10년 이상 영어 담임 및 아카데믹 커리큘럼 디자인 총괄을 마친 에듀테크 및 현지 마켓 특화 기획형 PM입니다. 실제 어학원들이 필수적으로 요구하는 상시 인텔리전스 평가 기준과 CEFR/Cambridge YLE 레벨 시스템을 제품에 가공 삽입하는 기법을 가지며, 아동용 모바일 안전 규정(COPPA) 준수 제품 고안, 6개 언어 영역을 망라하는 20권 어학원 전문 정규 서적 일지 구축 등을 도맡았습니다."
+      en: "Bilingual EdTech product specialist and EFL director with a decade of educational leadership in South Korea, specializing in converting complex pedagogical frameworks into actionable AI features. Designed the 'Fact-Impact-Fix' logic model to turn traditional grading rubrics into empathetic micro-learning interventions, reducing cognitive load. Expert in international standard indices (CEFR / Cambridge YLE), bilingual product localization, and cross-functional GTM strategies that align state-of-the-art AI coaching tools with commercial revenue goals and tier-1 B2B client needs.",
+      ko: "국내 교육 시장에서 10년 이상 영어 교육 과정 및 학원 운영을 총괄한 에듀테크 제품 전문가이자 EFL 디렉터입니다. 학원 현장에서 요구하는 평가 기준(CEFR/Cambridge YLE)을 제품에 정밀 적용하고, 엄격한 채점 방식을 공감형 마이크로 러닝 인터벤션으로 구현하는 'Fact-Impact-Fix' 교육학적 AI 코칭 모델을 설계하였습니다. 한국어-영어 다국어 제품 현지화 설계, 아동 개인정보 규제(COPPA) 준수 제품 고안, 그리고 개발된 AI 기능을 기업 고객 대상 B2B 세일즈 및 유료 성과 리포트로 매끄럽게 연동하는 GTM 전략을 주도합니다."
     },
     skillsOrder: ["domain", "pm", "ai", "technical"],
     academyBulletOrder: [2, 1, 0] // textbook authoring, assessment system, scheduling system
@@ -538,6 +538,7 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
                       {VODABI_BULLETS
                         .filter(bullet => bullet.weight[activeRole] >= 3)
                         .sort((a, b) => b.weight[activeRole] - a.weight[activeRole])
+                        .slice(0, 4)
                         .map((bullet, idx) => (
                           <li 
                             key={idx} 
