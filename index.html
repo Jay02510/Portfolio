@@ -186,6 +186,76 @@
                 scroll-behavior: auto !important;
             }
         }
+
+        @media print {
+            html, body {
+                background-color: white !important;
+                background-image: none !important;
+                color: black !important;
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Hide everything inside the React container except the resume modal overlay */
+            #root > div > *:not(#resume-modal-overlay) {
+                display: none !important;
+            }
+
+            /* Ensure the modal overlay spans the full page/canvas during print */
+            #resume-modal-overlay {
+                position: static !important;
+                display: block !important;
+                background: transparent !important;
+                backdrop-filter: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
+                z-index: auto !important;
+            }
+
+            /* Format the card container inside the modal to render beautifully as a plain document */
+            #resume-modal-overlay > div {
+                max-width: 100% !important;
+                max-height: none !important;
+                height: auto !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                overflow: visible !important;
+            }
+
+            /* Hide buttons, navigations, sidebars, other interactive controls */
+            .print\:hidden,
+            button,
+            nav,
+            header {
+                display: none !important;
+            }
+
+            /* Adapt golden accent color to print readability (darker clay/brown tone) */
+            .text-accent-gold {
+                color: #8c6239 !important;
+            }
+            .border-accent-gold\/20 {
+                border-color: rgba(140, 98, 57, 0.3) !important;
+            }
+            
+            /* Keep experience borders visible but light gray */
+            .border-l {
+                border-left-color: rgba(0, 0, 0, 0.15) !important;
+            }
+        }
     </style>
   <script type="importmap">
 {
