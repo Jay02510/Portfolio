@@ -109,6 +109,22 @@ const stackExplains: Record<string, { en: string; ko: string }> = {
     en: "Native action handlers for async transitions.",
     ko: "비동기 상태 전이를 매끄럽게 핸들링하는 네이티브 액션 핸들러 탑재."
   },
+  "Capacitor JS (v8)": {
+    en: "Drives native cross-platform deployment to iOS and Android from a unified codebase.",
+    ko: "단일 코드베이스에서 iOS 및 안드로이드 네이티브 앱 배포를 구동하는 하이브리드 엔진."
+  },
+  "Vercel Serverless Functions": {
+    en: "Provides highly scalable, serverless micro-endpoints for secure API routing and auth validation.",
+    ko: "API 보안 라우팅 및 세션 유효 인증을 안전하게 위임 수행하는 저지연 서버리스 함수."
+  },
+  "Cloud Firestore": {
+    en: "Real-time document storage for user quotas, image analysis caches, and learning dashboards.",
+    ko: "사용자 실시간 사용 한도, 오답 기록부, 캐시 데이터베이스를 관리하는 NoSQL DB."
+  },
+  "Gemini 2.5 Pro & Flash": {
+    en: "Parallel Hybrid Execution: Flash extracts layouts instantly; Pro analyzes handwriting via 20k token thinking budgets.",
+    ko: "병렬 하이브리드 추론 파이프라인: Flash의 기민한 레이아웃 추출과 Pro의 2만 토큰 팅킹 오답 판정 협업."
+  },
   "TypeScript": {
     en: "Type-safety contracts that eliminate runtime layout exceptions during builds.",
     ko: "발생 가능한 컴포넌트 런타임 오류를 차단하는 엄격한 타입 계약 정의."
@@ -222,27 +238,27 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
   const nodesMap: Record<string, FlowchartNode[]> = {
     'chekki': [
       {
-        title: lang === 'en' ? "React UI App" : "모바일 React 클라이언트",
-        subtitle: lang === 'en' ? "Captures and resizes raw paper worksheet stream" : "사용자 카메라 제어 및 학습지 이미지 로컬 압축",
-        tech: "React 18 / Tailwind",
+        title: lang === 'en' ? "Co-Pilot Mobile Client" : "모바일 하이브리드 클라이언트",
+        subtitle: lang === 'en' ? "Captures paper worksheets via native camera stream" : "Capacitor 카메라 제어 및 학습지 이미지 업로드",
+        tech: "React 19 / Capacitor JS",
         icon: "mobile"
       },
       {
-        title: lang === 'en' ? "Server Gateway" : "Express 백엔드 미들웨어",
-        subtitle: lang === 'en' ? "Protects API credentials & proxies payloads" : "보안 토큰 은폐, 요청 검증 및 우회 호출 실행",
-        tech: "Express / Node.js",
+        title: lang === 'en' ? "Serverless Gateway" : "서버리스 API 게이트웨이",
+        subtitle: lang === 'en' ? "Handles secure API routes, SSO tokens & quotas" : "보안 토큰 인가 검증, 사용 한도 및 오답 기록부 동기화",
+        tech: "Vercel / Firestore",
         icon: "settings"
       },
       {
-        title: lang === 'en' ? "Gemini Vision Engine" : "Google Gemini LLM",
-        subtitle: lang === 'en' ? "Classifies text & exports validated JSON keys" : "학습지 비전 분석, 텍스트 추출 및 정형 데이터 변환",
-        tech: "gemini-3.5-flash",
+        title: lang === 'en' ? "Parallel Gemini Pipeline" : "병렬 제미나이 엔진",
+        subtitle: lang === 'en' ? "Flash maps layouts; Pro solves ambiguous inputs" : "2.5 Flash 고속 파싱 및 2.5 Pro 오답 판정 이중 교정",
+        tech: "Gemini 2.5 Pro & Flash",
         icon: "sparkles"
       },
       {
-        title: lang === 'en' ? "Operational Output" : "클라이언트 다국어 뷰어",
-        subtitle: lang === 'en' ? "Renders step-by-step parent overlays & TTS" : "이중언어 지도안 오버레이, 학습 가이드 표기",
-        tech: "Client Canvas / TTS",
+        title: lang === 'en' ? "Co-Pilot Dashboard" : "인터랙티브 대시보드",
+        subtitle: lang === 'en' ? "Renders pronunciation training & digital flashcards" : "실시간 이중언어 발음 연습(TTS/STT) 및 플래시카드",
+        tech: "React 19 / TTS & STT",
         icon: "fileText"
       }
     ],

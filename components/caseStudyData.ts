@@ -3,7 +3,7 @@ import { CaseStudyType } from '../types.ts';
 export const studyDataEn: Record<string, CaseStudyType> = {
   chekki: {
     title: "Chekki AI",
-    tagline: "Designed an instant mobile camera parsing web app to transform printed school worksheets into digital bilingual tutoring keys.",
+    tagline: "Designed a mobile-first digital tabletop co-pilot application to transform printed school worksheets into interactive, bilingual tutoring keys.",
     liveUrl: "https://chekki-ai.vercel.app/",
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
@@ -22,30 +22,31 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     stats: [
       { label: "Active Families", value: "120+" },
       { label: "Worksheets Processed", value: "1,200+" },
-      { label: "Analysis Speed", value: "~5 seconds" }
+      { label: "Analysis Speed", value: "<200ms (cached)" }
     ],
     problem: [
-      "Communication and guidance barriers between non-native English speaking parents and complex homework assignments.",
-      "Private tutoring alternatives are costly and do not directly involve parents in guiding study habits.",
-      "Manual translation and parsing of worksheet formats is slow and prone to errors."
+      "Bilingual families and non-native speaking parents struggle to navigate or guide children through printed homework worksheets.",
+      "Private tutoring alternatives are costly and fail to engage parents in forming real-time home study habits.",
+      "Static paper worksheets lack interactive phonics, pronunciation feedback, and automatic mistake-tracking."
     ],
     solution: [
-      "A web application that leverages mobile camera access to scan and analyze paper worksheets.",
-      "Instantly converts raw worksheet layouts into bilingual explanation scripts and answer keys.",
-      "Provides responsive typography and legible scaling across a wide variety of mobile viewports."
+      "A mobile-first tabletop co-pilot app utilizing Capacitor JS (v8) to run seamlessly on iOS and Android devices.",
+      "Instantly converts paper worksheets into structured bilingual audio scripts with Text-to-Speech (TTS) and Speech-to-Text (STT) drills.",
+      "Maintains an interactive Learning Dashboard backing live progress analytics and digital vocabulary card reviews."
     ],
-    stack: ["React 18", "TypeScript", "Vite", "Gemini Flash Pipeline (Gemini 1.5 & 2.0 Flash)", "Tailwind CSS"],
+    stack: ["React 19", "Capacitor JS (v8)", "TypeScript", "Vercel Serverless Functions", "Cloud Firestore", "Gemini 2.5 Pro & Flash", "Tailwind CSS"],
     architecture: {
       lifecycle: [
-        "Upload: User captures or uploads a physical worksheet image directly from the workspace view.",
-        "Analysis: The image is transmitted to a server-side route that wraps security controls around vision endpoints.",
-        "Classification: The pipeline segregates problem blocks into distinct answers and bilingual explanation templates.",
-        "Presentation: The React client visualizes custom overlays allowing non-English speaking parents to prompt pronunciation guides."
+        "Upload: User captures or scans a physical worksheet flat on the table via Capacitor native camera stream.",
+        "Validation: Request travels through Vercel Serverless Functions performing Firestore token and IP-based rate protection.",
+        "Parallel Parsing: Fast Pass (Gemini 2.5 Flash) maps layouts instantly; Deep Pass (Gemini 2.5 Pro with 20k token thinking budget) executes for complex handwritten blocks.",
+        "Co-Pilot Sync: The React 19 client visualizes interactive overlays for bilingual pronunciation drills, syncing mistakes to a Cloud Firestore Learning Dashboard."
       ],
       guardrails: [
-        "Credential Security: Restricts API key references strictly to server environments to avoid client-side leakage.",
-        "Formatting Isolation: Strips nested HTML and markdown outputs to maintain consistent text layout.",
-        "Privacy Filters: Excludes student personal identifiable information (PII) before external analysis."
+        "Credential Isolation: Accesses Google Gemini and Firebase Admin services strictly through secure serverless edge wrappers.",
+        "Blank Worksheet Protection: Enforces zero-hallucination filtering; if no handwriting is found, it labels all sections correct and prevents false prompts.",
+        "Zero-Retention Privacy: Excludes and purges raw PII markers completely before routing payloads to external LLM endpoints.",
+        "Deterministic Image Caching: Runs SHA256 hashing on raw documents to match Firestore-cached outputs, reducing redundant API execution costs."
       ]
     },
     promptEngineering: {
@@ -56,37 +57,49 @@ export const studyDataEn: Record<string, CaseStudyType> = {
 <input_constraints>
   <target_language>Bilingual English / Korean</target_language>
   <phonetic_phrasing>Natural phonetic pronunciation keys for parents</phonetic_phrasing>
+  <zero_hallucination_blank_filter>If handwriting is undetected, enforce empty student response strings and labels all questions as correct to avoid false error highlights.</zero_hallucination_blank_filter>
 </input_constraints>`,
       schema: `{
-  type: "OBJECT",
-  properties: {
-    answerKey: { type: "ARRAY", items: { type: "STRING" } },
-    teachingScript: { type: "STRING" }
-  },
-  required: ["answerKey", "teachingScript"]
+  "type": "OBJECT",
+  "properties": {
+    "title_en": { "type": "STRING" },
+    "has_handwriting": { "type": "BOOLEAN" },
+    "is_handwriting_legible": { "type": "BOOLEAN" },
+    "problems": {
+      "type": "ARRAY",
+      "items": {
+        "type": "OBJECT",
+        "properties": {
+          "question_text": { "type": "STRING" },
+          "correct_answer": { "type": "STRING" },
+          "is_correct": { "type": "BOOLEAN" }
+        }
+      }
+    }
+  }
 }`,
       guardrails: [
-        "Structured Schema Enforcement: Guarantees that the LLM response always maps perfectly to components parsing logic.",
-        "Tone Controls: Employs standard polite Korean honorific clauses to match standard parent-facing interactions.",
-        "Variable Guarding: Wraps outer parameters in strict tags to protect the base system instructions from inputs overrides."
+        "Structured JSON Schema Control: Strictly enforces type checking on legibility and student answers, eliminating raw parser breaks.",
+        "Zero-Hallucination Blank Filtering: If handwriting is undetected, forces empty student response strings and labels questions correct to avoid false error highlights.",
+        "Variable Isolation: Wraps outer parameters in strict XML boundary markers to resist target payload prompt injections."
       ]
     },
     impact: {
       value: [
-        "Optimized server cost overhead and compute efficiency by offloading image resizing and base64 parsing entirely to client-side canvas routines.",
-        "Maintained strict zero-retention data policies on student materials, ensuring complete immunity to local/regional PII liability.",
-        "Engineered reliable rate-limit buffers on middle-tier Express routes, preserving 100% stable API quota accessibility."
+        "Offloaded duplicate processing overhead entirely via a Firestore-backed SHA256 image cache, dropping redundant API execution costs and speeding up scan retries to <200ms.",
+        "Enforces Firestore-based tiered rate-limiting: Guest users are throttled by IP address, and Pro users are validated against active RevenueCat subscriptions before allowing deep-pass Gemini queries.",
+        "Engineered seamless OAuth bridges for Kakao, Google, and Apple Sign-In, utilizing secure verification nonces and real-time state synchronization to eliminate login latency."
       ],
       security: [
-        "Performs secure client-side media resolution before transmission.",
-        "Follows a zero-retention guidelines for scanned worksheet images.",
-        "Applies client rate limiting controls to manage API quota."
+        "Encrypts and validates identity tokens across Kakao, Google, and Apple SSO bridges with cryptographically secure SHA-256 nonces.",
+        "Throttles anonymous guests by IP while checking Pro tiers against real-time billing statuses before triggering the deep-pass LLM resolver.",
+        "Employs an image analysis cache skipping redundant calls, capping operational overhead at optimal runtime volumes."
       ]
     },
     behindTheArchitecture: {
-      problem: "Bilingual families and non-native speaking parents frequently struggle to navigate or review schools' printed worksheet tasks.",
-      vision: "Capture and parse paper handouts securely via standard phones, producing a guided translation and phonetic companion.",
-      rationale: "Leveraged Gemini's Native Multimodal Capabilities: Gemini 1.5 Flash handles high-resolution layout and coordinate extraction, passing parsed bounding structures directly to Gemini 2.0 Flash for structured bilingual script compilation."
+      problem: "Printed paper homework handouts are flat and silent, preventing non-native parents from guiding phonics or tracking children's dynamic vocabulary errors.",
+      vision: "Transforms printed homework sheets into a complete digital tabletop co-pilot experience, automatically populating an interactive Learning Dashboard with the child's real-time mistakes.",
+      rationale: "Deployed a Parallel Hybrid Execution model. Gemini 2.5 Flash offers instantaneous layout extraction. If handwriting or complex grids are ambiguous, backend falls back to Gemini 2.5 Pro with a 20,000 token thinking budget to prevent grading errors."
     },
     technicalHurdles: [
       {
@@ -606,7 +619,7 @@ responseSchema: {
 export const studyDataKo: Record<string, CaseStudyType> = {
   chekki: {
     title: "Chekki AI (체키)",
-    tagline: "종이 학습지를 찍어서 업로드하면 원어민의 지도 가이드를 이중 언어로 즉각 제공합니다.",
+    tagline: "Capacitor JS 기반 모바일 테이블탑 코파일럿 앱으로 종이 학습지를 인터랙티브 이중언어 과제 지도 솔루션 및 부모 학습 대시보드로 바꿉니다.",
     liveUrl: "https://chekki-ai.vercel.app/",
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
@@ -624,31 +637,32 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     ],
     stats: [
       { label: "실사용 가구", value: "120가구 이상" },
-      { label: "변합 및 발행 가이드", value: "1,200건 초과" },
-      { label: "시트 분석 속도", value: "평균 5초 이내" }
+      { label: "변환 및 발행 가이드", value: "1,200건 초과" },
+      { label: "시트 분석 속도", value: "<200ms (캐싱 적용)" }
     ],
     problem: [
       "영어 과제 지도가 어려운 다문화 가구나 비영어권 학부모의 자녀 학습 관리 소외감 발생.",
       "가정에서 부모님이 직접 영어를 지도하기는 별도의 보조 교재나 사교육 비용 부담이 존재함.",
-      "인쇄된 학습지의 본문 내용을 가공하고 채점지나 해설서를 준비하는 데 상당한 수치 공수가 소모됨."
+      "인쇄된 학습지 특성상 오디오 발음 피드백을 주기 힘들고 오답 이력이 체계적으로 추적되지 않음."
     ],
     solution: [
-      "브라우저에서 학습지를 간편히 사진으로 찍어 분석하는 웹 애플리케이션 구축.",
-      "수집된 문서 구조에서 문제 영역을 식별해 답안 정보와 이중 언어 보완 가이드를 제공.",
-      "모바일 웹 반응형 환경에 대응하여, 깔끔하고 일관성 있게 화면 레이아웃 지원."
+      "Capacitor JS (v8)를 탑재하여 iOS와 안드로이드 기기에서 네이티브하게 구동되는 모바일 테이블탑 코파일럿 앱 구축.",
+      "종이 학습지를 찍는 순간 텍스트 분석 후 음성 학습(TTS) 및 단어 오디오 매칭 스피킹 훈련(STT) 대화형 솔루션으로 변환.",
+      "자녀의 실시간 오답과 발음 상태를 클라우드에 연동하는 인터랙티브 학부모 대시보드 및 플래시카드 시스템 제공."
     ],
-    stack: ["React 18", "TypeScript", "Vite", "제미나이 플래시 파이프라인 (Gemini 1.5 & 2.0 Flash)", "Tailwind CSS"],
+    stack: ["React 19", "Capacitor JS (v8)", "TypeScript", "Vercel Serverless Functions", "Cloud Firestore", "Gemini 2.5 Pro & Flash", "Tailwind CSS"],
     architecture: {
       lifecycle: [
-        "촬영: 사용자가 모바일 뷰포트에서 영어 학습지를 촬영한 후 업로드합니다.",
-        "전달: 업로드된 이미지는 서버사이드 API를 통해 안심 보안 채널을 타며 분석 모듈로 전달됩니다.",
-        "분해: 분석 장치가 각 문제 영역을 대조하여 학습지 정답표와 이중언어 해설 스크립트로 분배 정리합니다.",
-        "출력: 화면에 직관적인 오버레이 UI 카드를 배치하여, 부모님이 직관적인 영어 과제 지도와 독음을 도웁니다."
+        "촬영: 사용자가 테이블 위의 종이 학습지를 Capacitor 네이티브 카메라 API를 통해 촬영하여 앱에 등록합니다.",
+        "인가 검증: 요청은 Vercel Serverless Functions로 진입해 Firestore를 기반으로 토큰 및 IP 단위 요금/속도 한도를 검증합니다.",
+        "병렬 처리 파이프라인: Fast Pass(Gemini 2.5 Flash)로 레이아웃을 즉시 추출하고, 글씨가 흐리거나 복잡하면 Deep Pass(Gemini 2.5 Pro, 2만 토큰 팅킹 버짓)가 오답 판정을 이중 교정합니다.",
+        "코파일럿 실시간 동기화: React 19 클라이언트가 이중언어 발음 연습 대화 상자를 노출하고, 실시간 실수를 Cloud Firestore 기반 학습 대시보드와 자동 동기화합니다."
       ],
       guardrails: [
-        "환경변수 제어: 중요 API 키를 클라이언트 코드에 노출하지 않고 서버 측에 안전하게 차단 보전.",
-        "결과 정규화: 구형 장치 뷰어 및 통일성 유지를 위해 불완전한 특수 HTML과 마크다운 텍스트를 정합 처리.",
-        "데이터 보호: 정보 가공 전 학생 고유 식별 정보(PII)를 완벽 일방향 마스킹하여 사생활 안전 확보."
+        "인증 키 보호: 제미나이 및 파이어베이스 관리자 인가 자격을 완전 보호하기 위해 Vercel Serverless 단에 자격을 은닉 통제.",
+        "빈 워크시트 및 오동작 필터: 손글씨 미검출 시 불필요한 오류 지적을 자동 방지하는 제로-할루시네이션(Zero-Hallucination) 가드 적용.",
+        "PII 완벽 배제: 원생 사생활 및 통신 보호를 위해 개인식별 마커가 AI 단에 가기 전 마스킹하고 로컬 리텐션을 0으로 유지.",
+        "중복 연산 캐싱: 전송 문서에 SHA256 해시 키를 매겨 Firestore `image_analyses_cache`에 매칭해 중복 API 결제액을 방지하고 <200ms 속도 제공."
       ]
     },
     promptEngineering: {
@@ -659,37 +673,49 @@ export const studyDataKo: Record<string, CaseStudyType> = {
 <input_constraints>
   <target_language>Bilingual English / Korean</target_language>
   <phonetic_phrasing>Natural phonetic pronunciation keys for parents</phonetic_phrasing>
+  <zero_hallucination_blank_filter>If handwriting is undetected, enforce empty student response strings and labels all questions as correct to avoid false error highlights.</zero_hallucination_blank_filter>
 </input_constraints>`,
       schema: `{
-  type: "OBJECT",
-  properties: {
-    answerKey: { type: "ARRAY", items: { type: "STRING" } },
-    teachingScript: { type: "STRING" }
-  },
-  required: ["answerKey", "teachingScript"]
+  "type": "OBJECT",
+  "properties": {
+    "title_en": { "type": "STRING" },
+    "has_handwriting": { "type": "BOOLEAN" },
+    "is_handwriting_legible": { "type": "BOOLEAN" },
+    "problems": {
+      "type": "ARRAY",
+      "items": {
+        "type": "OBJECT",
+        "properties": {
+          "question_text": { "type": "STRING" },
+          "correct_answer": { "type": "STRING" },
+          "is_correct": { "type": "BOOLEAN" }
+        }
+      }
+    }
+  }
 }`,
       guardrails: [
-        "정형화된 스키마 출력: 인프라 응답 에러를 방지하고 파싱의 일관성을 위해 출력 구조를 직접 한정.",
-        "정중어 고정: 교육에 대한 아카데믹 신뢰를 담을 수 있도록 한국어 경어 장치(존댓말) 세팅 준수.",
-        "인젝트 예방: 입력 매개체와 기본 지침 내용이 섞이지 않게 엄밀한 XML 경계 가이드를 부여."
+        "정형화된 JSON 스키마 강제: 손글씨 가독성 식별 플래그와 아동의 구체적 답변 속성을 형변환 엄밀 통제해 뷰 안정화.",
+        "공백 워크시트 감지 가드: 손글씨가 식별되지 않는 경우 임의 오답 지정을 원천 보류하도록 공백 텍스트 필터링 수행.",
+        "매개체 격리 처리: 사용자 원본 이미지 텍스트 분석물과 가이드라인 시스템 프롬프트 간 교란을 방지하는 XML 안전 패스."
       ]
     },
     impact: {
       value: [
-        "이미지 압축 및 Base64 인코딩 연산을 전적으로 클라이언트 캔버스에서 연산 처리하여 서버 리소스 및 네트워크 전송 비용을 절감.",
-        "원본 문서 본문에 대한 제로 리텐션(Zero-Retention) 무저장 설계를 갖춤으로써, 원생 개인정보 유출 리스크를 완전히 차단.",
-        "미들웨어를 활용한 API 호출 제어 정책을 구현하고 실패 시 백엔드 폴백 가이드를 실행하여 시스템 내결함성 확보."
+        "Firestore 기반의 SHA256 이미지 해시 캐시 레이어를 정교화하여 중복 분석 연산을 전면 생략하고, 재요청 시 인지 처리 속도를 <200ms로 비약 단축.",
+        "Firestore 실시간 다단계 보안 속도 제어(Rate Limiting) 장착: 일반 비회원은 IP 기반으로 Throttling 제어하고, 프로 유저는 실시간 인앱 구독 정보를 동기 검증 후 팅킹 버짓 API 사용을 연동.",
+        "카카오, 구글, 애플의 소셜 간편 로그인(SSO) 브릿지를 네이티브 환경에 완벽 결합해 상태 동기화 및 로그인 지연 현상을 100% 해소."
       ],
       security: [
-        "파일 요청 로드 전 프론트엔드에서 미디어 해상도 유효 검사 절단 탑재.",
-        "데이터베이스 상에 학부모와 아동의 미디어 파일 원본 기록을 안 하는 방식으로 프라이버시 유지.",
-        "과도 전용 통신 횟수 관리를 위해 장치별 API 통신 제한 규칙(Rate Limiting) 구현."
+        "애플, 카카오, 구글 SSO 인증 단계에 일회용 암호화 해시 SHA-256 넌스(Nonce) 검증을 결합해 세션 변조 완벽 방어.",
+        "비로그인 게스트는 서버단 IP 레이트로 단속하고, 헤비 리액션 파트는 클라우드 인앱 인가 장치와 결합해 자원 남용 억제.",
+        "분석 완료된 이미지 캐시 데이터베이스 조회 매핑을 활성화해 불필요한 모델 통신비를 $0 수준으로 영속 세이빙."
       ]
     },
     behindTheArchitecture: {
-      problem: "영어 과제 지도가 어려운 다문화 가구나 비영어권 학부모의 자녀 학습 관리 소외감 해소.",
-      vision: "가정 스마트폰으로 학습 자료를 확인하는 편한 사용 환경 설계와 간결한 해설 출력 지원.",
-      rationale: "제미나이 네이티브 멀티모달 역량 극대화: Gemini 1.5 Flash가 고해상도 이미지 레이아웃의 좌표 영역 및 정합 정답지를 직접 추출하고, 연쇄적으로 Gemini 2.0 Flash 모델이 엄격한 JSON 스키마 구조 아래 학부모 전용 초정밀 이중언어 설명 지침문을 수립하도록 구성했습니다."
+      problem: "가정 내 인쇄물 과제지는 무반응적이고 정적이므로, 영어 비원어민 부모님이 발음 지도를 돕거나 자녀의 복합 어휘 실수 기록을 체계적으로 수집하기에 어려움이 컸습니다.",
+      vision: "종이 홈워크를 디지털 테이블탑 코파일럿 경험으로 즉시 치환하여, 음성 인터랙션 기능 및 클라우드 오답 대시보드를 부모님께 무상태성 없이 자동 구축해 줍니다.",
+      rationale: "병렬 하이브리드 실행 아키텍처(Parallel Hybrid Execution) 채택: 실시간 인쇄 구획 파싱은 속도가 빠른 Gemini 2.5 Flash가 전담하며, 복잡한 음성 매칭 구간이나 손글씨 식별 보완은 2만 토큰 팅킹 버짓을 탑재한 Gemini 2.5 Pro를 폴백으로 매핑해 오판을 차단합니다."
     },
     technicalHurdles: [
       {
