@@ -152,14 +152,14 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
         {/* HEADER */}
         <div className={`p-6 md:p-8 flex items-center justify-between border-b shrink-0 ${
           isDark ? 'border-white/10 bg-white/[0.01]' : 'border-black/5 bg-black/[0.01]'
-        } print:border-b-2 print:border-black print:pb-4 print:p-0`}>
+        } print:hidden`}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-accent-gold/20 flex items-center justify-center print:hidden">
               <FileTextIcon className="w-5 h-5 text-accent-gold" />
             </div>
             <div>
-              <h3 className="text-lg md:text-xl font-display font-medium leading-none print:text-black print:text-2xl">{curr.title}</h3>
-              <p className={`text-xs mt-1 md:mt-2 print:text-black/80 ${isDark ? 'text-white/60' : 'text-alpine-950/60'}`}>{curr.subtitle}</p>
+              <h3 className="text-lg md:text-xl font-display font-medium leading-none">{curr.title}</h3>
+              <p className={`text-xs mt-1 md:mt-2 ${isDark ? 'text-white/60' : 'text-alpine-950/60'}`}>{curr.subtitle}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 print:hidden">
@@ -178,13 +178,6 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
               <XIcon className="w-4 h-4" />
             </button>
           </div>
-        </div>
-
-        {/* PRINT BANNER IN RAW WINDOW PRINT */}
-        <div className="hidden print:block text-[10px] uppercase tracking-wider text-black border-b pb-4 mb-6">
-          <span>PORTFOLIO AT: <strong className="underline">https://jason-benjamin.vercel.app</strong></span>
-          <span className="mx-6">|</span>
-          <span>EMAIL: <strong>jsn.benjamin@gmail.com</strong></span>
         </div>
 
         {/* SCROLLABLE BODY */}

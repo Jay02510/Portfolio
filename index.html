@@ -191,7 +191,7 @@
             html, body {
                 background-color: white !important;
                 background-image: none !important;
-                color: black !important;
+                color: #111827 !important;
                 height: auto !important;
                 min-height: 0 !important;
                 overflow: visible !important;
@@ -199,6 +199,7 @@
                 margin: 0 !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+                font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
             }
 
             /* Hide everything inside the React container except the resume modal overlay */
@@ -210,7 +211,7 @@
             #resume-modal-overlay {
                 position: static !important;
                 display: block !important;
-                background: transparent !important;
+                background: white !important;
                 backdrop-filter: none !important;
                 padding: 0 !important;
                 margin: 0 !important;
@@ -229,7 +230,7 @@
                 border: none !important;
                 box-shadow: none !important;
                 background: white !important;
-                color: black !important;
+                color: #111827 !important;
                 padding: 0 !important;
                 margin: 0 !important;
                 overflow: visible !important;
@@ -239,21 +240,108 @@
             .print\:hidden,
             button,
             nav,
-            header {
+            header,
+            .modal-close-btn {
                 display: none !important;
             }
 
-            /* Adapt golden accent color to print readability (darker clay/brown tone) */
-            .text-accent-gold {
-                color: #8c6239 !important;
+            /* Force all text elements to have clean print-friendly color */
+            #resume-modal-overlay h1,
+            #resume-modal-overlay h2,
+            #resume-modal-overlay h3,
+            #resume-modal-overlay h4,
+            #resume-modal-overlay h5,
+            #resume-modal-overlay h6 {
+                color: #000000 !important;
+                font-weight: 800 !important;
             }
-            .border-accent-gold\/20 {
-                border-color: rgba(140, 98, 57, 0.3) !important;
+
+            #resume-modal-overlay p,
+            #resume-modal-overlay li,
+            #resume-modal-overlay span,
+            #resume-modal-overlay div {
+                color: #222222 !important;
+            }
+
+            /* Style links beautifully */
+            #resume-modal-overlay a {
+                color: #111827 !important;
+                text-decoration: underline !important;
+            }
+
+            /* Adapt golden accent colors to elegant print contrast (deep bronze/clay) */
+            .text-accent-gold,
+            #resume-modal-overlay .text-accent-gold {
+                color: #724c24 !important; /* Richer, darker bronze for print contrast */
             }
             
-            /* Keep experience borders visible but light gray */
-            .border-l {
-                border-left-color: rgba(0, 0, 0, 0.15) !important;
+            .border-accent-gold\/20,
+            #resume-modal-overlay .border-accent-gold\/20 {
+                border-color: rgba(114, 76, 36, 0.25) !important;
+            }
+
+            /* Keep experience borders visible but clean gray */
+            .border-l,
+            #resume-modal-overlay .border-l {
+                border-left-color: rgba(0, 0, 0, 0.18) !important;
+                border-left-width: 1.5px !important;
+            }
+
+            /* Stripping off the dark/colored background styles for clean print on pure white paper */
+            #resume-modal-overlay div[class*="bg-"] {
+                background: transparent !important;
+                border-color: rgba(0, 0, 0, 0.1) !important;
+                box-shadow: none !important;
+            }
+
+            /* Override product cards background and layout specifically */
+            #resume-modal-overlay .space-y-4 > div[class*="bg-"] {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 4px 0 !important;
+                margin-bottom: 12px !important;
+                opacity: 1 !important;
+            }
+
+            /* Style the core competency tag capsules so they are extremely crisp and readable */
+            #resume-modal-overlay span[class*="px-2"][class*="py-0.5"] {
+                background-color: #f1f5f9 !important; /* Very soft gray capsule */
+                border: 1px solid #cbd5e1 !important;
+                color: #1e293b !important; /* Readable dark grey text */
+                padding: 1px 6px !important;
+                margin-top: 2px !important;
+                margin-bottom: 2px !important;
+                border-radius: 4px !important;
+                display: inline-block !important;
+                font-weight: 500 !important;
+            }
+
+            /* Ensure bullets have consistent padding and indent */
+            #resume-modal-overlay ul {
+                list-style-type: disc !important;
+                padding-left: 16px !important;
+            }
+            #resume-modal-overlay li {
+                display: list-item !important;
+                margin-bottom: 4px !important;
+                padding-left: 4px !important;
+                text-indent: 0 !important;
+            }
+
+            /* Prevent awkward page breaks inside core modules */
+            .print-avoid-break,
+            #resume-modal-overlay .space-y-4 > div,
+            #resume-modal-overlay .space-y-5 > div,
+            #resume-modal-overlay .space-y-2 {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            /* Set perfect margins for standard A4/Letter prints */
+            @page {
+                size: portrait;
+                margin: 15mm 15mm 15mm 15mm;
             }
         }
     </style>
