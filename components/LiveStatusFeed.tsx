@@ -14,6 +14,16 @@ interface BuildItem {
 
 const LIVE_UPDATES_DATA: BuildItem[] = [
   {
+    id: "chekki-major-overhaul-2026",
+    date: "2026-07-15",
+    type: "feature",
+    titleEn: "Major Chekki Showcase Overhaul & Asset Upgrade",
+    titleKo: "Chekki 쇼케이스 대규모 자산 및 가이드 업데이트 완료",
+    descEn: "Upgraded the Chekki showcase assets with a brand new B2B educational landing page, highlighted user pain points, streamlined parent onboarding, and redesigned high-contrast bilingual teaching overlays.",
+    descKo: "신규 B2B 교육 랜딩 페이지 도입, 핵심 부모/원천 페인 포인트 가시화, 학부모 전용 온보딩 흐름 탑재 및 고대비 이중언어 티칭/풀이 오버레이 신규 자산으로 업그레이드를 마쳤습니다.",
+    relatedProjectId: "chekki"
+  },
+  {
     id: "chekki-guidde-video",
     date: "2026-06-20",
     type: "feature",

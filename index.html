@@ -323,6 +323,24 @@
                 break-inside: avoid !important;
             }
 
+            /* Custom print card with spacious interior padding and light border */
+            .print-card {
+                background: #fdfdfc !important; /* extremely clean, near-white warm paper tone */
+                border: 1px solid #d4d4d4 !important; /* solid, clean, scanner-safe light grey border */
+                border-radius: 8px !important;
+                padding: 14px 18px !important; /* perfect spacious padding so text has breathing room and never hits the edges */
+                margin-bottom: 12px !important;
+                box-shadow: none !important;
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+            }
+
+            /* Force element to start cleanly on the next page */
+            .print-break-before {
+                break-before: page !important;
+                page-break-before: always !important;
+            }
+
             /* Set perfect margins for standard A4/Letter prints */
             @page {
                 size: portrait;

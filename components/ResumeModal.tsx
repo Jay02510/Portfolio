@@ -216,7 +216,7 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
           {/* CONTACT INFO CONTAINER */}
           <div className={`p-6 rounded-2xl border flex flex-col md:flex-row md:items-center justify-between gap-6 ${
             isDark ? 'bg-white/[0.01] border-white/5' : 'bg-black/[0.01] border-black/5'
-          } print:border-t print:border-black/20 print:p-0 print:pt-6`}>
+          } print:border-t print:border-x-0 print:border-b-0 print:border-black/20 print:rounded-none print:p-0 print:pt-6`}>
             <div>
               <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold print:text-black">{curr.contactTitle}</h4>
               <p className={`text-xs mt-1 ${isDark ? 'text-white/60' : 'text-alpine-950/60'} print:text-black/80`}>

@@ -516,7 +516,7 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
                 <div className="border-l border-accent-gold/25 pl-4 sm:pl-5 space-y-5 print:border-black/30">
                   
                   {/* VODABI EXPERIENCE BLOCK */}
-                  <div className="p-3.5 rounded-xl border border-accent-gold/35 bg-accent-gold/[0.03] shadow-[0_2px_12px_rgba(212,163,89,0.08)] print-avoid-break print:bg-transparent print:border-0 print:border-b print:border-black/10 print:p-0 print:pb-3 print:mb-4 print:opacity-100">
+                  <div className="p-3.5 rounded-xl border border-accent-gold/35 bg-accent-gold/[0.03] shadow-[0_2px_12px_rgba(212,163,89,0.08)] print-avoid-break print-card">
                     <div className="space-y-1">
                       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
                         <span className="text-[11.5px] font-black uppercase text-accent-gold print:text-black flex items-center gap-1.5 font-display">
@@ -584,7 +584,7 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
                             isTopFocus 
                               ? 'bg-[#1c1b18] border-accent-gold/30 shadow-[0_2px_10px_rgba(0,0,0,0.4)]' 
                               : 'bg-neutral-950/20 border-white/5 opacity-85 hover:opacity-100 hover:border-white/10'
-                          } print-avoid-break print:bg-transparent print:border-0 print:border-b print:border-black/10 print:p-0 print:pb-3 print:mb-3 last:print:border-b-0 last:print:pb-0 last:print:mb-0 print:opacity-100`}
+                          } print-avoid-break print-card`}
                         >
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <span className="text-[11px] font-bold text-accent-gold print:text-black flex items-center gap-1.5 font-display">
@@ -675,7 +675,7 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
             <div className="space-y-6 print:w-full print:space-y-6 print:mt-6">
               
               {/* CORE COMPETENCIES LIST */}
-              <div className="space-y-4">
+              <div className="space-y-4 print-break-before">
                 <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold border-b pb-1.5 border-accent-gold/20 flex items-center gap-2 print:text-black print:border-black">
                   <span>⚓</span> {labels.skillsTitle}
                 </h4>
@@ -697,7 +697,7 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
                                 isDark 
                                   ? 'bg-neutral-900 border-white/5 text-white/80' 
                                   : 'bg-black/5 border-black/5 text-neutral-800'
-                              } print:bg-slate-100 print:border-slate-300 print:text-slate-800 print:text-[8px]`}
+                              } print:bg-slate-100 print:border-slate-300 print:text-slate-800 print:text-[8px] print:px-2.5 print:py-1 print:my-0.5 print:inline-block`}
                             >
                               {item}
                             </span>

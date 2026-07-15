@@ -8,15 +8,16 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
     screenshots: [
-      { label: "Homescreen", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/2_lbk8kt.png", subLabel: "Active Lesson Portal" },
-      { label: "Login", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/3_nqxlza.png", subLabel: "Secure Access Gateway" },
-      { label: "Fullscreen Overlay", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/8_hslabs.png", subLabel: "Interactive Solution Screen" },
-      { label: "Answers Guide", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/9_n7zavj.png", subLabel: "Bilingual Transcript" },
-      { label: "Learning Guide", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/11_huxdwa.png", subLabel: "Detailed Concept Deck" },
-      { label: "Ask Chekki", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479551/17_fbjiga.png", subLabel: "Conversational Tutoring AI" },
-      { label: "Ask Chekki Answers", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479553/20_egti9z.png", subLabel: "Resolved Step-By-Step Responses" },
-      { label: "More Examples", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/13_z3nbzc.png", subLabel: "Additional Solved Scenarios" },
-      { label: "Refined Responses", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479551/16_hukffx.png", subLabel: "Structured Feedback Output" }
+      { label: "Landing Page", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118476/Screenshot_2026-07-15_at_9.26.57_PM_ozpruh.png", subLabel: "B2B Educational Landing Page" },
+      { label: "Pain Points Solved", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118475/Screenshot_2026-07-15_at_9.27.31_PM_f5exol.png", subLabel: "Parental & Operational Pain Points" },
+      { label: "Onboarding", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/3_ub3ej3.png", subLabel: "Seamless Parent Welcome Flow" },
+      { label: "Homescreen", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/2_yobnjt.png", subLabel: "Active Learning Portal & Scanner" },
+      { label: "Teaching Guide", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/9_xyzk0q.png", subLabel: "Phonetics & Explanation Script" },
+      { label: "Answers Overlay", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/6_b6x7pg.png", subLabel: "Bilingual Solution Overlay" },
+      { label: "Answers Overlay #2", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/7_e9r6aa.png", subLabel: "Interactive Problem Breakdown" },
+      { label: "Answer Overlay #3", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/10_wmr2lw.png", subLabel: "Comprehensive Concept Walkthrough" },
+      { label: "Learning Dashboard", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/11_qvahas.png", subLabel: "Student Progress & Analytics" },
+      { label: "Interactive Flashcards", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118117/13_o2cun7.png", subLabel: "Bilingual Study & Practice Tools" }
     ],
     stats: [
       { label: "Active Families", value: "120+" },
@@ -610,15 +611,16 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
     screenshots: [
-      { label: "홈화면", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/2_lbk8kt.png", subLabel: "학습 지도 포털" },
-      { label: "로그인", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/3_nqxlza.png", subLabel: "로그인 보안 게이트웨이" },
-      { label: "풀스크린 오버레이", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/8_hslabs.png", subLabel: "대화형 해답 인터페이스" },
-      { label: "해답 가이드", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/9_n7zavj.png", subLabel: "이중언어 지도 대본" },
-      { label: "학습 가이드", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479552/11_huxdwa.png", subLabel: "세부 개념 구성 카드" },
-      { label: "체키에게 물어보기", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479551/17_fbjiga.png", subLabel: "대화형 튜터링 AI" },
-      { label: "체키 답변 화면", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479553/20_egti9z.png", subLabel: "단계별 풀이 지침 답변" },
-      { label: "추가 예시 페이지", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479550/13_z3nbzc.png", subLabel: "다양한 실전 예제" },
-      { label: "정제된 답변 모드", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780479551/16_hukffx.png", subLabel: "구조화된 피드백 출력" }
+      { label: "랜딩 페이지", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118476/Screenshot_2026-07-15_at_9.26.57_PM_ozpruh.png", subLabel: "B2B 에듀테크 랜딩 홈" },
+      { label: "해결된 페인포인트", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118475/Screenshot_2026-07-15_at_9.27.31_PM_f5exol.png", subLabel: "학부모 및 학원 운영 페인포인트" },
+      { label: "온보딩", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/3_ub3ej3.png", subLabel: "학부모 친화형 온보딩 흐름" },
+      { label: "홈화면", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/2_yobnjt.png", subLabel: "카메라 스캔 및 학습 포털" },
+      { label: "티칭 가이드", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/9_xyzk0q.png", subLabel: "원어민 발음 및 설명 대본" },
+      { label: "해답 오버레이", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/6_b6x7pg.png", subLabel: "이중언어 정답 지도 오버레이" },
+      { label: "해답 오버레이 #2", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/7_e9r6aa.png", subLabel: "문제별 정밀 구조화 가이드" },
+      { label: "해답 오버레이 #3", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/10_wmr2lw.png", subLabel: "상세 교육 개념 설명 카드" },
+      { label: "학습 대시보드", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/11_qvahas.png", subLabel: "자녀 학습 진도 및 성과 분석" },
+      { label: "인터랙티브 플래시카드", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118117/13_o2cun7.png", subLabel: "이중언어 어휘 및 말하기 카드" }
     ],
     stats: [
       { label: "실사용 가구", value: "120가구 이상" },
