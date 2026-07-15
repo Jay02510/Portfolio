@@ -424,11 +424,11 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
             </p>
           </div>
 
-          {/* TWO COLUMN GRID FOR RESUME */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10 print:grid-cols-3 print:gap-6">
+          {/* TWO COLUMN GRID FOR RESUME (stacked vertically on print for beautiful page distribution) */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10 print:flex print:flex-col print:gap-6">
             
             {/* COLUMN 1 & 2: DYNAMIC PORTFOLIO WORK EXPERIENCE */}
-            <div className="lg:col-span-2 space-y-6 print:col-span-2 print:space-y-5">
+            <div className="lg:col-span-2 space-y-6 print:w-full print:space-y-5">
               <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold border-b pb-1.5 border-accent-gold/20 flex items-center gap-2 print:text-black print:border-black">
                 <span>🔧</span> {labels.experienceTitle}
               </h4>
@@ -467,7 +467,7 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
                             isTopFocus 
                               ? 'bg-[#1c1b18] border-accent-gold/30 shadow-[0_2px_10px_rgba(0,0,0,0.4)]' 
                               : 'bg-neutral-950/20 border-white/5 opacity-85 hover:opacity-100 hover:border-white/10'
-                          } print:bg-none print:border-none print:p-0 print:m-0 print:opacity-100`}
+                          } print-avoid-break print:bg-transparent print:border-0 print:border-b print:border-black/10 print:p-0 print:pb-3 print:mb-3 last:print:border-b-0 last:print:pb-0 last:print:mb-0 print:opacity-100`}
                         >
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <span className="text-[11px] font-bold text-accent-gold print:text-black flex items-center gap-1.5 font-display">
@@ -521,7 +521,7 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
                 </h4>
 
                 {/* Blend ENG Academy with dynamic prioritized bullets */}
-                <div className="space-y-2">
+                <div className="space-y-2 print-avoid-break">
                   <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
                     <h5 className="text-[11.5px] font-black font-display print:text-black">{labels.blendAcademy}</h5>
                     <span className="text-[9px] font-mono opacity-50 print:text-black/60">{labels.blendPeriod}</span>
@@ -540,7 +540,7 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
                 </div>
 
                 {/* YBM PSA Seocho (Standard static representation) */}
-                <div className="space-y-2 pt-2 border-t border-white/5 print:border-black/10">
+                <div className="space-y-2 pt-2 border-t border-white/5 print:border-black/10 print-avoid-break">
                   <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
                     <h5 className="text-[11.5px] font-black font-display print:text-black">{labels.ybmAcademy}</h5>
                     <span className="text-[9px] font-mono opacity-50 print:text-black/60">{labels.ybmPeriod}</span>
@@ -555,20 +555,20 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
             </div>
 
             {/* COLUMN 3: STACK & COMPETENCY PRIORITIES */}
-            <div className="space-y-6 print:space-y-5">
+            <div className="space-y-6 print:w-full print:space-y-6 print:mt-6">
               
               {/* CORE COMPETENCIES LIST */}
               <div className="space-y-4">
                 <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold border-b pb-1.5 border-accent-gold/20 flex items-center gap-2 print:text-black print:border-black">
                   <span>⚓</span> {labels.skillsTitle}
                 </h4>
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 print:grid-cols-2 print:gap-x-8 print:gap-y-4 print:space-y-0">
                   {config.skillsOrder.map((catId) => {
                     const cat = SKILLS.find(s => s.id === catId);
                     if (!cat) return null;
 
                     return (
-                      <div key={cat.id} className="space-y-1.5">
+                      <div key={cat.id} className="space-y-1.5 print-avoid-break">
                         <div className="text-[10px] font-black uppercase tracking-wider text-accent-gold/90 print:text-black font-mono">
                           {cat.category[locale]}
                         </div>
@@ -580,7 +580,7 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
                                 isDark 
                                   ? 'bg-neutral-900 border-white/5 text-white/80' 
                                   : 'bg-black/5 border-black/5 text-neutral-800'
-                              } print:bg-none print:border-black/20 print:text-black print:text-[8px]`}
+                              } print:bg-slate-100 print:border-slate-300 print:text-slate-800 print:text-[8px]`}
                             >
                               {item}
                             </span>
@@ -593,7 +593,7 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
               </div>
 
               {/* EDUCATION & COMPLIANCES */}
-              <div className="space-y-4 border-t border-white/5 pt-4 print:border-black/10">
+              <div className="space-y-4 border-t border-white/5 pt-4 print:border-black/10 print-avoid-break">
                 <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold border-b pb-1.5 border-accent-gold/20 flex items-center gap-2 print:text-black print:border-black">
                   <span>🎓</span> {labels.educationTitle}
                 </h4>
