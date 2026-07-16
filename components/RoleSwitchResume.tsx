@@ -28,6 +28,8 @@ interface SkillCategory {
 interface ResumeProps {
   locale: 'en' | 'ko';
   theme: 'light' | 'dark';
+  activeRole?: ActiveRole;
+  onRoleChange?: (role: ActiveRole) => void;
 }
 
 interface RoleConfig {
@@ -220,68 +222,74 @@ const PRODUCTS: ProductItem[] = [
   }
 ];
 
-const VODABI_BULLETS: { category: { en: string; ko: string }; en: string; ko: string; weight: Record<ActiveRole, number> }[] = [
-  {
-    category: { en: "Product Strategy & UX Leadership", ko: "제품 전략 및 UX 리더십" },
-    en: "Spearheaded Product Vision: Authored the core product brief and directed the pivot from a legacy, analytics-heavy dashboard to a clean, 3-step interactive AI context aware coaching widget (Role Selection ➝ Upload ➝ Chat), significantly reducing user cognitive load.",
-    ko: "제품 비전 주도: 핵심 제품 브리프 작성 및 데이터가 무거운 기존 대시보드에서 3단계(역할 선택 ➝ 업로드 ➝ 채팅) 대화형 대안 AI 맥락 인지 코칭 위젯으로의 피봇 지휘, 사용자 인지 부하 대폭 감축.",
-    weight: { pm: 5, eng: 2, edtech: 4 }
-  },
-  {
-    category: { en: "Product Strategy & UX Leadership", ko: "제품 전략 및 UX 리더십" },
-    en: "Phased Product Roadmap: Mapped and executed a multi-phase deployment strategy, securing immediate stakeholder ROI with a lightweight, stateless MVP before architecting the transition to a stateful, enterprise-grade cloud ecosystem.",
-    ko: "단계별 제품 로드맵: 다단계 배포 전략을 수립하여 가벼운 비상태형 MVP로 이해관계자에게 즉각적인 ROI를 증명하고, 상태형 엔터프라이즈급 클라우드 에코시스템 전환 설계.",
-    weight: { pm: 5, eng: 1, edtech: 3 }
-  },
-  {
-    category: { en: "AI Architecture & Prompt Engineering", ko: "AI 아키텍처 및 프롬프트 엔지니어링" },
-    en: "Engineered Coaching Frameworks: Designed the pedagogical 'Fact-Impact-Fix' logic model, successfully transforming rigid, integer-based scoring rubrics into empathetic, actionable micro-learning interventions.",
-    ko: "코칭 프레임워크 구축: 교육학적 'Fact-Impact-Fix' 논리 모델 설계, 엄격한 숫자 기반 채점표를 공감형이고 조치 가능한 마이크로 러닝 중재 프레임워크로 혁신 변환.",
-    weight: { pm: 4, eng: 3, edtech: 5 }
-  },
-  {
-    category: { en: "AI Architecture & Prompt Engineering", ko: "AI 아키텍처 및 프롬프트 엔지니어링" },
-    en: "Dynamic Prompt Integration: Partnered with research teams to translate a complex keyword data dictionary into a dynamic, 4-persona LLM system prompt matrix. Strategized the ingestion of proprietary B2B sales telemetry into the LLM context window to generate highly personalized feedback.",
-    ko: "동적 프롬프트 연동: 리서치 부서와 협력하여 복잡한 키워드 사전 사양을 동적인 4개 페르소나 LLM 시스템 프롬프트 매트릭스로 변환하고, 자체 B2B 영업 텔레메트리 데이터를 LLM 컨텍스트 윈도우에 연동하여 고도로 맞춤화된 피드백 기획.",
-    weight: { pm: 4, eng: 4, edtech: 2 }
-  },
-  {
-    category: { en: "AI Architecture & Prompt Engineering", ko: "AI 아키텍처 및 프롬프트 엔지니어링" },
-    en: "Hybrid Evaluation Architecture: Designed a deterministic evaluation framework that decoupled immutable behavioral scoring from dynamic, client-defined compliance matrices, effectively eliminating LLM hallucinations and ensuring enterprise trust.",
-    ko: "하이브리드 평가 아키텍처: 불변 행동 평가 점수와 동적 고객 맞춤형 컴플라이언스 매트릭스를 완벽 분리하는 결정론적 평가 프레임워크 설계, LLM 환각(hallucination)을 근본 방지하여 기업 신뢰도 확보.",
-    weight: { pm: 3, eng: 5, edtech: 1 }
-  },
-  {
-    category: { en: "AI Architecture & Prompt Engineering", ko: "AI 아키텍처 및 프롬프트 엔지니어링" },
-    en: "Enterprise AI Guardrails: Established strict compliance protocols ensuring the LLM operated securely within proprietary boundaries, restricting outputs to concise, high-impact bursts, and preventing hallucinated business decisions.",
-    ko: "엔터프라이즈 AI 가드레일: 자체 정보 보호 경계 내에서 LLM이 안전하게 작동하도록 엄격한 규격 준수 프로토콜을 정립하여, 출력을 간결하고 압축된 고임팩트 형태로 제어하며 잘못된 비즈니스 판단을 차단.",
-    weight: { pm: 3, eng: 5, edtech: 2 }
-  },
-  {
-    category: { en: "Cross-Functional Execution & Technical Scoping", ko: "교차 기능 실행 및 기술 스코핑" },
-    en: "Prototyping & Validation: Designed and executed a 'Wizard of Oz' prototyping demonstration to validate frontend UX and backend conversational logic with executive stakeholders prior to full database integration.",
-    ko: "프로토타이핑 및 검증: 데이터베이스 전면 연동 이전에 경영진 등 핵심 이해관계자들을 대상으로 프론트엔드 UX 및 백엔드 대화 로직을 입증하는 'Wizard of Oz' 프로토타입 시연 기획 및 성공적 수행.",
-    weight: { pm: 4, eng: 3, edtech: 4 }
-  },
-  {
-    category: { en: "Cross-Functional Execution & Technical Scoping", ko: "교차 기능 실행 및 기술 스코핑" },
-    en: "Zero-Day Deployment Pipeline: Architected a webhook-driven backend logic pipeline using Make.com and Airtable. This enabled administrators to deploy instant, 'zero-day' scenario updates without requiring backend developer intervention.",
-    ko: "제로데이 배포 파이프라인: Make.com 및 Airtable을 연동한 웹훅 기반 백엔드 로직 설계, 개발자 개입 없이 관리자가 즉각적으로 코칭 시나리오를 배포할 수 있는 '제로데이' 운영 유연성 수립.",
-    weight: { pm: 4, eng: 4, edtech: 3 }
-  },
-  {
-    category: { en: "Cross-Functional Execution & Technical Scoping", ko: "교차 기능 실행 및 기술 스코핑" },
-    en: "Engineering Alignment: Defined strict JSON data contracts, state management flows, and API routing logic to guide UI/UX designers and AWS engineers in translating complex LLM behaviors into production code.",
-    ko: "엔지니어링 사양 정렬: 정교한 LLM 동작 모델이 안전한 프론트 UI 및 AWS 인프라 환경에서 작동하도록 JSON 데이터 규격 계약, 상태 관리 흐름, API 라우팅 스펙 정의 및 전달.",
-    weight: { pm: 3, eng: 5, edtech: 1 }
-  },
-  {
-    category: { en: "Cross-Functional Execution & Technical Scoping", ko: "교차 기능 실행 및 기술 스코핑" },
-    en: "GTM & Client Enablement: Aligned the AI coaching features directly to existing revenue-generating reports and provided strategic positioning materials to successfully support high-stakes B2B sales demonstrations for Tier-1 enterprise clients.",
-    ko: "GTM 및 파트너 영업 활성화: 개발된 AI 코칭 기능을 기존 유료 리포트 지표들과 직결시키고, 1티어 대기업 파트너를 위한 고성공율 B2B 세일즈 데모용 핵심 가이드와 포지셔닝 머티리얼 지원.",
-    weight: { pm: 5, eng: 2, edtech: 4 }
-  }
-];
+const VODABI_ROLE_BULLETS: Record<ActiveRole, { en: string; ko: string }[]> = {
+  pm: [
+    {
+      en: "Spearheaded product vision and authored the core product brief for an enterprise B2B conversational AI platform — directing the pivot from a legacy analytics-heavy dashboard to a clean, 3-step interactive AI coaching widget (Role Selection → Upload → Chat), significantly reducing user cognitive load.",
+      ko: "엔터프라이즈 B2B 대화형 AI 플랫폼의 핵심 제품 사양(PRD)을 개발하고 제품 비전을 주도하여, 기존 데이터 위주의 무거운 대시보드에서 직관적인 3단계 대화형 AI 코칭 위젯(역할 선택 → 업로드 → 대화)으로 피봇을 리드함으로써 사용자 인지 부하를 획기적으로 감축함."
+    },
+    {
+      en: "Mapped and executed a multi-phase deployment roadmap, securing immediate stakeholder ROI with a lightweight stateless MVP before architecting the transition to a stateful, enterprise-grade cloud ecosystem.",
+      ko: "다단계 제품 출시 로드맵을 설계 및 실행하여, 엔터프라이즈급 영구 데이터 저장 클라우드 시스템으로 전환하기 전 상태가 없는 경량 MVP 버전을 통해 이해관계자에게 즉각적인 투자 대 효과(ROI)를 입증함."
+    },
+    {
+      en: "Designed a deterministic evaluation framework that decoupled immutable behavioural scoring from dynamic, client-defined compliance matrices — eliminating LLM hallucinations and ensuring enterprise trust.",
+      ko: "고객사의 유동적인 규격 준수 요건과 불변의 행동 기준 채점을 완벽히 분리해내는 하이브리드 결정론적 채점 프레임워크를 고안하여 거대언어모델(LLM)의 고질적인 환각을 전면 배제하고 제품의 비즈니스 정합성을 극대화함."
+    },
+    {
+      en: "Aligned AI coaching features to existing revenue-generating reports and provided strategic GTM positioning materials supporting high-stakes B2B sales demonstrations for Tier-1 enterprise clients.",
+      ko: "개발된 AI 코칭 기능을 플랫폼 내의 기존 유료 수익 리포트와 직결시키고, 1티어 대기업 파트너를 위한 고성공율 B2B 세일즈 데모용 핵심 가이드와 포지셔닝 머티리얼을 기획 및 제공함."
+    },
+    {
+      en: "Designed and executed a 'Wizard of Oz' prototyping demonstration to validate frontend UX and backend conversational logic with executive stakeholders prior to full database integration.",
+      ko: "데이터베이스 통합 개발 이전에, 경영진 등 주요 이해관계자를 대상으로 프론트엔드 사용자 경험(UX) 및 백엔드 대화 흐름 로직을 입증하기 위한 'Wizard of Oz' 프로토타이핑 검증 및 성공적 시연을 리드함."
+    },
+    {
+      en: "Architected a webhook-driven backend pipeline using Make.com and Airtable enabling zero-day scenario updates without backend developer intervention.",
+      ko: "Make.com과 Airtable을 활용한 웹훅 연동 백엔드 로직 설계로, 개발자의 실무 개입 없이도 관리자가 신규 비즈니스 코칭 시나리오를 즉각 배포할 수 있는 '제로데이' 시나리오 업데이트 환경을 구축함."
+    }
+  ],
+  eng: [
+    {
+      en: "Designed a deterministic evaluation framework decoupling immutable behavioural scoring from dynamic client-defined compliance matrices, eliminating LLM hallucinations in enterprise contexts.",
+      ko: "고객사의 유동적인 규격 준수 요건과 불변의 행동 기준 채점을 완벽히 분리해내는 하이브리드 결정론적 채점 프레임워크를 고안하여 거대언어모델(LLM)의 고질적인 환각을 전면 배제하고 제품의 비즈니스 정합성을 극대화함."
+    },
+    {
+      en: "Translated a complex keyword data dictionary into a dynamic 4-persona LLM system prompt matrix, ingesting proprietary B2B sales telemetry into the LLM context window to generate highly personalised feedback.",
+      ko: "복잡한 세일즈 키워드 데이터 사전을 다이내믹한 4개 페르소나 거대언어모델(LLM) 시스템 프롬프트 매트릭스로 정밀 이식하고, 회사 고유의 B2B 세일즈 텔레메트리 데이터를 컨텍스트 윈도우에 피딩하여 정교한 맞춤 피드백을 생성하는 파이프라인 설계."
+    },
+    {
+      en: "Established enterprise AI guardrails: strict compliance protocols restricting LLM outputs to concise, high-impact bursts within proprietary boundaries, preventing hallucinated business decisions.",
+      ko: "엔터프라이즈 AI 가드레일 설계: 자체 기업 정보 자산 경계 내에서 거대언어모델이 안전하게 작동하도록 엄격한 인풋/아웃풋 프로토콜을 수립하여 출력을 매우 일관되고 압축적인 형태의 안전 수준 내로 상시 통제."
+    },
+    {
+      en: "Defined strict JSON data contracts, state management flows, and API routing logic to guide UI/UX designers and AWS engineers in translating complex LLM behaviours into production code.",
+      ko: "정교한 LLM 동작 모델이 프론트엔드 UI 및 AWS 인프라 환경에서 기민하게 동작하도록 JSON 데이터 스키마 규격 계약, 상태 관리 흐름도, 그리고 API 라우팅 스펙을 엄밀하게 정의하여 교차 개발 지휘."
+    },
+    {
+      en: "Architected a webhook-driven backend pipeline using Make.com and Airtable enabling zero-day scenario updates without backend developer intervention.",
+      ko: "Make.com과 Airtable을 활용한 웹훅 연동 백엔드 로직 설계로, 개발자의 실무 개입 없이도 관리자가 신규 비즈니스 코칭 시나리오를 즉각 배포할 수 있는 '제로데이' 시나리오 업데이트 환경을 구축함."
+    }
+  ],
+  edtech: [
+    {
+      en: "Directed the pivot from a legacy analytics-heavy dashboard to a 3-step interactive AI coaching widget applying UX cognitive load reduction principles to serve non-technical sales professionals.",
+      ko: "엔터프라이즈 B2B 대화형 AI 플랫폼의 핵심 제품 사양(PRD)을 개발하고 제품 비전을 주도하여, 기존 데이터 위주의 무거운 대시보드에서 직관적인 3단계 대화형 AI 코칭 위젯(역할 선택 → 업로드 → 대화)으로 피봇을 리드함으로써 사용자 인지 부하를 획기적으로 감축함."
+    },
+    {
+      en: "Designed the 'Fact-Impact-Fix' pedagogical logic model — transforming rigid integer-based scoring rubrics into empathetic, actionable micro-learning interventions grounded in instructional design principles.",
+      ko: "교육학적 원리에 정합한 'Fact-Impact-Fix' 발달 평가 모델 설계: 정량적이고 차가운 수치 채점 결과를 교정에 유용하고 공감 어린 마이크로 학습 인터벤션 지표로 전환하여 부모 및 학습자의 만족도를 극대화함."
+    },
+    {
+      en: "Led GTM and client enablement strategy supporting high-stakes B2B sales demonstrations for Tier-1 enterprise clients.",
+      ko: "개발된 AI 코칭 기능을 플랫폼 내의 기존 유료 수익 리포트와 직결시키고, 1티어 대기업 파트너를 위한 고성공율 B2B 세일즈 데모용 핵심 가이드와 포지셔닝 머티리얼을 기획 및 제공함."
+    },
+    {
+      en: "Executed a 'Wizard of Oz' prototype validation with executive stakeholders — a classic instructional design validation methodology applied to AI product.",
+      ko: "데이터베이스와 백엔드 API 전면 구축 이전에, 프론트엔드 UX 및 인공지능 교수 설계 기틀을 입증하기 위해 'Wizard of Oz' 프로토타이핑을 수행하고 주요 투자 주체 및 학술진 대상 검증 완료."
+    }
+  ]
+};
 
 const SKILLS: SkillCategory[] = [
   {
@@ -330,38 +338,38 @@ const SKILLS: SkillCategory[] = [
 const ROLES: Record<ActiveRole, RoleConfig> = {
   pm: {
     title: {
-      en: "JASON BENJAMIN — AI Product Manager · EdTech Founder",
-      ko: "제이슨 벤자민 — AI 프로덕트 매니저 · 에듀테크 지향 전문가"
+      en: "JASON BENJAMIN — AI Product Manager — Generative AI & EdTech",
+      ko: "제이슨 벤자민 — AI 프로덕트 매니저 — 생성형 AI & 에듀테크"
     },
     profileText: {
-      en: "AI Product Manager and EdTech founder with a proven track record of shipping enterprise B2B conversational SaaS, multi-persona coaching agents, and educational technology products. Adept at leading product vision, authoring product briefs, and designing interactive widgets that drastically reduce cognitive load. Uniquely positioned at the intersection of bilingual EdTech product design, generative AI integration, and cross-functional leadership — with hands-on experience across the full AI product lifecycle: from initial discovery and 'Wizard of Oz' validation to automated webhook pipelines and database scoping.",
-      ko: "엔터프라이즈 B2B 대화형 AI SaaS 및 자동 평가 코칭 플랫폼을 설계하는 AI 프로덕트 매니저이자 에듀테크 창업가입니다. 핵심 제품 비전 및 사양 수립, 초기 무상태성 MVP 설계부터 다단계 배포 전략을 거쳐 상태형 클라우드 에코시스템 설계까지 이끌었습니다. 한국 교육 현장에서의 10년 경력과 다국어 마켓 현지화 제품 기획, 정교한 4개 페르소나 LLM 동작 모델링, 그리고 Make.com/Airtable을 활용한 제로데이 배포 파이프라인 설계를 통해 비즈니스 임팩트를 확보해 왔습니다."
+      en: "AI Product Manager with enterprise B2B SaaS experience, five production AI products shipped, and a decade of education domain expertise that makes every product decision defensible. Proven track record defining AI product strategy, authoring product briefs, and shipping generative AI features that deliver measurable outcomes: 80% reduction in administrative workloads, scheduling automation cutting 40 hours to under 10 minutes, and enterprise B2B conversational AI coaching deployed to Tier-1 clients. Experienced across the full AI product lifecycle — from 'Wizard of Oz' validation to multi-phase roadmap execution and stateful enterprise cloud architecture.",
+      ko: "B2B SaaS 도입 이력과 5개 상용화 인공지능 제품 출시 경험을 지닌 AI 프로덕트 매니저이자, 교육 결정을 단단하게 입증하는 10년의 도메인 노하우를 갖춘 기획자입니다. 제품 전략 기획, 제품 요구서(PRD) 작성, 그리고 학사 업무 80% 소거, 40시간 소요 시간표 수립 업무를 10분 내 자동화, 대기업(Tier-1) 배포용 대화형 AI 세일즈 코칭 플랫폼 구현 등 괄목할 성과를 창출해냈습니다. 'Wizard of Oz' 실증 프로토타입부터 다단계 고신뢰 배포 로드맵 및 클라우드 아키텍처 사양 수립까지 전체 라이프사이클을 리드합니다."
     },
-    skillsOrder: ["pm", "ai", "domain", "technical"],
+    skillsOrder: ["pm", "ai", "technical", "domain"],
     academyBulletOrder: [0, 1, 2] // scheduling system, assessment system, textbook authoring
   },
   eng: {
     title: {
-      en: "JASON BENJAMIN — AI Integration Engineer · Solutions Architect",
-      ko: "제이슨 벤자민 — AI 인티그레이션 엔지니어 · 클라우드 솔루션 아키텍트"
+      en: "JASON BENJAMIN — AI Integration Engineer — Generative AI Systems & LLM Pipelines",
+      ko: "제이슨 벤자민 — AI 인티그레이션 엔지니어 — 생성형 AI 시스템 & LLM 파이프라인"
     },
     profileText: {
-      en: "Technical solutions architect and AI integration engineer specializing in full-stack LLM orchestration, enterprise B2B conversational AI, and secure serverless logic pipelines. Experienced in designing deterministic evaluation frameworks that decouple behavioral scoring from client compliance to eliminate hallucinations, and managing JSON data contracts for high-trust environments. Proven track record of architecting scalable webhook-driven pipelines (Make.com, Airtable, AWS) and robust database/RLS security policies, bridging the gap between complex LLM behaviors and production code.",
-      ko: "대형 언어 모델(LLM) 오케스트레이션, 복합 프롬프트 매트릭스 설계, 그리고 결정론적 평가 하이브리드 아키텍처 구축을 전문으로 하는 기술 솔루션 아키텍트이자 AI 인티그레이션 엔지니어입니다. VodaBi SaaS의 프론트엔드 UX 및 백엔드 로직 검증용 프로토타입 시연, Make.com과 Airtable을 연동한 웹훅 기반 제로데이 배포 파이프라인, 그리고 엄격한 JSON 데이터 규격 계약 및 API 라우팅을 설계하여 고도의 성능과 기업 보안 컴플라이언스를 충족합니다."
+      en: "AI Integration Engineer with enterprise B2B SaaS experience and five production generative AI systems shipped — specialising in deterministic AI architecture, LLM pipeline design, structured output enforcement, and privacy-first deployment. Built and deployed end-to-end AI systems across enterprise conversational coaching platforms, multi-tenant B2B portals, consumer mobile applications, and real-time assessment platforms — using Gemini, Claude, Make.com, Firebase, and a full React/TypeScript/Express stack.",
+      ko: "기업용 B2B SaaS 환경에서 5개의 상용 거대언어모델(LLM) 시스템을 성공적으로 배포한 AI 인티그레이션 엔지니어입니다. 환각을 원천 배제하는 결정론적 평가 아키텍처 수립, 복합 프롬프트 매트릭스 설계, 정형 JSON 구조 보정 및 프라이버시 우선(COPPA) 설계에 높은 강점이 있습니다. 대화형 AI 코칭 서비스, 멀티테넌트 B2B SaaS, 모바일 앱 환경, 실시간 교육 진단 제품 전반의 엔드투엔드 AI 파이프라인를 React, TypeScript, Express, Firebase, Supabase, Make.com을 바탕으로 완벽히 통제 설계합니다."
     },
-    skillsOrder: ["technical", "ai", "pm", "domain"],
+    skillsOrder: ["ai", "technical", "pm", "domain"],
     academyBulletOrder: [1, 0, 2] // assessment system, scheduling system, textbook authoring
   },
   edtech: {
     title: {
-      en: "JASON BENJAMIN — EdTech Product Manager · EFL Academic Director",
-      ko: "제이슨 벤자민 — 에듀테크 프로덕트 매니저 · EFL 교육 과정 총괄 디렉터"
+      en: "JASON BENJAMIN — EdTech Product Manager — AI-Powered Learning Systems & Curriculum",
+      ko: "제이슨 벤자민 — 에듀테크 프로덕트 매니저 — AI 기반 학습 시스템 & 교육 과정"
     },
     profileText: {
-      en: "Bilingual EdTech product specialist and EFL director with a decade of educational leadership in South Korea, specializing in converting complex pedagogical frameworks into actionable AI features. Designed the 'Fact-Impact-Fix' logic model to turn traditional grading rubrics into empathetic micro-learning interventions, reducing cognitive load. Expert in international standard indices (CEFR / Cambridge YLE), bilingual product localization, and cross-functional GTM strategies that align state-of-the-art AI coaching tools with commercial revenue goals and tier-1 B2B client needs.",
-      ko: "국내 교육 시장에서 10년 이상 영어 교육 과정 및 학원 운영을 총괄한 에듀테크 제품 전문가이자 EFL 디렉터입니다. 학원 현장에서 요구하는 평가 기준(CEFR/Cambridge YLE)을 제품에 정밀 적용하고, 엄격한 채점 방식을 공감형 마이크로 러닝 인터벤션으로 구현하는 'Fact-Impact-Fix' 교육학적 AI 코칭 모델을 설계하였습니다. 한국어-영어 다국어 제품 현지화 설계, 아동 개인정보 규제(COPPA) 준수 제품 고안, 그리고 개발된 AI 기능을 기업 고객 대상 B2B 세일즈 및 유료 성과 리포트로 매끄럽게 연동하는 GTM 전략을 주도합니다."
+      en: "EdTech Product Manager with a Master of Education in Educational Management, enterprise B2B AI SaaS experience, and 10+ years of domain expertise inside South Korean classrooms and academies. Uniquely positioned at the intersection of pedagogy and product — designed instructional logic models for enterprise sales coaching, shipped a consumer AI homework assistant to the App Store, and built a school-wide assessment platform mapped to CEFR and Cambridge YLE standards. Track record includes 80% administrative workload reduction, scheduling automation from 40 hours to 10 minutes, and AI coaching deployed to Tier-1 enterprise clients.",
+      ko: "교육행정경영학 석사 학위와 국내 K-12 어학원 시장에서의 10년의 도메인 경험을 지닌 에듀테크 특화 프로덕트 매니저입니다. 교수법과 제품 설계를 융합하여 세일즈 행동 정량 평가 모델 설계, 모바일 앱스토어용 아동용 AI 과제 도우미 론칭, 공인 국제 진단(CEFR / Cambridge YLE) 매핑 대시보드 구축을 기획 주도했습니다. 학사 문서 부담 80% 전격 절감, 조합 연산 자동화(40시간에서 10분), 그리고 1티어 대기업 파트너를 위한 B2B AI 솔루션 연동 등 실질 비즈니스 지표를 도출했습니다."
     },
-    skillsOrder: ["domain", "pm", "ai", "technical"],
+    skillsOrder: ["pm", "ai", "domain", "technical"],
     academyBulletOrder: [2, 1, 0] // textbook authoring, assessment system, scheduling system
   }
 };
@@ -381,8 +389,16 @@ const BLEND_ACADEMY_BULLETS = [
   }
 ];
 
-export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
-  const [activeRole, setActiveRole] = useState<ActiveRole>('pm');
+export default function RoleSwitchResume({ locale, theme, activeRole: propActiveRole, onRoleChange }: ResumeProps) {
+  const [localActiveRole, setLocalActiveRole] = useState<ActiveRole>('pm');
+  const activeRole = propActiveRole !== undefined ? propActiveRole : localActiveRole;
+  const setActiveRole = (role: ActiveRole) => {
+    if (onRoleChange) {
+      onRoleChange(role);
+    } else {
+      setLocalActiveRole(role);
+    }
+  };
 
   const config = ROLES[activeRole];
   const isDark = theme === 'dark';
@@ -478,21 +494,16 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
         </div>
       </div>
 
-      {/* DYNAMIC HEADER SHOWS THE TARGETED SPECIALTY IN LARGE DISPLAY FOR PROFESSIONAL PRINT */}
-      <div className="hidden print:block border-b-2 border-black pb-4 mb-4">
-        <h3 className="text-2xl font-black tracking-tight text-black">{config.title[locale]}</h3>
-        <p className="text-xs text-black/80 mt-1">Seoul, South Korea | jsn.benjamin@gmail.com | Portfolio: jason-portfolio-live.vercel.app</p>
-      </div>
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeRole}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.2 }}
-          className="space-y-8 print:space-y-6"
-        >
+      <div className="print:hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeRole}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="space-y-8"
+          >
           {/* PROFILE SUMMARY SECTION */}
           <div className="space-y-3">
             <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold border-b pb-1.5 border-accent-gold/20 flex items-center gap-2 print:text-black print:border-black">
@@ -520,7 +531,11 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
                     <div className="space-y-1">
                       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
                         <span className="text-[11.5px] font-black uppercase text-accent-gold print:text-black flex items-center gap-1.5 font-display">
-                          <span>🚀</span> {locale === 'en' ? "AI Product Manager (Internship) · VodaBi SaaS Startup" : "AI 프로덕트 매니저 (인턴십) · VodaBi SaaS 스타트업"}
+                          <span>🚀</span> {
+                            activeRole === 'pm' ? (locale === 'en' ? "AI Product Manager (Internship) · VodaBi SaaS Startup" : "AI 프로덕트 매니저 (인턴십) · VodaBi SaaS 스타트업") :
+                            activeRole === 'eng' ? (locale === 'en' ? "AI Integration Engineer (Internship) · VodaBi SaaS Startup" : "AI 인티그레이션 엔지니어 (인턴십) · VodaBi SaaS 스타트업") :
+                            (locale === 'en' ? "EdTech Product Manager (Internship) · VodaBi SaaS Startup" : "에듀테크 프로덕트 매니저 (인턴십) · VodaBi SaaS 스타트업")
+                          }
                         </span>
                         <span className="text-[9.5px] font-mono opacity-50 print:text-black/60 print:text-[9px]">
                           {locale === 'en' ? "July 2026 – Present" : "2026년 7월 – 현재"}
@@ -535,21 +550,14 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
 
                     {/* BULLETS */}
                     <ul className="list-disc list-inside space-y-1.5 pl-2 mt-2.5">
-                      {VODABI_BULLETS
-                        .filter(bullet => bullet.weight[activeRole] >= 3)
-                        .sort((a, b) => b.weight[activeRole] - a.weight[activeRole])
-                        .slice(0, 4)
-                        .map((bullet, idx) => (
-                          <li 
-                            key={idx} 
-                            className={`text-[10.5px] leading-relaxed font-light ${isDark ? 'text-white/70' : 'text-neutral-800'} print:text-black print:text-[9px] indent-[-0.75rem] pl-3`}
-                          >
-                            <span className="font-bold text-accent-gold/90 print:text-black/80 font-mono text-[9px] uppercase mr-1.5">
-                              [{bullet.category[locale]}]
-                            </span>
-                            {bullet[locale]}
-                          </li>
-                        ))}
+                      {VODABI_ROLE_BULLETS[activeRole].map((bullet, idx) => (
+                        <li 
+                          key={idx} 
+                          className={`text-[10.5px] leading-relaxed font-light ${isDark ? 'text-white/70' : 'text-neutral-800'} print:text-black print:text-[9px] indent-[-0.75rem] pl-3`}
+                        >
+                          {bullet[locale]}
+                        </li>
+                      ))}
                     </ul>
                   </div>
 
@@ -684,10 +692,31 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
                     const cat = SKILLS.find(s => s.id === catId);
                     if (!cat) return null;
 
+                    const visualLabel = {
+                      pm: {
+                        pm: { en: "Product Management", ko: "프로덕트 매니지먼트" },
+                        ai: { en: "Generative AI & LLM", ko: "생성형 AI & LLM" },
+                        technical: { en: "Technical & Tooling", ko: "기술 및 도구" },
+                        domain: { en: "Domain", ko: "도메인 분야" }
+                      },
+                      eng: {
+                        ai: { en: "AI & LLM Engineering", ko: "AI & LLM 엔지니어링" },
+                        technical: { en: "Technical & Tooling", ko: "기술 및 개발 스택" },
+                        pm: { en: "Automation & Integration", ko: "오토메이션 & 시스템 연동" },
+                        domain: { en: "Security & Compliance", ko: "보안 & 컴플라이언스" }
+                      },
+                      edtech: {
+                        pm: { en: "EdTech Product Management", ko: "에듀테크 프로덕트 기획" },
+                        ai: { en: "AI & Learning Technology", ko: "AI & 학습 기술 개발" },
+                        domain: { en: "Domain & Market", ko: "도메인 & 로컬 교육 시장" },
+                        technical: { en: "Technical & Platforms", ko: "플랫폼 및 연동 기술" }
+                      }
+                    }[activeRole][catId];
+
                     return (
                       <div key={cat.id} className="space-y-1.5 print-avoid-break">
                         <div className="text-[10px] font-black uppercase tracking-wider text-accent-gold/90 print:text-black font-mono">
-                          {cat.category[locale]}
+                          {visualLabel[locale]}
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                           {cat.items.map((item, iIdx) => (
@@ -732,5 +761,340 @@ export default function RoleSwitchResume({ locale, theme }: ResumeProps) {
         </motion.div>
       </AnimatePresence>
     </div>
+
+    {/* PERFECT ATS-COMPLIANT PRINT VIEW */}
+    <div className="hidden print:block print-document font-sans text-[#3D3D3D]" style={{ fontSize: '10pt', lineHeight: '1.5', padding: '0', margin: '0' }}>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media print {
+          @page {
+            size: portrait;
+            margin: 18mm 20mm 18mm 20mm !important;
+          }
+          body {
+            background: white !important;
+            color: #3D3D3D !important;
+          }
+          .print-document h1 {
+            font-size: 26pt !important;
+            font-weight: 700 !important;
+            color: #1B3A5C !important;
+            margin: 0 0 2pt 0 !important;
+            text-align: left !important;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+          }
+          .print-document .print-headline {
+            font-size: 13pt !important;
+            font-weight: 600 !important;
+            color: #2E75B6 !important;
+            font-style: italic !important;
+            margin: 0 0 8pt 0 !important;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+          }
+          .print-document .print-contact {
+            font-size: 9pt !important;
+            color: #6B6B6B !important;
+            margin: 0 0 14pt 0 !important;
+            line-height: 1.4 !important;
+            border-bottom: 1px solid #E0E0E0 !important;
+            padding-bottom: 8pt !important;
+          }
+          .print-document h2 {
+            font-size: 11pt !important;
+            font-weight: 700 !important;
+            color: #1B3A5C !important;
+            text-transform: uppercase !important;
+            border-bottom: 2px solid #2E75B6 !important;
+            padding-bottom: 2pt !important;
+            margin-top: 14pt !important;
+            margin-bottom: 6pt !important;
+            letter-spacing: 0.5px !important;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+          }
+          .print-document p {
+            font-size: 10pt !important;
+            color: #3D3D3D !important;
+            line-height: 1.5 !important;
+            margin: 0 0 8pt 0 !important;
+            text-align: justify !important;
+          }
+          .print-document ul {
+            margin-top: 4pt !important;
+            margin-bottom: 8pt !important;
+            padding-left: 0 !important;
+            list-style: none !important;
+          }
+          .print-document li {
+            position: relative !important;
+            padding-left: 8mm !important;
+            text-indent: -5mm !important;
+            margin-bottom: 4pt !important;
+            font-size: 10pt !important;
+            color: #3D3D3D !important;
+            line-height: 1.5 !important;
+            text-align: justify !important;
+          }
+          .print-document .print-exp-item {
+            margin-bottom: 12pt !important;
+          }
+          .print-document .print-exp-header {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: baseline !important;
+            margin-bottom: 2pt !important;
+          }
+          .print-document .print-exp-title {
+            font-size: 11pt !important;
+            font-weight: 700 !important;
+            color: #1B3A5C !important;
+          }
+          .print-document .print-exp-company {
+            font-size: 11pt !important;
+            font-weight: 700 !important;
+            color: #2E75B6 !important;
+          }
+          .print-document .print-exp-dates {
+            font-size: 9.5pt !important;
+            color: #6B6B6B !important;
+            font-weight: 500 !important;
+          }
+          .print-document .print-exp-subtitle {
+            font-size: 10pt !important;
+            font-weight: 600 !important;
+            color: #3D3D3D !important;
+            font-style: italic !important;
+            margin-bottom: 4pt !important;
+          }
+          .print-document .print-skills-group {
+            margin-bottom: 8pt !important;
+            line-height: 1.4 !important;
+          }
+          .print-document .print-skills-label {
+            font-weight: 700 !important;
+            color: #1B3A5C !important;
+            display: inline !important;
+          }
+          .print-document .print-skills-items {
+            display: inline !important;
+            color: #3D3D3D !important;
+          }
+          .print-document .print-footer {
+            font-size: 9pt !important;
+            color: #6B6B6B !important;
+            text-align: center !important;
+            margin-top: 18pt !important;
+            border-top: 1px solid #E0E0E0 !important;
+            padding-top: 8pt !important;
+            font-style: italic !important;
+          }
+        }
+      ` }} />
+
+      {/* HEADER */}
+      <h1>JASON BENJAMIN</h1>
+      <div className="print-headline">
+        {activeRole === 'pm' && "AI Product Manager — Generative AI & EdTech"}
+        {activeRole === 'eng' && "AI Integration Engineer — Generative AI Systems & LLM Pipelines"}
+        {activeRole === 'edtech' && "EdTech Product Manager — AI-Powered Learning Systems & Curriculum"}
+      </div>
+      <div className="print-contact">
+        jsn.benjamin@gmail.com · 010 5371 9266 · Seoul, South Korea (Open to Remote) · jason-portfolio-live.vercel.app
+      </div>
+
+      {/* PROFESSIONAL PROFILE */}
+      <h2>{locale === 'en' ? "Professional Profile" : "전문가 프로필 개요"}</h2>
+      <p>
+        {activeRole === 'pm' && (locale === 'en' 
+          ? "AI Product Manager with enterprise B2B SaaS experience, five production AI products shipped, and a decade of education domain expertise that makes every product decision defensible. Proven track record defining AI product strategy, authoring product briefs, and shipping generative AI features that deliver measurable outcomes: 80% reduction in administrative workloads, scheduling automation cutting 40 hours to under 10 minutes, and enterprise B2B conversational AI coaching deployed to Tier-1 clients. Experienced across the full AI product lifecycle — from 'Wizard of Oz' validation to multi-phase roadmap execution and stateful enterprise cloud architecture."
+          : "B2B SaaS 도입 이력과 5개 상용화 인공지능 제품 출시 경험을 지닌 AI 프로덕트 매니저이자, 교육 결정을 단단하게 입증하는 10년의 도메인 노하우를 갖춘 기획자입니다. 제품 전략 기획, 제품 요구서(PRD) 작성, 그리고 학사 업무 80% 소거, 40시간 소요 시간표 수립 업무를 10분 내 자동화, 대기업(Tier-1) 배포용 대화형 AI 세일즈 코칭 플랫폼 구현 등 괄목할 성과를 창출해냈습니다. 'Wizard of Oz' 실증 프로토타입부터 다단계 고신뢰 배포 로드맵 및 클라우드 아키텍처 사양 수립까지 전체 라이프사이클을 리드합니다.")}
+        {activeRole === 'eng' && (locale === 'en' 
+          ? "AI Integration Engineer with enterprise B2B SaaS experience and five production generative AI systems shipped — specialising in deterministic AI architecture, LLM pipeline design, structured output enforcement, and privacy-first deployment. Built and deployed end-to-end AI systems across enterprise conversational coaching platforms, multi-tenant B2B portals, consumer mobile applications, and real-time assessment platforms — using Gemini, Claude, Make.com, Firebase, and a full React/TypeScript/Express stack."
+          : "기업용 B2B SaaS 환경에서 5개의 상용 거대언어모델(LLM) 시스템을 성공적으로 배포한 AI 인티그레이션 엔지니어입니다. 환각을 원천 배제하는 결정론적 평가 아키텍처 수립, 복합 프롬프트 매트릭스 설계, 정형 JSON 구조 보정 및 프라이버시 우선(COPPA) 설계에 높은 강점이 있습니다. 대화형 AI 코칭 서비스, 멀티테넌트 B2B SaaS, 모바일 앱 환경, 실시간 교육 진단 제품 전반의 엔드투엔드 AI 파이프라인을 React, TypeScript, Express, Firebase, Supabase, Make.com을 바탕으로 완벽히 통제 설계합니다.")}
+        {activeRole === 'edtech' && (locale === 'en' 
+          ? "EdTech Product Manager with a Master of Education in Educational Management, enterprise B2B AI SaaS experience, and 10+ years of domain expertise inside South Korean classrooms and academies. Uniquely positioned at the intersection of pedagogy and product — designed instructional logic models for enterprise sales coaching, shipped a consumer AI homework assistant to the App Store, and built a school-wide assessment platform mapped to CEFR and Cambridge YLE standards. Track record includes 80% administrative workload reduction, scheduling automation from 40 hours to 10 minutes, and AI coaching deployed to Tier-1 enterprise clients."
+          : "교육행정경영학 석사 학위와 국내 K-12 어학원 시장에서의 10년의 도메인 경험을 지닌 에듀테크 특화 프로덕트 매니저입니다. 교수법과 제품 설계를 융합하여 세일즈 행동 정량 평가 모델 설계, 모바일 앱스토어용 아동용 AI 과제 도우미 론칭, 공인 국제 진단(CEFR / Cambridge YLE) 매핑 대시보드 구축을 기획 주도했습니다. 학사 문서 부담 80% 전격 절감, 조합 연산 자동화(40시간에서 10분), 그리고 1티어 대기업 파트너를 위한 B2B AI 솔루션 연동 등 실질 비즈니스 지표를 도출했습니다.")}
+      </p>
+
+      {/* CORE COMPETENCIES */}
+      <h2>{locale === 'en' ? "Core Competencies" : "직무 기술 핵심 역량"}</h2>
+      <div style={{ marginBottom: '12pt' }}>
+        {config.skillsOrder.map((catId) => {
+          const cat = SKILLS.find(s => s.id === catId);
+          if (!cat) return null;
+
+          const visualLabel = {
+            pm: {
+              pm: { en: "Product Management", ko: "프로덕트 매니지먼트" },
+              ai: { en: "Generative AI & LLM", ko: "생성형 AI & LLM" },
+              technical: { en: "Technical & Tooling", ko: "기술 및 도구" },
+              domain: { en: "Domain", ko: "도메인 분야" }
+            },
+            eng: {
+              ai: { en: "AI & LLM Engineering", ko: "AI & LLM 엔지니어링" },
+              technical: { en: "Technical & Tooling", ko: "기술 및 개발 스택" },
+              pm: { en: "Automation & Integration", ko: "오토메이션 & 시스템 연동" },
+              domain: { en: "Security & Compliance", ko: "보안 & 컴플라이언스" }
+            },
+            edtech: {
+              pm: { en: "EdTech Product Management", ko: "에듀테크 프로덕트 기획" },
+              ai: { en: "AI & Learning Technology", ko: "AI & 학습 기술 개발" },
+              domain: { en: "Domain & Market", ko: "도메인 & 로컬 교육 시장" },
+              technical: { en: "Technical & Platforms", ko: "플랫폼 및 연동 기술" }
+            }
+          }[activeRole][catId][locale];
+
+          return (
+            <div key={cat.id} className="print-skills-group">
+              <div className="print-skills-label">{visualLabel}: </div>
+              <div className="print-skills-items">{cat.items.join(', ')}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* PROFESSIONAL EXPERIENCE */}
+      <h2>{locale === 'en' ? "Professional Experience" : "경력 사항"}</h2>
+
+      {/* 1. VodaBi SaaS Startup */}
+      <div className="print-exp-item">
+        <div className="print-exp-header">
+          <div>
+            <span className="print-exp-title">
+              {activeRole === 'pm' ? (locale === 'en' ? "AI Product Manager (Internship)" : "AI 프로덕트 매니저 (인턴십)") :
+               activeRole === 'eng' ? (locale === 'en' ? "AI Integration Engineer (Internship)" : "AI 인티그레이션 엔지니어 (인턴십)") :
+               (locale === 'en' ? "EdTech Product Manager (Internship)" : "에듀테크 프로덕트 매니저 (인턴십)")}
+            </span>
+            <span style={{ color: '#2E75B6', fontWeight: 700 }}> — </span>
+            <span className="print-exp-company">VodaBi SaaS Startup</span>
+          </div>
+          <span className="print-exp-dates">{locale === 'en' ? "July 2026 – Present" : "2026년 7월 – 현재"}</span>
+        </div>
+        <div className="print-exp-subtitle">
+          {locale === 'en' 
+            ? "Lead product architect for an enterprise B2B conversational AI and automated evaluation platform" 
+            : "엔터프라이즈 B2B 대화형 AI 및 자동 평가 플랫폼 개발 리드 프로덕트 아키텍트"}
+        </div>
+        <ul>
+          {VODABI_ROLE_BULLETS[activeRole].map((bullet, idx) => (
+            <li key={idx}>– {bullet[locale]}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 2. Chekki EdTech Solutions */}
+      <div className="print-exp-item">
+        <div className="print-exp-header">
+          <div>
+            <span className="print-exp-title">{locale === 'en' ? "Founder & AI Lead" : "창업자 및 AI 리드"}</span>
+            <span style={{ color: '#2E75B6', fontWeight: 700 }}> — </span>
+            <span className="print-exp-company">Chekki EdTech Solutions</span>
+          </div>
+          <span className="print-exp-dates">{locale === 'en' ? "Jan 2024 – Present" : "2024년 1월 – 현재"}</span>
+        </div>
+        <div className="print-exp-subtitle">
+          {locale === 'en' 
+            ? "Six-product AI-powered software suite tailored for educational command channels" 
+            : "한국 영어 어학원 및 유치원 시장 고도화를 목표로 하는 6대 독자적 AI 시스템 구축 프로젝트 총괄"}
+        </div>
+        <ul>
+          {locale === 'en' ? (
+            <>
+              <li>– Chekki B2B Command Center — Enterprise SaaS Portal: Defined AI product strategy and roadmap for a multi-tenant B2B portal to eliminate 15 or more hours of weekly administrative overhead across language academy networks through automated generative AI reporting pipelines; shipped Role-Based Access Control and Magic Link authentication; designed and launched an AI agent pipeline using Make.com and Google Gemini that processes exception-first observations into culturally nuanced bilingual consultation notes, driving an 80% workload reduction.</li>
+              <li>– Chekki AI — Consumer Mobile Application: Led end-to-end product lifecycle for a bilingual AI mobile web application on the Apple App Store, targeting Korean families and ESL teachers; defined and executed a zero-storage privacy architecture as a core product requirement, eliminating retention of sensitive child data and ensuring full compliance with App Store safety regulations and child data privacy standards.</li>
+              <li>– Learning Diary — Student Portfolio Compiler: Defined product vision and shipped touch-screen 'Tag and Commit' AI portfolio tool; designed Dynamic Tenant Theming allowing directors to configure custom HEX branding and localized font sets; built zero-trust multi-tenant PostgreSQL Supabase RLS database; shipped in-browser @react-pdf/renderer compilation pipeline with Google Gemini 1.5 Flash, synthesizing teacher tags into bilingual micro-narratives client-side, eliminating cloud media exposure risk.</li>
+              <li>– EduPlanner Pro — AI Scheduling Engine: Shipped an automated school scheduling engine; designed 'Draft and Weave' two-stage LLM pipeline: Gemini Flash resolves baseline schedule conflicts with a fast generative pass, with recursive fallback to Gemini Pro for targeted constraint recalculation, enabling fully optimized timetables without human intervention.</li>
+              <li>– Benchmark AI — Continuous ESL Assessment Suite: Shipped a responsive continuous assessment platform that maps real-time student mastery growth to international standards (CEFR / Cambridge YLE), enabling early academic intervention before attrition risk escalates; defined KPIs around mastery progression velocity and early warning trigger accuracy.</li>
+              <li>– B2B Lead Generator — Sales CRM & Outreach Engine: Shipped a B2B sales tool parsing unstructured regional directory data and leveraging Gemini AI to produce hyper-personalized outreach campaigns, scaling ESL client acquisition without additional sales headcount.</li>
+            </>
+          ) : (
+            <>
+              <li>– Chekki B2B Command Center (엔터프라이즈 SaaS 포털): 어학원 지점들의 행정 오버헤드를 매주 15시간 제거하는 멀티테넌트 B2B SaaS 포털 AI 로드맵 기획; 원장과 소속 강사 영역 보호를 위한 Supabase RBAC 및 패스워드리스 로그인 구축; 일일 활동 기록에서 관찰 지점을 수합해 영한 정교한 이중언어 상담 보고서를 가공 전송하는 Make.com 및 Gemini 에이전트 설계로 문서 오버헤드 80% 감소.</li>
+              <li>– Chekki AI (소비자 지향 모바일 앱): 한국 영어유치원생 가정과 원어민 강사를 타겟으로 한 모바일 모바일 웹앱 제품 전 과정 기획 개발 및 정식 출시 주도; 민감 아동 음성 및 텍스트 데이터를 수집 및 저장하지 않는 제로-스토리지 프라이버시 아키텍처를 실질 정의하여 개인정보보호법(COPPA) 심사 완벽 통과.</li>
+              <li>– Learning Diary (패키징형 포트폴리오 생성기): 원어민 교사용 터치 식 학업 평가 'Tag & Commit' 태깅 모듈 출시; HEX 기반 테넌트 테밍과 Noto Sans 국영문 글꼴 동적 바인딩 기획; PostgreSQL RLS 행 보안 정책 기획; @react-pdf/renderer와 Gemini 1.5 Flash를 융합 연동해 아동 프라이버시 보호를 위한 완전 브라우저 구동형 PDF 이중언어 포트폴리오 빌더 탑재.</li>
+              <li>– EduPlanner Pro (AI 스케줄링 자원 배치 엔진): 학원 일정 충돌을 실시간 예방 예약하는 스케줄 자원 배치 엔진 총괄 주도; 속도가 빠른 Gemini Flash가 뼈대를 생성하고, 조건 충돌 발생 시 소량의 Gemini Pro를 재귀 호출 보정하는 'Draft & Weave' 2단계 프롬프트 오케스트레이션 설계로 일정 배치 작업 리소스 40시간에서 10분 단축.</li>
+              <li>– Benchmark AI (상시 정량 진단 정밀 실증 도구): 상시 음성 숙련도 및 진단 점수를 공인 국제 지수(CEFR / Cambridge YLE)에 동적 매핑하는 반응형 대시보드 구축, 원생 학습 정체 곡선 조기 확인 경보 시스템 구축을 통한 이탈율 완전 방어 및 학원 핵심 고정 매출 유지.</li>
+              <li>– B2B Lead Generator (CRM 타겟 분석 오토메이션): 공공 교육 디렉터리를 파싱 및 정제하여 정형화된 리드로 구조화하고, 지능형 Gemini AI를 지휘해 원장 맞춤 소구점을 가미한 세일즈 자동 메일을 대량 생산하는 자동화 영업 크롤 엔진 구축.</li>
+            </>
+          )}
+        </ul>
+      </div>
+
+      {/* 3. Blend ENG Academy */}
+      <div className="print-exp-item">
+        <div className="print-exp-header">
+          <div>
+            <span className="print-exp-title">{labels.blendAcademy.split(' · ')[0]}</span>
+            <span style={{ color: '#2E75B6', fontWeight: 700 }}> — </span>
+            <span className="print-exp-company">Blend ENG Academy</span>
+          </div>
+          <span className="print-exp-dates">{labels.blendPeriod}</span>
+        </div>
+        <div className="print-exp-subtitle">{labels.blendSub}</div>
+        <ul>
+          {config.academyBulletOrder.map((bulletIdx) => {
+            const bullet = BLEND_ACADEMY_BULLETS[bulletIdx];
+            return (
+              <li key={bulletIdx}>– {bullet[locale]}</li>
+            );
+          })}
+        </ul>
+      </div>
+
+      {/* 4. YBM PSA Seocho */}
+      <div className="print-exp-item">
+        <div className="print-exp-header">
+          <div>
+            <span className="print-exp-title">{labels.ybmAcademy.split(' · ')[0]}</span>
+            <span style={{ color: '#2E75B6', fontWeight: 700 }}> — </span>
+            <span className="print-exp-company">YBM PSA Seocho</span>
+          </div>
+          <span className="print-exp-dates">{labels.ybmPeriod}</span>
+        </div>
+        <div className="print-exp-subtitle">{labels.ybmSub}</div>
+        <ul>
+          <li>– {labels.ybmBullet}</li>
+        </ul>
+      </div>
+
+      {/* EDUCATION */}
+      <h2>{locale === 'en' ? "Education" : "학력 사항"}</h2>
+      <div className="print-exp-item">
+        <div className="print-exp-header">
+          <div>
+            <span className="print-exp-title">University of Essex</span>
+            <span style={{ color: '#6B6B6B', fontWeight: 500 }}> — Colchester, United Kingdom</span>
+          </div>
+          <span className="print-exp-dates">May 2022</span>
+        </div>
+        <div className="print-exp-subtitle" style={{ fontStyle: 'normal', fontWeight: 500 }}>
+          {locale === 'en' ? "Master of Education in Educational Management" : "교육학 석사 — 교육 경영학 석사"}
+        </div>
+      </div>
+      <div className="print-exp-item" style={{ marginTop: '6pt' }}>
+        <div className="print-exp-header">
+          <div>
+            <span className="print-exp-title">University of the Western Cape</span>
+            <span style={{ color: '#6B6B6B', fontWeight: 500 }}> — Cape Town, South Africa</span>
+          </div>
+          <span className="print-exp-dates">Dec 2013</span>
+        </div>
+        <div className="print-exp-subtitle" style={{ fontStyle: 'normal', fontWeight: 500 }}>
+          {locale === 'en' ? "Bachelor of Commercial Law" : "상법 학사 (Bachelor of Commercial Law)"}
+        </div>
+      </div>
+
+      {/* PRINT FOOTER TAGLINE */}
+      <div className="print-footer">
+        {activeRole === 'pm' && (locale === 'en' 
+          ? "Open to AI PM, AI product strategy, and EdTech product leadership roles (remote)"
+          : "AI PM, AI 제품 전략, 그리고 에듀테크 제품 리더십 역할 제안을 환영합니다 (원격 근무 선호)")}
+        {activeRole === 'eng' && (locale === 'en' 
+          ? "Open to AI integration, LLM pipeline engineering, and AI automation roles (remote)"
+          : "AI 시스템 연동, LLM 파이프라인 엔지니어링, AI 오토메이션 관련 협업 기회를 환영합니다 (원격 근무 선호)")}
+        {activeRole === 'edtech' && (locale === 'en' 
+          ? "Open to EdTech PM, curriculum technology, and AI-in-education roles (remote)"
+          : "에듀테크 PM, 커리큘럼 기술 설계, 교육 분야 AI 시스템 구축 관련 협업 기회를 환영합니다 (원격 근무 선호)")}
+      </div>
+    </div>
+  </div>
   );
 }
