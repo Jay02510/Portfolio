@@ -652,7 +652,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
     );
   }
 
-  const hasLiveApp = projectData.liveUrl && projectData.liveUrl !== "https://jason-benjamin.vercel.app/";
+  const hasLiveApp = projectData.liveUrl && projectData.liveUrl !== "https://jason-portfolio.com/";
 
   return (
     <div 

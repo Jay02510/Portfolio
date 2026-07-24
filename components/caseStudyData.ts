@@ -330,7 +330,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
   "consultation-pipeline": {
     title: "Automated Report Generator & Pipeline",
     tagline: "A zero-maintenance relational data pipeline automating student intake, report generation, and portal visualization.",
-    liveUrl: "https://jason-benjamin.vercel.app/",
+    liveUrl: "https://jason-portfolio.com/",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/fXwhH7ayipdTFcXASDJx5K?mode=videoOnly",
     screenshots: [
       { label: "Airtable Preview", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.35.34_PM_susvx4.png", subLabel: "Relational Database Backend" },
@@ -425,7 +425,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
   "lead-enrichment": {
     title: "B2B Lead Enrichment",
     tagline: "A full-stack CRM prospecting utility parsing regional directory details to structure custom outreach proposals.",
-    liveUrl: "https://jason-benjamin.vercel.app/",
+    liveUrl: "https://jason-portfolio.com/",
     screenshots: [
       { label: "Dashboard", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.17.21_PM_wsyzzu.png" },
       { label: "Dashboard Search", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.29_PM_btxolx.png" },
@@ -946,7 +946,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
   "consultation-pipeline": {
     title: "Automated Report Generator & Pipeline",
     tagline: "상담 신청서 수집 즉시 데이터 구조에 정합하고 이중 언어 보고서를 추출해 전용 포털과 동기화하는 정보 전송 파이프라인입니다.",
-    liveUrl: "https://jason-benjamin.vercel.app/",
+    liveUrl: "https://jason-portfolio.com/",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/fXwhH7ayipdTFcXASDJx5K?mode=videoOnly",
     screenshots: [
       { label: "Airtable 데이터베이스", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.35.34_PM_susvx4.png", subLabel: "관계형 데이터 백엔드" },
@@ -1041,7 +1041,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
   "lead-enrichment": {
     title: "B2B Lead Enrichment (자동 파트너 발굴 CRM)",
     tagline: "지역 지도를 기반으로 연락처 정보를 파싱 및 정밀 정화하고, 대표자 경력에 기반한 제안 메일 링크를 구성해 줍니다.",
-    liveUrl: "https://jason-benjamin.vercel.app/", 
+    liveUrl: "https://jason-portfolio.com/",
     screenshots: [
       { label: "Dashboard", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.17.21_PM_wsyzzu.png" },
       { label: "Dashboard Search", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.29_PM_btxolx.png" },
