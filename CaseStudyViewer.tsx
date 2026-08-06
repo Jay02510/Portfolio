@@ -224,6 +224,38 @@ const stackExplains: Record<string, { en: string; ko: string }> = {
   "Google Gemini 1.5 Flash": {
     en: "High-throughput vision/text model utilized to normalize pedagogical notes into rigid 2-sentence narratives.",
     ko: "단 두 문장의 엄격한 피드백 명세 구조로 교육 내용을 정형 완수하는 고성능 추론 모델."
+  },
+  "NestJS": {
+    en: "Enterprise Node.js framework providing modular WebSocket signaling gateways and server-side VAD pipeline.",
+    ko: "모듈식 WebSocket 시그널링 게이트웨이 및 서버 측 VAD 파이프라인을 제공하는 엔터프라이즈 백엔드 프레임워크."
+  },
+  "WebRTC": {
+    en: "Low-latency browser-to-server audio streaming allowing candidate speech and natural turn interruption.",
+    ko: "자연스러운 음성 발화 및 실시간 끼어들기를 지원하는 초저지연 브라우저-서버 간 오디오 스트리밍."
+  },
+  "Socket.IO": {
+    en: "Bidirectional WebSocket event communication for real-time voice session signaling and status updates.",
+    ko: "실시간 음성 세션 시그널링 및 상태 동기화를 위한 양방향 WebSocket 통신 게이트웨이."
+  },
+  "Prisma 7 (MariaDB Driver)": {
+    en: "Modern ORM data layer utilizing high-performance MariaDB driver adapters for applicant evaluation records.",
+    ko: "후보자 평가 기록을 위한 고성능 MariaDB 드라이버 어댑터 기반 차세대 ORM 데이터 레이어."
+  },
+  "OpenAI Realtime API (gpt-4o-realtime-preview)": {
+    en: "Realtime Voice-AI model persona executing sub-200ms voice simulation roleplays and candidate screening.",
+    ko: "Sub-200ms 음성 대화 시뮬레이션 및 후보자 스크리닝을 수행하는 실시간 Voice-AI 모델 페르소나."
+  },
+  "Docker": {
+    en: "Containerized deployment isolating backend services and micro-gateways across cloud environments.",
+    ko: "클라우드 환경 전반에 백엔드 서비스 및 마이크로 게이트웨이를 격리 배포하는 컨테이너화 인프라."
+  },
+  "Nginx": {
+    en: "High-performance reverse proxy and SSL termination layer shielding internal NestJS endpoints.",
+    ko: "내부 NestJS 엔드포인트를 보호하고 SSL 종단을 처리하는 고성능 리버스 프록시."
+  },
+  "i18next": {
+    en: "Internationalization framework delivering seamless bilingual UI localizations across evaluation portals.",
+    ko: "평가 포털 전반에 입체적인 이중언어 UI 지역화를 제공하는 국제화 프레임워크."
   }
 };
 
@@ -236,6 +268,32 @@ interface FlowchartNode {
 
 const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
   const nodesMap: Record<string, FlowchartNode[]> = {
+    'vodabi': [
+      {
+        title: lang === 'en' ? "Magic Link Auth System" : "매직링크 인증 시스템",
+        subtitle: lang === 'en' ? "Stateless, tokenized links for zero-friction applicant testing" : "계정 필요 없는 토큰화 매직링크 및 서버 만료 보안",
+        tech: "Stateless Token Auth",
+        icon: "lock"
+      },
+      {
+        title: lang === 'en' ? "Realtime Audio Pipeline" : "실시간 오디오 파이프라인",
+        subtitle: lang === 'en' ? "Browser WebRTC stream + Socket.IO in NestJS with server VAD" : "NestJS WebSocket 게이트웨이 & WebRTC 실시간 끼어들기",
+        tech: "NestJS / WebRTC / Socket.IO",
+        icon: "mobile"
+      },
+      {
+        title: lang === 'en' ? "Automated Evaluation Engine" : "자동 채점 평가 엔진",
+        subtitle: lang === 'en' ? "Async gpt-4o BANTCQ scoring, 11-pt rubric & WPM telemetry" : "gpt-4o BANTCQ 영업 지표, 11개 루브릭 & 발화 텔레메트리",
+        tech: "OpenAI Realtime API / gpt-4o",
+        icon: "sparkles"
+      },
+      {
+        title: lang === 'en' ? "Admin & Analytics Backoffice" : "어드민 & 애널리틱스 백오피스",
+        subtitle: lang === 'en' ? "Role-gated console, VOISOR RAG assistant & Prisma 7 MariaDB" : "React 19 Glassmorphism, VOISOR RAG AI & Prisma 7",
+        tech: "React 19 / Prisma 7 / MariaDB",
+        icon: "settings"
+      }
+    ],
     'chekki': [
       {
         title: lang === 'en' ? "Co-Pilot Mobile Client" : "모바일 하이브리드 클라이언트",

@@ -2,13 +2,13 @@ import { CaseStudyType } from '../types.ts';
 
 export const studyDataEn: Record<string, CaseStudyType> = {
   vodabi: {
-    title: "Conversational AI Voice & Coaching Platform (VodaBi)",
-    tagline: "Realtime WebRTC/WebSocket Voice-AI screening engine & deterministic LLM judge for enterprise candidate screening and sales coaching.",
+    title: "Full-Stack Case Study: Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
+    tagline: "Built an end-to-end voice simulation and evaluation engine that automates phone screening for sales/customer-facing roles. Replaced manual screening calls with a real-time AI customer persona and structured automated grading.",
     liveUrl: "",
     screenshots: [
-      { label: "AI Voice Coaching Widget", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "3-Step Widget: Role Selection -> Audio Upload -> Live Chat" },
-      { label: "Deterministic LLM Judge Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11-Point Rubric & BANTCQ Telemetry" },
-      { label: "Enterprise Security & AWS EC2", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "Containerized NestJS 11 / Nginx Architecture" }
+      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Realtime Audio Pipeline: WebRTC & Server-Side VAD in NestJS" },
+      { label: "Automated Evaluation Engine Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11-Point Rubric, BANTCQ Metrics & Speech Telemetry (WPM)" },
+      { label: "Admin & Analytics Backoffice (VOISOR AI)", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "Role-Gated Admin Console with Embedded RAG AI Assistant" }
     ],
     stats: [
       { label: "Admin Workload Reduction", value: "80%" },
@@ -16,25 +16,29 @@ export const studyDataEn: Record<string, CaseStudyType> = {
       { label: "Evaluation Precision", value: "11-Point Rubric" }
     ],
     problem: [
-      "Manual candidate phone screens created high administrative overhead and subjective hiring metrics.",
-      "Dense analytics dashboards overwhelmed non-technical hiring managers and sales leaders with cognitive load.",
-      "Unstructured LLM outputs caused hallucinations during high-stakes enterprise candidate reviews."
+      "Manual candidate phone screens created high administrative overhead, long screening delays, and subjective hiring metrics.",
+      "Unstructured candidate evaluation caused inconsistent scoring and recruiter fatigue during high-volume sales hiring.",
+      "Traditional static testing portals lacked realistic conversational pushback, real-time interruptions, and objective discovery telemetry."
     ],
     solution: [
-      "Led product pivot from a dense analytics dashboard to a clean 3-step AI coaching widget (Role Selection -> Audio Upload -> Live Chat), validated via Wizard of Oz prototypes.",
-      "Engineered a Realtime Voice-AI Engine featuring bidirectional WebSockets & WebRTC with gpt-4o-realtime-preview, server-side VAD (Voice Activity Detection), and turn interruption.",
-      "Built an Automated LLM Judge using gpt-4o structured JSON schemas, grading calls across an 11-point rubric, BANTCQ sales telemetry, and speech rate (WPM).",
-      "Secured infrastructure with stateless magic-link candidate access, AES-256-GCM encrypted PII storage, and Node.js 24/NestJS 11 containerized with Docker Compose & Nginx on AWS EC2 (ARM64)."
+      "Realtime Audio Pipeline: Engineered a browser-to-server WebRTC audio stream integrated with WebSocket signaling gateways in NestJS, utilizing server-side VAD to allow candidates to speak and interrupt the AI naturally.",
+      "Automated Evaluation Engine: Implemented an async post-call scoring pipeline using gpt-4o to extract structured BANTCQ sales discovery metrics, evaluate candidates against an 11-point rubric, analyze speech telemetry (WPM), and output an automated onboarding roadmap.",
+      "Security & Magic Link Auth: Designed a stateless, tokenized link access system so job applicants can take tests instantly without creating an account, secured server-side with strict expiration bounds.",
+      "Admin & Analytics Backoffice: Built a role-gated admin console (React 19, TypeScript, Tailwind/Glassmorphism) with dynamic rubric creation, scenario management, and an embedded RAG-grounded AI coaching assistant (VOISOR) for hiring managers.",
+      "Data Layer Modernization: Migrated the data infrastructure to Prisma 7 utilizing modern MariaDB driver adapters and Dockerized deployment."
     ],
     stack: [
-      "gpt-4o-realtime-preview",
-      "WebSockets / WebRTC",
-      "gpt-4o Structured JSON Schemas",
-      "NestJS 11 / Node.js 24",
-      "AWS EC2 (ARM64)",
-      "Docker Compose & Nginx",
-      "Prisma 7 (MariaDB Adapter)",
-      "React 19 & Tailwind CSS"
+      "React 19",
+      "TypeScript",
+      "Vite",
+      "NestJS",
+      "WebRTC",
+      "Socket.IO",
+      "Prisma 7 (MariaDB Driver)",
+      "OpenAI Realtime API (gpt-4o-realtime-preview)",
+      "Docker",
+      "Nginx",
+      "i18next"
     ],
     behindTheArchitecture: {
       problem: "Manual phone screens and subjective sales call reviews created extreme administrative bottlenecks, inconsistent candidate evaluation benchmarks, and high recruiter churn.",
@@ -740,13 +744,13 @@ responseSchema: {
 
 export const studyDataKo: Record<string, CaseStudyType> = {
   vodabi: {
-    title: "Enterprise Conversational AI Voice & Coaching Platform (VodaBi)",
-    tagline: "엔터프라이즈 채용 및 세일즈 코칭을 위한 실시간 WebRTC/WebSocket Voice-AI 대화 엔진 및 결정론적 LLM 평가관 시스템.",
+    title: "Full-Stack Case Study: Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
+    tagline: "영업 및 고객 대응 직무의 전화 스크리닝을 자동화하는 엔드투엔드 음성 시뮬레이션 및 평가 엔진. 수동 스크리닝 통화를 실시간 AI 고객 페르소나 및 구조화된 자동 채점 시스템으로 대체.",
     liveUrl: "",
     screenshots: [
-      { label: "AI 음성 코칭 위젯", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "3단계 위젯: 역할 선택 -> 오디오 업로드 -> 라이브 대화" },
-      { label: "결정론적 LLM 평가 스코어카드", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11개 평가 항목 & BANTCQ 텔레메트리" },
-      { label: "엔터프라이즈 보안 및 AWS EC2", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "NestJS 11 / Nginx 컨테이너 아키텍처" }
+      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "실시간 오디오 파이프라인: WebRTC & NestJS 서버 측 VAD" },
+      { label: "Automated Evaluation Engine Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11개 항목 루브릭, BANTCQ 지표 & 발화 텔레메트리 (WPM)" },
+      { label: "Admin & Analytics Backoffice (VOISOR AI)", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "RAG 기반 AI 코칭 어시스턴트 내장 역할 기반 어드민 콘솔" }
     ],
     stats: [
       { label: "행정 업무 감소율", value: "80%" },
@@ -754,25 +758,29 @@ export const studyDataKo: Record<string, CaseStudyType> = {
       { label: "평가 정밀도", value: "11개 항목 루브릭" }
     ],
     problem: [
-      "수동 후보자 전화 스크리닝으로 인한 높은 행정 업무 공수 및 주관적 채점 기준 문제.",
-      "복잡한 대시보드로 인해 비기술직 채용 담당자 및 세일즈 리더의 높은 인지 과부하 발생.",
-      "비구조화된 LLM 응답으로 인한 환각(Hallucination) 및 채용 평가 결과의 불확실성."
+      "수동 후보자 전화 스크리닝으로 인한 과도한 행정 업무, 스크리닝 지연, 주관적 평가 지표 문제.",
+      "비구조화된 채점 프로세스로 인한 대규모 세일즈 채용 시 채용 담당자 피로 및 불확실성 증대.",
+      "기존 정적 테스트 포털의 실시간 대화 상호작용, 끼어들기 및 객관적 탐색 텔레메트리 부재."
     ],
     solution: [
-      "복잡한 대시보드에서 직관적인 3단계 AI 코칭 위젯(역할 선택 -> 오디오 업로드 -> 라이브 대화)으로의 프로덕트 피봇을 주도하고 Wizard of Oz 프로토타입으로 검증.",
-      "gpt-4o-realtime-preview 기반 양방향 WebSockets & WebRTC 실시간 음성 AI 엔진, 서버 측 VAD(음성 활동 감지) 및 끼어들기 기능 구현.",
-      "gpt-4o 정형 JSON 스키마를 사용하는 자동 LLM 평가관을 구축하여 11개 루브릭 항목, BANTCQ 세일즈 텔레메트리, 발화 속도(WPM) 채점.",
-      "무상태 매직링크, AES-256-GCM 암호화 PII 저장, AWS EC2(ARM64) 상 Docker Compose & Nginx 컨테이너 아키텍처(Node.js 24/NestJS 11)로 인프라 보안 강화."
+      "Realtime Audio Pipeline: NestJS 기반 WebSocket 시그널링 게이트웨이와 결합된 브라우저-서버 간 WebRTC 오디오 스트림을 구축하고, 서버 측 VAD를 적용하여 후보자가 자연스럽게 말하고 AI에 끼어들 수 있도록 구현.",
+      "Automated Evaluation Engine: gpt-4o를 활용한 비동기 통화 후 채점 파이프라인을 구현하여 구조화된 BANTCQ 영업 탐색 지표 추출, 11개 평가 루브릭 심사, 발화 텔레메트리(WPM) 분석 및 자동 온보딩 로드맵 출력.",
+      "Security & Magic Link Auth: 지원자가 계정 생성 없이 즉시 평가를 치를 수 있도록 무상태 토큰화 링크 시스템을 설계하고, 서버 측 엄격한 만료 경계로 보안 강화.",
+      "Admin & Analytics Backoffice: 동적 루브릭 생성, 시나리오 관리, 채용 담당자를 위한 RAG 기반 AI 코칭 어시스턴트(VOISOR)가 내장된 역할 기반 어드민 콘솔(React 19, TypeScript, Tailwind/Glassmorphism) 구축.",
+      "Data Layer Modernization: 현대적인 MariaDB 드라이버 어댑터 및 Dockerized 배포를 활용하여 데이터 인프라를 Prisma 7로 마이그레이션."
     ],
     stack: [
-      "gpt-4o-realtime-preview",
-      "WebSockets / WebRTC",
-      "gpt-4o Structured JSON Schemas",
-      "NestJS 11 / Node.js 24",
-      "AWS EC2 (ARM64)",
-      "Docker Compose & Nginx",
-      "Prisma 7 (MariaDB Adapter)",
-      "React 19 & Tailwind CSS"
+      "React 19",
+      "TypeScript",
+      "Vite",
+      "NestJS",
+      "WebRTC",
+      "Socket.IO",
+      "Prisma 7 (MariaDB Driver)",
+      "OpenAI Realtime API (gpt-4o-realtime-preview)",
+      "Docker",
+      "Nginx",
+      "i18next"
     ],
     behindTheArchitecture: {
       problem: "수동 전화 스크리닝 및 주관적인 통화 평가로 인해 과도한 행정 병목 현상과 채용 담당자 이탈이 발생했습니다.",
