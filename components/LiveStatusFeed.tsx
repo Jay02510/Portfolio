@@ -14,6 +14,26 @@ interface BuildItem {
 
 const LIVE_UPDATES_DATA: BuildItem[] = [
   {
+    id: "vodabi-webrtc-latency-optimization",
+    date: "2026-08-04",
+    type: "feature",
+    titleEn: "VodaBi Real-Time WebRTC Audio Engine & Sub-200ms Latency Pipeline Deployed",
+    titleKo: "VodaBi 실시간 WebRTC 음성 AI 코칭 엔진 & 서브-200ms 지연 감소 파이프라인 배포 완료",
+    descEn: "Shipped the sub-200ms WebRTC voice coaching engine with server-side VAD, graceful barge-in interruption, and automated BANTCQ candidate evaluation scorecards.",
+    descKo: "서버사이드 VAD, 음성 끼어들기(Barge-in) 자연 전환 및 BANTCQ 자격 검증 평가 스코어카드 자동 생성이 가능한 서브-200ms WebRTC 음성 코칭 엔진 배포를 완료했습니다.",
+    relatedProjectId: "vodabi"
+  },
+  {
+    id: "vodabi-product-pivot-wizard-of-oz",
+    date: "2026-07-28",
+    type: "feature",
+    titleEn: "VodaBi Product Pivot: 3-Step AI Voice Coaching Widget & Prototyping",
+    titleKo: "VodaBi 제품 피봇: 3단계 AI 음성 코칭 위젯 및 사용자 검증 완료",
+    descEn: "Led product pivot from a complex analytics dashboard to an intuitive 3-step voice coaching flow (Role Selection -> Audio Upload -> Live Chat), validated with Tier-1 enterprise users via Wizard of Oz prototypes.",
+    descKo: "복잡한 분석 대시보드에서 직관적인 3단계 AI 음성 코칭 흐름으로 제품 피봇을 주도하였으며, Wizard of Oz 프로토타입을 통해 대기업 고객사 검증을 완료했습니다.",
+    relatedProjectId: "vodabi"
+  },
+  {
     id: "chekki-major-overhaul-2026",
     date: "2026-07-15",
     type: "feature",
@@ -42,36 +62,6 @@ const LIVE_UPDATES_DATA: BuildItem[] = [
     descEn: "Integrated the 1-minute 4-second interactive walkthrough video for the 'Automated Report Generator & Pipeline' project, with cross-origin sandboxing protections for secure preview rendering.",
     descKo: "Airtable-Make-Softr 연동 데이터 파이프라인의 1분 4초 분량 상세 작동 시연 영상을 softr 전용 포털과 연쇄 가동하도록 연결하였습니다. 보안 샌드박스를 구성해 끊김 없는 시청이 보장됩니다.",
     relatedProjectId: "consultation-pipeline"
-  },
-  {
-    id: "sandbox-iframe-resolution",
-    date: "2026-06-11",
-    type: "fix",
-    titleEn: "Resolved Sandbox Video Player Blocking",
-    titleKo: "시연 비디오 플레이어 샌드박스 차단 해결",
-    descEn: "Fixed cross-origin rendering restrictions on video widgets by adding a fully sandboxed fallback. Added a direct secondary window launcher to bypass strict browser privacy frames.",
-    descKo: "일부 보안 브라우저의 아이프레임 격리 환경에서 가이드 플레이어 실행이 가로막히는 문제를 우회하기 위해 샌드박스 매개 변수를 조정하고 직접 시청용 새 창 기동 장치를 가설했습니다.",
-    relatedProjectId: "consultation-pipeline"
-  },
-  {
-    id: "korean-phonetics",
-    date: "2026-06-08",
-    type: "feature",
-    titleEn: "Bilingual Phonetic Synthesis Engine Deployed",
-    titleKo: "Chekki AI 영어 발음 정밀 한글 합성 탑재",
-    descEn: "Overhauled the translation parsing step under the Chekki AI project. Configured Gemini structured JSON prompts to generate flawless Korean phonetic guidelines for ESL learners.",
-    descKo: "Chekki AI 숙제 판독 엔진을 고도화하여 제미나이 정형 데이터 규약에 맞춰 영어 문장의 한글 발음 독음 가이드가 무누수로 완전 조합되도록 파이프라인을 안정화했습니다.",
-    relatedProjectId: "chekki"
-  },
-  {
-    id: "case-study-pdf-templates",
-    date: "2026-06-04",
-    type: "feature",
-    titleEn: "Published Benchmark Explorer PDF Attachments",
-    titleKo: "Benchmark Explorer 성과측정 리포트 견본 배포",
-    descEn: "Released direct PDF assessment print-out samples for the Benchmark Explorer case study, demonstrating multi-point evaluation matrices across Baseline, Midline, and Endline test scenarios.",
-    descKo: "Benchmark Explorer 사례분석 탭 내에 학습 성과 측정 결과물(Baseline/Midline/Endline)을 정식 출력 양식에 맞춘 고품질 PDF 자료로 다운로드 요청할 수 있도록 연동을 완료했습니다.",
-    relatedProjectId: "benchmark-explorer"
   },
   {
     id: "zero-memory-hardening",

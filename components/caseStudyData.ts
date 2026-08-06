@@ -1,6 +1,128 @@
 import { CaseStudyType } from '../types.ts';
 
 export const studyDataEn: Record<string, CaseStudyType> = {
+  vodabi: {
+    title: "Conversational AI Voice & Coaching Platform (VodaBi)",
+    tagline: "Realtime WebRTC/WebSocket Voice-AI screening engine & deterministic LLM judge for enterprise candidate screening and sales coaching.",
+    liveUrl: "",
+    screenshots: [
+      { label: "AI Voice Coaching Widget", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "3-Step Widget: Role Selection -> Audio Upload -> Live Chat" },
+      { label: "Deterministic LLM Judge Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11-Point Rubric & BANTCQ Telemetry" },
+      { label: "Enterprise Security & AWS EC2", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "Containerized NestJS 11 / Nginx Architecture" }
+    ],
+    stats: [
+      { label: "Admin Workload Reduction", value: "80%" },
+      { label: "Voice Engine Latency", value: "<200ms WebRTC" },
+      { label: "Evaluation Precision", value: "11-Point Rubric" }
+    ],
+    problem: [
+      "Manual candidate phone screens created high administrative overhead and subjective hiring metrics.",
+      "Dense analytics dashboards overwhelmed non-technical hiring managers and sales leaders with cognitive load.",
+      "Unstructured LLM outputs caused hallucinations during high-stakes enterprise candidate reviews."
+    ],
+    solution: [
+      "Led product pivot from a dense analytics dashboard to a clean 3-step AI coaching widget (Role Selection -> Audio Upload -> Live Chat), validated via Wizard of Oz prototypes.",
+      "Engineered a Realtime Voice-AI Engine featuring bidirectional WebSockets & WebRTC with gpt-4o-realtime-preview, server-side VAD (Voice Activity Detection), and turn interruption.",
+      "Built an Automated LLM Judge using gpt-4o structured JSON schemas, grading calls across an 11-point rubric, BANTCQ sales telemetry, and speech rate (WPM).",
+      "Secured infrastructure with stateless magic-link candidate access, AES-256-GCM encrypted PII storage, and Node.js 24/NestJS 11 containerized with Docker Compose & Nginx on AWS EC2 (ARM64)."
+    ],
+    stack: [
+      "gpt-4o-realtime-preview",
+      "WebSockets / WebRTC",
+      "gpt-4o Structured JSON Schemas",
+      "NestJS 11 / Node.js 24",
+      "AWS EC2 (ARM64)",
+      "Docker Compose & Nginx",
+      "Prisma 7 (MariaDB Adapter)",
+      "React 19 & Tailwind CSS"
+    ],
+    behindTheArchitecture: {
+      problem: "Manual phone screens and subjective sales call reviews created extreme administrative bottlenecks, inconsistent candidate evaluation benchmarks, and high recruiter churn.",
+      vision: "Build a sub-200ms real-time conversational AI coaching engine that acts as an objective, 24/7 hiring co-pilot, delivering hallucination-free BANTCQ scorecards and instant onboarding roadmaps.",
+      rationale: "Selected WebRTC bidirectional audio streaming with server-side Voice Activity Detection (VAD) to allow natural candidate turn interruptions, combined with strict gpt-4o JSON schemas for 100% deterministic evaluation."
+    },
+    architecture: {
+      lifecycle: [
+        "Stateless Magic-Link Access: Candidates access the 3-step AI coaching widget via passwordless magic links with zero onboarding friction.",
+        "Realtime Voice Session: Bidirectional WebSockets and WebRTC stream audio directly to gpt-4o-realtime-preview, with server-side VAD handling natural speaker turn-taking.",
+        "Deterministic LLM Judge: Audio transcripts pass to an automated LLM Judge using gpt-4o with enforced JSON schemas, grading against an 11-point rubric, BANTCQ telemetry, and WPM speech rate.",
+        "Enterprise Insights: Generates an instant, objective candidate evaluation scorecard with a personalized onboarding roadmap for Tier-1 enterprise clients."
+      ],
+      guardrails: [
+        "Stateless PII Encryption: AES-256-GCM encryption secures candidate audio logs at rest; PII markers are scrubbed before cloud model processing.",
+        "Structured Schema Enforcement: Enforces strict JSON Schema validation to eliminate LLM hallucinations and raw JSON parsing failures.",
+        "Server-Side VAD & Barge-In: Gracefully handles candidate interruptions during live speech without audio distortion or WebSocket state deadlocks.",
+        "Zero-Trust Access Controls: Ephemeral magic links automatically expire after trial completion, preventing unauthorized API usage."
+      ]
+    },
+    promptEngineering: {
+      logic: `<system_identity>
+  You are an enterprise AI Candidate Evaluation & Sales Coaching Judge. Execute strict objective scoring without subjective bias or hallucination.
+</system_identity>
+
+<evaluation_protocol>
+  <rubric_points>11-Point Rubric (Communication Clarity, Technical Depth, Problem Solving, BANTCQ Telemetry)</rubric_points>
+  <metrics>Speech Rate (WPM), Keyword Alignment, Objection Handling, Personalised Onboarding Roadmap</metrics>
+</evaluation_protocol>`,
+      schema: `{
+  "type": "OBJECT",
+  "properties": {
+    "candidate_score": { "type": "NUMBER", "description": "Overall score out of 100" },
+    "rubric_breakdown": {
+      "type": "OBJECT",
+      "properties": {
+        "communication_clarity": { "type": "NUMBER" },
+        "technical_depth": { "type": "NUMBER" },
+        "problem_solving": { "type": "NUMBER" },
+        "bantcq_qualification": { "type": "BOOLEAN" }
+      }
+    },
+    "speech_telemetry": {
+      "type": "OBJECT",
+      "properties": {
+        "wpm": { "type": "NUMBER" },
+        "interruption_count": { "type": "NUMBER" }
+      }
+    },
+    "onboarding_roadmap": {
+      "type": "ARRAY",
+      "items": { "type": "STRING" }
+    }
+  }
+}`,
+      guardrails: [
+        "Deterministic JSON Output: Guarantees 100% type-safe JSON schema adherence across all evaluation runs.",
+        "IP & PII Anonymization: Strips proprietary corporate terms and candidate PII prior to model evaluation.",
+        "Hallucination Mitigation: Rejects unverified candidate assertions that lack explicit transcript evidence."
+      ]
+    },
+    impact: {
+      value: [
+        "Reduced candidate evaluation time by 80%, replacing manual phone screens with instant, objective BANTCQ scorecards.",
+        "Automated 40 hours of manual candidate review into sub-10 minute real-time AI audio processing runs.",
+        "Delivered sub-200ms WebRTC Voice-AI coaching engine with instant, hallucination-free onboarding roadmaps for Tier-1 enterprise clients."
+      ],
+      security: [
+        "Stateless magic-link candidate access with zero persistent credential vulnerabilities.",
+        "AES-256-GCM encrypted PII storage and COPPA/GDPR zero-retention data compliance.",
+        "Containerized Node.js 24 / NestJS 11 backend deployed behind Nginx reverse proxy on AWS EC2 (ARM64)."
+      ]
+    },
+    technicalHurdles: [
+      {
+        title: "WebRTC Audio Turn Interruption & VAD Latency",
+        incident: "Candidates interrupting the AI voice coach caused audio packet duplication and WebSocket connection drops.",
+        diagnosis: "Client-side Voice Activity Detection had a 400ms echo delay, causing overlapping speech buffers to freeze the real-time stream.",
+        resolution: "Engineered server-side VAD with gpt-4o-realtime-preview, clearing audio buffers instantly on speaker barge-in to achieve sub-200ms latency."
+      },
+      {
+        title: "Unstructured LLM Candidate Scoring Hallucinations",
+        incident: "Early evaluation prompts generated inconsistent score formats and fabricated candidate experience metrics.",
+        diagnosis: "Free-form text outputs lacked strict type constraints and deterministic scoring boundaries.",
+        resolution: "Architected a multi-step LLM Judge pipeline using gpt-4o with strict JSON schema enforcement, guaranteeing 100% type-safe BANTCQ scorecards."
+      }
+    ]
+  },
   chekki: {
     title: "Chekki AI",
     tagline: "Designed a mobile-first digital tabletop co-pilot application to transform printed school worksheets into interactive, bilingual tutoring keys.",
@@ -617,6 +739,128 @@ responseSchema: {
 };
 
 export const studyDataKo: Record<string, CaseStudyType> = {
+  vodabi: {
+    title: "Enterprise Conversational AI Voice & Coaching Platform (VodaBi)",
+    tagline: "엔터프라이즈 채용 및 세일즈 코칭을 위한 실시간 WebRTC/WebSocket Voice-AI 대화 엔진 및 결정론적 LLM 평가관 시스템.",
+    liveUrl: "",
+    screenshots: [
+      { label: "AI 음성 코칭 위젯", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "3단계 위젯: 역할 선택 -> 오디오 업로드 -> 라이브 대화" },
+      { label: "결정론적 LLM 평가 스코어카드", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11개 평가 항목 & BANTCQ 텔레메트리" },
+      { label: "엔터프라이즈 보안 및 AWS EC2", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "NestJS 11 / Nginx 컨테이너 아키텍처" }
+    ],
+    stats: [
+      { label: "행정 업무 감소율", value: "80%" },
+      { label: "음성 엔진 지연율", value: "<200ms WebRTC" },
+      { label: "평가 정밀도", value: "11개 항목 루브릭" }
+    ],
+    problem: [
+      "수동 후보자 전화 스크리닝으로 인한 높은 행정 업무 공수 및 주관적 채점 기준 문제.",
+      "복잡한 대시보드로 인해 비기술직 채용 담당자 및 세일즈 리더의 높은 인지 과부하 발생.",
+      "비구조화된 LLM 응답으로 인한 환각(Hallucination) 및 채용 평가 결과의 불확실성."
+    ],
+    solution: [
+      "복잡한 대시보드에서 직관적인 3단계 AI 코칭 위젯(역할 선택 -> 오디오 업로드 -> 라이브 대화)으로의 프로덕트 피봇을 주도하고 Wizard of Oz 프로토타입으로 검증.",
+      "gpt-4o-realtime-preview 기반 양방향 WebSockets & WebRTC 실시간 음성 AI 엔진, 서버 측 VAD(음성 활동 감지) 및 끼어들기 기능 구현.",
+      "gpt-4o 정형 JSON 스키마를 사용하는 자동 LLM 평가관을 구축하여 11개 루브릭 항목, BANTCQ 세일즈 텔레메트리, 발화 속도(WPM) 채점.",
+      "무상태 매직링크, AES-256-GCM 암호화 PII 저장, AWS EC2(ARM64) 상 Docker Compose & Nginx 컨테이너 아키텍처(Node.js 24/NestJS 11)로 인프라 보안 강화."
+    ],
+    stack: [
+      "gpt-4o-realtime-preview",
+      "WebSockets / WebRTC",
+      "gpt-4o Structured JSON Schemas",
+      "NestJS 11 / Node.js 24",
+      "AWS EC2 (ARM64)",
+      "Docker Compose & Nginx",
+      "Prisma 7 (MariaDB Adapter)",
+      "React 19 & Tailwind CSS"
+    ],
+    behindTheArchitecture: {
+      problem: "수동 전화 스크리닝 및 주관적인 통화 평가로 인해 과도한 행정 병목 현상과 채용 담당자 이탈이 발생했습니다.",
+      vision: "24시간 상시 운영되는 객관적 채용 코파일럿으로서 sub-200ms 실시간 대화형 AI 음성 엔진을 구축하고, 환각 없는 BANTCQ 스코어카드와 맞춤 온보딩 로드맵을 즉시 제공합니다.",
+      rationale: "후보자의 자연스러운 끼어들기를 허용하는 서버 측 VAD 기반 WebRTC 양방향 음성 스트리밍과 100% 결정론적 평가를 보장하는 gpt-4o JSON 스키마를 결합했습니다."
+    },
+    architecture: {
+      lifecycle: [
+        "무상태 매직링크 접속: 후보자가 비밀번호 없이 매직링크로 3단계 AI 코칭 위젯에 즉시 접속합니다.",
+        "실시간 음성 세션: 양방향 WebSockets & WebRTC가 오디오를 gpt-4o-realtime-preview로 스트리밍하며, 서버 측 VAD가 자연스러운 턴테이킹을 제어합니다.",
+        "결정론적 LLM 평가관: 통화 텍스트가 정형 JSON 스키마 기반 gpt-4o LLM 평가관을 거쳐 11개 평가 항목, BANTCQ 텔레메트리, WPM을 심사합니다.",
+        "엔터프라이즈 인사이트: 엔터프라이즈 고객사를 위한 객관적 평가 스코어카드와 개인 맞춤형 온보딩 로드맵을 즉시 생성합니다."
+      ],
+      guardrails: [
+        "PII 암호화 및 보호: 후보자 음성 로그는 AES-256-GCM으로 암호화 저장되며 PII 데이터는 모델 전송 전 정화됩니다.",
+        "정형 스키마 적용: 엄격한 JSON Schema 검증으로 LLM 환각 및 구문 분석 오류를 완벽히 차단합니다.",
+        "서버 측 VAD & 끼어들기: 오디오 왜곡이나 데드락 없이 후보자의 실시간 발화 끼어들기를 안정적으로 처리합니다.",
+        "제로 트러스트 접속 제어: 임시 매직링크는 사용 완료 후 자동 만료되어 무단 API 사용을 방지합니다."
+      ]
+    },
+    promptEngineering: {
+      logic: `<system_identity>
+  당신은 엔터프라이즈 AI 채용 및 세일즈 코칭 평가관입니다. 주관적 편향이나 환각 없이 엄격하고 객관적인 평가를 수행합니다.
+</system_identity>
+
+<evaluation_protocol>
+  <rubric_points>11개 항목 루브릭 (커뮤니케이션 명확성, 기술적 깊이, 문제 해결력, BANTCQ 텔레메트리)</rubric_points>
+  <metrics>발화 속도 (WPM), 키워드 일치도, 반론 대응력, 맞춤 온보딩 로드맵</metrics>
+</evaluation_protocol>`,
+      schema: `{
+  "type": "OBJECT",
+  "properties": {
+    "candidate_score": { "type": "NUMBER", "description": "100점 만점 총점" },
+    "rubric_breakdown": {
+      "type": "OBJECT",
+      "properties": {
+        "communication_clarity": { "type": "NUMBER" },
+        "technical_depth": { "type": "NUMBER" },
+        "problem_solving": { "type": "NUMBER" },
+        "bantcq_qualification": { "type": "BOOLEAN" }
+      }
+    },
+    "speech_telemetry": {
+      "type": "OBJECT",
+      "properties": {
+        "wpm": { "type": "NUMBER" },
+        "interruption_count": { "type": "NUMBER" }
+      }
+    },
+    "onboarding_roadmap": {
+      "type": "ARRAY",
+      "items": { "type": "STRING" }
+    }
+  }
+}`,
+      guardrails: [
+        "결정론적 JSON 출력: 모든 평가 파이프라인에서 100% 타입 안정성을 갖춘 JSON 스키마 준수를 보장합니다.",
+        "기업 IP 및 PII 익명화: 모델 평가 전 고유 기업 용어 및 개인정보를 마스킹 처리합니다.",
+        "환각 완화: 스크립트 근거가 없는 후보자의 미검증 주장을 자동으로 기각합니다."
+      ]
+    },
+    impact: {
+      value: [
+        "후보자 스크리닝 평가 시간을 80% 단축하고, 수동 전화 스크리닝을 즉각적이고 객관적인 BANTCQ 스코어카드로 대체했습니다.",
+        "40시간의 수동 후보자 검토 작업을 10분 미만의 실시간 AI 오디오 처리 프로세스로 자동화했습니다.",
+        "엔터프라이즈 고객사를 위해 환각 없는 온보딩 로드맵과 sub-200ms WebRTC Voice-AI 코칭 엔진을 구축했습니다."
+      ],
+      security: [
+        "지속적 자격 증명 취약점이 없는 무상태 매직링크 후보자 접근 방식.",
+        "AES-256-GCM 암호화 PII 저장소 및 COPPA/GDPR 제로 데이터 보존 준수.",
+        "AWS EC2(ARM64) 상의 Nginx 역방향 프록시 뒤에 배포된 컨테이너화된 Node.js 24 / NestJS 11 백엔드."
+      ]
+    },
+    technicalHurdles: [
+      {
+        title: "WebRTC 오디오 턴 끼어들기 및 VAD 지연 시간",
+        incident: "후보자가 AI 음성 코치와 동시에 말할 때 오디오 패킷 중복 및 WebSocket 연결 끊김 현상이 발생함.",
+        diagnosis: "클라이언트 측 음성 활동 감지(VAD)의 400ms 에코 지연으로 인해 겹치는 오디오 버퍼가 실시간 스트림을 병목 처리함.",
+        resolution: "gpt-4o-realtime-preview 기반 서버 측 VAD를 엔지니어링하여 발화 끼어들기 시 오디오 버퍼를 즉시 비워 sub-200ms 지연 시간을 달성함."
+      },
+      {
+        title: "비구조화된 LLM 후보자 평가 환각",
+        incident: "초기 평가 프롬프트가 일관되지 않은 점수 형식과 허위 후보자 경력 지표를 생성함.",
+        diagnosis: "자유 형식 텍스트 출력이 엄격한 타입 제약과 결정론적 채점 경계선이 부족했음.",
+        resolution: "엄격한 JSON 스키마를 강제하는 gpt-4o 기반 다단계 LLM 평가관 파이프라인을 구축하여 100% 타입 안전 BANTCQ 스코어카드를 보장함."
+      }
+    ]
+  },
   chekki: {
     title: "Chekki AI (체키)",
     tagline: "Capacitor JS 기반 모바일 테이블탑 코파일럿 앱으로 종이 학습지를 인터랙티브 이중언어 과제 지도 솔루션 및 부모 학습 대시보드로 바꿉니다.",

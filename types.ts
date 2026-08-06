@@ -9,7 +9,7 @@ export interface Project {
   demoUrl?: string;
   websiteUrl?: string;
   githubUrl?: string;
-  category: 'K-12' | 'Higher Ed' | 'Corporate' | 'Tools';
+  category: 'K-12' | 'Higher Ed' | 'Corporate' | 'Tools' | 'Pipelines';
 }
 
 export interface Skill {
