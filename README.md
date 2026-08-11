@@ -20,12 +20,12 @@
 
 | Product | Role & Category | Live Status | Impact & Core Highlights | Live Link / Demo |
 | :--- | :--- | :--- | :--- | :--- |
-| **[VodaBi Voice AI](./CASE_STUDY.md#2-featured-case-study-vodabi-enterprise-voice-ai)** | Full-Stack B2B SaaS | 🟢 **Featured Case Study** | **Sub-200ms WebRTC voice simulation** with NestJS, server-side VAD, gpt-4o 11-point rubric judge & BANTCQ sales telemetry. | [Deep-Dive Case Study ↗](./CASE_STUDY.md#2-featured-case-study-vodabi-enterprise-voice-ai) |
+| **[VodaBi Voice AI](./CASE_STUDY.md#vodabi-case-study)** | Full-Stack B2B SaaS | 🟢 **Featured Case Study** | **Sub-200ms WebRTC voice simulation** with NestJS, server-side VAD, gpt-4o 11-point rubric judge & BANTCQ sales telemetry. | [Deep-Dive Case Study ↗](./CASE_STUDY.md#vodabi-case-study) |
 | **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40h → <10m timetable generator** with recursive "Draft & Weave" LLM constraint resolution. | [Launch Live App ↗](https://scheduling-app-five.vercel.app/) |
 | **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech OCR & Scanner | 🟢 **Live Shipped App** | **Instant mobile camera worksheet scanner** delivering bilingual learning guides under zero-memory privacy bounds. | [Launch Live App ↗](https://chekki-ai.vercel.app/) |
-| **[Automated Report Generator](./CASE_STUDY.md#6-technical-architecture--end-to-end-data-pipeline)** | Relational Pipeline | 🟢 **Production Pipeline** | **15+ hours/week saved** using Airtable + Make.com + Fillout + Softr client portals for automated student reports. | [Pipeline Writeup ↗](./CASE_STUDY.md#6-technical-architecture--end-to-end-data-pipeline) |
+| **[Automated Report Generator](./CASE_STUDY.md#report-generator-pipeline)** | Relational Pipeline | 🟢 **Production Pipeline** | **15+ hours/week saved** using Airtable + Make.com + Fillout + Softr client portals for automated student reports. | [Pipeline Writeup ↗](./CASE_STUDY.md#report-generator-pipeline) |
 | **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Assessment Portal | 🟢 **Live Shipped App** | **Visual skill-mapping portal** converting raw scores into CEFR/Cambridge YLE mastery trajectories. | [Launch Live App ↗](https://education-benchmark-system.vercel.app/) |
-| **[B2B Lead Enrichment CRM](./CASE_STUDY.md#4-product-management--tradeoff-decisions-the-why)** | Sales Automation | 🟢 **Production CRM** | **4x response rate boost** parsing regional directories, cleaning HTML, and synthesizing 1-click Gmail outreach links. | [CRM Case Study ↗](./CASE_STUDY.md#4-product-management--tradeoff-decisions-the-why) |
+| **[B2B Lead Enrichment CRM](./CASE_STUDY.md#b2b-crm-case-study)** | Sales Automation | 🟢 **Production CRM** | **4x response rate boost** parsing regional directories, cleaning HTML, and synthesizing 1-click Gmail outreach links. | [CRM Case Study ↗](./CASE_STUDY.md#b2b-crm-case-study) |
 
 ---
 
@@ -59,7 +59,10 @@ Unlike standard AI prototypes, this suite is engineered with strict production s
 
 ## 🌐 Live Portfolio & Contact
 
-* 🔗 **Live Portfolio Web App**: [https://ais-pre-3jvuj4htrne2zxgd4bnxz7-47190329303.asia-northeast1.run.app](https://ais-pre-3jvuj4htrne2zxgd4bnxz7-47190329303.asia-northeast1.run.app)
+* 🌐 **Interactive Portfolio Web App**: [https://jason-portfolio.com/](https://jason-portfolio.com/)
+* 🚀 **EduPlanner Pro (Live App)**: [https://scheduling-app-five.vercel.app/](https://scheduling-app-five.vercel.app/)
+* 📱 **Chekki AI (Live App)**: [https://chekki-ai.vercel.app/](https://chekki-ai.vercel.app/)
+* 📊 **Benchmark Explorer (Live App)**: [https://education-benchmark-system.vercel.app/](https://education-benchmark-system.vercel.app/)
 * 📧 **Email Contact**: [jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com) / [Kingjay2510@gmail.com](mailto:Kingjay2510@gmail.com)
 
 ---

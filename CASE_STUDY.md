@@ -12,15 +12,16 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 
 | Product | Category & Role | Status | Lead Impact Metric | Key Architectural Innovation |
 | :--- | :--- | :--- | :--- | :--- |
-| **[VodaBi Voice AI](#2-featured-case-study-vodabi-enterprise-voice-ai)** | Enterprise B2B SaaS Case Study | 🟢 **Featured Case Study** | **80% Admin Overhead Cut** | Sub-200ms WebRTC voice simulation, server VAD, gpt-4o 11-pt rubric judge & BANTCQ sales telemetry. |
+| **[VodaBi Voice AI](./CASE_STUDY.md#vodabi-case-study)** | Enterprise B2B SaaS Case Study | 🟢 **Featured Case Study** | **80% Admin Overhead Cut** | Sub-200ms WebRTC voice simulation, server VAD, gpt-4o 11-pt rubric judge & BANTCQ sales telemetry. |
 | **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40 Hours → <10 Minutes** | Recursive "Draft & Weave" LLM constraint resolution (`gemini-3-flash` + `gemini-3-pro`). |
 | **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech OCR & Parent Mobile App | 🟢 **Live Shipped App** | **1,200+ Parent Interactions** | Instant mobile worksheet camera scanner delivering bilingual learning guides with zero storage PII bounds. |
-| **[Automated Report Generator](./CASE_STUDY.md#5-technical-architecture--end-to-end-data-pipeline)** | Relational Data Pipeline | 🟢 **Production Pipeline** | **15 Hours/Week Saved** | Airtable + Make.com + Fillout Forms + Softr zero-maintenance reporting. |
+| **[Automated Report Generator](./CASE_STUDY.md#report-generator-pipeline)** | Relational Data Pipeline | 🟢 **Production Pipeline** | **15 Hours/Week Saved** | Airtable + Make.com + Fillout Forms + Softr zero-maintenance reporting. |
 | **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Continuous Assessment Portal | 🟢 **Live Shipped App** | **98% Family Retention** | Visual skill-mapping engine converting scores into CEFR/Cambridge YLE trajectories. |
-| **[B2B Lead Enrichment CRM](./CASE_STUDY.md#3-product-management--tradeoff-decisions-the-why)** | Sales Automation CRM | 🟢 **Production CRM** | **4x Outreach Response Rate** | Regional Naver directory parser, HTML sanitizer, and 1-click personalized Gmail outreach. |
+| **[B2B Lead Enrichment CRM](./CASE_STUDY.md#b2b-crm-case-study)** | Sales Automation CRM | 🟢 **Production CRM** | **4x Outreach Response Rate** | Regional Naver directory parser, HTML sanitizer, and 1-click personalized Gmail outreach. |
 
 ---
 
+<a id="vodabi-case-study"></a>
 ## 2. FEATURED CASE STUDY: VODABI ENTERPRISE VOICE-AI ROLEPLAY & AUTOMATED SCORING ENGINE
 
 ### A. Role & Product Ownership
@@ -59,6 +60,7 @@ Most portfolio projects wire up an LLM API call and stop. This suite is engineer
 
 ---
 
+<a id="b2b-crm-case-study"></a>
 ## 4. PRODUCT MANAGEMENT & TRADEOFF DECISIONS ("THE WHY")
 
 Product Managers must demonstrate strategic judgment and ROI balance, not just technical execution. Below are key tradeoffs engineered into the suite:
@@ -83,6 +85,7 @@ The application features a fully functional, production-ready monetization engin
 
 ---
 
+<a id="report-generator-pipeline"></a>
 ## 6. TECHNICAL ARCHITECTURE & END-TO-END DATA PIPELINE
 
 ```
@@ -152,11 +155,11 @@ To prevent prompt injection and ensure deterministic JSON output:
 ## 9. CONTACT & NEXT STEPS
 
 * **Email**: [jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com) / [Kingjay2510@gmail.com](mailto:Kingjay2510@gmail.com)
-* **Live Portfolio App & Demos**:
-  * [Live Portfolio & Case Study Explorer](https://ais-pre-3jvuj4htrne2zxgd4bnxz7-47190329303.asia-northeast1.run.app)
-  * [EduPlanner Pro Live App](https://scheduling-app-five.vercel.app/)
-  * [Chekki AI Live App](https://chekki-ai.vercel.app/)
-  * [Benchmark Explorer Live App](https://education-benchmark-system.vercel.app/)
+* **Live Shipped Apps & Interactive Portfolio**:
+  * [Interactive Portfolio Web App ↗](https://jason-portfolio.com/)
+  * [EduPlanner Pro Live App ↗](https://scheduling-app-five.vercel.app/)
+  * [Chekki AI Live App ↗](https://chekki-ai.vercel.app/)
+  * [Benchmark Explorer Live App ↗](https://education-benchmark-system.vercel.app/)
 
 ---
 *© Jason Benjamin. Built with a human-centered, production-first approach.*

@@ -66,7 +66,7 @@ app.post("/api/chat", async (req, res) => {
 
     const ai = getGeminiClient();
     const response = await ai.models.generateContent({
-      model: 'gemini-3.5-flash',
+      model: 'gemini-2.5-flash',
       contents: message,
       config: {
         systemInstruction: CHAT_SYSTEM_INSTRUCTION,
@@ -93,7 +93,7 @@ app.post("/api/ideate", async (req, res) => {
 
     const ai = getGeminiClient();
     const response = await ai.models.generateContent({
-      model: 'gemini-3.5-flash',
+      model: 'gemini-2.5-flash',
       contents: `A teacher is struggling with this problem: "${problem}". Suggest 3 simple digital helpers to fix it.`,
       config: {
         responseMimeType: "application/json",
