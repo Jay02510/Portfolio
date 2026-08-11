@@ -2,12 +2,12 @@
 # System Audit: Jason Benjamin Portfolio
 
 ## 1. Executive Summary
-This application is a live demonstration of simple tools built for schools. It is designed to bridge the gap between complex technology and everyday classroom needs.
+This application is a live demonstration of enterprise AI products and EdTech solutions built by Jason Benjamin. It showcases full-stack AI architectures, WebRTC Voice-AI engines, automated LLM evaluation pipelines, and secure B2B SaaS applications.
 
 ## 2. Positioning & Identity
-- **Role**: Teacher & Builder (Transitioned from 10 years in the classroom).
-- **Core Philosophy**: "Human-First." Every tool must solve a friction point identifiable by a non-technical user.
-- **Design Language**: "Alpine Minimalism." High-contrast and focused.
+- **Role**: AI Product Manager & Software Builder (Enterprise B2B SaaS experience at VodaBi & 6 production AI products shipped).
+- **Core Philosophy**: "Human-Centered AI." Bridging complex GenAI capabilities (WebRTC Voice-AI, Tiered LLM Judges, OCR) with zero-friction user experiences.
+- **Design Language**: "Alpine Minimalism." High-contrast, spacious typography, and dark-mode glassmorphism.
 
 ## 3. Security & Hardening (Audit Feb 2026)
 ### A. Injection Defense
