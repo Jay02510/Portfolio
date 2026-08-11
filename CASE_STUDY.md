@@ -12,16 +12,35 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 
 | Product | Category & Role | Status | Lead Impact Metric | Key Architectural Innovation |
 | :--- | :--- | :--- | :--- | :--- |
-| **[VodaBi Voice AI](#)** | Enterprise B2B SaaS Case Study | 🟢 **Featured Case Study** | **80% Admin Overhead Cut** | Sub-200ms WebRTC voice simulation, server VAD, gpt-4o 11-pt rubric judge & BANTCQ sales telemetry. |
+| **[VodaBi Voice AI](#2-featured-case-study-vodabi-enterprise-voice-ai)** | Enterprise B2B SaaS Case Study | 🟢 **Featured Case Study** | **80% Admin Overhead Cut** | Sub-200ms WebRTC voice simulation, server VAD, gpt-4o 11-pt rubric judge & BANTCQ sales telemetry. |
 | **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40 Hours → <10 Minutes** | Recursive "Draft & Weave" LLM constraint resolution (`gemini-3-flash` + `gemini-3-pro`). |
 | **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech OCR & Parent Mobile App | 🟢 **Live Shipped App** | **1,200+ Parent Interactions** | Instant mobile worksheet camera scanner delivering bilingual learning guides with zero storage PII bounds. |
-| **[Automated Report Generator](#)** | Relational Data Pipeline | 🟢 **Production Pipeline** | **15 Hours/Week Saved** | Airtable + Make.com + Fillout Forms + Softr zero-maintenance reporting. |
+| **[Automated Report Generator](./CASE_STUDY.md#5-technical-architecture--end-to-end-data-pipeline)** | Relational Data Pipeline | 🟢 **Production Pipeline** | **15 Hours/Week Saved** | Airtable + Make.com + Fillout Forms + Softr zero-maintenance reporting. |
 | **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Continuous Assessment Portal | 🟢 **Live Shipped App** | **98% Family Retention** | Visual skill-mapping engine converting scores into CEFR/Cambridge YLE trajectories. |
-| **[B2B Lead Enrichment CRM](#)** | Sales Automation CRM | 🟢 **Production CRM** | **4x Outreach Response Rate** | Regional Naver directory parser, HTML sanitizer, and 1-click personalized Gmail outreach. |
+| **[B2B Lead Enrichment CRM](./CASE_STUDY.md#3-product-management--tradeoff-decisions-the-why)** | Sales Automation CRM | 🟢 **Production CRM** | **4x Outreach Response Rate** | Regional Naver directory parser, HTML sanitizer, and 1-click personalized Gmail outreach. |
 
 ---
 
-## 2. PRODUCTION HARDENING & RELIABILITY MATURITY
+## 2. FEATURED CASE STUDY: VODABI ENTERPRISE VOICE-AI ROLEPLAY & AUTOMATED SCORING ENGINE
+
+### A. Role & Product Ownership
+As Lead AI Engineer & Product Architect at VodaBi, I engineered an end-to-end voice simulation and candidate evaluation engine designed to automate initial phone screening for high-volume sales and customer-facing roles. By replacing manual screening calls with an interactive, real-time AI customer persona and an objective automated grading pipeline, we eliminated administrative hiring bottlenecks for enterprise teams.
+
+### B. Core Technical Contributions
+1. **Realtime Audio Pipeline**: Engineered a browser-to-server WebRTC audio stream integrated with WebSocket signaling gateways in NestJS. Implemented server-side Voice Activity Detection (VAD) to allow candidates to speak and interrupt the AI persona naturally with sub-200ms audio latency.
+2. **Automated Evaluation Engine**: Implemented an async post-call scoring pipeline using `gpt-4o` structured JSON output to extract BANTCQ sales discovery metrics, evaluate candidate responses against an 11-point rubric, analyze speech telemetry (words-per-minute WPM), and output an automated onboarding roadmap.
+3. **Security & Magic Link Auth**: Designed a stateless, tokenized link access system so job applicants take tests instantly without account creation barriers, secured server-side with strict expiration bounds.
+4. **Admin & Analytics Backoffice**: Built a role-gated admin console (React 19, TypeScript, Tailwind/Glassmorphism) featuring dynamic rubric creation, scenario management, and an embedded RAG-grounded AI coaching assistant (VOISOR) for hiring managers.
+5. **Data Layer Modernization**: Migrated core data infrastructure to Prisma 7 utilizing modern MariaDB driver adapters and Dockerized deployment.
+
+### C. Quantified Before & After Impact
+* ⚡ **Admin Overhead**: Reduced manual phone screen workload by **80%**.
+* ⏱️ **Evaluation Speed**: Reduced post-screening scorecard generation from **48 hours to under 30 seconds**.
+* 🎯 **Scoring Consistency**: Replaced subjective interviewer notes with standardized 11-point rubric scores and BANTCQ sales telemetry across **100% of candidates**.
+
+---
+
+## 3. PRODUCTION HARDENING & RELIABILITY MATURITY
 
 Most portfolio projects wire up an LLM API call and stop. This suite is engineered with strict production security, reliability, and error-monitoring guardrails:
 
@@ -40,7 +59,7 @@ Most portfolio projects wire up an LLM API call and stop. This suite is engineer
 
 ---
 
-## 3. PRODUCT MANAGEMENT & TRADEOFF DECISIONS ("THE WHY")
+## 4. PRODUCT MANAGEMENT & TRADEOFF DECISIONS ("THE WHY")
 
 Product Managers must demonstrate strategic judgment and ROI balance, not just technical execution. Below are key tradeoffs engineered into the suite:
 
@@ -53,7 +72,7 @@ Product Managers must demonstrate strategic judgment and ROI balance, not just t
 
 ---
 
-## 4. REAL MONETIZATION & TIERED SAAS ARCHITECTURE
+## 5. REAL MONETIZATION & TIERED SAAS ARCHITECTURE
 
 The application features a fully functional, production-ready monetization engine:
 
@@ -64,7 +83,7 @@ The application features a fully functional, production-ready monetization engin
 
 ---
 
-## 5. TECHNICAL ARCHITECTURE & END-TO-END DATA PIPELINE
+## 6. TECHNICAL ARCHITECTURE & END-TO-END DATA PIPELINE
 
 ```
                      +----------------------------------------+
@@ -95,7 +114,7 @@ The application features a fully functional, production-ready monetization engin
 
 ---
 
-## 6. PROMPT ENGINEERING & XML ISOLATION
+## 7. PROMPT ENGINEERING & XML ISOLATION
 
 To prevent prompt injection and ensure deterministic JSON output:
 
@@ -117,7 +136,7 @@ To prevent prompt injection and ensure deterministic JSON output:
 
 ---
 
-## 7. ACCESSIBILITY, UX & PROCESS MATURITY
+## 8. ACCESSIBILITY, UX & PROCESS MATURITY
 
 ### A. Accessibility Hardening
 * **44px Touch Target Floor**: All interactive controls, pills, tabs, and buttons adhere strictly to the 44px minimum touch target size for mobile reliability.
@@ -130,10 +149,11 @@ To prevent prompt injection and ensure deterministic JSON output:
 
 ---
 
-## 8. CONTACT & NEXT STEPS
+## 9. CONTACT & NEXT STEPS
 
 * **Email**: [jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com) / [Kingjay2510@gmail.com](mailto:Kingjay2510@gmail.com)
-* **Live Repositories & Demos**:
+* **Live Portfolio App & Demos**:
+  * [Live Portfolio & Case Study Explorer](https://ais-pre-3jvuj4htrne2zxgd4bnxz7-47190329303.asia-northeast1.run.app)
   * [EduPlanner Pro Live App](https://scheduling-app-five.vercel.app/)
   * [Chekki AI Live App](https://chekki-ai.vercel.app/)
   * [Benchmark Explorer Live App](https://education-benchmark-system.vercel.app/)

@@ -20,12 +20,12 @@
 
 | Product | Role & Category | Live Status | Impact & Core Highlights | Live Link / Demo |
 | :--- | :--- | :--- | :--- | :--- |
-| **[VodaBi Voice AI](./CASE_STUDY.md)** | Full-Stack B2B SaaS | 🟢 **Featured Case Study** | **Sub-200ms WebRTC voice simulation** with NestJS, server-side VAD, gpt-4o 11-point rubric judge & BANTCQ sales telemetry. | [Deep-Dive Case Study](./CASE_STUDY.md) |
+| **[VodaBi Voice AI](./CASE_STUDY.md#2-featured-case-study-vodabi-enterprise-voice-ai)** | Full-Stack B2B SaaS | 🟢 **Featured Case Study** | **Sub-200ms WebRTC voice simulation** with NestJS, server-side VAD, gpt-4o 11-point rubric judge & BANTCQ sales telemetry. | [Deep-Dive Case Study ↗](./CASE_STUDY.md#2-featured-case-study-vodabi-enterprise-voice-ai) |
 | **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40h → <10m timetable generator** with recursive "Draft & Weave" LLM constraint resolution. | [Launch Live App ↗](https://scheduling-app-five.vercel.app/) |
 | **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech OCR & Scanner | 🟢 **Live Shipped App** | **Instant mobile camera worksheet scanner** delivering bilingual learning guides under zero-memory privacy bounds. | [Launch Live App ↗](https://chekki-ai.vercel.app/) |
-| **[Automated Report Generator](#)** | Relational Pipeline | 🟢 **Production Pipeline** | **15+ hours/week saved** using Airtable + Make.com + Fillout + Softr client portals for automated student reports. | [Pipeline Writeup](./CASE_STUDY.md) |
+| **[Automated Report Generator](./CASE_STUDY.md#6-technical-architecture--end-to-end-data-pipeline)** | Relational Pipeline | 🟢 **Production Pipeline** | **15+ hours/week saved** using Airtable + Make.com + Fillout + Softr client portals for automated student reports. | [Pipeline Writeup ↗](./CASE_STUDY.md#6-technical-architecture--end-to-end-data-pipeline) |
 | **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Assessment Portal | 🟢 **Live Shipped App** | **Visual skill-mapping portal** converting raw scores into CEFR/Cambridge YLE mastery trajectories. | [Launch Live App ↗](https://education-benchmark-system.vercel.app/) |
-| **[B2B Lead Enrichment CRM](#)** | Sales Automation | 🟢 **Production CRM** | **4x response rate boost** parsing regional directories, cleaning HTML, and synthesizing 1-click Gmail outreach links. | [CRM Case Study](./CASE_STUDY.md) |
+| **[B2B Lead Enrichment CRM](./CASE_STUDY.md#4-product-management--tradeoff-decisions-the-why)** | Sales Automation | 🟢 **Production CRM** | **4x response rate boost** parsing regional directories, cleaning HTML, and synthesizing 1-click Gmail outreach links. | [CRM Case Study ↗](./CASE_STUDY.md#4-product-management--tradeoff-decisions-the-why) |
 
 ---
 
@@ -57,10 +57,10 @@ Unlike standard AI prototypes, this suite is engineered with strict production s
 
 ---
 
-## 📫 Contact & Resume
+## 🌐 Live Portfolio & Contact
 
-* **Email**: [jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com) / [Kingjay2510@gmail.com](mailto:Kingjay2510@gmail.com)
-* **Live Portfolio App**: Launch the interactive web app locally or via Cloud Run deployment to explore live interactive prototypes, case study modals, and resume viewer.
+* 🔗 **Live Portfolio Web App**: [https://ais-pre-3jvuj4htrne2zxgd4bnxz7-47190329303.asia-northeast1.run.app](https://ais-pre-3jvuj4htrne2zxgd4bnxz7-47190329303.asia-northeast1.run.app)
+* 📧 **Email Contact**: [jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com) / [Kingjay2510@gmail.com](mailto:Kingjay2510@gmail.com)
 
 ---
 *© Jason Benjamin. Built with a human-centered, production-first approach.*
