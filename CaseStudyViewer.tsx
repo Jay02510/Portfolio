@@ -720,24 +720,24 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
       }`}
     >
       {/* HEADER BAR */}
-      <div className={`sticky top-0 z-[210] flex items-center justify-between px-6 py-4 border-b backdrop-blur-xl ${
+      <div className={`sticky top-0 z-[210] flex items-center justify-between px-3.5 sm:px-6 py-3 sm:py-4 border-b backdrop-blur-xl ${
         theme === 'dark' ? 'bg-alpine-950/90 border-white/10' : 'bg-white/90 border-black/10'
       }`}>
         <button 
           onClick={onClose}
-          className={`flex items-center gap-2 text-xs font-black uppercase tracking-widest transition-all ${
+          className={`flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap shrink-0 ${
             theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'
           }`}
         >
           {t.backToPortfolio}
         </button>
-        <div className="flex items-center gap-4 md:gap-6">
+        <div className="flex items-center gap-2 sm:gap-4 md:gap-6 shrink-0">
           {hasLiveApp && (
             <a 
               href={projectData.liveUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent-gold transition-colors hover:text-accent-gold/80"
+              className="flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-widest text-accent-gold transition-colors hover:text-accent-gold/80 whitespace-nowrap"
             >
               {t.launchLive}
             </a>
@@ -747,18 +747,18 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
               href={projectData.storeUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent-gold transition-colors hover:text-accent-gold/80"
+              className="flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-widest text-accent-gold transition-colors hover:text-accent-gold/80 whitespace-nowrap"
             >
               {t.storeLink}
             </a>
           )}
           <button 
             onClick={onClose}
-            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors shrink-0 ${
               theme === 'dark' ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-black/5 hover:bg-black/10 text-alpine-950'
             }`}
           >
-            <XIcon className="w-5 h-5" />
+            <XIcon className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
       </div>
@@ -1601,14 +1601,14 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                     <div className="space-y-6 font-mono font-light text-pretty">
                       <div className="w-full min-w-0">
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.structuredInstruction}</h4>
-                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-green-400 w-full max-w-full whitespace-pre-wrap break-all md:whitespace-pre md:break-normal">
+                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-green-400 w-full max-w-full whitespace-pre-wrap break-words md:whitespace-pre md:break-normal">
                           <code>{projectData.promptEngineering.logic}</code>
                         </pre>
                       </div>
 
                       <div className="w-full min-w-0">
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.runtimeEnforcedSchema}</h4>
-                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-blue-400 w-full max-w-full whitespace-pre-wrap break-all md:whitespace-pre md:break-normal">
+                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-blue-400 w-full max-w-full whitespace-pre-wrap break-words md:whitespace-pre md:break-normal">
                           <code>{projectData.promptEngineering.schema}</code>
                         </pre>
                       </div>

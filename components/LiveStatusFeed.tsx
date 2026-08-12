@@ -140,7 +140,7 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
             </span>
 
             {/* Headline */}
-            <div className={`text-xs md:text-sm font-semibold truncate ${
+            <div className={`text-xs md:text-sm font-semibold line-clamp-1 ${
               theme === 'dark' ? 'text-white/90' : 'text-alpine-950/90'
             }`}>
               <strong className="text-accent-gold mr-1.5">

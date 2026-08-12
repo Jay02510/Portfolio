@@ -205,7 +205,7 @@ function App() {
     <div className={`min-h-screen selection:bg-accent-gold/30 font-sans transition-colors duration-500 ${theme === 'dark' ? 'bg-alpine-950 text-white' : 'bg-alpine-50 text-alpine-950'}`}>
       
       {/* FROZEN TOP BAR CONTAINER */}
-      <div className="fixed top-0 left-0 w-full z-[100] pointer-events-none flex flex-col items-center">
+      <div className="fixed top-0 left-0 w-full z-[100] pointer-events-none flex flex-col items-center pt-[env(safe-area-inset-top,0px)]">
         {/* IN-APP BROWSER ALERT - Now Interactive */}
         {isInAppBrowser && (
           <button 
@@ -220,12 +220,12 @@ function App() {
         {/* MAIN NAVIGATION HEADER */}
         <header className={`pointer-events-auto transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] flex items-center ${
           isScrolled 
-            ? `w-[92%] md:w-[85%] max-w-5xl mt-3 rounded-full border backdrop-blur-2xl py-3 px-6 md:px-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] ${
+            ? `w-[92%] md:w-[85%] max-w-5xl mt-2 md:mt-3 rounded-full border backdrop-blur-2xl py-2.5 md:py-3 px-4 sm:px-6 md:px-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] ${
                 theme === 'dark' 
                   ? 'bg-alpine-950/85 border-white/10 shadow-black' 
                   : 'bg-white/90 border-black/10 shadow-black/10'
               }`
-            : `w-[95%] max-w-7xl mt-4 md:mt-8 rounded-[1.8rem] border backdrop-blur-md py-4 md:py-5 px-6 md:px-10 ${
+            : `w-[95%] max-w-7xl mt-3 md:mt-8 rounded-[1.8rem] border backdrop-blur-md py-3 md:py-5 px-4 sm:px-6 md:px-10 ${
                 theme === 'dark' 
                   ? 'bg-[#14171d]/40 border-white/5' 
                   : 'bg-white/40 border-black/5'
@@ -992,6 +992,67 @@ function App() {
       <footer className="py-20 text-center opacity-40">
           <p className="text-[10px] font-black uppercase tracking-[1em]">© 2026 Jason Benjamin — Seoul, Korea</p>
       </footer>
+
+      {/* MOBILE FLOATING BOTTOM NAVIGATION DOCK */}
+      <nav 
+        className={`md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] rounded-full border px-3 py-2 flex items-center justify-around gap-1 w-[92%] max-w-[380px] backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] transition-all ${
+          theme === 'dark' 
+            ? 'bg-alpine-950/90 border-white/15 text-white' 
+            : 'bg-white/95 border-black/15 text-alpine-950'
+        }`}
+        aria-label="Mobile Navigation"
+      >
+        <a 
+          href="#portfolio" 
+          onClick={scrollToSection('portfolio')} 
+          className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+            activeSection === 'portfolio'
+              ? (theme === 'dark' ? 'bg-accent-gold text-alpine-950 shadow-md font-black' : 'bg-accent-clay text-white shadow-md font-black')
+              : (theme === 'dark' ? 'text-white/70 hover:text-white' : 'text-alpine-950/70 hover:text-alpine-950')
+          }`}
+        >
+          <span>📁</span>
+          <span>{locale === 'en' ? 'Tools' : '프로덕트'}</span>
+        </a>
+
+        <a 
+          href="#lab" 
+          onClick={scrollToSection('lab')} 
+          className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+            activeSection === 'lab'
+              ? (theme === 'dark' ? 'bg-accent-gold text-alpine-950 shadow-md font-black' : 'bg-accent-clay text-white shadow-md font-black')
+              : (theme === 'dark' ? 'text-white/70 hover:text-white' : 'text-alpine-950/70 hover:text-alpine-950')
+          }`}
+        >
+          <span>🧪</span>
+          <span>{locale === 'en' ? 'Lab' : '실험실'}</span>
+        </a>
+
+        <a 
+          href="#about" 
+          onClick={scrollToSection('about')} 
+          className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+            activeSection === 'about'
+              ? (theme === 'dark' ? 'bg-accent-gold text-alpine-950 shadow-md font-black' : 'bg-accent-clay text-white shadow-md font-black')
+              : (theme === 'dark' ? 'text-white/70 hover:text-white' : 'text-alpine-950/70 hover:text-alpine-950')
+          }`}
+        >
+          <span>📖</span>
+          <span>{locale === 'en' ? 'Story' : '스토리'}</span>
+        </a>
+
+        <button 
+          onClick={() => setIsChatOpen(true)}
+          className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+            isChatOpen
+              ? 'bg-accent-gold text-alpine-950 shadow-md font-black'
+              : (theme === 'dark' ? 'bg-white/10 text-accent-gold hover:bg-white/20' : 'bg-black/5 text-accent-clay hover:bg-black/10')
+          }`}
+        >
+          <span>✨</span>
+          <span>{locale === 'en' ? 'AI' : 'AI'}</span>
+        </button>
+      </nav>
 
       <ComplianceModal isOpen={!!modalType} onClose={() => setModalType(null)} type={modalType || 'privacy'} locale={locale} />
       <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} theme={theme} locale={locale} />

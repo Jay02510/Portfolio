@@ -125,29 +125,30 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
       } print:max-h-full print:border-none print:shadow-none print:w-full print:rounded-none print:text-black print:bg-white`}>
         
         {/* HEADER */}
-        <div className={`p-6 md:p-8 flex items-center justify-between border-b shrink-0 ${
+        <div className={`p-4 sm:p-6 md:p-8 flex items-center justify-between gap-3 border-b shrink-0 ${
           isDark ? 'border-white/10 bg-white/[0.01]' : 'border-black/5 bg-black/[0.01]'
         } print:hidden`}>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-accent-gold/20 flex items-center justify-center shrink-0">
-              <FileTextIcon className="w-5 h-5 text-accent-gold" />
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-accent-gold/20 flex items-center justify-center shrink-0">
+              <FileTextIcon className="w-4 h-4 sm:w-5 sm:h-5 text-accent-gold" />
             </div>
-            <div>
-              <h3 className="text-base md:text-lg font-display font-medium leading-tight">{headerTitle}</h3>
-              <p className={`text-xs mt-1 ${isDark ? 'text-white/60' : 'text-alpine-950/60'}`}>{headerSubtitle}</p>
+            <div className="min-w-0">
+              <h3 className="text-sm sm:text-base md:text-lg font-display font-medium leading-tight truncate">{headerTitle}</h3>
+              <p className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 truncate ${isDark ? 'text-white/60' : 'text-alpine-950/60'}`}>{headerSubtitle}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button 
               onClick={() => setShowPrintSelector(true)}
-              className="px-4 py-2 bg-accent-gold hover:brightness-110 text-alpine-950 rounded-full text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-md flex items-center gap-1.5"
+              className="px-3 py-2 sm:px-4 sm:py-2 bg-accent-gold hover:brightness-110 text-alpine-950 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-md flex items-center gap-1.5 whitespace-nowrap"
             >
               <PrinterIcon className="w-3.5 h-3.5" />
-              <span>{locale === 'en' ? "Print / Save as PDF" : "인쇄 / PDF로 저장"}</span>
+              <span className="hidden sm:inline">{locale === 'en' ? "Print / Save as PDF" : "인쇄 / PDF로 저장"}</span>
+              <span className="sm:hidden">{locale === 'en' ? "PDF" : "PDF"}</span>
             </button>
             <button 
               onClick={onClose}
-              className={`p-2.5 rounded-full border transition-colors ${
+              className={`p-2 sm:p-2.5 rounded-full border transition-colors ${
                 isDark ? 'border-white/10 hover:bg-white/5 text-white/50 hover:text-white' : 'border-black/10 hover:bg-black/5 text-alpine-950/50 hover:text-alpine-950'
               }`}
             >

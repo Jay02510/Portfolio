@@ -110,13 +110,13 @@ const AIChat: React.FC<AIChatProps> = ({
 
   if (!isOpen) {
     return (
-      <div className="hidden md:block fixed bottom-10 right-10 z-[100]">
+      <div className="fixed bottom-20 right-4 md:bottom-10 md:right-10 z-[90] md:z-[100]">
         <button
           onClick={() => setIsOpen(true)}
-          className={`w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all group border ${theme === 'dark' ? 'bg-alpine-900 border-white/10' : 'bg-white border-black/5'}`}
+          className={`w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all group border ${theme === 'dark' ? 'bg-alpine-900 border-white/10 text-accent-gold' : 'bg-white border-black/10 text-accent-clay'}`}
           aria-label={locale === 'ko' ? "AI 어시스턴트 열기" : "Open AI assistant"}
         >
-          <SparklesIcon className="w-5 h-5 group-hover:rotate-12 transition-transform text-accent-gold" />
+          <SparklesIcon className="w-5 h-5 group-hover:rotate-12 transition-transform" />
           {messageCount > 0 && !isLimitReached && (
             <div className="absolute -top-1 -right-1 w-5 h-5 bg-accent-gold text-alpine-950 rounded-full text-[9px] font-black flex items-center justify-center border-2 border-alpine-950">
               {MAX_MESSAGES - messageCount}
@@ -229,7 +229,7 @@ const AIChat: React.FC<AIChatProps> = ({
         </div>
 
         {/* Suggestion Chips & Input */}
-        <div className={`p-6 md:p-8 border-t pb-24 md:pb-8 transition-colors ${theme === 'dark' ? 'bg-alpine-900/40 border-white/5' : 'bg-white border-black/5'}`}>
+        <div className={`p-4 sm:p-6 md:p-8 border-t pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] md:pb-8 transition-colors ${theme === 'dark' ? 'bg-alpine-900/40 border-white/5' : 'bg-white border-black/5'}`}>
           {!isLimitReached && (
             <div className="flex gap-2 overflow-x-auto pb-6 no-scrollbar">
               {activeSuggestions.map((suggestion, idx) => (

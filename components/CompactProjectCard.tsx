@@ -62,7 +62,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
         </div>
 
         {/* Info Body */}
-        <div className="p-6 flex flex-col flex-1 space-y-4">
+        <div className="p-4 sm:p-6 flex flex-col flex-1 space-y-4">
           <div className="space-y-1">
             {project.tags?.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mb-2">
@@ -122,20 +122,20 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
           )}
 
           {/* Interactive CTA Controls */}
-          <div className="pt-4 flex items-center justify-between border-t border-white/5">
+          <div className="pt-4 flex items-center justify-between gap-2 border-t border-white/5">
             <button 
               onClick={() => onOpenCaseStudy?.(project.id)}
-              className={`group relative rounded-full pl-5 pr-3 py-2.5 text-[9px] md:text-[10px] font-black uppercase tracking-widest flex items-center justify-between gap-3 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] ${
+              className={`group relative rounded-full pl-4 pr-2.5 sm:pl-5 sm:pr-3 py-2 sm:py-2.5 text-[9px] md:text-[10px] font-black uppercase tracking-widest flex items-center justify-between gap-2 sm:gap-3 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] shrink-0 ${
                 theme === 'dark' 
                   ? 'bg-accent-gold text-alpine-950 hover:bg-white hover:text-alpine-950 hover:shadow-lg' 
                   : 'bg-accent-clay text-white hover:bg-alpine-950 hover:text-white hover:shadow-lg'
               }`}
             >
-              <span>{locale === 'ko' ? "케이스 스터디" : "Case Study"}</span>
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] shrink-0 ${
+              <span className="whitespace-nowrap">{locale === 'ko' ? "케이스 스터디" : "Case Study"}</span>
+              <span className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] shrink-0 ${
                 theme === 'dark' ? 'bg-alpine-950/10 group-hover:bg-alpine-950/20' : 'bg-white/15 group-hover:bg-white/20'
               }`}>
-                <span className="transform group-hover:translate-x-1 group-hover:-translate-y-[1px] group-hover:scale-110 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] font-bold">
+                <span className="transform group-hover:translate-x-1 group-hover:-translate-y-[1px] group-hover:scale-110 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] font-bold text-[10px] sm:text-xs">
                   →
                 </span>
               </span>
@@ -146,7 +146,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
                 href={project.demoUrl || project.websiteUrl || "#"} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className={`flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest transition-all ${
+                className={`flex items-center gap-1.5 text-[8.5px] sm:text-[9px] font-black uppercase tracking-widest transition-all whitespace-nowrap shrink-0 ${
                   theme === 'dark' ? 'text-text-sec hover:text-accent-gold' : 'text-alpine-950/60 hover:text-accent-clay'
                 }`}
               >

@@ -54,7 +54,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
       <div className={`rounded-2xl overflow-hidden shadow-2xl relative z-10 lab-blueprint-bg min-h-[650px] border transition-all duration-500 ${theme === 'dark' ? 'bg-alpine-950 border-white/10' : 'bg-white border-black/8 shadow-2xl'}`}>
         <div className="grid lg:grid-cols-12 min-h-[inherit]">
           {/* Input Panel */}
-          <div className={`lg:col-span-5 p-8 md:p-16 border-r flex flex-col justify-between transition-colors duration-500 ${theme === 'dark' ? 'bg-alpine-950/80 border-white/10' : 'bg-white/95 border-black/10'}`}>
+          <div className={`lg:col-span-5 p-5 sm:p-10 md:p-16 border-r flex flex-col justify-between transition-colors duration-500 ${theme === 'dark' ? 'bg-alpine-950/80 border-white/10' : 'bg-white/95 border-black/10'}`}>
             <div className="space-y-8">
               <div className={`inline-flex items-center gap-3 px-5 py-2.5 rounded-full border text-[11px] font-bold uppercase tracking-[0.4em] transition-colors ${theme === 'dark' ? 'bg-accent-gold/10 border-accent-gold/20 text-accent-gold' : 'bg-accent-clay/10 border-accent-clay/20 text-accent-clay'}`}>
                 <SparklesIcon className={`w-3.5 h-3.5 animate-pulse ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'} shrink-0`} />
@@ -131,7 +131,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
           </div>
 
           {/* Results Panel */}
-          <div className={`lg:col-span-7 p-8 md:p-16 relative flex flex-col transition-colors duration-500 ${theme === 'dark' ? 'bg-black/30' : 'bg-alpine-100/40'}`}>
+          <div className={`lg:col-span-7 p-5 sm:p-10 md:p-16 relative flex flex-col transition-colors duration-500 ${theme === 'dark' ? 'bg-black/30' : 'bg-alpine-100/40'}`}>
              {!solutions && !loading && (
                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-10 animate-in fade-in duration-1000">
                   <div className={`w-24 h-24 rounded-full border flex items-center justify-center transition-all ${theme === 'dark' ? 'border-white/10 bg-white/[0.02]' : 'border-black/5 bg-white shadow-xl'}`}>
