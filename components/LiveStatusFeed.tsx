@@ -59,9 +59,9 @@ const LIVE_UPDATES_DATA: BuildItem[] = [
     type: "feature",
     titleEn: "Published Interactive Walkthrough Video",
     titleKo: "상세 시연 비디오 가동",
-    descEn: "Integrated the 1-minute 4-second interactive walkthrough video for the 'Automated Report Generator & Pipeline' project, with cross-origin sandboxing protections for secure preview rendering.",
-    descKo: "Airtable-Make-Softr 연동 데이터 파이프라인의 1분 4초 분량 상세 작동 시연 영상을 softr 전용 포털과 연쇄 가동하도록 연결하였습니다. 보안 샌드박스를 구성해 끊김 없는 시청이 보장됩니다.",
-    relatedProjectId: "consultation-pipeline"
+    descEn: "Integrated the 1-minute 4-second interactive walkthrough video for the (since merged into Chekki AI) 'Automated Report Generator & Pipeline' project, with cross-origin sandboxing protections for secure preview rendering.",
+    descKo: "(현재는 Chekki AI로 통합된) Airtable-Make-Softr 연동 데이터 파이프라인의 1분 4초 분량 상세 작동 시연 영상을 softr 전용 포털과 연쇄 가동하도록 연결하였습니다. 보안 샌드박스를 구성해 끊김 없는 시청이 보장됩니다.",
+    relatedProjectId: "chekki"
   },
   {
     id: "zero-memory-hardening",

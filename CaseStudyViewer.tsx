@@ -296,28 +296,28 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
     ],
     'chekki': [
       {
-        title: lang === 'en' ? "Co-Pilot Mobile Client" : "모바일 하이브리드 클라이언트",
-        subtitle: lang === 'en' ? "Captures paper worksheets via native camera stream" : "Capacitor 카메라 제어 및 학습지 이미지 업로드",
+        title: lang === 'en' ? "Scan & Curriculum Pre-Seed" : "학습지 스캔 & 커리큘럼 사전 시딩",
+        subtitle: lang === 'en' ? "Worksheet camera capture or OCR syllabus scan auto-fills target vocab" : "학습지 카메라 촬영 또는 실라버스 OCR 스캔으로 목표 어휘 자동 채움",
         tech: "React 19 / Capacitor JS",
         icon: "mobile"
       },
       {
-        title: lang === 'en' ? "Serverless Gateway" : "서버리스 API 게이트웨이",
-        subtitle: lang === 'en' ? "Handles secure API routes, SSO tokens & quotas" : "보안 토큰 인가 검증, 사용 한도 및 오답 기록부 동기화",
-        tech: "Vercel / Firestore",
-        icon: "settings"
-      },
-      {
         title: lang === 'en' ? "Parallel Gemini Pipeline" : "병렬 제미나이 엔진",
-        subtitle: lang === 'en' ? "Flash maps layouts; Pro solves ambiguous inputs" : "2.5 Flash 고속 파싱 및 2.5 Pro 오답 판정 이중 교정",
+        subtitle: lang === 'en' ? "Flash maps layouts & drafts reports; Pro solves ambiguous inputs" : "2.5 Flash 고속 파싱/보고서 초안 및 2.5 Pro 오답 판정 이중 교정",
         tech: "Gemini 2.5 Pro & Flash",
         icon: "sparkles"
       },
       {
-        title: lang === 'en' ? "Co-Pilot Dashboard" : "인터랙티브 대시보드",
-        subtitle: lang === 'en' ? "Renders pronunciation training & digital flashcards" : "실시간 이중언어 발음 연습(TTS/STT) 및 플래시카드",
+        title: lang === 'en' ? "Tutor & FT Report Loop" : "학습 코파일럿 & FT 리포트 루프",
+        subtitle: lang === 'en' ? "Pronunciation drills, flashcards, and 30s FT log to bilingual KakaoTalk draft" : "발음 연습·플래시카드 및 FT 30초 로그 → 이중언어 카카오톡 초안",
         tech: "React 19 / TTS & STT",
         icon: "fileText"
+      },
+      {
+        title: lang === 'en' ? "KT Review & Director Portal" : "KT 검수 & 원장 포털",
+        subtitle: lang === 'en' ? "Human-in-the-loop edit, 1-click copy & Firestore status sync" : "휴먼인더루프 검수, 1클릭 복사 및 Firestore 상태 동기화",
+        tech: "Vercel / Firestore",
+        icon: "settings"
       }
     ],
     'benchmark-explorer': [
@@ -370,32 +370,6 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
         subtitle: lang === 'en' ? "Saves schedules & manages secure admin sessions" : "시간표 영속 일지 작성 및 원 로그인 세션 권한 조율",
         tech: "Firebase v11 & Firestore",
         icon: "lock"
-      }
-    ],
-    'consultation-pipeline': [
-      {
-        title: lang === 'en' ? "Evaluation Form" : "학습 진단 양식",
-        subtitle: lang === 'en' ? "Fires instant validation events on commit" : "평가 보고 폼 제출 감지 및 트래픽 webhook 전달",
-        tech: "Fillout Assessment",
-        icon: "fileText"
-      },
-      {
-        title: lang === 'en' ? "Routing Middleware" : "경로 제어 노드",
-        subtitle: lang === 'en' ? "Deduplicates notes & buffers payload calls" : "이중 중복 제출 거부, 프롬프트 주입 방지 완충 연산",
-        tech: "Make.com Automation",
-        icon: "settings"
-      },
-      {
-        title: lang === 'en' ? "Relational Sheets" : "Airtable DB",
-        subtitle: lang === 'en' ? "Applies lookup hooks to track historical metrics" : "데이터 일관성과 무결성이 보증되는 중앙 장부 기록",
-        tech: "Airtable Relational Sheets",
-        icon: "lock"
-      },
-      {
-        title: lang === 'en' ? "Softr Parent Portal" : "원 부모 성취 포털",
-        subtitle: lang === 'en' ? "Row-level isolated bilingual progress view" : "개인인별 완벽 격리 보호 및 translated 리포트 열람",
-        tech: "Softr Client Web App",
-        icon: "sparkles"
       }
     ],
     'lead-enrichment': [
@@ -823,7 +797,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
         </div>
 
         {/* METRICS GRID */}
-        <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 border-y py-12 ${
+        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 border-y py-12 ${
+          projectData.stats.length >= 4 ? 'md:grid-cols-4' : 'md:grid-cols-3'
+        } ${
           theme === 'dark' ? 'border-white/10' : 'border-black/10'
         }`}>
           {projectData.stats.map((stat, idx) => (
@@ -1021,7 +997,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
             </div>
 
             {/* Sub-tab switcher to toggle between Interactive Screenshots and Walkthrough Video */}
-            {projectData.screenshots && projectData.screenshots.length > 0 && (projectData.walkthroughVideo !== undefined || projectId === 'consultation-pipeline') && (
+            {projectData.screenshots && projectData.screenshots.length > 0 && projectData.walkthroughVideo !== undefined && (
               <div className="flex rounded-xl p-1 border border-white/10 bg-black/40 text-[10px] font-bold uppercase tracking-wider overflow-hidden max-w-full self-start sm:self-auto shadow-2xl">
                 <button
                   type="button"

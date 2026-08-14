@@ -108,7 +108,7 @@ function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      const validIds = ['vodabi', 'chekki', 'benchmark-explorer', 'eduplanner', 'consultation-pipeline', 'lead-enrichment', 'white-label-hub'];
+      const validIds = ['vodabi', 'chekki', 'benchmark-explorer', 'eduplanner', 'lead-enrichment', 'white-label-hub'];
       if (validIds.includes(hash)) {
         setActiveCaseStudyId(hash);
       } else if (!hash) {
@@ -843,7 +843,7 @@ function App() {
                   desc: locale === 'en' 
                     ? 'EdTech benchmarking tools, automated scheduling engines, report pipelines, and B2B CRM tools.' 
                     : '독립적으로 개발 및 배포한 에듀테크 앱, 스케줄링 엔진 및 B2B 자동화 파이프라인.',
-                  projectIds: ['benchmark-explorer', 'eduplanner', 'consultation-pipeline', 'lead-enrichment']
+                  projectIds: ['benchmark-explorer', 'eduplanner', 'lead-enrichment']
                 }
               ];
 

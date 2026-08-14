@@ -148,17 +148,20 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     stats: [
       { label: "Active Families", value: "120+" },
       { label: "Worksheets Processed", value: "1,200+" },
-      { label: "Analysis Speed", value: "<200ms (cached)" }
+      { label: "Analysis Speed", value: "<200ms (cached)" },
+      { label: "Report Admin Time Saved", value: "15+ hrs/wk" }
     ],
     problem: [
       "Bilingual families and non-native speaking parents struggle to navigate or guide children through printed homework worksheets.",
       "Private tutoring alternatives are costly and fail to engage parents in forming real-time home study habits.",
-      "Static paper worksheets lack interactive phonics, pronunciation feedback, and automatic mistake-tracking."
+      "Static paper worksheets lack interactive phonics, pronunciation feedback, and automatic mistake-tracking.",
+      "Academies originally ran student progress reporting as a separate no-code pipeline (Fillout forms into Airtable, orchestrated by Make.com, published to a Softr portal), duplicating curriculum and roster data outside the tutoring app itself."
     ],
     solution: [
       "A mobile-first tabletop co-pilot app utilizing Capacitor JS (v8) to run seamlessly on iOS and Android devices.",
       "Instantly converts paper worksheets into structured bilingual audio scripts with Text-to-Speech (TTS) and Speech-to-Text (STT) drills.",
-      "Maintains an interactive Learning Dashboard backing live progress analytics and digital vocabulary card reviews."
+      "Maintains an interactive Learning Dashboard backing live progress analytics and digital vocabulary card reviews.",
+      "Retired the standalone Airtable/Make.com/Softr reporting pipeline and rebuilt it natively as Chekki's Report Studio: a Curriculum & Textbook Pre-Seeding Hub (OCR syllabus scan or preset textbook units) auto-fills a 30-second Foreign Teacher mobile log, Gemini turns that log into a bilingual (English/Korean 존댓말) KakaoTalk-ready parent report, a Korean Teacher reviews and 1-click copies it out, and a Director Portal tracks every report's status across the roster."
     ],
     stack: ["React 19", "Capacitor JS (v8)", "TypeScript", "Vercel Serverless Functions", "Cloud Firestore", "Gemini 2.5 Pro & Flash", "Tailwind CSS"],
     architecture: {
@@ -166,13 +169,17 @@ export const studyDataEn: Record<string, CaseStudyType> = {
         "Upload: User captures or scans a physical worksheet flat on the table via Capacitor native camera stream.",
         "Validation: Request travels through Vercel Serverless Functions performing Firestore token and IP-based rate protection.",
         "Parallel Parsing: Fast Pass (Gemini 2.5 Flash) maps layouts instantly; Deep Pass (Gemini 2.5 Pro with 20k token thinking budget) executes for complex handwritten blocks.",
-        "Co-Pilot Sync: The React 19 client visualizes interactive overlays for bilingual pronunciation drills, syncing mistakes to a Cloud Firestore Learning Dashboard."
+        "Co-Pilot Sync: The React 19 client visualizes interactive overlays for bilingual pronunciation drills, syncing mistakes to a Cloud Firestore Learning Dashboard.",
+        "Curriculum Pre-Seed: An OCR syllabus scan or a preset textbook unit auto-populates target vocabulary directly into the Foreign Teacher's mobile log form.",
+        "FT Log to Bilingual Draft: The Foreign Teacher submits a 30-second mobile log (quiz score, spotlight student, class notes); Gemini converts it into a polite Korean (존댓말) parent-facing KakaoTalk script.",
+        "KT Review & Director Sync: A Korean Teacher edits nuance and 1-click copies the draft to KakaoTalk, while the Director Portal tracks each report's status (Pending → Edited → Sent) across the roster in Firestore."
       ],
       guardrails: [
         "Credential Isolation: Accesses Google Gemini and Firebase Admin services strictly through secure serverless edge wrappers.",
         "Blank Worksheet Protection: Enforces zero-hallucination filtering; if no handwriting is found, it labels all sections correct and prevents false prompts.",
         "Zero-Retention Privacy: Excludes and purges raw PII markers completely before routing payloads to external LLM endpoints.",
-        "Deterministic Image Caching: Runs SHA256 hashing on raw documents to match Firestore-cached outputs, reducing redundant API execution costs."
+        "Deterministic Image Caching: Runs SHA256 hashing on raw documents to match Firestore-cached outputs, reducing redundant API execution costs.",
+        "Human-in-the-Loop Compliance: Every AI-generated parent report must pass Korean Teacher review before it can be marked Sent, so unreviewed AI text never reaches a parent."
       ]
     },
     promptEngineering: {
@@ -214,7 +221,8 @@ export const studyDataEn: Record<string, CaseStudyType> = {
       value: [
         "Offloaded duplicate processing overhead entirely via a Firestore-backed SHA256 image cache, dropping redundant API execution costs and speeding up scan retries to <200ms.",
         "Enforces Firestore-based tiered rate-limiting: Guest users are throttled by IP address, and Pro users are validated against active RevenueCat subscriptions before allowing deep-pass Gemini queries.",
-        "Engineered seamless OAuth bridges for Kakao, Google, and Apple Sign-In, utilizing secure verification nonces and real-time state synchronization to eliminate login latency."
+        "Engineered seamless OAuth bridges for Kakao, Google, and Apple Sign-In, utilizing secure verification nonces and real-time state synchronization to eliminate login latency.",
+        "Collapsed a 4-tool no-code reporting stack (Fillout, Airtable, Make.com, Softr) into one native Report Studio flow inside Chekki, removing an external integration surface and letting curriculum, roster, and report data share a single Firestore source of truth."
       ],
       security: [
         "Encrypts and validates identity tokens across Kakao, Google, and Apple SSO bridges with cryptographically secure SHA-256 nonces.",
@@ -225,9 +233,15 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     behindTheArchitecture: {
       problem: "Printed paper homework handouts are flat and silent, preventing non-native parents from guiding phonics or tracking children's dynamic vocabulary errors.",
       vision: "Transforms printed homework sheets into a complete digital tabletop co-pilot experience, automatically populating an interactive Learning Dashboard with the child's real-time mistakes.",
-      rationale: "Deployed a Parallel Hybrid Execution model. Gemini 2.5 Flash offers instantaneous layout extraction. If handwriting or complex grids are ambiguous, backend falls back to Gemini 2.5 Pro with a 20,000 token thinking budget to prevent grading errors."
+      rationale: "Deployed a Parallel Hybrid Execution model. Gemini 2.5 Flash offers instantaneous layout extraction. If handwriting or complex grids are ambiguous, backend falls back to Gemini 2.5 Pro with a 20,000 token thinking budget to prevent grading errors. The same Gemini backbone and Firestore data model were later extended to power Report Studio, so worksheet grading and parent report generation run on one shared pipeline instead of two disconnected systems."
     },
     technicalHurdles: [
+      {
+        title: "Silent Curriculum Fake-Success on Scan Failure",
+        incident: "The syllabus scan endpoint (api/analyze.ts) returned a fabricated 200 'Weather & Nature' curriculum whenever Gemini's JSON response failed to parse, instead of surfacing the failure to the teacher.",
+        diagnosis: "A defensive fallback masked malformed AI JSON with a hardcoded placeholder curriculum, so a bad syllabus scan could silently poison a teacher's real curriculum pre-seed data with the wrong units and vocabulary.",
+        resolution: "Removed the fake-success fallback so parse failures now return a real error, implemented the previously-missing syllabus_course_plan scan mode properly, and extracted the JSON-parsing and curriculum-guardrail logic into shared, unit-tested helpers."
+      },
       {
         title: "Social Authentication Race Condition",
         incident: "In initial testing, users joining via social login providers faced redirect anomalies where they were authenticated but immediately bounced back to the registration panel.",
@@ -449,101 +463,6 @@ export const studyDataEn: Record<string, CaseStudyType> = {
         incident: "Concurrent schedule generations occasionally triggered rate limit responses from the remote client API.",
         diagnosis: "Massive text arrays compiled concurrently easily saturated active key traffic thresholds.",
         resolution: "Engineered an offline client-side fallback solver in TypeScript that evaluates constraints in the browser, enabling seamless demo capabilities."
-      }
-    ]
-  },
-
-  "consultation-pipeline": {
-    title: "Automated Report Generator & Pipeline",
-    tagline: "A zero-maintenance relational data pipeline automating student intake, report generation, and portal visualization.",
-    liveUrl: "https://jason-portfolio.com/",
-    walkthroughVideo: "https://embed.app.guidde.com/playbooks/fXwhH7ayipdTFcXASDJx5K?mode=videoOnly",
-    screenshots: [
-      { label: "Airtable Preview", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.35.34_PM_susvx4.png", subLabel: "Relational Database Backend" },
-      { label: "FT Fillout form", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757946/Screenshot_2026-06-03_at_5.35.38_PM_wywtjr.png", subLabel: "Dynamic Assessment Form" },
-      { label: "Report Generator Scenario", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757338/Screenshot_2026-06-06_at_11.10.34_PM_eij0wx.png", subLabel: "Make.com Automation Loom" },
-      { label: "Automated Consult Prep Scenario", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757338/Screenshot_2026-06-06_at_11.13.31_PM_nkcfga.png", subLabel: "Make.com Consultation Routing" },
-      { label: "Director Overview", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.34.00_PM_atnp3r.png", subLabel: "Softr Administration Portal" },
-      { label: "KT Dashboard (Main)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.32.00_PM_tnqzky.png", subLabel: "Bilingual Progress View" },
-      { label: "KT Dashboard (Details)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.32.40_PM_frctym.png", subLabel: "Detailed Observation Reports" }
-    ],
-    stats: [
-      { label: "Data Quality Rate", value: "100%" },
-      { label: "Process Overdue Rate", value: "0%" },
-      { label: "Manual Assembly", value: "Fully Automated" }
-    ],
-    problem: [
-      "Staff lose instructions time typing redundant reports across scattered files manually.",
-      "Roster references frequently break when classes transform or students re-assign.",
-      "Sending files containing sensitive feedback over unsecured emails creates compliance concerns."
-    ],
-    solution: [
-      "Interfaces customer intake forms directly with relational tables in Airtable.",
-      "Leverages webhook actions in Make.com to trigger translation and formatting scripts.",
-      "Presents feedback records securely on a dashboard using row-level permissions."
-    ],
-    stack: ["Fillout Forms", "Airtable Relational DB", "Make.com Nodes", "Softr Portal", "Google Gemini API"],
-    architecture: {
-      lifecycle: [
-        "InTake: Teachers enter review logs and scores directly via Fillout templates.",
-        "Storage: File inputs write directly to database tables, adhering to strict validation checks.",
-        "Refinement: Webhooks dispatch records to a module that structures the feedback and translations.",
-        "Sync: The compiled report is published securely, mapping specifically to authorized student accounts."
-      ],
-      guardrails: [
-        "Relational Safeguards: Retains historical student notes even through roster adjustments.",
-        "Immediate Tokens: Generates custom magic links securely upon user account registration.",
-        "View Boundaries: Restricts student view access on the row level."
-      ]
-    },
-    promptEngineering: {
-      logic: `<instructions>
-  Compile teacher intakes into a concise bilingual progress summary.
-  Never expose internal school terms or specific clinical scores to the final parent output.
-</instructions>`,
-      schema: `{
-  type: "OBJECT",
-  properties: {
-    bilingualSummary: { type: "STRING" },
-    actionableConsultTips: { type: "ARRAY", items: { type: "STRING" } }
-  },
-  required: ["bilingualSummary", "actionableConsultTips"]
-}`,
-      guardrails: [
-        "Format Locking: Imposes XML structure blocks to guard core directives against user-input bypasses.",
-        "Empathetic Tone: Instructs models to translate dry scores table items into warm parent-facing tips.",
-        "Formatting Standards: Disallows custom markdown wrappers to prevent parsing crashes."
-      ]
-    },
-    impact: {
-      value: [
-        "Replaced high-maintenance headless node scripts with robust webhook handlers on Make.com, reducing operational support tickets to absolute zero.",
-        "Architected a rate-buffered queue pipeline that absorbs burst form entry spikes cleanly, preventing model API timeouts or duplicate webhook dispatches.",
-        "Deployed row-level authorization boundaries on Softr endpoints, eliminating cross-parent data leakage risks while serving translated PDFs dynamically."
-      ],
-      security: [
-        "Verifies permissions before loading individual student sheets.",
-        "Sanitizes input data fields prior to server transmission.",
-        "Secures access keys inside serverless configurations."
-      ]
-    },
-    behindTheArchitecture: {
-      problem: "Teachers and assistants lose hours copying and proofreading logs to email progress reports manually.",
-      vision: "A pipeline that transforms one form submission into translated progress details logged straight to a secure portal.",
-      rationale: "Paired Airtable's robust data tables with Make.com sequential workflows to eradicate manual transcription errors."
-    },
-    technicalHurdles: [
-      {
-        title: "Asynchronous Integration Speed Gaps",
-        incident: "In initial implementations, automation queries ocasisionally failed because dependendent records were not synchronized on time.",
-        diagnosis: "Make webhooks triggered instantly upon record creation before linked metadata updates in Airtable was complete.",
-        resolution: "Created an intentional delayed-fetch routine, placing a slight hold before query execution to verify data consistency before AI processing."
-      },
-      {
-        title: "Relational Context Gaps on Compilation",
-        incident: "Data translation engines occasionally output abstract database indices instead of student names.",
-        diagnosis: "The database aggregation module stripped string headers, passing raw numbers to downstream engines.",
-        resolution: "Configured an aggregator bundle that appends key text parameters explicitly alongside target records, preserving references."
       }
     ]
   },
@@ -890,17 +809,20 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     stats: [
       { label: "실사용 가구", value: "120가구 이상" },
       { label: "변환 및 발행 가이드", value: "1,200건 초과" },
-      { label: "시트 분석 속도", value: "<200ms (캐싱 적용)" }
+      { label: "시트 분석 속도", value: "<200ms (캐싱 적용)" },
+      { label: "리포트 행정 시간 절감", value: "주 15+시간" }
     ],
     problem: [
       "영어 과제 지도가 어려운 다문화 가구나 비영어권 학부모의 자녀 학습 관리 소외감 발생.",
       "가정에서 부모님이 직접 영어를 지도하기는 별도의 보조 교재나 사교육 비용 부담이 존재함.",
-      "인쇄된 학습지 특성상 오디오 발음 피드백을 주기 힘들고 오답 이력이 체계적으로 추적되지 않음."
+      "인쇄된 학습지 특성상 오디오 발음 피드백을 주기 힘들고 오답 이력이 체계적으로 추적되지 않음.",
+      "학원 성적 리포트 발송은 원래 앱과 별개인 노코드 파이프라인(Fillout 설문 → Airtable → Make.com 자동화 → Softr 포털)으로 처리되어, 커리큘럼·원생 데이터가 앱 밖에서 이중 관리됨."
     ],
     solution: [
       "Capacitor JS (v8)를 탑재하여 iOS와 안드로이드 기기에서 네이티브하게 구동되는 모바일 테이블탑 코파일럿 앱 구축.",
       "종이 학습지를 찍는 순간 텍스트 분석 후 음성 학습(TTS) 및 단어 오디오 매칭 스피킹 훈련(STT) 대화형 솔루션으로 변환.",
-      "자녀의 실시간 오답과 발음 상태를 클라우드에 연동하는 인터랙티브 학부모 대시보드 및 플래시카드 시스템 제공."
+      "자녀의 실시간 오답과 발음 상태를 클라우드에 연동하는 인터랙티브 학부모 대시보드 및 플래시카드 시스템 제공.",
+      "Airtable/Make.com/Softr 노코드 리포트 파이프라인을 걷어내고 Chekki 내부의 Report Studio로 자체 구현: OCR 실라버스 스캔 또는 사전 등록 교재 유닛으로 원어민 교사(FT)의 30초 모바일 로그 폼을 자동 채우고, Gemini가 이를 이중언어(한/영, 존댓말) 카카오톡 발송용 리포트로 변환하며, 한국인 교사(KT)가 검수 후 1클릭 복사하고, 원장 포털에서 전체 발송 현황을 추적."
     ],
     stack: ["React 19", "Capacitor JS (v8)", "TypeScript", "Vercel Serverless Functions", "Cloud Firestore", "Gemini 2.5 Pro & Flash", "Tailwind CSS"],
     architecture: {
@@ -908,13 +830,17 @@ export const studyDataKo: Record<string, CaseStudyType> = {
         "촬영: 사용자가 테이블 위의 종이 학습지를 Capacitor 네이티브 카메라 API를 통해 촬영하여 앱에 등록합니다.",
         "인가 검증: 요청은 Vercel Serverless Functions로 진입해 Firestore를 기반으로 토큰 및 IP 단위 요금/속도 한도를 검증합니다.",
         "병렬 처리 파이프라인: Fast Pass(Gemini 2.5 Flash)로 레이아웃을 즉시 추출하고, 글씨가 흐리거나 복잡하면 Deep Pass(Gemini 2.5 Pro, 2만 토큰 팅킹 버짓)가 오답 판정을 이중 교정합니다.",
-        "코파일럿 실시간 동기화: React 19 클라이언트가 이중언어 발음 연습 대화 상자를 노출하고, 실시간 실수를 Cloud Firestore 기반 학습 대시보드와 자동 동기화합니다."
+        "코파일럿 실시간 동기화: React 19 클라이언트가 이중언어 발음 연습 대화 상자를 노출하고, 실시간 실수를 Cloud Firestore 기반 학습 대시보드와 자동 동기화합니다.",
+        "커리큘럼 사전 시딩: OCR 실라버스 스캔 또는 사전 등록 교재 유닛이 원어민 교사(FT)의 모바일 로그 폼에 목표 어휘를 자동으로 채웁니다.",
+        "FT 로그 → 이중언어 초안: 원어민 교사가 30초 모바일 로그(퀴즈 점수, 스포트라이트 학생, 수업 노트)를 제출하면 Gemini가 이를 정중한 한국어(존댓말) 학부모용 카카오톡 대본으로 변환합니다.",
+        "KT 검수 및 원장 동기화: 한국인 교사가 뉘앙스를 검수하고 1클릭으로 카카오톡에 복사하며, 원장 포털은 Firestore 상에서 각 리포트의 상태(대기 → 수정 → 발송완료)를 학급 전체 단위로 추적합니다."
       ],
       guardrails: [
         "인증 키 보호: 제미나이 및 파이어베이스 관리자 인가 자격을 완전 보호하기 위해 Vercel Serverless 단에 자격을 은닉 통제.",
         "빈 워크시트 및 오동작 필터: 손글씨 미검출 시 불필요한 오류 지적을 자동 방지하는 제로-할루시네이션(Zero-Hallucination) 가드 적용.",
         "PII 완벽 배제: 원생 사생활 및 통신 보호를 위해 개인식별 마커가 AI 단에 가기 전 마스킹하고 로컬 리텐션을 0으로 유지.",
-        "중복 연산 캐싱: 전송 문서에 SHA256 해시 키를 매겨 Firestore `image_analyses_cache`에 매칭해 중복 API 결제액을 방지하고 <200ms 속도 제공."
+        "중복 연산 캐싱: 전송 문서에 SHA256 해시 키를 매겨 Firestore `image_analyses_cache`에 매칭해 중복 API 결제액을 방지하고 <200ms 속도 제공.",
+        "휴먼인더루프 준수: 모든 AI 생성 학부모 리포트는 한국인 교사(KT)의 검수를 거쳐야만 발송완료로 표시되어, 미검수 AI 텍스트가 학부모에게 도달하지 않도록 차단합니다."
       ]
     },
     promptEngineering: {
@@ -956,7 +882,8 @@ export const studyDataKo: Record<string, CaseStudyType> = {
       value: [
         "Firestore 기반의 SHA256 이미지 해시 캐시 레이어를 정교화하여 중복 분석 연산을 전면 생략하고, 재요청 시 인지 처리 속도를 <200ms로 비약 단축.",
         "Firestore 실시간 다단계 보안 속도 제어(Rate Limiting) 장착: 일반 비회원은 IP 기반으로 Throttling 제어하고, 프로 유저는 실시간 인앱 구독 정보를 동기 검증 후 팅킹 버짓 API 사용을 연동.",
-        "카카오, 구글, 애플의 소셜 간편 로그인(SSO) 브릿지를 네이티브 환경에 완벽 결합해 상태 동기화 및 로그인 지연 현상을 100% 해소."
+        "카카오, 구글, 애플의 소셜 간편 로그인(SSO) 브릿지를 네이티브 환경에 완벽 결합해 상태 동기화 및 로그인 지연 현상을 100% 해소.",
+        "4개 도구로 구성된 노코드 리포트 스택(Fillout, Airtable, Make.com, Softr)을 Chekki 내부의 단일 Report Studio 플로우로 통합하여 외부 연동 지점을 제거하고, 커리큘럼·원생·리포트 데이터가 하나의 Firestore 소스를 공유하도록 정리."
       ],
       security: [
         "애플, 카카오, 구글 SSO 인증 단계에 일회용 암호화 해시 SHA-256 넌스(Nonce) 검증을 결합해 세션 변조 완벽 방어.",
@@ -967,9 +894,15 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     behindTheArchitecture: {
       problem: "가정 내 인쇄물 과제지는 무반응적이고 정적이므로, 영어 비원어민 부모님이 발음 지도를 돕거나 자녀의 복합 어휘 실수 기록을 체계적으로 수집하기에 어려움이 컸습니다.",
       vision: "종이 홈워크를 디지털 테이블탑 코파일럿 경험으로 즉시 치환하여, 음성 인터랙션 기능 및 클라우드 오답 대시보드를 부모님께 무상태성 없이 자동 구축해 줍니다.",
-      rationale: "병렬 하이브리드 실행 아키텍처(Parallel Hybrid Execution) 채택: 실시간 인쇄 구획 파싱은 속도가 빠른 Gemini 2.5 Flash가 전담하며, 복잡한 음성 매칭 구간이나 손글씨 식별 보완은 2만 토큰 팅킹 버짓을 탑재한 Gemini 2.5 Pro를 폴백으로 매핑해 오판을 차단합니다."
+      rationale: "병렬 하이브리드 실행 아키텍처(Parallel Hybrid Execution) 채택: 실시간 인쇄 구획 파싱은 속도가 빠른 Gemini 2.5 Flash가 전담하며, 복잡한 음성 매칭 구간이나 손글씨 식별 보완은 2만 토큰 팅킹 버짓을 탑재한 Gemini 2.5 Pro를 폴백으로 매핑해 오판을 차단합니다. 동일한 Gemini 백본과 Firestore 데이터 모델은 이후 Report Studio까지 확장되어, 학습지 채점과 학부모 리포트 생성이 서로 단절된 두 시스템이 아닌 하나의 공유 파이프라인 위에서 동작합니다."
     },
     technicalHurdles: [
+      {
+        title: "스캔 실패 시 발생한 가짜 성공 커리큘럼 버그",
+        incident: "실라버스 스캔 엔드포인트(api/analyze.ts)가 Gemini의 JSON 응답 파싱에 실패할 때마다 실패를 알리는 대신 조작된 200 응답('Weather & Nature' 커리큘럼)을 반환했습니다.",
+        diagnosis: "방어적 폴백 로직이 잘못된 AI JSON 응답을 하드코딩된 임시 커리큘럼으로 가려버려, 스캔 실패 한 건이 교사의 실제 커리큘럼 사전 시딩 데이터를 조용히 오염시킬 수 있었습니다.",
+        resolution: "가짜 성공 폴백을 제거해 파싱 실패 시 실제 오류를 반환하도록 수정하고, 이전까지 누락되어 있던 syllabus_course_plan 스캔 모드를 정식 구현했으며, JSON 파싱 및 커리큘럼 가드레일 로직을 유닛 테스트가 있는 공용 헬퍼로 분리했습니다."
+      },
       {
         title: "소셜 인증 레이스 컨디션 해결",
         incident: "애플 및 카카오 가입 직후 메인 대시보드로 복귀한 유저 정보가 정상 표시되지 못하고 튕기는 문제가 있었습니다.",
@@ -1191,101 +1124,6 @@ export const studyDataKo: Record<string, CaseStudyType> = {
         incident: "학급 시간표 조립 생성 쿼리에 무작위 동시 요청이 일어날 시, 트래픽 폭증에 의해 429 기동 거부 상태 유발 수위였습니다.",
         diagnosis: "서버가 많은 양의 실시간 생성 쿼리에 무방비로 호출되어 외부 서비스 임계치를 초과한 탓이었습니다.",
         resolution: "이중 구조 장치를 마련했습니다: 1) 경량 프레임으로 기본 스케줄 뼈대를 뽑고 핵심 충돌 지점 위주로 Pro 엔진을 태워 가동율 보호, 2) 브라우저에서 돌 수 있게 경량화 설계한 TypeScript 로컬 solver를 내장해 sandbox 오프라인 환경 등에서 0초 무트래픽 즉답 렌더링에 성공했습니다."
-      }
-    ]
-  },
-
-  "consultation-pipeline": {
-    title: "Automated Report Generator & Pipeline",
-    tagline: "상담 신청서 수집 즉시 데이터 구조에 정합하고 이중 언어 보고서를 추출해 전용 포털과 동기화하는 정보 전송 파이프라인입니다.",
-    liveUrl: "https://jason-portfolio.com/",
-    walkthroughVideo: "https://embed.app.guidde.com/playbooks/fXwhH7ayipdTFcXASDJx5K?mode=videoOnly",
-    screenshots: [
-      { label: "Airtable 데이터베이스", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.35.34_PM_susvx4.png", subLabel: "관계형 데이터 백엔드" },
-      { label: "FT Fillout 양식", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757946/Screenshot_2026-06-03_at_5.35.38_PM_wywtjr.png", subLabel: "설문 취합 및 평가 템플릿" },
-      { label: "성적 보고서 빌드 메커니즘", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757338/Screenshot_2026-06-06_at_11.10.34_PM_eij0wx.png", subLabel: "Make.com 자동 생성 시나리오" },
-      { label: "대화형 분석 전송 오퍼레이터", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757338/Screenshot_2026-06-06_at_11.13.31_PM_nkcfga.png", subLabel: "Make.com 상담 지원 워크플로우" },
-      { label: "원장 대시보드 오버뷰", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.34.00_PM_atnp3r.png", subLabel: "Softr 최고 관리자 어드민 포털" },
-      { label: "학부모 대시보드 (메인)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.32.00_PM_tnqzky.png", subLabel: "이중언어 맞춤 종합 도표" },
-      { label: "학부모 대시보드 (상세)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.32.40_PM_frctym.png", subLabel: "정성 관찰 상세 리포트" }
-    ],
-    stats: [
-      { label: "데이터 정합도", value: "100%" },
-      { label: "수동 가공 단계", value: "완전 자동화" },
-      { label: "보고 취합 공수", value: "0분" }
-    ],
-    problem: [
-      "정성적인 관찰 기록을 상담 종료 후 개별 엑셀 시트에 타이핑하고 옮겨 적으며 수일씩 야근을 유발하는 수동 공수 누적.",
-      "학급 리스트 및 원생 학적이 변모할 시, 산재된 파일 속 과거 이수 데이터 정합성을 관리해주기 힘든 꼬임 현상.",
-      "민감한 자녀 역량 평가가 보안 장치 없이 메신저나 일반 파일로 유출 공유되어 신용 우려를 촉발하는 환경."
-    ],
-    solution: [
-      "직관적인 구성의 Fillout 입력 양식을 실시간 Airtable 관계 시트 가교에 직결 수합 통합.",
-      "커밋 완료 즉석에서 Make.com 웹훅을 작동시켜 맞춤 설명서 빌드 구성 및 통역 서식 조립.",
-      "로그인 인증 해시 인자를 바탕으로, 권한이 확실한 부모 단말기에만 소속 자녀 정보를 타겟 노출."
-    ],
-    stack: ["Fillout Forms", "Airtable Relational DB", "Make.com Nodes", "Softr Portal", "Google Gemini API"],
-    architecture: {
-      lifecycle: [
-        "기재: 강사가 면접 필드를 보고 체크 사항을 폼 창에 등록 제출합니다.",
-        "취합: 데이터는 Airtable 관계 컬렉션 구조로 실시간 기록되며 외래 키 바인딩을 통과합니다.",
-        "가공: Make 서버 라우터가 입력 문맥을 확인해 다국어 요약 및 부모 전달용 통용 리포트를 만듭니다.",
-        "매핑: 완성 명세는 Softr 타겟 사용자 계정 데이터와 인라인 매칭되어 포털 내에서 무결 표출됩니다."
-      ],
-      guardrails: [
-        "데이터 보호: 반 정보가 도중에 변경되어도 기존 학적 이수 및 정밀 보고서 무결을 동기식 영구 지탱.",
-        " magic 링크 발송: 계정 기입 즉시 복조 마법 전송 주소를 대조 발행해 대기 피로 해소.",
-        "격리 조회 보증: 인증 쿠키 및 Row 세분화 필터 조건을 Softr 설정에 태워 임의 우회 방지."
-      ]
-    },
-    promptEngineering: {
-      logic: `<instructions>
-  Compile teacher intakes into a concise bilingual progress summary.
-  Never expose internal school terms or specific clinical scores to the final parent output.
-</instructions>`,
-      schema: `{
-  type: "OBJECT",
-  properties: {
-    bilingualSummary: { type: "STRING" },
-    actionableConsultTips: { type: "ARRAY", items: { type: "STRING" } }
-  },
-  required: ["bilingualSummary", "actionableConsultTips"]
-}`,
-      guardrails: [
-        "정형 고정 가이드: 유출을 차단하도록 내부 지목 단어가 부모 영역에 일절 노출되지 않게 정형 포장 수립.",
-        "온화 톤 적용 : 지엽적인 점수 대신 따뜻하고 동기 부여가 되는 발달 지침으로 단어 치환.",
-        "단방향 렌더: 파싱 불안 지점을 예방하기 위해 출력 란에서 별도의 복잡 부가 서식 사용 불가."
-      ]
-    },
-    impact: {
-      value: [
-        "유지 보수 비용이 많이 드는 헤드리스 스크립트 대신 Make.com의 정형 다중 웹훅 핸들러를 도입하여 인프라 지원 리스크를 최저 수준으로 조율.",
-        "단시간 다중 제출 데이터 유입 시에도 트래픽을 완충하여 안정적으로 번역을 정렬하는 Rate-buffered 큐 시스템을 세워 API 누락 차단.",
-        "Softr 단말의 개별 학적 권한 행 경계(Row-level authorization) 설정을 매핑하여, 다국어 리포트 렌더링 시 타인의 정보 훔쳐보기 취약성을 원천 금지."
-      ],
-      security: [
-        "학적 수지 부모의 고유 마법 암호화 사용자 세션 여부 조기 스크리닝.",
-        "인자 변수를 세니타이징하여 외부 시스템 명령어 인젝션 무력화.",
-        "데이터 취합 API 라우팅 키들을 가상 컨테이너 비밀 저장소에 은폐."
-      ]
-    },
-    behindTheArchitecture: {
-      problem: "상담 종료 후 정리와 교재 검독을 수일에 걸쳐 개별 취합 및 전송하느라 겪던 피로와 사생활 노출에 따른 갈등.",
-      vision: "한 번의 폼 제출로 한/영 보고 양식을 조립하고 수신 전용 어드민 포털에 동적으로 전송 및 기록하는 통합 파이프라인.",
-      rationale: "데이터 영속성을 위해 Airtable 컬렉션을 설계하고, Make 연쇄 워크플로우를 결합하여 수동 행정 마찰 감소."
-    },
-    technicalHurdles: [
-      {
-        title: "비동기 동기화 타이밍 갭 해소",
-        incident: "학생 상담 세션 기록 직후 Make.com 오토메이션이 일부 누락되거나 빈 데이터를 번역해 보내려 병목을 일으켰습니다.",
-        diagnosis: "폼(Fillout)을 통한 로드 생성 감지 시그널이 하위 개별 레코드 연동 정합보다 마이크로초 단위로 조기 트리거되어 빈 배열을 탐색함이 요인이었습니다.",
-        resolution: "delayed-fetch logic flow를 구축했습니다. 웹훅 수신 직후 의도적 일시정지 버퍼를 태워 데이터 영속 가교 합산이 완전히 끝날 시점에 AI를 통과시켰습니다."
-      },
-      {
-        title: "어그리게이터 관계 텍스트 누설 복구",
-        incident: "수강 상담 포트폴리오를 다량 묶어서 요약 리포트를 출력하는 도중 학생 실명이 사라지고 rec9oCq 등으로만 출력되었습니다.",
-        diagnosis: "Airtable Aggregator 하부 모듈 노드가 관계 설정된 상위 Relational Raw lookup 필드 접근을 설계적으로 일시 투명 차단했기 때문이었습니다.",
-        resolution: "물리 텍스트 매핑 결속을 우회시키는 data smuggling bypass를 완성해 하나의 토큰 바디 내에 학생 실명을 강제 병합하여 AI에 안전히 인계하는 완치에 도달했습니다."
       }
     ]
   },
