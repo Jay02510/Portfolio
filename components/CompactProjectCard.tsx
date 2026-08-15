@@ -51,12 +51,12 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
           )}
 
           <div className="absolute bottom-4 left-4">
-            <span className={`px-2.5 py-1 text-[8px] font-black uppercase tracking-widest rounded border font-mono ${
+            <span className={`px-2.5 py-1 text-[8px] font-mono font-bold uppercase tracking-widest rounded border ${
               theme === 'dark' 
                 ? 'bg-black/70 border-white/10 text-text-sec' 
                 : 'bg-white/90 border-black/5 text-alpine-950/60'
             }`}>
-              Project 0{index + 1}
+              Project {String(index + 1).padStart(2, '0')}
             </span>
           </div>
         </div>
@@ -101,33 +101,33 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
           </div>
 
           {/* 3-Point Micro-Summary for Skimming */}
-          <div className={`p-3.5 rounded-xl border space-y-2 text-xs flex-1 ${
+          <div className={`p-3.5 rounded-xl border space-y-2.5 text-xs flex-1 ${
             theme === 'dark' ? 'bg-white/[0.02] border-white/5' : 'bg-black/[0.02] border-black/5'
           }`}>
             {project.friction && (
               <div className="flex items-start gap-2">
-                <span className="text-[8px] font-mono font-black uppercase tracking-wider text-red-400 shrink-0 mt-0.5">
+                <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-red-400 shrink-0 mt-0.5">
                   {locale === 'ko' ? "문제" : "PROBLEM"}
                 </span>
-                <span className={`text-[11px] font-light leading-snug line-clamp-2 ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}`}>
+                <span className={`text-xs font-normal leading-snug line-clamp-2 ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>
                   {project.friction}
                 </span>
               </div>
             )}
             <div className="flex items-start gap-2">
-              <span className="text-[8px] font-mono font-black uppercase tracking-wider text-accent-gold shrink-0 mt-0.5">
+              <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-accent-gold shrink-0 mt-0.5">
                 {locale === 'ko' ? "솔루션" : "SOLUTION"}
               </span>
-              <span className={`text-[11px] font-light leading-snug line-clamp-2 ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>
+              <span className={`text-xs font-normal leading-snug line-clamp-2 ${theme === 'dark' ? 'text-white/90' : 'text-alpine-950/90'}`}>
                 {project.description}
               </span>
             </div>
             {project.impactLabel && project.impactValue && (
-              <div className="flex items-start gap-2 pt-1 border-t border-white/5">
-                <span className="text-[8px] font-mono font-black uppercase tracking-wider text-green-400 shrink-0 mt-0.5">
+              <div className="flex items-start gap-2 pt-1.5 border-t border-white/5">
+                <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-green-400 shrink-0 mt-0.5">
                   {locale === 'ko' ? "성과" : "IMPACT"}
                 </span>
-                <span className="text-[11px] font-mono font-bold text-green-400 leading-snug">
+                <span className="text-xs font-mono font-bold text-green-400 leading-snug">
                   {project.impactLabel}: {project.impactValue}
                 </span>
               </div>

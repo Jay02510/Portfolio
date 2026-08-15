@@ -63,13 +63,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             : (theme === 'dark' ? 'hover:bg-white/[0.02]' : 'hover:bg-black/[0.01]')
         }`}
       >
-        <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8 flex-1 min-w-0">
-          {/* Index & Thumbnail Mini Preview */}
-          <div className="flex items-center gap-4 shrink-0">
-            <span className={`font-mono text-xs font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border ${
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 md:gap-6 flex-1 min-w-0">
+          {/* Index & Thumbnail Mini Preview with Fixed Width Baseline */}
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            <span className={`w-28 text-center font-mono text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg border ${
               theme === 'dark' ? 'bg-white/5 border-white/10 text-accent-gold' : 'bg-black/5 border-black/10 text-accent-clay'
             }`}>
-              Project 0{index + 1}
+              Project {String(index + 1).padStart(2, '0')}
             </span>
 
             {/* Thumbnail Circle / Micro Preview */}
@@ -111,7 +111,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               </div>
             )}
 
-            <p className={`text-xs md:text-sm font-light truncate ${
+            <p className={`text-xs md:text-sm font-light leading-relaxed truncate ${
               theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/70'
             }`}>
               {project.description || project.longDescription}
@@ -237,30 +237,30 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 </h4>
 
                 {/* 3-Point Micro-Summary for Fast Skimming */}
-                <div className={`p-4 rounded-xl border space-y-2.5 text-xs ${
-                  theme === 'dark' ? 'bg-white/[0.02] border-white/10' : 'bg-black/[0.02] border-black/10'
+                <div className={`p-4 rounded-xl border space-y-3 text-xs sm:text-sm ${
+                  theme === 'dark' ? 'bg-white/[0.03] border-white/10' : 'bg-black/[0.02] border-black/10'
                 }`}>
                   {project.friction && (
                     <div className="flex items-start gap-2.5">
-                      <span className="text-[9px] font-mono font-black uppercase tracking-wider text-red-400 shrink-0 mt-0.5">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-red-400 shrink-0 mt-0.5">
                         {locale === 'ko' ? "문제 (PROBLEM) :" : "PROBLEM :"}
                       </span>
-                      <span className={`leading-relaxed font-light ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}`}>
+                      <span className={`leading-relaxed font-normal ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>
                         {project.friction}
                       </span>
                     </div>
                   )}
                   <div className="flex items-start gap-2.5">
-                    <span className="text-[9px] font-mono font-black uppercase tracking-wider text-accent-gold shrink-0 mt-0.5">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-accent-gold shrink-0 mt-0.5">
                       {locale === 'ko' ? "해결 (SOLUTION) :" : "SOLUTION :"}
                     </span>
-                    <span className={`leading-relaxed font-light ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>
+                    <span className={`leading-relaxed font-normal ${theme === 'dark' ? 'text-white/90' : 'text-alpine-950/90'}`}>
                       {project.description}
                     </span>
                   </div>
                   {project.impactLabel && project.impactValue && (
-                    <div className="flex items-start gap-2.5 pt-2 border-t border-white/5">
-                      <span className="text-[9px] font-mono font-black uppercase tracking-wider text-green-400 shrink-0 mt-0.5">
+                    <div className="flex items-start gap-2.5 pt-2.5 border-t border-white/5">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-green-400 shrink-0 mt-0.5">
                         {locale === 'ko' ? "성과 (IMPACT) :" : "IMPACT :"}
                       </span>
                       <span className="font-mono font-bold text-green-400">
@@ -270,7 +270,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   )}
                 </div>
 
-                <p className={`text-xs md:text-sm font-light leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
+                <p className={`text-sm sm:text-base font-light leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/85'}`}>
                   {project.longDescription}
                 </p>
               </div>
