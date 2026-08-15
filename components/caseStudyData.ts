@@ -2,95 +2,96 @@ import { CaseStudyType } from '../types.ts';
 
 export const studyDataEn: Record<string, CaseStudyType> = {
   vodabi: {
-    title: "Full-Stack Case Study: Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
-    tagline: "Built an end-to-end voice simulation and evaluation engine that automates phone screening for sales/customer-facing roles. Replaced manual screening calls with a real-time AI customer persona and structured automated grading.",
+    title: "Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
+    tagline: "Built an end-to-end voice simulation and candidate evaluation engine designed to automate phone screening for sales roles. Replaced manual screening calls with interactive voice AI and structured automated grading. (NDA Sanitized Case Study)",
     liveUrl: "",
     screenshots: [
-      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Realtime Audio Pipeline: WebRTC & Server-Side VAD in NestJS" },
-      { label: "Automated Evaluation Engine Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11-Point Rubric, BANTCQ Metrics & Speech Telemetry (WPM)" },
-      { label: "Admin & Analytics Backoffice (VOISOR AI)", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "Role-Gated Admin Console with Embedded RAG AI Assistant" }
+      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Direct WebRTC Pipeline: Ephemeral Tokens & Push-to-Talk in NestJS" },
+      { label: "Tiered Rubric Evaluation Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11-24 Point Rubrics, BANTCQ Metrics & Speech Telemetry (WPM)" },
+      { label: "Admin & Scenario Management Backoffice", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "Dynamic Scenario Management & Candidate Evaluation Flow" }
     ],
     stats: [
-      { label: "Admin Workload Reduction", value: "80%" },
-      { label: "Voice Engine Latency", value: "<200ms WebRTC" },
-      { label: "Evaluation Precision", value: "11-Point Rubric" }
+      { label: "Voice Architecture", value: "Direct WebRTC", detail: "Push-to-Talk Turn Control" },
+      { label: "Unit Economics", value: "~3x Cost Cut", detail: "gpt-realtime-mini voice model" },
+      { label: "Scoring Precision", value: "11-24 Rubrics", detail: "Tiered by scenario difficulty" }
     ],
     problem: [
-      "Manual candidate phone screens created high administrative overhead, long screening delays, and subjective hiring metrics.",
+      "Confidentiality Notice: Specific company and client names have been sanitized to respect non-disclosure agreements (NDAs). Architectural patterns and PM decisions reflect original work.",
+      "Manual candidate phone screens created high administrative overhead, screening delays, and subjective hiring metrics.",
       "Unstructured candidate evaluation caused inconsistent scoring and recruiter fatigue during high-volume sales hiring.",
-      "Traditional static testing portals lacked realistic conversational pushback, real-time interruptions, and objective discovery telemetry."
+      "Traditional static testing portals lacked realistic conversational pushback, interactive objection handling, and objective discovery telemetry."
     ],
     solution: [
-      "Realtime Audio Pipeline: Engineered a browser-to-server WebRTC audio stream integrated with WebSocket signaling gateways in NestJS, utilizing server-side VAD to allow candidates to speak and interrupt the AI naturally.",
-      "Automated Evaluation Engine: Implemented an async post-call scoring pipeline using gpt-4o to extract structured BANTCQ sales discovery metrics, evaluate candidates against an 11-point rubric, analyze speech telemetry (WPM), and output an automated onboarding roadmap.",
-      "Security & Magic Link Auth: Designed a stateless, tokenized link access system so job applicants can take tests instantly without creating an account, secured server-side with strict expiration bounds.",
-      "Admin & Analytics Backoffice: Built a role-gated admin console (React 19, TypeScript, Tailwind/Glassmorphism) with dynamic rubric creation, scenario management, and an embedded RAG-grounded AI coaching assistant (VOISOR) for hiring managers.",
-      "Data Layer Modernization: Migrated the data infrastructure to Prisma 7 utilizing modern MariaDB driver adapters and Dockerized deployment."
+      "Direct WebRTC Voice Pipeline: Engineered a direct WebRTC audio stream with ephemeral session tokens in NestJS, utilizing push-to-talk turn management to prevent ambient background noise from burning OpenAI token quotas.",
+      "Tiered Evaluation Pipeline: Implemented an async post-call scoring pipeline using gpt-4o to extract structured BANTCQ sales discovery metrics, evaluate candidates against tiered 11-to-24-point rubrics, and analyze speech pacing (WPM).",
+      "Unit Economics Optimization: Decoupled live voice interaction (gpt-realtime-mini for ~3x cheaper streaming) from deep post-call evaluation (gpt-4o structured JSON judging).",
+      "Security & Magic Link Auth: Designed a stateless, tokenized link access system with automatic token rotation on re-invite (candidate.service.ts) so job applicants take tests without persistent account liabilities.",
+      "Admin & Scenario Cockpit: Built a role-gated admin console (React 19, TypeScript, Tailwind) with dynamic scenario management and candidate review workflows over MariaDB with Prisma ORM in Docker."
     ],
     stack: [
       "React 19",
       "TypeScript",
       "Vite",
-      "NestJS",
-      "WebRTC",
-      "Socket.IO",
+      "NestJS 11",
+      "Direct WebRTC (Ephemeral Tokens)",
       "Prisma 7 (MariaDB Driver)",
-      "OpenAI Realtime API (gpt-4o-realtime-preview)",
-      "Docker",
+      "OpenAI Realtime (gpt-realtime-mini)",
+      "OpenAI GPT-4o (Post-Call Judge)",
+      "Docker Compose",
       "Nginx",
       "i18next"
     ],
     coreLoop: [
-      { step: "01. Stateless Magic Entry", role: "Candidate", detail: "Candidate clicks a one-time tokenized URL requiring zero account creation or authentication barrier." },
-      { step: "02. Bidirectional WebRTC Voice", role: "Voice AI Co-pilot", detail: "Real-time audio stream engages candidate as a demanding customer persona with server-side VAD barge-in." },
-      { step: "03. Audio & Telemetry Buffer", role: "NestJS Signaling Gateway", detail: "Buffers conversation audio while tracking cadence, hesitation gaps, and words-per-minute (WPM)." },
-      { step: "04. Multi-Rubric LLM Judging", role: "gpt-4o Scoring Engine", detail: "Post-call transcripts are evaluated against an 11-point rubric, BANTCQ criteria, and objection handling." },
-      { step: "05. Deterministic Scorecard", role: "Analytics Engine", detail: "Generates type-safe JSON scorecards, benchmark ratings, and personalized onboarding development roadmaps." },
-      { step: "06. Recruiter Backoffice & RAG", role: "Hiring Manager", detail: "Talent team reviews cohort scorecards and queries VOISOR RAG copilot for comparative candidate analyses." }
+      { step: "01. Ephemeral Magic Entry", role: "Candidate", detail: "Candidate accesses the assessment via a tokenized URL with automatic rotation on re-invite, requiring zero account registration." },
+      { step: "02. Direct WebRTC Voice Session", role: "Voice AI Persona", detail: "Candidate initiates push-to-talk voice turns via gpt-realtime-mini, preventing ambient noise from falsely triggering token-burning responses." },
+      { step: "03. Conversation & Speech Buffering", role: "NestJS Gateway", detail: "Captures candidate audio stream and transcript while tracking cadence and words-per-minute (WPM) telemetry." },
+      { step: "04. Post-Call gpt-4o Rubric Evaluation", role: "LLM Judge Pipeline", detail: "Post-call transcript is scored against scenario-specific 11-to-24-point rubrics and BANTCQ sales discovery criteria." },
+      { step: "05. Deterministic Scorecard & Fallback", role: "Analytics Service", detail: "Outputs type-safe JSON scorecards, backed by graceful fallback evaluation handling (createDefaultEvaluation) if network feeds fail." },
+      { step: "06. Recruiter Review & Backoffice", role: "Hiring Manager", detail: "Talent team reviews cohort scorecards, listens to session audio, and manages tiered scenario rubrics." }
     ],
     decisions: [
       {
-        decision: "Server-Side VAD via OpenAI Realtime Session over Client-Side Browser Speech Detection",
-        alternativeConsidered: "Client-side Web Audio API / Silero WASM speech detection in candidate browser",
-        why: "Client-side VAD suffered from acoustic echo desync, microphone gain variances, and 400ms+ latency on mid-tier mobile hardware. Server-side session management ensured sub-200ms conversational turn-taking.",
-        tradeOffAccepted: "Higher server-side socket bandwidth and requirement for a stable uplink."
+        decision: "Push-to-Talk Turn Control over Unbounded Continuous Voice VAD",
+        alternativeConsidered: "Continuous server/client voice activity detection with automatic barge-in",
+        why: "In real-world candidate testing, ambient room noise, heavy breathing, and typing frequently triggered false AI interruptions, burning expensive OpenAI token streams. Push-to-talk guaranteed deliberate applicant turns and stable unit economics (realtime.service.ts:86-90).",
+        tradeOffAccepted: "Requires candidate to hold a button/key during speech rather than relying on automated voice thresholding."
       },
       {
-        decision: "Stateless Ephemeral Magic-Link Auth over Mandatory Candidate User Accounts",
-        alternativeConsidered: "Standard username/password registration with persistent candidate portals",
-        why: "Recruiter funnels suffer massive candidate drop-off when applicants are forced to register for a single 10-minute screening test. Magic links delivered 100% friction-free access with zero persistent credential liability.",
+        decision: "Dual-Model Architecture (gpt-realtime-mini for Voice + gpt-4o for Post-Call Judging)",
+        alternativeConsidered: "Running full gpt-4o-realtime-preview for both live voice audio and mid-call evaluation",
+        why: "Full-tier realtime models are ~3x more expensive per minute and struggle to perform complex multi-rubric grading mid-call without latency spikes. Using gpt-realtime-mini for voice and async gpt-4o for post-call JSON judging delivered high grading precision at sustainable SaaS cost.",
+        tradeOffAccepted: "Scorecard generates asynchronously within 15-30s post-call rather than instantaneously upon disconnect."
+      },
+      {
+        decision: "Stateless Ephemeral Magic Links with Token Rotation over Persistent User Accounts",
+        alternativeConsidered: "Mandatory username/password applicant registration portal",
+        why: "Applicant funnels suffer high drop-off when forced to register an account for a 10-minute screening test. Rotating tokenized links (candidate.service.ts:35-37) provided zero-friction entry while securing token lifetime against unauthorized reuse.",
         tradeOffAccepted: "Candidates cannot self-manage or review historical scores directly without recruiter release."
       },
       {
-        decision: "Decoupled Two-Phase Scoring Pipeline over In-Call Real-Time Multi-Task Scoring",
-        alternativeConsidered: "Prompting the live voice model to simultaneously roleplay the customer and grade the candidate mid-call",
-        why: "Mid-call grading diluted conversational realism, added >600ms latency to voice responses, and caused grading hallucinations. Post-call JSON-schema judging guaranteed 100% deterministic scorecards.",
-        tradeOffAccepted: "Candidate scorecard generates asynchronously within 15-30s post-call rather than instantaneously on disconnect."
-      },
-      {
-        decision: "Prisma 7 MariaDB Driver Modernization over Legacy TypeORM / Raw SQL Strings",
-        alternativeConsidered: "Maintaining legacy TypeORM configurations or raw query strings",
-        why: "End-to-end type safety from schema definitions to NestJS controllers and React 19 front-end interfaces, catching breaking data regressions at build time.",
-        tradeOffAccepted: "Required schema migration overhead and Docker container optimization during deployment."
+        decision: "Graceful Fallback Evaluation (createDefaultEvaluation) over Hard API Crash",
+        alternativeConsidered: "Throwing unhandled 500 errors and abandoning candidate records on LLM API timeout or empty audio buffers",
+        why: "In production, network dropouts or empty candidate calls must not crash the recruiter queue or leave corrupted database states. The fallback pipeline safely records diagnostic status while preserving system integrity (evaluation.service.ts:230-348).",
+        tradeOffAccepted: "Recruiter must verify flagged fallback records when unexpected transcript drops occur."
       }
     ],
     behindTheArchitecture: {
-      problem: "Manual phone screens and subjective sales call reviews created extreme administrative bottlenecks, inconsistent candidate evaluation benchmarks, and high recruiter churn.",
-      vision: "Build a sub-200ms real-time conversational AI coaching engine that acts as an objective, 24/7 hiring co-pilot, delivering hallucination-free BANTCQ scorecards and instant onboarding roadmaps.",
-      rationale: "Selected WebRTC bidirectional audio streaming with server-side Voice Activity Detection (VAD) to allow natural candidate turn interruptions, combined with strict gpt-4o JSON schemas for 100% deterministic evaluation."
+      problem: "Manual candidate phone screens and subjective call reviews created administrative bottlenecks, inconsistent scoring benchmarks, and recruiter fatigue during high-volume sales hiring.",
+      vision: "Build a cost-efficient, production-grade conversational AI screening platform that executes realistic sales roleplay and outputs structured BANTCQ scorecards and development roadmaps.",
+      rationale: "Selected direct WebRTC with push-to-talk turn control to eliminate token-burning noise triggers, combined with gpt-realtime-mini for affordable voice streaming and async gpt-4o JSON schemas for 100% structured evaluation."
     },
     architecture: {
       lifecycle: [
-        "Stateless Magic-Link Access: Candidates access the 3-step AI coaching widget via passwordless magic links with zero onboarding friction.",
-        "Realtime Voice Session: Bidirectional WebSockets and WebRTC stream audio directly to gpt-4o-realtime-preview, with server-side VAD handling natural speaker turn-taking.",
-        "Deterministic LLM Judge: Audio transcripts pass to an automated LLM Judge using gpt-4o with enforced JSON schemas, grading against an 11-point rubric, BANTCQ telemetry, and WPM speech rate.",
-        "Enterprise Insights: Generates an instant, objective candidate evaluation scorecard with a personalized onboarding roadmap for Tier-1 enterprise clients."
+        "Ephemeral Magic-Link Access: Candidates access the assessment via passwordless magic links with automatic token rotation on re-invite.",
+        "Push-to-Talk Voice Session: Direct WebRTC streams audio via gpt-realtime-mini with deliberate turn boundaries, preventing token waste from ambient noise.",
+        "Deterministic LLM Judge: Transcripts route to an async gpt-4o evaluation pipeline with enforced JSON schemas, grading across tiered 11-to-24-point rubrics and BANTCQ criteria.",
+        "Recruiter Scorecard: Generates structured candidate scorecards with WPM speech pacing and onboarding development recommendations."
       ],
       guardrails: [
-        "Stateless PII Encryption: AES-256-GCM encryption secures candidate audio logs at rest; PII markers are scrubbed before cloud model processing.",
-        "Structured Schema Enforcement: Enforces strict JSON Schema validation to eliminate LLM hallucinations and raw JSON parsing failures.",
-        "Server-Side VAD & Barge-In: Gracefully handles candidate interruptions during live speech without audio distortion or WebSocket state deadlocks.",
-        "Zero-Trust Access Controls: Ephemeral magic links automatically expire after trial completion, preventing unauthorized API usage."
+        "Stateless Token Rotation: Magic links automatically rotate on re-invite (candidate.service.ts:35-37), preventing replay vulnerabilities.",
+        "Structured Schema Enforcement: Enforces strict JSON Schema validation with graceful fallback handling to prevent pipeline failures.",
+        "Push-to-Talk Token Guard: Eliminates ambient acoustic false-triggers to protect OpenAI API quotas.",
+        "Rate-Limiting & Container Isolation: Configured with 100 req/min endpoint rate-limiting behind Nginx in Dockerized containers."
       ]
     },
     promptEngineering: {
@@ -99,7 +100,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
 </system_identity>
 
 <evaluation_protocol>
-  <rubric_points>11-Point Rubric (Communication Clarity, Technical Depth, Problem Solving, BANTCQ Telemetry)</rubric_points>
+  <rubric_points>Tiered 11-to-24-Point Rubric (Communication Clarity, Technical Depth, Problem Solving, BANTCQ Telemetry)</rubric_points>
   <metrics>Speech Rate (WPM), Keyword Alignment, Objection Handling, Personalised Onboarding Roadmap</metrics>
 </evaluation_protocol>`,
       schema: `{
@@ -129,35 +130,35 @@ export const studyDataEn: Record<string, CaseStudyType> = {
   }
 }`,
       guardrails: [
-        "Deterministic JSON Output: Guarantees 100% type-safe JSON schema adherence across all evaluation runs.",
-        "IP & PII Anonymization: Strips proprietary corporate terms and candidate PII prior to model evaluation.",
+        "Deterministic JSON Output: Guarantees type-safe JSON schema adherence across all evaluation runs.",
+        "Resilient Fallback Handling: Safely catches transcript errors and persists diagnostic records via createDefaultEvaluation().",
         "Hallucination Mitigation: Rejects unverified candidate assertions that lack explicit transcript evidence."
       ]
     },
     impact: {
       value: [
-        "Reduced candidate evaluation time by 80%, replacing manual phone screens with instant, objective BANTCQ scorecards.",
-        "Automated 40 hours of manual candidate review into sub-10 minute real-time AI audio processing runs.",
-        "Delivered sub-200ms WebRTC Voice-AI coaching engine with instant, hallucination-free onboarding roadmaps for Tier-1 enterprise clients."
+        "Replaced manual 1st-round phone screens with interactive WebRTC AI customer simulations and automated candidate scorecards.",
+        "Optimized voice unit economics by ~3x through gpt-realtime-mini voice streaming paired with async gpt-4o rubric judging.",
+        "Standardized candidate evaluation across tiered 11-to-24-point competency rubrics with deterministic BANTCQ telemetry."
       ],
       security: [
-        "Stateless magic-link candidate access with zero persistent credential vulnerabilities.",
-        "AES-256-GCM encrypted PII storage and COPPA/GDPR zero-retention data compliance.",
-        "Containerized Node.js 24 / NestJS 11 backend deployed behind Nginx reverse proxy on AWS EC2 (ARM64)."
+        "Stateless magic-link candidate access with token rotation on re-invite (candidate.service.ts).",
+        "Resilient error-boundary handling with createDefaultEvaluation() fallback for pipeline stability.",
+        "Containerized Node.js 24 / NestJS 11 backend deployed behind Nginx reverse proxy with Prisma 7 over MariaDB."
       ]
     },
     technicalHurdles: [
       {
-        title: "WebRTC Audio Turn Interruption & VAD Latency",
-        incident: "Candidates interrupting the AI voice coach caused audio packet duplication and WebSocket connection drops.",
-        diagnosis: "Client-side Voice Activity Detection had a 400ms echo delay, causing overlapping speech buffers to freeze the real-time stream.",
-        resolution: "Engineered server-side VAD with gpt-4o-realtime-preview, clearing audio buffers instantly on speaker barge-in to achieve sub-200ms latency."
+        title: "Ambient Noise Triggers & Live Voice Token Burn",
+        incident: "In initial voice tests, background room noise, typing, and heavy breathing falsely triggered the realtime AI speech stream, causing rapid OpenAI token quota exhaustion.",
+        diagnosis: "Automatic continuous voice activity detection (VAD) struggled with variable candidate microphone sensitivities and acoustic echo in home environments.",
+        resolution: "Architected a direct WebRTC stream with deliberate push-to-talk turn management (realtime.service.ts:86-90), ensuring clean turn boundaries, zero background token bleed, and stable unit economics."
       },
       {
-        title: "Unstructured LLM Candidate Scoring Hallucinations",
-        incident: "Early evaluation prompts generated inconsistent score formats and fabricated candidate experience metrics.",
-        diagnosis: "Free-form text outputs lacked strict type constraints and deterministic scoring boundaries.",
-        resolution: "Architected a multi-step LLM Judge pipeline using gpt-4o with strict JSON schema enforcement, guaranteeing 100% type-safe BANTCQ scorecards."
+        title: "Evaluation API Timeouts & Pipeline Resilience",
+        incident: "Network hiccups or empty audio buffers during candidate screening risked crashing the post-call evaluation pipeline and leaving orphan database records.",
+        diagnosis: "Unwrapped external LLM calls lacked defensive error boundaries and schema validation fallbacks.",
+        resolution: "Engineered a robust try/catch evaluation pipeline (evaluation.service.ts:230-348) with createDefaultEvaluation() fallback, ensuring uninterrupted recruiter queue processing."
       }
     ]
   },
@@ -925,95 +926,96 @@ responseSchema: {
 
 export const studyDataKo: Record<string, CaseStudyType> = {
   vodabi: {
-    title: "Full-Stack Case Study: Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
-    tagline: "영업 및 고객 대응 직무의 전화 스크리닝을 자동화하는 엔드투엔드 음성 시뮬레이션 및 평가 엔진. 수동 스크리닝 통화를 실시간 AI 고객 페르소나 및 구조화된 자동 채점 시스템으로 대체.",
+    title: "Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
+    tagline: "영업 직무의 전화 스크리닝을 자동화하는 엔드투엔드 음성 시뮬레이션 및 후보자 평가 엔진. 수동 스크리닝 통화를 대화형 AI 고객 롤플레이 및 구조화된 자동 채점으로 대체. (NDA 비공개 처리 케이스 스터디)",
     liveUrl: "",
     screenshots: [
-      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "실시간 오디오 파이프라인: WebRTC & NestJS 서버 측 VAD" },
-      { label: "Automated Evaluation Engine Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11개 항목 루브릭, BANTCQ 지표 & 발화 텔레메트리 (WPM)" },
-      { label: "Admin & Analytics Backoffice (VOISOR AI)", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "RAG 기반 AI 코칭 어시스턴트 내장 역할 기반 어드민 콘솔" }
+      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Direct WebRTC 파이프라인: NestJS 기반 임시 토큰 & Push-to-Talk" },
+      { label: "Tiered Rubric Evaluation Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11~24개 루브릭, BANTCQ 지표 & 발화 텔레메트리 (WPM)" },
+      { label: "Admin & Scenario Management Backoffice", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "동적 시나리오 관리 & 후보자 평가 검토 워크플로우" }
     ],
     stats: [
-      { label: "행정 업무 감소율", value: "80%" },
-      { label: "음성 엔진 지연율", value: "<200ms WebRTC" },
-      { label: "평가 정밀도", value: "11개 항목 루브릭" }
+      { label: "음성 아키텍처", value: "Direct WebRTC", detail: "Push-to-Talk 턴 제어" },
+      { label: "단위 경제성", value: "~3배 비용 절감", detail: "gpt-realtime-mini 음성 모델" },
+      { label: "채점 정밀도", value: "11~24개 루브릭", detail: "시나리오 난이도별 다계층화" }
     ],
     problem: [
+      "기밀 유지(NDA) 안내: 비밀유지계약 준수를 위해 특정 기업명 및 고객사 식별 정보는 모두 익명화 및 일반화되었습니다. 아키텍처 및 PM 의사결정은 실제 수행 내용을 반영합니다.",
       "수동 후보자 전화 스크리닝으로 인한 과도한 행정 업무, 스크리닝 지연, 주관적 평가 지표 문제.",
       "비구조화된 채점 프로세스로 인한 대규모 세일즈 채용 시 채용 담당자 피로 및 불확실성 증대.",
-      "기존 정적 테스트 포털의 실시간 대화 상호작용, 끼어들기 및 객관적 탐색 텔레메트리 부재."
+      "기존 정적 테스트 포털의 대화형 상호작용 부재 및 객관적인 세일즈 디스커버리 텔레메트리 결여."
     ],
     solution: [
-      "Realtime Audio Pipeline: NestJS 기반 WebSocket 시그널링 게이트웨이와 결합된 브라우저-서버 간 WebRTC 오디오 스트림을 구축하고, 서버 측 VAD를 적용하여 후보자가 자연스럽게 말하고 AI에 끼어들 수 있도록 구현.",
-      "Automated Evaluation Engine: gpt-4o를 활용한 비동기 통화 후 채점 파이프라인을 구현하여 구조화된 BANTCQ 영업 탐색 지표 추출, 11개 평가 루브릭 심사, 발화 텔레메트리(WPM) 분석 및 자동 온보딩 로드맵 출력.",
-      "Security & Magic Link Auth: 지원자가 계정 생성 없이 즉시 평가를 치를 수 있도록 무상태 토큰화 링크 시스템을 설계하고, 서버 측 엄격한 만료 경계로 보안 강화.",
-      "Admin & Analytics Backoffice: 동적 루브릭 생성, 시나리오 관리, 채용 담당자를 위한 RAG 기반 AI 코칭 어시스턴트(VOISOR)가 내장된 역할 기반 어드민 콘솔(React 19, TypeScript, Tailwind/Glassmorphism) 구축.",
-      "Data Layer Modernization: 현대적인 MariaDB 드라이버 어댑터 및 Dockerized 배포를 활용하여 데이터 인프라를 Prisma 7로 마이그레이션."
+      "Direct WebRTC 음성 파이프라인: NestJS 기반 임시 세션 토큰과 의도적 Push-to-Talk 턴 제어를 결합한 Direct WebRTC 오디오 스트림을 구축하여 주변 환경 소음으로 인한 OpenAI 토큰 과소비를 원천 차단.",
+      "다계층 평가 파이프라인: gpt-4o를 활용한 비동기 통화 후 채점 파이프라인을 구현하여 구조화된 BANTCQ 영업 탐색 지표 추출, 시나리오별 11~24개 평가 루브릭 심사, 발화 텔레메트리(WPM) 분석 및 온보딩 로드맵 출력.",
+      "단위 경제성 최적화: 실시간 음성 상호작용(gpt-realtime-mini로 ~3배 저렴한 스트리밍)과 심층 사후 평가(gpt-4o 정형 JSON 심사)를 분리하여 비용 효율성 확립.",
+      "Security & Magic Link Auth: 지원자가 별도 계정 생성 없이 평가를 치를 수 있도록 재초대 시 토큰 자동 로테이션(candidate.service.ts)을 지원하는 무상태 링크 시스템 구축.",
+      "Admin & Scenario Cockpit: MariaDB 및 Docker 기반 Prisma 7 데이터 레이어 상에서 동적 시나리오 관리 및 지원자 평가 워크플로우를 제공하는 역할 기반 어드민 콘솔(React 19, TypeScript, Tailwind) 구축."
     ],
     stack: [
       "React 19",
       "TypeScript",
       "Vite",
-      "NestJS",
-      "WebRTC",
-      "Socket.IO",
+      "NestJS 11",
+      "Direct WebRTC (임시 토큰)",
       "Prisma 7 (MariaDB Driver)",
-      "OpenAI Realtime API (gpt-4o-realtime-preview)",
-      "Docker",
+      "OpenAI Realtime (gpt-realtime-mini)",
+      "OpenAI GPT-4o (Post-Call Judge)",
+      "Docker Compose",
       "Nginx",
       "i18next"
     ],
     coreLoop: [
-      { step: "01. 무상태 매직링크 접속", role: "응시 후보자", detail: "계정 생성이나 회원가입 절차 없이 1회용 토큰화 URL을 통해 3단계 평가 화면으로 즉시 진입합니다." },
-      { step: "02. 양방향 WebRTC 음성 롤플레이", role: "음성 AI 엔진", detail: "실제 고객 페르소나 역할을 수행하며 서버 측 VAD를 통해 후보자의 자연스러운 끼어들기 및 발화 흐름을 처리합니다." },
-      { step: "03. 오디오 및 발화 텔레메트리 버퍼링", role: "NestJS 시그널링 게이트웨이", detail: "대화 오디오 스트림을 안전하게 버퍼링하며 발화 속도(WPM), 망설임 간격, 침묵 구간을 실시간 캡처합니다." },
-      { step: "04. 11개 항목 루브릭 비동기 심사", role: "gpt-4o 평가 엔진", detail: "통화 종료 직후 텍스트 트랜스크립트를 BANTCQ 탐색 역량 및 반론 극복 지표에 따라 심사합니다." },
-      { step: "05. 결정론적 평가 스코어카드 산출", role: "분석 엔진", detail: "정형 JSON 스키마를 기반으로 표준화된 평가 점수와 개인 맞춤형 온보딩 트레이닝 로드맵을 생성합니다." },
-      { step: "06. 채용 관리자 백오피스 & RAG 코파일럿", role: "채용 담당자", detail: "후보자별 상세 지표를 조회하고 RAG 기반 VOISOR AI 어시스턴트를 통해 후보자 간 비교 분석을 수행합니다." }
+      { step: "01. 무상태 매직링크 접속", role: "응시 후보자", detail: "재초대 시 자동 로테이션되는 1회용 토큰화 URL을 통해 별도 회원가입 없이 평가 화면으로 즉시 진입합니다." },
+      { step: "02. Direct WebRTC 음성 롤플레이", role: "음성 AI 페르소나", detail: "gpt-realtime-mini 기반 Push-to-Talk으로 발화를 제어하여 주변 잡음으로 인한 토큰 과소비 없이 고객 롤플레이를 수행합니다." },
+      { step: "03. 대화 및 발화 텔레메트리 버퍼링", role: "NestJS 게이트웨이", detail: "대화 오디오 스트림과 트랜스크립트를 안전하게 캡처하며 발화 속도(WPM) 및 리듬을 측정합니다." },
+      { step: "04. gpt-4o 기반 루브릭 사후 심사", role: "LLM 평가관 파이프라인", detail: "통화 종료 후 트랜스크립트를 시나리오별 11~24개 루브릭 및 BANTCQ 탐색 기준에 따라 비동기로 정밀 채점합니다." },
+      { step: "05. 결정론적 스코어카드 및 폴백", role: "분석 서비스", detail: "정형 JSON 스키마 기반 스코어카드를 출력하며, 네트워크 이상 시 createDefaultEvaluation() 폴백 핸들러로 시스템 안정성을 보장합니다." },
+      { step: "06. 채용 관리자 검토 및 백오피스", role: "채용 담당자", detail: "후보자별 상세 스코어카드와 발화 지표를 조회하고 시나리오별 평가 루브릭을 관리합니다." }
     ],
     decisions: [
       {
-        decision: "클라이언트 브라우저 음성 처리 대신 OpenAI Realtime 기반 서버 측 VAD 채택",
-        alternativeConsidered: "후보자 브라우저에서 Web Audio API 또는 WASM(Silero)으로 음성 감지 실행",
-        why: "클라이언트 측 VAD는 기기별 마이크 감도 차이, 에코 디싱크, 저사양 기기에서 400ms 이상의 지연이 발생했습니다. 서버 측 세션 관리를 통해 안정적인 sub-200ms 대화 턴테이킹을 확립했습니다.",
-        tradeOffAccepted: "서버 소켓 대역폭 소모 증가 및 안정적인 네트워크 업링크 의존성 발생."
+        decision: "무제한 연속 음성 VAD 대신 Push-to-Talk 턴 제어 방식 채택",
+        alternativeConsidered: "자동 끼어들기가 포함된 연속 서버/클라이언트 음성 활동 감지(VAD)",
+        why: "실제 환경 테스트에서 주변 배경 소음, 타이핑 소리, 숨소리가 AI 응답을 오작동 트리거하여 고비용 OpenAI 토큰이 과도하게 소모되었습니다. Push-to-Talk 턴 제어로 명확한 발화 경계를 설정하고 토큰 과소비를 원천 방지했습니다(realtime.service.ts:86-90).",
+        tradeOffAccepted: "후보자가 발화 시 버튼/키를 누르는 인터랙션이 요구됨."
       },
       {
-        decision: "후보자 필수 계정 가입 대신 무상태 임시 매직링크 인증 채택",
-        alternativeConsidered: "아이디/비밀번호 기반의 일반 회원가입 및 영구 지원자 포털 구축",
-        why: "10분 스크리닝을 위해 계정 생성을 요구할 경우 지원자 이탈률이 급증합니다. 매직링크를 통해 진입 장벽을 0으로 낮추고 영구 계정 자격 증명 유출 위험을 제거했습니다.",
-        tradeOffAccepted: "채용 담당자가 결과를 공유하기 전까지 후보자가 직접 과거 이력을 재조회할 수 없음."
+        decision: "이원화 모델 아키텍처 (음성 gpt-realtime-mini + 사후 평가 gpt-4o)",
+        alternativeConsidered: "실시간 음성과 통화 중 실시간 채점 모두에 고비용 gpt-4o-realtime-preview 단일 적용",
+        why: "실시간 대화 모델은 분당 비용이 ~3배 높으며 통화 중 복잡한 다계층 루브릭 채점을 동시 수행할 경우 지연율이 급증합니다. 실시간 음성은 경량 모델로 처리하고 사후 정밀 평가는 gpt-4o로 분리하여 비용 효율성과 채점 정밀도를 동시에 달성했습니다.",
+        tradeOffAccepted: "통화 종료 즉시가 아닌 통화 후 15~30초 내에 비동기로 스코어카드가 최종 확정됨."
       },
       {
-        decision: "통화 중 실시간 동시 채점 대신 통화 후 비동기 2단계 심사 파이프라인 채택",
-        alternativeConsidered: "통화 중 고객 페르소나 롤플레이와 후보자 채점을 단일 프롬프트에서 동시 수행",
-        why: "실시간 동시 채점 시 음성 응답 지연이 600ms 이상 발생하고 롤플레이 현실감이 저하되며 채점 환각이 발생했습니다. 2단계 비동기 분리를 통해 100% 결정론적 스코어카드를 보장했습니다.",
-        tradeOffAccepted: "통화 종료 즉시가 아닌 15~30초 후 비동기로 스코어카드가 최종 생성됨."
+        decision: "영구 사용자 계정 대신 토큰 로테이션 무상태 매직링크 채택",
+        alternativeConsidered: "아이디/비밀번호 기반의 지원자 필수 회원가입 포털",
+        why: "10분 스크리닝 평가를 위해 회원가입을 요구할 경우 지원자 이탈률이 급증합니다. 재초대 시 토큰이 자동 갱신되는 매직링크(candidate.service.ts:35-37)로 진입 마찰을 제거하고 자격 증명 관리 부담을 해소했습니다.",
+        tradeOffAccepted: "채용 담당자가 결과를 공유하기 전까지 후보자가 과거 이력을 직접 재조회할 수 없음."
       },
       {
-        decision: "기존 레거시 TypeORM/Raw SQL 대신 Prisma 7 MariaDB Driver Modernization 채택",
-        alternativeConsidered: "레거시 TypeORM 설정 유지 또는 직접 원시 SQL 쿼리문 유지",
-        why: "스키마 정의부터 NestJS 컨트롤러, React 19 프론트엔드 인터페이스까지 엔드투엔드 타입 안정성을 확보하여 빌드 타임에 데이터 정합성 결함을 완벽히 사전 차단했습니다.",
-        tradeOffAccepted: "마이그레이션 초기 작업 공수 및 Docker 컨테이너 최적화 필요."
+        decision: "하드 크래시 대신 우아한 폴백 평가 핸들링 (createDefaultEvaluation) 구축",
+        alternativeConsidered: "LLM API 타임아웃 또는 음성 버퍼 누락 시 500 에러를 던지고 트랜잭션을 중단",
+        why: "프로덕션 환경에서 간헐적 네트워크 순단이나 지원자의 무응답 통화로 인해 채용 담당자의 큐 전체가 중단되거나 DB가 오염되는 것을 방지하기 위해 진단 플래그와 함께 기본 평가를 안전하게 저장하도록 설계했습니다(evaluation.service.ts:230-348).",
+        tradeOffAccepted: "네트워크 이상으로 폴백 처리된 레코드는 채용 담당자의 수동 재확인이 필요함."
       }
     ],
     behindTheArchitecture: {
-      problem: "수동 전화 스크리닝 및 주관적인 통화 평가로 인해 과도한 행정 병목 현상과 채용 담당자 이탈이 발생했습니다.",
-      vision: "24시간 상시 운영되는 객관적 채용 코파일럿으로서 sub-200ms 실시간 대화형 AI 음성 엔진을 구축하고, 환각 없는 BANTCQ 스코어카드와 맞춤 온보딩 로드맵을 즉시 제공합니다.",
-      rationale: "후보자의 자연스러운 끼어들기를 허용하는 서버 측 VAD 기반 WebRTC 양방향 음성 스트리밍과 100% 결정론적 평가를 보장하는 gpt-4o JSON 스키마를 결합했습니다."
+      problem: "수동 전화 스크리닝 및 주관적인 통화 평가로 인해 과도한 행정 병목 현상과 채용 담당자 피로가 발생했습니다.",
+      vision: "주변 소음으로 인한 토큰 낭비 없는 현실적 롤플레이와 구조화된 BANTCQ 스코어카드를 제공하는 비용 효율적인 프로덕션 AI 스크리닝 플랫폼 구축.",
+      rationale: "토큰 낭비를 원천 차단하는 Push-to-Talk Direct WebRTC 스트리밍, 단위 경제성을 확보하는 gpt-realtime-mini 음성 모델, 100% 정형 평가를 보장하는 gpt-4o JSON 스키마를 결합했습니다."
     },
     architecture: {
       lifecycle: [
-        "무상태 매직링크 접속: 후보자가 비밀번호 없이 매직링크로 3단계 AI 코칭 위젯에 즉시 접속합니다.",
-        "실시간 음성 세션: 양방향 WebSockets & WebRTC가 오디오를 gpt-4o-realtime-preview로 스트리밍하며, 서버 측 VAD가 자연스러운 턴테이킹을 제어합니다.",
-        "결정론적 LLM 평가관: 통화 텍스트가 정형 JSON 스키마 기반 gpt-4o LLM 평가관을 거쳐 11개 평가 항목, BANTCQ 텔레메트리, WPM을 심사합니다.",
-        "엔터프라이즈 인사이트: 엔터프라이즈 고객사를 위한 객관적 평가 스코어카드와 개인 맞춤형 온보딩 로드맵을 즉시 생성합니다."
+        "무상태 매직링크 접속: 재초대 시 토큰이 자동 갱신되는 링크를 통해 별도 가입 절차 없이 접속합니다.",
+        "Push-to-Talk 음성 세션: Direct WebRTC가 gpt-realtime-mini로 오디오를 스트리밍하며, 명확한 턴 경계로 토큰 낭비를 방지합니다.",
+        "결정론적 LLM 평가관: 통화 텍스트가 gpt-4o 비동기 파이프라인으로 전달되어 11~24개 루브릭과 BANTCQ 기준에 따라 채점됩니다.",
+        "채용 관리자 스코어카드: 발화 속도(WPM)와 개인 맞춤 온보딩 로드맵이 포함된 구조화된 스코어카드를 출력합니다."
       ],
       guardrails: [
-        "PII 암호화 및 보호: 후보자 음성 로그는 AES-256-GCM으로 암호화 저장되며 PII 데이터는 모델 전송 전 정화됩니다.",
-        "정형 스키마 적용: 엄격한 JSON Schema 검증으로 LLM 환각 및 구문 분석 오류를 완벽히 차단합니다.",
-        "서버 측 VAD & 끼어들기: 오디오 왜곡이나 데드락 없이 후보자의 실시간 발화 끼어들기를 안정적으로 처리합니다.",
-        "제로 트러스트 접속 제어: 임시 매직링크는 사용 완료 후 자동 만료되어 무단 API 사용을 방지합니다."
+        "무상태 토큰 로테이션: 매직링크는 재초대 시 자동으로 로테이션(candidate.service.ts:35-37)되어 재생 공격을 방지합니다.",
+        "정형 스키마 및 폴백 보장: 엄격한 JSON Schema 검증과 createDefaultEvaluation() 폴백으로 파이프라인 무결성을 유지합니다.",
+        "Push-to-Talk 토큰 가드: 주변 환경 잡음으로 인한 불필요한 AI 발화 트리거를 차단하여 API 쿼터를 보호합니다.",
+        "속도 제한 및 컨테이너 격리: Nginx 역방향 프록시 뒤에서 100 req/min 속도 제한과 Docker 격리 배포를 적용했습니다."
       ]
     },
     promptEngineering: {
@@ -1022,7 +1024,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
 </system_identity>
 
 <evaluation_protocol>
-  <rubric_points>11개 항목 루브릭 (커뮤니케이션 명확성, 기술적 깊이, 문제 해결력, BANTCQ 텔레메트리)</rubric_points>
+  <rubric_points>시나리오별 다계층 11~24개 항목 루브릭 (커뮤니케이션 명확성, 기술적 깊이, 문제 해결력, BANTCQ 텔레메트리)</rubric_points>
   <metrics>발화 속도 (WPM), 키워드 일치도, 반론 대응력, 맞춤 온보딩 로드맵</metrics>
 </evaluation_protocol>`,
       schema: `{
@@ -1052,35 +1054,35 @@ export const studyDataKo: Record<string, CaseStudyType> = {
   }
 }`,
       guardrails: [
-        "결정론적 JSON 출력: 모든 평가 파이프라인에서 100% 타입 안정성을 갖춘 JSON 스키마 준수를 보장합니다.",
-        "기업 IP 및 PII 익명화: 모델 평가 전 고유 기업 용어 및 개인정보를 마스킹 처리합니다.",
+        "결정론적 JSON 출력: 모든 평가 파이프라인에서 타입 안전성을 갖춘 JSON 스키마 준수를 보장합니다.",
+        "회복력 있는 폴백 핸들링: 트랜스크립트 에러 발생 시 createDefaultEvaluation()으로 안전하게 진단 레코드를 기록합니다.",
         "환각 완화: 스크립트 근거가 없는 후보자의 미검증 주장을 자동으로 기각합니다."
       ]
     },
     impact: {
       value: [
-        "후보자 스크리닝 평가 시간을 80% 단축하고, 수동 전화 스크리닝을 즉각적이고 객관적인 BANTCQ 스코어카드로 대체했습니다.",
-        "40시간의 수동 후보자 검토 작업을 10분 미만의 실시간 AI 오디오 처리 프로세스로 자동화했습니다.",
-        "엔터프라이즈 고객사를 위해 환각 없는 온보딩 로드맵과 sub-200ms WebRTC Voice-AI 코칭 엔진을 구축했습니다."
+        "수동 1차 전화 스크리닝을 대화형 WebRTC AI 고객 롤플레이 및 자동 채점 스코어카드로 대체했습니다.",
+        "gpt-realtime-mini 음성 스트리밍과 비동기 gpt-4o 루브릭 채점을 분리하여 음성 단위 경제성을 약 3배 개선했습니다.",
+        "시나리오별 11~24개 역량 루브릭과 결정론적 BANTCQ 텔레메트리로 채점 기준을 표준화했습니다."
       ],
       security: [
-        "지속적 자격 증명 취약점이 없는 무상태 매직링크 후보자 접근 방식.",
-        "AES-256-GCM 암호화 PII 저장소 및 COPPA/GDPR 제로 데이터 보존 준수.",
-        "AWS EC2(ARM64) 상의 Nginx 역방향 프록시 뒤에 배포된 컨테이너화된 Node.js 24 / NestJS 11 백엔드."
+        "재초대 시 토큰이 자동 갱신되는 무상태 매직링크 지원자 접근 방식(candidate.service.ts).",
+        "createDefaultEvaluation() 폴백 기반의 장애 복원력 있는 에러 바운더리 핸들링.",
+        "AWS EC2 상에서 Nginx 역방향 프록시와 MariaDB/Prisma 7 기반으로 배포된 컨테이너화된 백엔드."
       ]
     },
     technicalHurdles: [
       {
-        title: "WebRTC 오디오 턴 끼어들기 및 VAD 지연 시간",
-        incident: "후보자가 AI 음성 코치와 동시에 말할 때 오디오 패킷 중복 및 WebSocket 연결 끊김 현상이 발생함.",
-        diagnosis: "클라이언트 측 음성 활동 감지(VAD)의 400ms 에코 지연으로 인해 겹치는 오디오 버퍼가 실시간 스트림을 병목 처리함.",
-        resolution: "gpt-4o-realtime-preview 기반 서버 측 VAD를 엔지니어링하여 발화 끼어들기 시 오디오 버퍼를 즉시 비워 sub-200ms 지연 시간을 달성함."
+        title: "주변 환경 소음 오작동 및 실시간 음성 토큰 낭비",
+        incident: "초기 음성 테스트에서 주변 타이핑 소리, 주변 대화, 숨소리가 실시간 AI 음성 스트림을 잘못 트리거하여 OpenAI 토큰 쿼터가 급격히 소모됨.",
+        diagnosis: "지속적 음성 활동 감지(VAD)가 후보자별 마이크 감도 및 재택 환경의 음향 에코를 완벽히 필터링하지 못함.",
+        resolution: "의도적인 Push-to-Talk 턴 제어(realtime.service.ts:86-90)가 적용된 Direct WebRTC 스트림을 설계하여 명확한 발화 경계 설정 및 토큰 낭비를 원천 차단함."
       },
       {
-        title: "비구조화된 LLM 후보자 평가 환각",
-        incident: "초기 평가 프롬프트가 일관되지 않은 점수 형식과 허위 후보자 경력 지표를 생성함.",
-        diagnosis: "자유 형식 텍스트 출력이 엄격한 타입 제약과 결정론적 채점 경계선이 부족했음.",
-        resolution: "엄격한 JSON 스키마를 강제하는 gpt-4o 기반 다단계 LLM 평가관 파이프라인을 구축하여 100% 타입 안전 BANTCQ 스코어카드를 보장함."
+        title: "평가 API 타임아웃 및 파이프라인 회복 탄력성",
+        incident: "후보자 통화 중 간헐적 네트워크 순단이나 빈 오디오 버퍼가 발생할 경우 사후 평가 파이프라인이 중단될 위험이 존재함.",
+        diagnosis: "외부 LLM 호출에 방어적 에러 바운더리와 스키마 검증 폴백이 미비했음.",
+        resolution: "createDefaultEvaluation() 폴백을 갖춘 견고한 try/catch 평가 파이프라인(evaluation.service.ts:230-348)을 구축하여 채용 담당자의 업무 흐름을 안전하게 보호함."
       }
     ]
   },

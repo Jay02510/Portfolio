@@ -14,23 +14,23 @@ interface BuildItem {
 
 const LIVE_UPDATES_DATA: BuildItem[] = [
   {
-    id: "vodabi-webrtc-latency-optimization",
-    date: "2026-08-04",
+    id: "voice-ai-deterministic-scoring-release",
+    date: "2026-08-14",
     type: "feature",
-    titleEn: "VodaBi Real-Time WebRTC Audio Engine & Sub-200ms Latency Pipeline Deployed",
-    titleKo: "VodaBi 실시간 WebRTC 음성 AI 코칭 엔진 & 서브-200ms 지연 감소 파이프라인 배포 완료",
-    descEn: "Shipped the sub-200ms WebRTC voice coaching engine with server-side VAD, graceful barge-in interruption, and automated BANTCQ candidate evaluation scorecards.",
-    descKo: "서버사이드 VAD, 음성 끼어들기(Barge-in) 자연 전환 및 BANTCQ 자격 검증 평가 스코어카드 자동 생성이 가능한 서브-200ms WebRTC 음성 코칭 엔진 배포를 완료했습니다.",
+    titleEn: "Voice-AI Platform: Deterministic Step Rubric Scoring & Ephemeral WebRTC Deployed",
+    titleKo: "음성 AI 플랫폼: 결정론적 스텝 루브릭 평가 및 임시 WebRTC 배포 완료",
+    descEn: "Shipped direct WebRTC voice streaming with ephemeral session tokens and push-to-talk turn control, paired with deterministic stepIndex rubric score lookups and AES-256-GCM encryption at rest.",
+    descKo: "임시 세션 토큰 및 Push-to-Talk 턴 제어가 적용된 Direct WebRTC 음성 스트림과 stepIndex 기반 결정론적 루브릭 산출 및 AES-256-GCM 암호화를 프로덕션 배포했습니다.",
     relatedProjectId: "vodabi"
   },
   {
-    id: "vodabi-product-pivot-wizard-of-oz",
-    date: "2026-07-28",
-    type: "feature",
-    titleEn: "VodaBi Product Pivot: 3-Step AI Voice Coaching Widget & Prototyping",
-    titleKo: "VodaBi 제품 피봇: 3단계 AI 음성 코칭 위젯 및 사용자 검증 완료",
-    descEn: "Led product pivot from a complex analytics dashboard to an intuitive 3-step voice coaching flow (Role Selection -> Audio Upload -> Live Chat), validated with Tier-1 enterprise users via Wizard of Oz prototypes.",
-    descKo: "복잡한 분석 대시보드에서 직관적인 3단계 AI 음성 코칭 흐름으로 제품 피봇을 주도하였으며, Wizard of Oz 프로토타입을 통해 대기업 고객사 검증을 완료했습니다.",
+    id: "voice-ai-security-hardening",
+    date: "2026-08-08",
+    type: "security",
+    titleEn: "Voice-AI Platform: Token Rotation & Active Role Verification Hardening",
+    titleKo: "음성 AI 플랫폼: 매직링크 토큰 로테이션 & 실시간 권한 검증 보안 강화",
+    descEn: "Enforced 7-day magic link expiration with token rotation on re-invite, authenticated call-log endpoints to block transcript injection, and verified active database roles on privileged requests.",
+    descKo: "재초대 시 토큰 자동 로테이션(7일 만료), 트랜스크립트 주입 방지 인증 엔드포인트 및 실시간 데이터베이스 권한 재검증을 적용하여 보안 모델을 완성했습니다.",
     relatedProjectId: "vodabi"
   },
   {

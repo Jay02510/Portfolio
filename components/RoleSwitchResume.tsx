@@ -56,8 +56,8 @@ export const RESUME_DATA = {
         ko: "AI 프로덕트 매니저 (인턴십)"
       },
       company: {
-        en: "VodaBi SaaS Startup",
-        ko: "VodaBi SaaS 스타트업"
+        en: "Enterprise B2B SaaS (Confidential / NDA)",
+        ko: "엔터프라이즈 B2B SaaS (비공개 / NDA 준수)"
       },
       period: {
         en: "July 2026 – Present",
@@ -78,22 +78,22 @@ export const RESUME_DATA = {
         {
           tag: { en: "Voice AI Pipeline", ko: "음성 AI 파이프라인" },
           text: {
-            en: "Architected a bidirectional real-time voice system (NestJS/Socket.io + WebRTC) using gpt-4o-realtime-preview with server-side Voice Activity Detection, turn interruption, and isolated per-caller socket channels for concurrent sessions — achieving sub-200ms response latency for natural candidate simulations.",
-            ko: "gpt-4o-realtime-preview 및 서버 측 음성 활동 감지(VAD), 턴 중단, 동시 세션용 발신자별 격리 소켓 채널을 활용한 양방향 실시간 음성 시스템(NestJS/Socket.io + WebRTC) 아키텍처 설계 — 자연스러운 지원자 시뮬레이션을 위한 sub-200ms 응답 지연 시간 달성."
+            en: "Architected a direct WebRTC voice stream using NestJS ephemeral session tokens and gpt-realtime-mini, implementing deliberate push-to-talk turn control to prevent ambient background noise from burning OpenAI token quotas while reducing voice unit costs by ~3x.",
+            ko: "NestJS 임시 세션 토큰 및 gpt-realtime-mini 기반 Direct WebRTC 음성 스트림 아키텍처 설계 — 주변 배경 잡음으로 인한 OpenAI 토큰 과소비를 방지하고 음성 단위 비용을 ~3배 절감하는 의도적 Push-to-Talk 턴 제어 구현."
           }
         },
         {
           tag: { en: "Deterministic Evaluation Engine", ko: "결정론적 평가 엔진" },
           text: {
-            en: "Designed the \"Fact-Impact-Fix\" coaching framework and a dynamic 4-persona LLM prompt matrix (Candidate/Supporter/Manager/Assistant) — iterated across multiple prompt versions to reduce hallucination risk in client-facing scoring. GPT-4o structured outputs grade candidates across an 11-point rubric, BANTCQ sales telemetry, and WPM speech metrics.",
-            ko: "\"Fact-Impact-Fix\" 코칭 프레임워크 및 동적 4-페르소나 LLM 프롬프트 매트릭스(지원자/서포터/매니저/어시스턴트) 설계 — 고객 직면 채점에서의 환각 위험을 줄이기 위해 다양한 프롬프트 버전 반복 최적화. GPT-4o 구조화된 출력이 11개 루브릭 항목, BANTCQ 영업 텔레메트리, WPM 발화 지표로 지원자 채점."
+            en: "Designed an async post-call scoring pipeline using gpt-4o structured outputs across tiered 11-to-24-point competency rubrics, BANTCQ sales discovery telemetry, and WPM speech metrics, backed by defensive fallback handling (createDefaultEvaluation) to guarantee 100% pipeline resilience.",
+            ko: "시나리오별 다계층 11~24개 역량 루브릭, BANTCQ 세일즈 디스커버리 텔레메트리, WPM 발화 속도 지표를 심사하는 gpt-4o 비동기 사후 채점 파이프라인 설계 — 방어적 폴백 핸들링(createDefaultEvaluation)으로 100% 파이프라인 안정성 확보."
           }
         },
         {
           tag: { en: "Security & Access Architecture", ko: "보안 & 접근 아키텍처" },
           text: {
-            en: "Designed multi-tier RBAC (SUPER_ADMIN/ADMIN/MANAGER) via NestJS Guards and Passport JWT, magic-link passwordless candidate access, and a zero-dependency AES-256-GCM PII encryption module wired into the global config pipeline.",
-            ko: "NestJS Guards 및 Passport JWT 기반 다단계 RBAC(SUPER_ADMIN/ADMIN/MANAGER), 매직링크 무비밀번호 지원자 접근, 글로벌 설정 파이프라인에 연결된 제로 디펜던시 AES-256-GCM PII 암호화 모듈 설계."
+            en: "Designed multi-tier RBAC (SUPER_ADMIN/ADMIN/MANAGER) via NestJS Guards and Passport JWT, stateless magic links with automatic token rotation on re-invite (candidate.service.ts), and a zero-dependency AES-256-GCM PII encryption module.",
+            ko: "NestJS Guards 및 Passport JWT 기반 다단계 RBAC(SUPER_ADMIN/ADMIN/MANAGER), 재초대 시 토큰 자동 로테이션(candidate.service.ts)을 지원하는 무상태 매직링크, 제로 디펜던시 AES-256-GCM PII 암호화 모듈 설계."
           }
         },
         {

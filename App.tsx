@@ -627,21 +627,21 @@ function App() {
                 {/* QUICK STATS BAR */}
                 <div className="w-full max-w-4xl mx-auto pt-6 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-4 text-center mt-4">
                   <div className={`p-4 rounded-xl border backdrop-blur-md ${theme === 'dark' ? 'bg-white/[0.03] border-white/10' : 'bg-black/[0.03] border-black/10'}`}>
-                    <div className="text-xl md:text-2xl font-black text-accent-gold">80%</div>
+                    <div className="text-base md:text-lg font-black text-accent-gold">Direct WebRTC</div>
                     <div className="text-[10px] md:text-xs font-semibold tracking-wider uppercase opacity-75 mt-1">
-                      {locale === 'en' ? "Admin Workload Reduction" : "행정 업무 절감률"}
+                      {locale === 'en' ? "Voice AI & Ephemeral Tokens" : "음성 AI & 임시 세션 토큰"}
                     </div>
                   </div>
                   <div className={`p-4 rounded-xl border backdrop-blur-md ${theme === 'dark' ? 'bg-white/[0.03] border-white/10' : 'bg-black/[0.03] border-black/10'}`}>
                     <div className="text-xl md:text-2xl font-black text-accent-gold">40h → &lt;10m</div>
                     <div className="text-[10px] md:text-xs font-semibold tracking-wider uppercase opacity-75 mt-1">
-                      {locale === 'en' ? "Automated Scheduling" : "자동 시간표 배정"}
+                      {locale === 'en' ? "Constraint Solver (EduPlanner)" : "제약 최적화 스케줄링 (EduPlanner)"}
                     </div>
                   </div>
                   <div className={`p-4 rounded-xl border backdrop-blur-md ${theme === 'dark' ? 'bg-white/[0.03] border-white/10' : 'bg-black/[0.03] border-black/10'}`}>
-                    <div className="text-xl md:text-2xl font-black text-accent-gold">Sub-200ms</div>
+                    <div className="text-xl md:text-2xl font-black text-accent-gold">120+ Families</div>
                     <div className="text-[10px] md:text-xs font-semibold tracking-wider uppercase opacity-75 mt-1">
-                      {locale === 'en' ? "Voice-AI Engine Deployed" : "음성 AI 엔진 배포"}
+                      {locale === 'en' ? "EdTech Closed-Loop Pilot" : "에듀테크 파일럿 사용자"}
                     </div>
                   </div>
                 </div>
@@ -704,10 +704,10 @@ function App() {
                       </h4>
                     </div>
                     <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>WebRTC Sub-200ms Voice Coaching Engine</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>BANTCQ Candidate Scorecards & Evaluation Prompts</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Wizard of Oz Prototyping & Product Pivots</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>COPPA Zero-Storage Privacy Architecture</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Direct WebRTC Voice AI & Push-to-Talk Turn Control</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Deterministic stepIndex Rubric Scoring & Fallbacks</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Stateless Magic Links & Automatic Token Rotation</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>AES-256-GCM Sensitive Data Encryption at Rest</li>
                     </ul>
                   </div>
 
@@ -829,11 +829,11 @@ function App() {
                 },
                 {
                   id: 'work',
-                  title: locale === 'en' ? '2. Work Projects' : '2. 기업 업무 프로젝트',
-                  badge: locale === 'en' ? 'VodaBi Experience' : 'VodaBi 실무 프로젝트',
+                  title: locale === 'en' ? '2. Enterprise Work Projects' : '2. 기업 업무 프로젝트',
+                  badge: locale === 'en' ? 'Enterprise B2B SaaS (NDA Sanitized)' : '엔터프라이즈 B2B SaaS (NDA 익명화)',
                   desc: locale === 'en' 
-                    ? 'Real-time Voice-AI screening engine and deterministic LLM judge for enterprise candidates and sales coaching.' 
-                    : 'VodaBi에서 구축한 엔터프라이즈 B2B SaaS 음성 AI 코칭 플랫폼.',
+                    ? 'Real-time Voice-AI screening engine and deterministic LLM judge for enterprise candidates and sales coaching. (Identifiers anonymized under NDA).' 
+                    : '기업 채용 및 영업 코칭을 위한 실시간 음성 AI 스크리닝 및 결정론적 LLM 채점 플랫폼 (NDA 준수 익명화).',
                   projectIds: ['vodabi']
                 },
                 {

@@ -25,7 +25,7 @@ export const PORTFOLIO_DATA = {
   name: "Jason Benjamin",
   role: "AI Product Manager — Generative AI & B2B SaaS",
   profileImageUrl: "https://res.cloudinary.com/dginphpy4/image/upload/v1769135697/IMG_2852_p7w0p4.jpg",
-  bio: "0→1 AI Product Manager bridging enterprise B2B SaaS at VodaBi with production-grade EdTech ecosystems. Turning operational friction into measurable workflow velocity.",
+  bio: "0→1 AI Product Manager bridging enterprise B2B SaaS (Voice-AI screening & deterministic LLM evaluation) with production-grade EdTech ecosystems. Turning operational friction into measurable workflow velocity.",
   skills: [
     { name: "Product Strategy & PRDs", level: 98, category: "Design" },
     { name: "Voice-AI & LLM Judges", level: 95, category: "AI/ML" },
@@ -33,33 +33,33 @@ export const PORTFOLIO_DATA = {
     { name: "React, Tailwind & UX Simplification", level: 96, category: "Frontend" },
   ],
   impactMetrics: [
-    { label: "Admin Workload Reduction", value: "80% (Pilot)", icon: "zap" },
-    { label: "Automated Scheduling", value: "40h → <10m", icon: "clock" },
-    { label: "Voice Engine Latency", value: "Sub-200ms", icon: "rocket" }
+    { label: "Voice AI Architecture", value: "Direct WebRTC (Push-to-Talk)", icon: "rocket" },
+    { label: "Automated Scheduling", value: "40h → <10m (0 Conflicts)", icon: "clock" },
+    { label: "EdTech Closed-Loop Pilot", value: "120+ Families", icon: "zap" }
   ],
   en: {
-    bio: "0→1 AI Product Manager bridging enterprise B2B SaaS at VodaBi with production-grade EdTech ecosystems. Turning operational friction into measurable workflow velocity.",
+    bio: "0→1 AI Product Manager bridging enterprise B2B SaaS (Voice-AI screening & deterministic LLM evaluation) with production-grade EdTech ecosystems. Turning operational friction into measurable workflow velocity.",
     projects: [
       {
         id: "vodabi",
-        title: "Full-Stack Case Study: Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
+        title: "Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
         pmRole: "AI Product Manager (Enterprise Voice-AI & LLM Judges)",
         category: "Tools" as const,
-        description: "Built an end-to-end voice simulation and evaluation engine that automates phone screening for sales/customer-facing roles. Replaced manual screening calls with a real-time AI customer persona and structured automated grading.",
-        longDescription: "Engineered a browser-to-server WebRTC audio stream with server-side VAD in NestJS, paired with an async post-call scoring pipeline using gpt-4o for BANTCQ metrics, an 11-point rubric, speech telemetry (WPM), stateless magic link auth, an admin console with an embedded RAG AI assistant (VOISOR), and Prisma 7 database infrastructure.",
+        description: "Built an end-to-end voice simulation and candidate evaluation engine designed to automate phone screening for sales roles. Replaced manual screening calls with interactive voice AI and structured automated grading. (NDA Sanitized Case Study)",
+        longDescription: "Architected a direct WebRTC audio stream with ephemeral session tokens and deliberate push-to-talk turn management in NestJS (preventing token burn from ambient room noise). Paired with an async post-call scoring pipeline using gpt-4o for BANTCQ discovery telemetry, tiered 11-to-24-point competency rubrics, WPM speech pacing, stateless magic-link candidate access with token rotation, and a role-gated admin console over MariaDB with Prisma ORM in Docker. *All company and client identifiers have been anonymized under NDA.*",
         friction: "Manual candidate phone screens created high administrative overhead, screening delays, and subjective hiring metrics.",
-        flow: "Browser-to-server WebRTC audio streaming, server-side VAD, gpt-4o async scoring pipeline, stateless magic links, and role-gated admin backoffice.",
-        impactLabel: "Voice Engine Latency",
-        impactValue: "Sub-200ms WebRTC",
+        flow: "Ephemeral WebRTC audio streaming, push-to-talk turn management, async gpt-4o scoring pipeline, stateless magic links with token rotation, and role-gated admin backoffice.",
+        impactLabel: "Voice Architecture",
+        impactValue: "Direct WebRTC + Ephemeral Tokens",
         collaborationUrl: "mailto:jsn.benjamin@gmail.com?subject=Collaboration%20Inquiry%20-%20Enterprise%20Voice-AI%20Roleplay%20Platform",
-        maturityBadge: "FEATURED CASE STUDY | PRODUCTION DEPLOYMENT",
-        engineDetails: "Tech Stack: React 19, TypeScript, Vite, NestJS, WebRTC, Socket.IO, Prisma 7 (MariaDB Driver), OpenAI Realtime API (gpt-4o-realtime-preview), Docker, Nginx, i18next",
+        maturityBadge: "NDA SANITIZED CASE STUDY | PRODUCTION ARCHITECTURE",
+        engineDetails: "Tech Stack: React 19, TypeScript, Vite, NestJS, Direct WebRTC (Ephemeral Tokens), Prisma 7 (MariaDB Driver), OpenAI Realtime (gpt-realtime-mini) + Post-Call GPT-4o, Docker, Nginx, i18next",
         features: [
-          "Realtime Audio Pipeline: WebRTC & WebSocket signaling gateways in NestJS with server-side VAD",
-          "Automated Evaluation Engine: gpt-4o async scoring for BANTCQ, 11-point rubric & WPM telemetry",
-          "Security & Magic Link Auth: Stateless tokenized links for zero-account applicant access with strict bounds",
-          "Admin & Analytics Backoffice: React 19 / Glassmorphism console with RAG AI assistant (VOISOR)",
-          "Data Layer Modernization: Prisma 7 with MariaDB driver adapters & Dockerized deployment"
+          "Realtime Voice Pipeline: Direct WebRTC streaming with ephemeral tokens and push-to-talk turn control",
+          "Tiered Evaluation Pipeline: Post-call gpt-4o async scoring for BANTCQ, 11-to-24-point rubrics & WPM speech pacing",
+          "Unit Economics Optimization: ~3x cost-reduction via gpt-realtime-mini voice + gpt-4o deep post-call evaluation",
+          "Security & Magic Link Auth: Stateless tokenized links with auto-rotation on re-invite for zero-account applicant access",
+          "Admin & Scenario Management: React 19 console with tiered scenario rubrics and candidate review workflows"
         ],
         tags: ["React 19", "WebRTC", "NestJS", "Prisma 7", "OpenAI Realtime"],
         imageUrl: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop",
@@ -193,28 +193,28 @@ export const PORTFOLIO_DATA = {
     ]
   },
   ko: {
-    bio: "VodaBi에서의 엔터프라이즈 B2B SaaS 경험과 0→1 에듀테크 프로덕트 생태계를 구축한 AI 프로덕트 매니저입니다. 복잡한 운영 병목을 측정 가능한 업무 속도로 전환합니다.",
+    bio: "엔터프라이즈 B2B SaaS(음성 AI 스크리닝 & 결정론적 LLM 평가)와 0→1 에듀테크 프로덕트 생태계를 구축한 AI 프로덕트 매니저입니다. 복잡한 운영 병목을 측정 가능한 업무 속도로 전환합니다.",
     projects: [
       {
         id: "vodabi",
-        title: "Full-Stack Case Study: Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
+        title: "Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
         pmRole: "AI 프로덕트 매니저 (엔터프라이즈 음성 AI & 채점 엔진)",
         category: "Tools" as const,
-        description: "영업 및 고객 대응 직무의 전화 스크리닝을 자동화하는 엔드투엔드 음성 시뮬레이션 및 평가 엔진. 수동 스크리닝 통화를 실시간 AI 고객 페르소나 및 구조화된 자동 채점 시스템으로 대체.",
-        longDescription: "NestJS 기반 서버 측 VAD가 적용된 브라우저-서버 WebRTC 오디오 스트림, gpt-4o 기반 BANTCQ 지표/11개 루브릭/WPM 발화 분석 비동기 평가 파이프라인, 무상태 매직링크 인증, RAG 기반 VOISOR AI 코칭 어시스턴트 어드민 콘솔 및 Prisma 7 데이터 레이어를 구축했습니다.",
+        description: "영업 직무의 전화 스크리닝을 자동화하는 엔드투엔드 음성 시뮬레이션 및 후보자 평가 엔진. 수동 스크리닝 통화를 대화형 AI 고객 롤플레이 및 구조화된 자동 채점으로 대체. (NDA 비공개 보호 및 익명화 적용)",
+        longDescription: "NestJS 기반의 임시 세션 토큰 및 의도적 Push-to-Talk 턴 제어(주변 소음으로 인한 OpenAI 토큰 과소비 방지)가 적용된 Direct WebRTC 오디오 스트림 구축. gpt-4o 기반 BANTCQ 탐색 텔레메트리, 시나리오별 11~24개 루브릭 심사, WPM 발화 속도 분석 비동기 평가 파이프라인, 토큰 자동 로테이션 무상태 매직링크 인증, Docker 기반 MariaDB 및 Prisma 7 데이터 레이어를 연동했습니다. *모든 기업명 및 고객사 식별 정보는 NDA 준수를 위해 익명화되었습니다.*",
         friction: "수동 후보자 전화 인터뷰 및 과도한 행정 공수로 인한 스크리닝 지연과 주관적인 채점 지표 발생.",
-        flow: "브라우저-서버 간 WebRTC 오디오 스트리밍, 서버 측 VAD, gpt-4o 비동기 채점 파이프라인, 무상태 매직링크 인증 및 역할 기반 어드민 백오피스.",
-        impactLabel: "음성 엔진 지연율",
-        impactValue: "Sub-200ms WebRTC",
+        flow: "Direct WebRTC 오디오 스트리밍, Push-to-Talk 턴 제어, gpt-4o 비동기 채점 파이프라인, 토큰 로테이션 무상태 매직링크 인증 및 역할 기반 어드민 백오피스.",
+        impactLabel: "음성 아키텍처",
+        impactValue: "Direct WebRTC + 임시 토큰",
         collaborationUrl: "mailto:jsn.benjamin@gmail.com?subject=Collaboration%20Inquiry%20-%20Enterprise%20Voice-AI%20Roleplay%20Platform",
-        maturityBadge: "주요 케이스 스터디 | 프로덕션 배포 완료",
-        engineDetails: "기술 스택: React 19, TypeScript, Vite, NestJS, WebRTC, Socket.IO, Prisma 7 (MariaDB Driver), OpenAI Realtime API (gpt-4o-realtime-preview), Docker, Nginx, i18next",
+        maturityBadge: "NDA 비공개 처리 케이스 스터디 | 프로덕션 아키텍처",
+        engineDetails: "기술 스택: React 19, TypeScript, Vite, NestJS, Direct WebRTC (임시 토큰), Prisma 7 (MariaDB Driver), OpenAI Realtime (gpt-realtime-mini) + Post-Call GPT-4o, Docker, Nginx, i18next",
         features: [
-          "Realtime Audio Pipeline: NestJS 기반 WebRTC & WebSocket 시그널링 게이트웨이 및 서버 측 VAD",
-          "Automated Evaluation Engine: BANTCQ 지표, 11개 루브릭 & WPM 발화 분석 gpt-4o 비동기 채점",
-          "Security & Magic Link Auth: 계정 생성이 필요 없는 무상태 토큰화 매직링크 및 서버 만료 보안",
-          "Admin & Analytics Backoffice: RAG AI 코칭 어시스턴트(VOISOR)가 내장된 React 19 어드민 콘솔",
-          "Data Layer Modernization: MariaDB 드라이버 어댑터 및 Dockerized 배포 기반 Prisma 7 마이그레이션"
+          "Realtime Voice Pipeline: 임시 토큰 및 Push-to-Talk 턴 제어가 적용된 Direct WebRTC 음성 스트리밍",
+          "Tiered Evaluation Pipeline: BANTCQ 지표, 11~24개 루브릭 & WPM 발화 분석 gpt-4o 비동기 채점",
+          "Unit Economics Optimization: gpt-realtime-mini 음성 + gpt-4o 심층 채점 결합으로 ~3배 비용 절감",
+          "Security & Magic Link Auth: 재초대 시 토큰 자동 로테이션을 지원하는 무상태 토큰화 매직링크",
+          "Admin & Scenario Management: 시나리오별 다계층 루브릭 및 지원자 평가 워크플로우를 갖춘 React 19 어드민"
         ],
         tags: ["React 19", "WebRTC", "NestJS", "Prisma 7", "OpenAI Realtime"],
         imageUrl: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop",
