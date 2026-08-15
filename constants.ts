@@ -33,27 +33,27 @@ export const PORTFOLIO_DATA = {
     { name: "React, Tailwind & UX Simplification", level: 96, category: "Frontend" },
   ],
   impactMetrics: [
+    { label: "AI Products Shipped", value: "6 Production Apps", icon: "rocket" },
     { label: "Admin Workload Reduction", value: "80% Reduction", icon: "zap" },
     { label: "Scheduling Automation", value: "40h → 10min (0 Conflicts)", icon: "clock" },
-    { label: "AI Products Shipped", value: "6 Production Apps", icon: "rocket" },
-    { label: "Students & Families Assessed", value: "100+ Active Users", icon: "target" }
+    { label: "Parent & Teacher Interactions", value: "1,200+ Worksheets Evaluated", icon: "target" }
   ],
   en: {
     bio: "0→1 AI Product Manager bridging enterprise B2B SaaS (Voice-AI screening & deterministic LLM evaluation) with production-grade EdTech ecosystems. Turning operational friction into measurable workflow velocity.",
     projects: [
       {
         id: "vodabi",
-        title: "Enterprise B2B Conversational AI Platform (Under NDA)",
+        title: "VodaBi — Enterprise Voice-AI Screening & Candidate Scoring Engine",
         pmRole: "AI Product Manager (Enterprise Voice-AI & LLM Judges)",
         category: "Tools" as const,
-        description: "Built an end-to-end voice simulation and candidate evaluation engine designed to automate phone screening for sales roles. Replaced manual screening calls with interactive voice AI and structured automated grading. (NDA Sanitized Case Study)",
-        longDescription: "Architected a direct WebRTC audio stream with ephemeral session tokens and deliberate push-to-talk turn management in NestJS (preventing token burn from ambient room noise). Paired with an async post-call scoring pipeline using gpt-4o for BANTCQ discovery telemetry, tiered 11-to-24-point competency rubrics, WPM speech pacing, stateless magic-link candidate access with token rotation, and a role-gated admin console over MariaDB with Prisma ORM in Docker. *All company and client identifiers have been anonymized under NDA.*",
+        description: "Direct WebRTC voice screening and deterministic LLM rubric scoring engine automating 1st-round sales interviews with type-safe telemetry and PII encryption at VodaBi. (NDA Sanitized)",
+        longDescription: "Architected a direct WebRTC audio stream with ephemeral session tokens and deliberate push-to-talk turn management in NestJS (preventing token burn from ambient room noise). Paired with an async post-call scoring pipeline using gpt-4o for BANTCQ discovery telemetry, tiered 11-to-24-point competency rubrics, WPM speech pacing, stateless magic-link candidate access with token rotation, and a role-gated admin console over MariaDB with Prisma ORM in Docker. *Proprietary client identifiers sanitized under NDA.*",
         friction: "Manual candidate phone screens created high administrative overhead, screening delays, and subjective hiring metrics.",
         flow: "Ephemeral WebRTC audio streaming, push-to-talk turn management, async gpt-4o scoring pipeline, stateless magic links with token rotation, and role-gated admin backoffice.",
         impactLabel: "Voice Architecture",
         impactValue: "Direct WebRTC + Ephemeral Tokens",
-        collaborationUrl: "mailto:jsn.benjamin@gmail.com?subject=Collaboration%20Inquiry%20-%20Enterprise%20Voice-AI%20Roleplay%20Platform",
-        maturityBadge: "CASE STUDY",
+        collaborationUrl: "mailto:jsn.benjamin@gmail.com?subject=Collaboration%20Inquiry%20-%20VodaBi%20Voice-AI%20Roleplay%20Platform",
+        maturityBadge: "VODABI CASE STUDY",
         engineDetails: "Tech Stack: React 19, TypeScript, Vite, NestJS, Direct WebRTC (Ephemeral Tokens), Prisma 7 (MariaDB Driver), OpenAI Realtime (gpt-realtime-mini) + Post-Call GPT-4o, Docker, Nginx, i18next",
         features: [
           "Realtime Voice Pipeline: Direct WebRTC streaming with ephemeral tokens and push-to-talk turn control",
@@ -62,7 +62,7 @@ export const PORTFOLIO_DATA = {
           "Security & Magic Link Auth: Stateless tokenized links with auto-rotation on re-invite for zero-account applicant access",
           "Admin & Scenario Management: React 19 console with tiered scenario rubrics and candidate review workflows"
         ],
-        tags: ["React 19", "WebRTC", "NestJS", "Prisma 7", "OpenAI Realtime"],
+        tags: ["VodaBi B2B SaaS", "React 19", "WebRTC", "NestJS", "Prisma 7", "OpenAI Realtime"],
         imageUrl: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop",
       },
       {
@@ -222,17 +222,17 @@ export const PORTFOLIO_DATA = {
     projects: [
       {
         id: "vodabi",
-        title: "Enterprise B2B Conversational AI Platform (Under NDA)",
+        title: "VodaBi — Enterprise Voice-AI Screening & Candidate Scoring Engine",
         pmRole: "AI 프로덕트 매니저 (엔터프라이즈 음성 AI & 채점 엔진)",
         category: "Tools" as const,
-        description: "영업 직무의 전화 스크리닝을 자동화하는 엔드투엔드 음성 시뮬레이션 및 후보자 평가 엔진. 수동 스크리닝 통화를 대화형 AI 고객 롤플레이 및 구조화된 자동 채점으로 대체. (NDA 비공개 보호 및 익명화 적용)",
-        longDescription: "NestJS 기반의 임시 세션 토큰 및 의도적 Push-to-Talk 턴 제어(주변 소음으로 인한 OpenAI 토큰 과소비 방지)가 적용된 Direct WebRTC 오디오 스트림 구축. gpt-4o 기반 BANTCQ 탐색 텔레메트리, 시나리오별 11~24개 루브릭 심사, WPM 발화 속도 분석 비동기 평가 파이프라인, 토큰 자동 로테이션 무상태 매직링크 인증, Docker 기반 MariaDB 및 Prisma 7 데이터 레이어를 연동했습니다. *모든 기업명 및 고객사 식별 정보는 NDA 준수를 위해 익명화되었습니다.*",
+        description: "VodaBi의 Direct WebRTC 음성 시뮬레이션 및 결정론적 LLM 채점 루브릭으로 영업 1차 전화 면접을 자동화하고 PII를 보호하는 평가 엔진. (NDA 준수)",
+        longDescription: "NestJS 기반의 임시 세션 토큰 및 의도적 Push-to-Talk 턴 제어(주변 소음으로 인한 OpenAI 토큰 과소비 방지)가 적용된 Direct WebRTC 오디오 스트림 구축. gpt-4o 기반 BANTCQ 탐색 텔레메트리, 시나리오별 11~24개 루브릭 심사, WPM 발화 속도 분석 비동기 평가 파이프라인, 토큰 자동 로테이션 무상태 매직링크 인증, Docker 기반 MariaDB 및 Prisma 7 데이터 레이어를 연동했습니다. *고객사 기밀 식별 정보는 NDA 준수를 위해 익명화되었습니다.*",
         friction: "수동 후보자 전화 인터뷰 및 과도한 행정 공수로 인한 스크리닝 지연과 주관적인 채점 지표 발생.",
         flow: "Direct WebRTC 오디오 스트리밍, Push-to-Talk 턴 제어, gpt-4o 비동기 채점 파이프라인, 토큰 로테이션 무상태 매직링크 인증 및 역할 기반 어드민 백오피스.",
         impactLabel: "음성 아키텍처",
         impactValue: "Direct WebRTC + 임시 토큰",
-        collaborationUrl: "mailto:jsn.benjamin@gmail.com?subject=Collaboration%20Inquiry%20-%20Enterprise%20Voice-AI%20Roleplay%20Platform",
-        maturityBadge: "CASE STUDY",
+        collaborationUrl: "mailto:jsn.benjamin@gmail.com?subject=Collaboration%20Inquiry%20-%20VodaBi%20Voice-AI%20Roleplay%20Platform",
+        maturityBadge: "VODABI CASE STUDY",
         engineDetails: "기술 스택: React 19, TypeScript, Vite, NestJS, Direct WebRTC (임시 토큰), Prisma 7 (MariaDB Driver), OpenAI Realtime (gpt-realtime-mini) + Post-Call GPT-4o, Docker, Nginx, i18next",
         features: [
           "Realtime Voice Pipeline: 임시 토큰 및 Push-to-Talk 턴 제어가 적용된 Direct WebRTC 음성 스트리밍",
@@ -241,7 +241,7 @@ export const PORTFOLIO_DATA = {
           "Security & Magic Link Auth: 재초대 시 토큰 자동 로테이션을 지원하는 무상태 토큰화 매직링크",
           "Admin & Scenario Management: 시나리오별 다계층 루브릭 및 지원자 평가 워크플로우를 갖춘 React 19 어드민"
         ],
-        tags: ["React 19", "WebRTC", "NestJS", "Prisma 7", "OpenAI Realtime"],
+        tags: ["VodaBi B2B SaaS", "React 19", "WebRTC", "NestJS", "Prisma 7", "OpenAI Realtime"],
         imageUrl: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop",
       },
       {

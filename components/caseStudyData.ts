@@ -2,8 +2,8 @@ import { CaseStudyType } from '../types.ts';
 
 export const studyDataEn: Record<string, CaseStudyType> = {
   vodabi: {
-    title: "Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
-    tagline: "Built an end-to-end voice simulation and candidate evaluation engine designed to automate phone screening for sales roles. Replaced manual screening calls with interactive voice AI and structured automated grading. (NDA Sanitized Case Study)",
+    title: "VodaBi — Enterprise Voice-AI Screening & Candidate Scoring Engine",
+    tagline: "End-to-end WebRTC voice roleplay simulation and deterministic LLM evaluation engine automating 1st-round phone screening for enterprise sales candidates at VodaBi. (NDA Sanitized Case Study)",
     liveUrl: "",
     screenshots: [
       { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Direct WebRTC Pipeline: Ephemeral Tokens & Push-to-Talk in NestJS" },
@@ -926,8 +926,8 @@ responseSchema: {
 
 export const studyDataKo: Record<string, CaseStudyType> = {
   vodabi: {
-    title: "Enterprise Voice-AI Roleplay & Automated Candidate Scoring Engine",
-    tagline: "영업 직무의 전화 스크리닝을 자동화하는 엔드투엔드 음성 시뮬레이션 및 후보자 평가 엔진. 수동 스크리닝 통화를 대화형 AI 고객 롤플레이 및 구조화된 자동 채점으로 대체. (NDA 비공개 처리 케이스 스터디)",
+    title: "VodaBi — Enterprise Voice-AI Screening & Candidate Scoring Engine",
+    tagline: "영업 직무의 전화 스크리닝을 자동화하는 VodaBi의 엔드투엔드 음성 시뮬레이션 및 결정론적 후보자 평가 엔진. (NDA 비공개 처리 케이스 스터디)",
     liveUrl: "",
     screenshots: [
       { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Direct WebRTC 파이프라인: NestJS 기반 임시 토큰 & Push-to-Talk" },

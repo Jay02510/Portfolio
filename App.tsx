@@ -829,11 +829,11 @@ function App() {
                 },
                 {
                   id: 'work',
-                  title: locale === 'en' ? '2. Enterprise Work Projects' : '2. 기업 업무 프로젝트',
-                  badge: locale === 'en' ? 'Enterprise B2B SaaS (NDA Sanitized)' : '엔터프라이즈 B2B SaaS (NDA 익명화)',
+                  title: locale === 'en' ? '2. VodaBi Enterprise Work' : '2. VodaBi 기업 엔터프라이즈 프로젝트',
+                  badge: locale === 'en' ? 'VodaBi B2B SaaS (NDA Sanitized)' : 'VodaBi B2B SaaS (NDA 익명화)',
                   desc: locale === 'en' 
-                    ? 'Real-time Voice-AI screening engine and deterministic LLM judge for enterprise candidates and sales coaching. (Identifiers anonymized under NDA).' 
-                    : '기업 채용 및 영업 코칭을 위한 실시간 음성 AI 스크리닝 및 결정론적 LLM 채점 플랫폼 (NDA 준수 익명화).',
+                    ? 'Real-time Voice-AI screening engine and deterministic LLM judge for enterprise sales candidates at VodaBi. (Proprietary client identifiers anonymized under NDA).' 
+                    : 'VodaBi의 기업 채용 및 영업 코칭을 위한 실시간 음성 AI 스크리닝 및 결정론적 LLM 채점 플랫폼 (고객사 정보 NDA 준수 익명화).',
                   projectIds: ['vodabi']
                 },
                 {

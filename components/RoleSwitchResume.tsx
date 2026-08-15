@@ -56,8 +56,8 @@ export const RESUME_DATA = {
         ko: "AI 프로덕트 매니저 (인턴십)"
       },
       company: {
-        en: "Enterprise B2B SaaS (Confidential / NDA)",
-        ko: "엔터프라이즈 B2B SaaS (비공개 / NDA 준수)"
+        en: "VodaBi (Enterprise B2B SaaS · Confidential / NDA)",
+        ko: "VodaBi (엔터프라이즈 B2B SaaS · 비공개 / NDA 준수)"
       },
       period: {
         en: "July 2026 – Present",

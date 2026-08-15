@@ -17,20 +17,20 @@ const LIVE_UPDATES_DATA: BuildItem[] = [
     id: "voice-ai-deterministic-scoring-release",
     date: "2026-08-14",
     type: "feature",
-    titleEn: "Voice-AI Platform: Deterministic Step Rubric Scoring & Ephemeral WebRTC Deployed",
-    titleKo: "음성 AI 플랫폼: 결정론적 스텝 루브릭 평가 및 임시 WebRTC 배포 완료",
-    descEn: "Shipped direct WebRTC voice streaming with ephemeral session tokens and push-to-talk turn control, paired with deterministic stepIndex rubric score lookups and AES-256-GCM encryption at rest.",
-    descKo: "임시 세션 토큰 및 Push-to-Talk 턴 제어가 적용된 Direct WebRTC 음성 스트림과 stepIndex 기반 결정론적 루브릭 산출 및 AES-256-GCM 암호화를 프로덕션 배포했습니다.",
+    titleEn: "VodaBi Voice-AI: Deterministic Step Rubric Scoring & Ephemeral WebRTC Deployed",
+    titleKo: "VodaBi 음성 AI: 결정론적 스텝 루브릭 평가 및 임시 WebRTC 배포 완료",
+    descEn: "Shipped direct WebRTC voice streaming with ephemeral session tokens and push-to-talk turn control at VodaBi, paired with deterministic stepIndex rubric score lookups and AES-256-GCM encryption at rest.",
+    descKo: "VodaBi의 임시 세션 토큰 및 Push-to-Talk 턴 제어가 적용된 Direct WebRTC 음성 스트림과 stepIndex 기반 결정론적 루브릭 산출 및 AES-256-GCM 암호화를 프로덕션 배포했습니다.",
     relatedProjectId: "vodabi"
   },
   {
     id: "voice-ai-security-hardening",
     date: "2026-08-08",
     type: "security",
-    titleEn: "Voice-AI Platform: Token Rotation & Active Role Verification Hardening",
-    titleKo: "음성 AI 플랫폼: 매직링크 토큰 로테이션 & 실시간 권한 검증 보안 강화",
-    descEn: "Enforced 7-day magic link expiration with token rotation on re-invite, authenticated call-log endpoints to block transcript injection, and verified active database roles on privileged requests.",
-    descKo: "재초대 시 토큰 자동 로테이션(7일 만료), 트랜스크립트 주입 방지 인증 엔드포인트 및 실시간 데이터베이스 권한 재검증을 적용하여 보안 모델을 완성했습니다.",
+    titleEn: "VodaBi Voice-AI: Token Rotation & Active Role Verification Hardening",
+    titleKo: "VodaBi 음성 AI: 매직링크 토큰 로테이션 & 실시간 권한 검증 보안 강화",
+    descEn: "Enforced 7-day magic link expiration with token rotation on re-invite, authenticated call-log endpoints to block transcript injection, and verified active database roles on privileged requests at VodaBi.",
+    descKo: "VodaBi 평가 파이프라인에 재초대 시 토큰 자동 로테이션(7일 만료), 트랜스크립트 주입 방지 인증 엔드포인트 및 실시간 데이터베이스 권한 재검증을 적용하여 보안 모델을 완성했습니다.",
     relatedProjectId: "vodabi"
   },
   {

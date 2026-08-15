@@ -1,9 +1,10 @@
-# Enterprise Voice-AI Roleplay & Candidate Scoring Platform: Case Study
+# VodaBi — Enterprise Voice-AI Roleplay & Candidate Scoring Platform
 ## Enterprise AI Voice Roleplay, Deterministic Scoring Architecture & Full-Stack Reliability
 
 > **Author**: Jason Benjamin — AI Product Manager / Founder  
+> **Company**: VodaBi (Enterprise B2B SaaS)  
 > **Build Window**: Jul 29 – Aug 14, 2026 (17 days, 23 commits verified from git history)  
-> **Confidentiality Notice**: All client, company, and brand names have been sanitized to respect non-disclosure agreements (NDAs). Architectural implementations, system diagrams, and product decisions reflect original work.  
+> **Confidentiality Notice**: Proprietary enterprise client names and private commercial datasets have been sanitized to respect non-disclosure agreements (NDAs). Architectural implementations, system diagrams, and product decisions reflect original work at VodaBi.  
 > **Core Focus**: Replacing uncalibrated vibes-based LLM grading with deterministic rubric lookups, securing candidate PII, and architecting real-time WebRTC voice screening.
 
 ---
@@ -14,7 +15,7 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 
 | Product | Category & Role | Status | Key Focus / Lead Metric | Architectural Core |
 | :--- | :--- | :--- | :--- | :--- |
-| **[Enterprise Voice AI](./CASE_STUDY.md#voice-ai-case-study)** | Enterprise B2B SaaS (NDA Sanitized) | 🟢 **Featured Case Study** | **Deterministic Step Rubrics** | Direct WebRTC voice roleplay, `stepIndex` rubric score lookups, AES-256-GCM encryption & dynamic admin tiers. |
+| **[VodaBi Voice AI](./CASE_STUDY.md#vodabi-case-study)** | Enterprise B2B SaaS (VodaBi) | 🟢 **Featured Case Study** | **Deterministic Step Rubrics** | Direct WebRTC voice roleplay, `stepIndex` rubric score lookups, AES-256-GCM encryption & dynamic admin tiers. |
 | **[Chekki Teacher](./CASE_STUDY.md#chekki-teacher-case-study)** | EdTech Operations & Cockpit | 🟢 **Live Shipped App** | **80% Grading Time Saved** | Curriculum pre-seeding, ground-truth answer key calibration, and cohort mistake aggregation telemetry. |
 | **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech Closed-Loop Ecosystem | 🟢 **Live Shipped App** | **120+ Families Pilot** | Ground-truth homework camera OCR, bilingual parent explanations, class mistake aggregator, and integrated teacher update pipeline. |
 | **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40h → 10min (0 Conflicts)** | Hybrid constraint architecture: Fast client-side TypeScript clash validation + Gemini heuristic optimization. |
@@ -24,8 +25,8 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 
 ---
 
-<a id="voice-ai-case-study"></a>
-## 2. FEATURED CASE STUDY: ENTERPRISE B2B CONVERSATIONAL AI PLATFORM (UNDER NDA)
+<a id="vodabi-case-study"></a>
+## 2. FEATURED CASE STUDY: VODABI ENTERPRISE VOICE-AI & CANDIDATE EVALUATION ENGINE
 
 ### A. Problem
 Outbound sales telemarketing candidates were screened through manual 1st-round phone interviews. This process caused:
