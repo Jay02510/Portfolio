@@ -14,7 +14,8 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 | :--- | :--- | :--- | :--- | :--- |
 | **[VodaBi Voice AI](./CASE_STUDY.md#vodabi-case-study)** | Enterprise B2B SaaS Case Study | 🟢 **Featured Case Study** | **80% Admin Overhead Cut** | Sub-200ms WebRTC voice simulation, server VAD, gpt-4o 11-pt rubric judge & BANTCQ sales telemetry. |
 | **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40 Hours → <10 Minutes** | Recursive "Draft & Weave" LLM constraint resolution (`gemini-3-flash` + `gemini-3-pro`). |
-| **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech OCR, Parent App & Report Studio | 🟢 **Live Shipped App** | **1,200+ Parent Interactions / 15 Hours/Week Saved** | Mobile worksheet camera scanner with zero-retention PII bounds, plus a native curriculum-preseed → AI bilingual report → Korean Teacher review loop (replaced a prior Airtable/Make.com/Softr pipeline). |
+| **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech OCR & Parent Mobile App | 🟢 **Live Shipped App** | **1,200+ Parent Interactions** | Instant mobile worksheet camera scanner delivering bilingual learning guides with zero storage PII bounds. |
+| **[Automated Report Generator](./CASE_STUDY.md#report-generator-pipeline)** | Relational Data Pipeline | 🟢 **Production Pipeline** | **15 Hours/Week Saved** | Airtable + Make.com + Fillout Forms + Softr zero-maintenance reporting. |
 | **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Continuous Assessment Portal | 🟢 **Live Shipped App** | **98% Family Retention** | Visual skill-mapping engine converting scores into CEFR/Cambridge YLE trajectories. |
 | **[B2B Lead Enrichment CRM](./CASE_STUDY.md#b2b-crm-case-study)** | Sales Automation CRM | 🟢 **Production CRM** | **4x Outreach Response Rate** | Regional Naver directory parser, HTML sanitizer, and 1-click personalized Gmail outreach. |
 
@@ -84,6 +85,7 @@ The application features a fully functional, production-ready monetization engin
 
 ---
 
+<a id="report-generator-pipeline"></a>
 ## 6. TECHNICAL ARCHITECTURE & END-TO-END DATA PIPELINE
 
 ```

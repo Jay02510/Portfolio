@@ -83,16 +83,56 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
             >
               {project.title}
             </h3>
+
+            {project.pmRole && (
+              <div className="pt-1">
+                <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[8px] font-mono font-bold tracking-wider ${
+                  theme === 'dark' ? 'bg-blue-500/15 text-blue-300 border border-blue-500/25' : 'bg-blue-50 text-blue-700 border border-blue-200'
+                }`}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                  {project.pmRole}
+                </span>
+              </div>
+            )}
+
             <p className={`text-xs ${theme === 'dark' ? 'text-text-tert' : 'text-alpine-950/50'}`}>
               {project.description}
             </p>
           </div>
 
-          <p className={`text-xs font-light leading-relaxed flex-1 ${
-            theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/70'
+          {/* 3-Point Micro-Summary for Skimming */}
+          <div className={`p-3.5 rounded-xl border space-y-2 text-xs flex-1 ${
+            theme === 'dark' ? 'bg-white/[0.02] border-white/5' : 'bg-black/[0.02] border-black/5'
           }`}>
-            {project.longDescription}
-          </p>
+            {project.friction && (
+              <div className="flex items-start gap-2">
+                <span className="text-[8px] font-mono font-black uppercase tracking-wider text-red-400 shrink-0 mt-0.5">
+                  {locale === 'ko' ? "문제" : "PROBLEM"}
+                </span>
+                <span className={`text-[11px] font-light leading-snug line-clamp-2 ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}`}>
+                  {project.friction}
+                </span>
+              </div>
+            )}
+            <div className="flex items-start gap-2">
+              <span className="text-[8px] font-mono font-black uppercase tracking-wider text-accent-gold shrink-0 mt-0.5">
+                {locale === 'ko' ? "솔루션" : "SOLUTION"}
+              </span>
+              <span className={`text-[11px] font-light leading-snug line-clamp-2 ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>
+                {project.description}
+              </span>
+            </div>
+            {project.impactLabel && project.impactValue && (
+              <div className="flex items-start gap-2 pt-1 border-t border-white/5">
+                <span className="text-[8px] font-mono font-black uppercase tracking-wider text-green-400 shrink-0 mt-0.5">
+                  {locale === 'ko' ? "성과" : "IMPACT"}
+                </span>
+                <span className="text-[11px] font-mono font-bold text-green-400 leading-snug">
+                  {project.impactLabel}: {project.impactValue}
+                </span>
+              </div>
+            )}
+          </div>
 
           {/* Feature Pills */}
           {project.features && (

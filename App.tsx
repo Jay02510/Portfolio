@@ -16,14 +16,14 @@ import { MailIcon, SparklesIcon, SendIcon, BookOpenIcon, MapIcon, CodeIcon, Chev
 const t = {
   en: {
     projectsNav: "Projects",
-    playgroundNav: "Live Playground",
-    storyNav: "My Story",
-    heroBadge: "JASON BENJAMIN — AI PRODUCT MANAGER",
+    playgroundNav: "Interactive Lab",
+    storyNav: "Product Philosophy",
+    heroBadge: "JASON BENJAMIN — 0→1 AI PRODUCT MANAGER",
     heroTitle1: "Generative AI & B2B SaaS",
-    heroTitle2: "Building products that solve real problems.",
-    heroTagline: "Enterprise B2B SaaS experience at VodaBi & 6 production AI products shipped independently.",
+    heroTitle2: "Engineering products that eliminate operational friction.",
+    heroTagline: "0→1 AI Product Manager bridging enterprise B2B SaaS at VodaBi with production-grade EdTech ecosystems. Turning operational friction into measurable workflow velocity.",
     viewProjectsBtn: "Explore Solutions",
-    playgroundBtn: "Live No-Code AI Playground",
+    playgroundBtn: "Interactive AI Lab",
     toolsBadge: "PRODUCTION PORTFOLIO",
     toolsTitle: "The Collection",
     allSolutions: "All Projects",
@@ -33,9 +33,9 @@ const t = {
     sleekGrid: "Sleek Grid",
     continuousStory: "Continuous Storyboarding",
     noProjects: "No projects found matching this search criteria.",
-    storyBadge: "PRACTICAL JOURNEY",
-    storyTitle1: "From classrooms to",
-    storyTitle2: "enterprise AI software.",
+    storyBadge: "PRODUCT PHILOSOPHY & EXECUTION",
+    storyTitle1: "From pedagogical bottlenecks to",
+    storyTitle2: "enterprise-grade AI products.",
     storyBody: "I combine deep domain experience in education with modern software architecture to engineer real-world AI products. I turn complex operational bottlenecks into fast, intuitive, and scalable software solutions.",
     hoursSavedLabel: "Avg. Admin Workload Saved",
     hoursSavedValue: "80%",
@@ -50,14 +50,14 @@ const t = {
   },
   ko: {
     projectsNav: "프로젝트",
-    playgroundNav: "라이브 실험실",
-    storyNav: "소개 및 스토리",
-    heroBadge: "제이슨 벤자민 — AI 프로덕트 매니저",
+    playgroundNav: "인터랙티브 랩",
+    storyNav: "제품 철학 및 배경",
+    heroBadge: "제이슨 벤자민 — 0→1 AI 프로덕트 매니저",
     heroTitle1: "생성형 AI & B2B SaaS",
-    heroTitle2: "실제 문제를 해결하는 소프트웨어 프로덕트.",
-    heroTagline: "VodaBi에서의 엔터프라이즈 B2B SaaS 경험과 독립적으로 구축 및 배포한 6개의 AI 프로덕트 포트폴리오입니다.",
+    heroTitle2: "운영 병목을 제거하는 실전 AI 소프트웨어 프로덕트.",
+    heroTagline: "VodaBi에서의 엔터프라이즈 B2B SaaS 경험과 0→1 에듀테크 프로덕트 생태계를 구축한 AI 프로덕트 매니저입니다. 복잡한 운영 병목을 측정 가능한 업무 속도로 전환합니다.",
     viewProjectsBtn: "프로젝트 포트폴리오 ↓",
-    playgroundBtn: "라이브 노코드 AI 시험장",
+    playgroundBtn: "인터랙티브 AI 시험장",
     toolsBadge: "활성 프로덕션 목록",
     toolsTitle: "주요 포트폴리오",
     allSolutions: "전체 프로젝트",
@@ -67,9 +67,9 @@ const t = {
     sleekGrid: "한눈에 보는 그리드",
     continuousStory: "상세 스토리보드",
     noProjects: "해당 조건에 맞는 프로젝트가 없습니다.",
-    storyBadge: "엔지니어의 여정",
-    storyTitle1: "교육 현장에서",
-    storyTitle2: "엔터프라이즈 AI 소프트웨어로.",
+    storyBadge: "제품 철학 및 실행 여정",
+    storyTitle1: "현장 운영 병목에서",
+    storyTitle2: "엔터프라이즈급 AI 프로덕트로.",
     storyBody: "교육 분야의 실무 경험과 현대적인 소프트웨어 아키텍처를 결합하여 실제 문제를 해결하는 AI 프로덕트를 만듭니다. 복잡한 업무 병목 현상을 빠르고 직관적인 소프트웨어 솔루션으로 변환합니다.",
     hoursSavedLabel: "평균 행정 업무 절감률",
     hoursSavedValue: "80%",
@@ -108,7 +108,7 @@ function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      const validIds = ['vodabi', 'chekki', 'benchmark-explorer', 'eduplanner', 'lead-enrichment', 'white-label-hub'];
+      const validIds = ['vodabi', 'chekki', 'benchmark-explorer', 'eduplanner', 'consultation-pipeline', 'lead-enrichment', 'white-label-hub'];
       if (validIds.includes(hash)) {
         setActiveCaseStudyId(hash);
       } else if (!hash) {
@@ -843,7 +843,7 @@ function App() {
                   desc: locale === 'en' 
                     ? 'EdTech benchmarking tools, automated scheduling engines, report pipelines, and B2B CRM tools.' 
                     : '독립적으로 개발 및 배포한 에듀테크 앱, 스케줄링 엔진 및 B2B 자동화 파이프라인.',
-                  projectIds: ['benchmark-explorer', 'eduplanner', 'lead-enrichment']
+                  projectIds: ['benchmark-explorer', 'eduplanner', 'consultation-pipeline', 'lead-enrichment']
                 }
               ];
 

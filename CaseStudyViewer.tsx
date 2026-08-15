@@ -53,7 +53,15 @@ const uiTranslation = {
     incident: "Incident",
     diagnosis: "Root Cause Diagnosis",
     resolution: "Production Resolution",
-    storeLink: "App Store / Play Store ↗"
+    storeLink: "App Store / Play Store ↗",
+    coreLoopTitle: "The Connected Core Loop",
+    coreLoopSubtitle: "End-to-End Product Engine & Data Lifecycle",
+    decisionsTitle: "Product Decisions & Trade-offs (ADR Log)",
+    decisionsSubtitle: "Strategic Choices, Evaluated Alternatives & Accepted Trade-offs",
+    decisionLabel: "Decision",
+    alternativeLabel: "Alternative Considered",
+    whyLabel: "Why (Strategic Rationale)",
+    tradeoffLabel: "Trade-off Accepted"
   },
   ko: {
     backToPortfolio: "← 돌아가기",
@@ -96,7 +104,15 @@ const uiTranslation = {
     incident: "장애 일지 (Incident)",
     diagnosis: "원인 규명 및 진단 (Diagnosis)",
     resolution: "프로덕션 조치 (Resolution)",
-    storeLink: "스토어 둘러보기 ↗"
+    storeLink: "스토어 둘러보기 ↗",
+    coreLoopTitle: "연결된 핵심 루프 (The Core Loop)",
+    coreLoopSubtitle: "가정-교실 폐쇄 피드백 및 데이터 생명주기",
+    decisionsTitle: "제품 의사결정 및 트레이드오프 (ADR)",
+    decisionsSubtitle: "전략적 제품 판단, 기각된 대안 및 수용된 타협점",
+    decisionLabel: "결정 사항 (Decision)",
+    alternativeLabel: "검토된 대안 (Alternative)",
+    whyLabel: "선택 사유 (Why)",
+    tradeoffLabel: "수용된 트레이드오프 (Trade-off)"
   }
 };
 
@@ -296,28 +312,28 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
     ],
     'chekki': [
       {
-        title: lang === 'en' ? "Scan & Curriculum Pre-Seed" : "학습지 스캔 & 커리큘럼 사전 시딩",
-        subtitle: lang === 'en' ? "Worksheet camera capture or OCR syllabus scan auto-fills target vocab" : "학습지 카메라 촬영 또는 실라버스 OCR 스캔으로 목표 어휘 자동 채움",
+        title: lang === 'en' ? "Co-Pilot Mobile Client" : "모바일 하이브리드 클라이언트",
+        subtitle: lang === 'en' ? "Captures paper worksheets via native camera stream" : "Capacitor 카메라 제어 및 학습지 이미지 업로드",
         tech: "React 19 / Capacitor JS",
         icon: "mobile"
       },
       {
+        title: lang === 'en' ? "Serverless Gateway" : "서버리스 API 게이트웨이",
+        subtitle: lang === 'en' ? "Handles secure API routes, SSO tokens & quotas" : "보안 토큰 인가 검증, 사용 한도 및 오답 기록부 동기화",
+        tech: "Vercel / Firestore",
+        icon: "settings"
+      },
+      {
         title: lang === 'en' ? "Parallel Gemini Pipeline" : "병렬 제미나이 엔진",
-        subtitle: lang === 'en' ? "Flash maps layouts & drafts reports; Pro solves ambiguous inputs" : "2.5 Flash 고속 파싱/보고서 초안 및 2.5 Pro 오답 판정 이중 교정",
+        subtitle: lang === 'en' ? "Flash maps layouts; Pro solves ambiguous inputs" : "2.5 Flash 고속 파싱 및 2.5 Pro 오답 판정 이중 교정",
         tech: "Gemini 2.5 Pro & Flash",
         icon: "sparkles"
       },
       {
-        title: lang === 'en' ? "Tutor & FT Report Loop" : "학습 코파일럿 & FT 리포트 루프",
-        subtitle: lang === 'en' ? "Pronunciation drills, flashcards, and 30s FT log to bilingual KakaoTalk draft" : "발음 연습·플래시카드 및 FT 30초 로그 → 이중언어 카카오톡 초안",
+        title: lang === 'en' ? "Co-Pilot Dashboard" : "인터랙티브 대시보드",
+        subtitle: lang === 'en' ? "Renders pronunciation training & digital flashcards" : "실시간 이중언어 발음 연습(TTS/STT) 및 플래시카드",
         tech: "React 19 / TTS & STT",
         icon: "fileText"
-      },
-      {
-        title: lang === 'en' ? "KT Review & Director Portal" : "KT 검수 & 원장 포털",
-        subtitle: lang === 'en' ? "Human-in-the-loop edit, 1-click copy & Firestore status sync" : "휴먼인더루프 검수, 1클릭 복사 및 Firestore 상태 동기화",
-        tech: "Vercel / Firestore",
-        icon: "settings"
       }
     ],
     'benchmark-explorer': [
@@ -370,6 +386,32 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
         subtitle: lang === 'en' ? "Saves schedules & manages secure admin sessions" : "시간표 영속 일지 작성 및 원 로그인 세션 권한 조율",
         tech: "Firebase v11 & Firestore",
         icon: "lock"
+      }
+    ],
+    'consultation-pipeline': [
+      {
+        title: lang === 'en' ? "Evaluation Form" : "학습 진단 양식",
+        subtitle: lang === 'en' ? "Fires instant validation events on commit" : "평가 보고 폼 제출 감지 및 트래픽 webhook 전달",
+        tech: "Fillout Assessment",
+        icon: "fileText"
+      },
+      {
+        title: lang === 'en' ? "Routing Middleware" : "경로 제어 노드",
+        subtitle: lang === 'en' ? "Deduplicates notes & buffers payload calls" : "이중 중복 제출 거부, 프롬프트 주입 방지 완충 연산",
+        tech: "Make.com Automation",
+        icon: "settings"
+      },
+      {
+        title: lang === 'en' ? "Relational Sheets" : "Airtable DB",
+        subtitle: lang === 'en' ? "Applies lookup hooks to track historical metrics" : "데이터 일관성과 무결성이 보증되는 중앙 장부 기록",
+        tech: "Airtable Relational Sheets",
+        icon: "lock"
+      },
+      {
+        title: lang === 'en' ? "Softr Parent Portal" : "원 부모 성취 포털",
+        subtitle: lang === 'en' ? "Row-level isolated bilingual progress view" : "개인인별 완벽 격리 보호 및 translated 리포트 열람",
+        tech: "Softr Client Web App",
+        icon: "sparkles"
       }
     ],
     'lead-enrichment': [
@@ -556,8 +598,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
   const contentRef = useRef<HTMLDivElement>(null);
 
   const [isArchOpen, setIsArchOpen] = useState(true);
-  const [isHurdlesOpen, setIsHurdlesOpen] = useState(true);
-  const [isBreakdownOpen, setIsBreakdownOpen] = useState(true);
+  const [isCoreLoopOpen, setIsCoreLoopOpen] = useState(true);
+  const [isDecisionsOpen, setIsDecisionsOpen] = useState(true);
+  const [isHurdlesOpen, setIsHurdlesOpen] = useState(false);
+  const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
   const [activeScreenshotIdx, setActiveScreenshotIdx] = useState(0);
   const [proofOfWorkTab, setProofOfWorkTab] = useState<'screenshots' | 'video'>('screenshots');
   const [lightboxImage, setLightboxImage] = useState<{ url: string; label: string } | null>(null);
@@ -647,10 +691,12 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
       scrollRef.current.scrollTop = 0;
     }
 
-    // Reset collapsible states when project changes - keep open as requested
+    // Reset collapsible states: Keep high-level overview open, keep deep dives collapsed for skimmability
     setIsArchOpen(true);
-    setIsHurdlesOpen(true);
-    setIsBreakdownOpen(true);
+    setIsCoreLoopOpen(true);
+    setIsDecisionsOpen(true);
+    setIsHurdlesOpen(false);
+    setIsBreakdownOpen(false);
     setActiveScreenshotIdx(0);
 
     const studyData = locale === 'ko' ? studyDataKo : studyDataEn;
@@ -797,9 +843,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
         </div>
 
         {/* METRICS GRID */}
-        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 border-y py-12 ${
-          projectData.stats.length >= 4 ? 'md:grid-cols-4' : 'md:grid-cols-3'
-        } ${
+        <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 border-y py-12 ${
           theme === 'dark' ? 'border-white/10' : 'border-black/10'
         }`}>
           {projectData.stats.map((stat, idx) => (
@@ -883,6 +927,172 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                   }`}>
                     {projectData.behindTheArchitecture.rationale}
                   </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* CONNECTED CORE LOOP (THE PRODUCT ENGINE) */}
+        {projectData.coreLoop && projectData.coreLoop.length > 0 && (
+          <div className={`rounded-2xl border transition-all duration-300 lg:mx-0 ${
+            theme === 'dark' 
+              ? 'bg-[#0B1017]/60 border-blue-500/10 shadow-[0_20px_50px_rgba(59,130,246,0.03)] relative overflow-hidden' 
+              : 'bg-[#F4F8FC]/70 border-blue-500/10 shadow-lg relative overflow-hidden'
+          }`}>
+            <button 
+              onClick={() => setIsCoreLoopOpen(!isCoreLoopOpen)}
+              className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-all relative z-10"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">🔄</span>
+                <div className="flex flex-col">
+                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400">{t.coreLoopSubtitle}</span>
+                  <span className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.coreLoopTitle}</span>
+                </div>
+              </div>
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-300 shrink-0 ${
+                isCoreLoopOpen 
+                  ? 'rotate-180 bg-blue-500/15 border-blue-500/30' 
+                  : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
+              }`}>
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isCoreLoopOpen ? 'text-blue-400' : 'text-white/40'}`} />
+              </div>
+            </button>
+
+            {isCoreLoopOpen && (
+              <div className="p-6 md:p-10 pt-0 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {projectData.coreLoop.map((item, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`p-4 rounded-xl border flex flex-col justify-between space-y-3 transition-all ${
+                        theme === 'dark'
+                          ? 'bg-black/30 border-white/5 hover:border-blue-400/30 hover:bg-white/[0.02]'
+                          : 'bg-white border-black/5 shadow-sm hover:border-blue-400/40'
+                      }`}
+                    >
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-mono text-[9px] font-bold text-blue-400 uppercase tracking-wider">
+                            {item.step}
+                          </span>
+                          {item.role && (
+                            <span className={`px-2 py-0.5 rounded text-[8px] font-mono font-semibold uppercase tracking-wider ${
+                              theme === 'dark' ? 'bg-white/5 text-white/70' : 'bg-black/5 text-alpine-950/70'
+                            }`}>
+                              {item.role}
+                            </span>
+                          )}
+                        </div>
+                        <p className={`text-xs leading-relaxed font-light ${
+                          theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
+                        }`}>
+                          {item.detail}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* PRODUCT DECISIONS & TRADEOFFS (ADR LOG) */}
+        {projectData.decisions && projectData.decisions.length > 0 && (
+          <div className={`rounded-2xl border transition-all duration-300 lg:mx-0 ${
+            theme === 'dark' 
+              ? 'bg-[#100D14]/60 border-purple-500/10 shadow-[0_20px_50px_rgba(168,85,247,0.03)] relative overflow-hidden' 
+              : 'bg-[#FAF6FD]/70 border-purple-500/10 shadow-lg relative overflow-hidden'
+          }`}>
+            <button 
+              onClick={() => setIsDecisionsOpen(!isDecisionsOpen)}
+              className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-all relative z-10"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">⚖️</span>
+                <div className="flex flex-col">
+                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-purple-400">{t.decisionsSubtitle}</span>
+                  <span className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.decisionsTitle}</span>
+                </div>
+              </div>
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-300 shrink-0 ${
+                isDecisionsOpen 
+                  ? 'rotate-180 bg-purple-500/15 border-purple-500/30' 
+                  : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
+              }`}>
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isDecisionsOpen ? 'text-purple-400' : 'text-white/40'}`} />
+              </div>
+            </button>
+
+            {isDecisionsOpen && (
+              <div className="p-6 md:p-10 pt-0 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {projectData.decisions.map((dec, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`p-5 rounded-xl border flex flex-col justify-between space-y-4 transition-all ${
+                        theme === 'dark'
+                          ? 'bg-black/40 border-white/5 hover:border-purple-400/30 hover:bg-white/[0.02]'
+                          : 'bg-white border-black/5 shadow-sm hover:border-purple-400/40'
+                      }`}
+                    >
+                      {/* Decision Header */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-[9px] font-bold text-purple-400">ADR 0{idx + 1}</span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">• {t.decisionLabel}</span>
+                        </div>
+                        <h4 className={`text-xs md:text-sm font-semibold leading-snug ${
+                          theme === 'dark' ? 'text-white' : 'text-alpine-950'
+                        }`}>
+                          {dec.decision}
+                        </h4>
+                      </div>
+
+                      {/* Alternative Considered */}
+                      <div className="space-y-1 text-xs">
+                        <div className="flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-wider text-white/40">
+                          <span>↪</span>
+                          <span>{t.alternativeLabel}</span>
+                        </div>
+                        <p className={`leading-relaxed font-light ${
+                          theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
+                        }`}>
+                          {dec.alternativeConsidered}
+                        </p>
+                      </div>
+
+                      {/* Why & Tradeoff Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-white/5">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-wider text-green-400">
+                            <span>✓</span>
+                            <span>{t.whyLabel}</span>
+                          </div>
+                          <p className={`text-[11px] leading-relaxed font-light ${
+                            theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
+                          }`}>
+                            {dec.why}
+                          </p>
+                        </div>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-wider text-orange-400">
+                            <span>⚡</span>
+                            <span>{t.tradeoffLabel}</span>
+                          </div>
+                          <p className={`text-[11px] leading-relaxed font-light ${
+                            theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
+                          }`}>
+                            {dec.tradeOffAccepted}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -997,7 +1207,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
             </div>
 
             {/* Sub-tab switcher to toggle between Interactive Screenshots and Walkthrough Video */}
-            {projectData.screenshots && projectData.screenshots.length > 0 && projectData.walkthroughVideo !== undefined && (
+            {projectData.screenshots && projectData.screenshots.length > 0 && (projectData.walkthroughVideo !== undefined || projectId === 'consultation-pipeline') && (
               <div className="flex rounded-xl p-1 border border-white/10 bg-black/40 text-[10px] font-bold uppercase tracking-wider overflow-hidden max-w-full self-start sm:self-auto shadow-2xl">
                 <button
                   type="button"

@@ -84,7 +84,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
 
           {/* Title & Tagline */}
-          <div className="space-y-1 min-w-0 flex-1">
+          <div className="space-y-1.5 min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <h3 className={`text-xl md:text-2xl font-bold font-display tracking-tight truncate ${
                 theme === 'dark' ? 'text-white' : 'text-alpine-950'
@@ -98,6 +98,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 </span>
               )}
             </div>
+
+            {/* PM Role & Ownership Tag */}
+            {project.pmRole && (
+              <div className="flex items-center gap-2">
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[9px] font-mono font-bold tracking-wider ${
+                  theme === 'dark' ? 'bg-blue-500/15 text-blue-300 border border-blue-500/30' : 'bg-blue-50 text-blue-700 border border-blue-200'
+                }`}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+                  {project.pmRole}
+                </span>
+              </div>
+            )}
 
             <p className={`text-xs md:text-sm font-light truncate ${
               theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/70'
@@ -219,10 +231,45 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
             {/* RIGHT / BOTTOM: Comprehensive Details */}
             <div className="lg:col-span-6 space-y-6">
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <h4 className={`text-xl md:text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
                   {project.title}
                 </h4>
+
+                {/* 3-Point Micro-Summary for Fast Skimming */}
+                <div className={`p-4 rounded-xl border space-y-2.5 text-xs ${
+                  theme === 'dark' ? 'bg-white/[0.02] border-white/10' : 'bg-black/[0.02] border-black/10'
+                }`}>
+                  {project.friction && (
+                    <div className="flex items-start gap-2.5">
+                      <span className="text-[9px] font-mono font-black uppercase tracking-wider text-red-400 shrink-0 mt-0.5">
+                        {locale === 'ko' ? "문제 (PROBLEM) :" : "PROBLEM :"}
+                      </span>
+                      <span className={`leading-relaxed font-light ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}`}>
+                        {project.friction}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-[9px] font-mono font-black uppercase tracking-wider text-accent-gold shrink-0 mt-0.5">
+                      {locale === 'ko' ? "해결 (SOLUTION) :" : "SOLUTION :"}
+                    </span>
+                    <span className={`leading-relaxed font-light ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>
+                      {project.description}
+                    </span>
+                  </div>
+                  {project.impactLabel && project.impactValue && (
+                    <div className="flex items-start gap-2.5 pt-2 border-t border-white/5">
+                      <span className="text-[9px] font-mono font-black uppercase tracking-wider text-green-400 shrink-0 mt-0.5">
+                        {locale === 'ko' ? "성과 (IMPACT) :" : "IMPACT :"}
+                      </span>
+                      <span className="font-mono font-bold text-green-400">
+                        {project.impactLabel}: {project.impactValue}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
                 <p className={`text-xs md:text-sm font-light leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
                   {project.longDescription}
                 </p>

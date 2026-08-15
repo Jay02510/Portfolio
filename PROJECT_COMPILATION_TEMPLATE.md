@@ -16,31 +16,46 @@ This template defines the exact schema and detail density required to compile hi
 
 ### Key Metrics & Stats
 
-Provide exactly **3 numerical performance or efficiency markers**:
+Provide exactly **3 numerical performance or efficiency markers**, with clear pilot/operational attribution (no floating, unverified claims):
 
-1.  **Metric 1**: `[Label (EN)]` / `[Label (KO)]` | Value: `[e.g., 15s per Student]`
-2.  **Metric 2**: `[Label (EN)]` / `[Label (KO)]` | Value: `[e.g., 100% Secure]`
-3.  **Metric 3**: `[Label (EN)]` / `[Label (KO)]` | Value: `[e.g., Zero Server Cost]`
+1.  **Metric 1**: `[Label (EN)]` / `[Label (KO)]` | Value: `[e.g., 15s per Student (Pilot Measured)]`
+2.  **Metric 2**: `[Label (EN)]` / `[Label (KO)]` | Value: `[e.g., Zero Unhandled Conflicts (Constraint Solver)]`
+3.  **Metric 3**: `[Label (EN)]` / `[Label (KO)]` | Value: `[e.g., Sub-200ms WebRTC (Telemetry Measured)]`
 
 ---
 
 ## 2. DEEP ANALYSIS: THE CUSTOMER FRICTION VS. OPTIMIZED FLOW
 
-### The Problem (3 bulleted pain-points)
+### The Problem (3 distinct structural pain points)
 Provide three real-world operational bottlenecks experienced by users *before* the application's intervention:
-*   **Point 1**: `[Describe administrative, cognitive, or physical friction]`
-*   **Point 2**: `[Describe technical blocks, mobile browser limitations, etc.]`
-*   **Point 3**: `[Describe licensing, cost, or customization limitations]`
+*   **Point 1**: `[Describe user/stakeholder emotional or cognitive friction]`
+*   **Point 2**: `[Describe disconnected structural feedback loops or information silos]`
+*   **Point 3**: `[Describe administrative, language, or operational load]`
 
-### The Solution (3 bulleted operational offsets)
-Describe the direct programmatic remedy to each pain-point:
+### The Core Loop (The Product Engine)
+Trace the continuous closed-loop data lifecycle connecting all core personas (e.g. Home Scan → Answer Key Lookup → Bilingual Output → Teacher Aggregation → Daily Update → Parent Release).
+
+### The Solution (3 targeted programmatic capabilities)
+Describe the direct programmatic remedy to each pain point:
 *   **Offset 1**: `[Direct user experience correction]`
 *   **Offset 2**: `[Backend or cloud coordination offset]`
 *   **Offset 3**: `[SaaS cost, customization, or localization resolution]`
 
 ---
 
-## 3. ARCHITECTURE BLUEPRINT (EXECUTION LIFECYCLE)
+## 3. PRODUCT DECISIONS & TRADEOFFS (ADR LOG)
+
+Provide 2 to 4 concrete architectural and product decisions where alternatives were evaluated and deliberate tradeoffs were accepted:
+
+For each decision:
+*   **Decision**: `[What was chosen]`
+*   **Alternative Considered**: `[What else was on the table]`
+*   **Why**: `[Actual reasoning: user trust, operational simplicity, cost, risk]`
+*   **Trade-off Accepted**: `[What was deliberately left undone or what friction was accepted]`
+
+---
+
+## 4. ARCHITECTURE BLUEPRINT (EXECUTION LIFECYCLE)
 
 ### Lifecycle Stages
 Identify **exactly 4 chronological phases** describing data ingestion, transmutation, storage, and customer delivery:

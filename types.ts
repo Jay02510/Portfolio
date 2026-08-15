@@ -6,6 +6,7 @@ export interface Project {
   tags: string[];
   imageUrl: string;
   imagePosition?: string; // New field for object-position classes
+  pmRole?: string;
   demoUrl?: string;
   websiteUrl?: string;
   githubUrl?: string;
@@ -25,6 +26,13 @@ export interface ChatMessage {
   timestamp: Date;
 }
 
+export interface ProductDecision {
+  decision: string;
+  alternativeConsidered: string;
+  why: string;
+  tradeOffAccepted: string;
+}
+
 export interface CaseStudyType {
   title: string;
   tagline: string;
@@ -32,10 +40,16 @@ export interface CaseStudyType {
   storeUrl?: string;
   walkthroughVideo?: string;
   screenshots?: { label: string; url: string; subLabel?: string }[];
-  stats: { label: string; value: string }[];
+  stats: { label: string; value: string; detail?: string }[];
   problem: string[];
   solution: string[];
   stack: string[];
+  coreLoop?: {
+    step: string;
+    detail: string;
+    role?: string;
+  }[];
+  decisions?: ProductDecision[];
   behindTheArchitecture?: {
     problem: string;
     vision: string;
