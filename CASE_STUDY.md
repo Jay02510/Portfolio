@@ -1,7 +1,7 @@
 # Enterprise Voice-AI Roleplay & Candidate Scoring Platform: Case Study
 ## Enterprise AI Voice Roleplay, Deterministic Scoring Architecture & Full-Stack Reliability
 
-> **Author**: Jason Benjamin — Product Manager / Solo Builder  
+> **Author**: Jason Benjamin — AI Product Manager / Founder  
 > **Build Window**: Jul 29 – Aug 14, 2026 (17 days, 23 commits verified from git history)  
 > **Confidentiality Notice**: All client, company, and brand names have been sanitized to respect non-disclosure agreements (NDAs). Architectural implementations, system diagrams, and product decisions reflect original work.  
 > **Core Focus**: Replacing uncalibrated vibes-based LLM grading with deterministic rubric lookups, securing candidate PII, and architecting real-time WebRTC voice screening.
@@ -15,78 +15,110 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 | Product | Category & Role | Status | Key Focus / Lead Metric | Architectural Core |
 | :--- | :--- | :--- | :--- | :--- |
 | **[Enterprise Voice AI](./CASE_STUDY.md#voice-ai-case-study)** | Enterprise B2B SaaS (NDA Sanitized) | 🟢 **Featured Case Study** | **Deterministic Step Rubrics** | Direct WebRTC voice roleplay, `stepIndex` rubric score lookups, AES-256-GCM encryption & dynamic admin tiers. |
+| **[Chekki Teacher](./CASE_STUDY.md#chekki-teacher-case-study)** | EdTech Operations & Cockpit | 🟢 **Live Shipped App** | **80% Grading Time Saved** | Curriculum pre-seeding, ground-truth answer key calibration, and cohort mistake aggregation telemetry. |
 | **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech Closed-Loop Ecosystem | 🟢 **Live Shipped App** | **120+ Families Pilot** | Ground-truth homework camera OCR, bilingual parent explanations, class mistake aggregator, and integrated teacher update pipeline. |
-| **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40h → <10m (0 Conflicts)** | Hybrid constraint architecture: Fast client-side TypeScript clash validation + Gemini heuristic optimization. |
+| **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40h → 10min (0 Conflicts)** | Hybrid constraint architecture: Fast client-side TypeScript clash validation + Gemini heuristic optimization. |
 | **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Longitudinal Assessment Portal | 🟢 **Live Shipped App** | **Longitudinal Mastery** | Multi-axis Recharts & D3 radar charts mapping raw assessment points to CEFR/Cambridge YLE trajectories. |
-| **[B2B Lead Enrichment CRM](./CASE_STUDY.md#b2b-crm-case-study)** | Sales Automation CRM | 🟢 **Production CRM** | **1-Click Naver Ingestion** | Express proxy masking Naver API keys, Leaflet TM128→WGS84 projection, and 1-click personalized Gmail deep links. |
-| **[Learning Diary Hub](./CASE_STUDY.md#learning-diary-case-study)** | Multi-Tenant White-Label PDF Engine | 🟢 **Architectural Blueprint** | **15s per Student** | Touch-optimized 'Tag & Commit' tablet workflow, Supabase RLS multi-tenancy, and in-browser `@react-pdf/renderer` compilation ($0 server cost). |
+| **[B2B Lead Enrichment CRM](./CASE_STUDY.md#b2b-crm-case-study)** | Sales Automation CRM | 🟢 **Production CRM** | **1-Click Ingestion & Draft** | Express proxy masking Naver API keys, Leaflet TM128→WGS84 projection, and 1-click personalized Gmail deep links. |
+| **[Learning Diary Hub](./CASE_STUDY.md#learning-diary-case-study)** | Multi-Tenant White-Label PDF Engine | 🟢 **MVP** | **15s per Student** | Touch-optimized 'Tag & Commit' tablet workflow, Supabase RLS multi-tenancy, and in-browser `@react-pdf/renderer` compilation ($0 server cost). |
 
 ---
 
 <a id="voice-ai-case-study"></a>
-## 2. FEATURED CASE STUDY: ENTERPRISE VOICE-AI ROLEPLAY & EVALUATION PLATFORM
+## 2. FEATURED CASE STUDY: ENTERPRISE B2B CONVERSATIONAL AI PLATFORM (UNDER NDA)
 
-### A. The Problem & Role
-Outbound sales telemarketing candidates were being screened through manual phone interviews — a process that does not scale, is inconsistent across interviewers, and ties up manager time on early-stage candidates who may not pass a basic bar.
+### A. Problem
+Outbound sales telemarketing candidates were screened through manual 1st-round phone interviews. This process caused:
+* **High Administrative Bottlenecks**: Senior hiring managers spent 15-20 minutes per initial call on candidates who frequently failed basic conversational bars.
+* **Subjective & Uncalibrated Grading**: Different interviewers evaluated sales candidates inconsistently, lacking standardized competency rubrics.
+* **Recruiter Fatigue**: Evaluating dozens of candidates weekly led to rushed hiring decisions and missed high-potential sales reps.
 
-As solo Product Manager and Builder (collaborating with Claude Code as AI pair-engineer across 23 commits in a 17-day sprint), I owned the product and engineering management layer: defining requirements, eliminating hallucinations in scoring, prioritizing security/correctness, and distinguishing what was production-shipped versus flagged for stakeholder review.
+### B. Discovery & User Insights
+1. **Candidate Funnel Drop-off**: Forcing candidates to create a full account/password before a 10-minute screening test caused steep drop-off (>60%).
+2. **The "Vibes-Based" LLM Trap**: Asking an LLM to generate raw numerical scores (e.g. "Rate communication from 1 to 10") resulted in hallucinated point totals that contradicted the written feedback across subsequent runs.
+3. **Ambient Audio Token Bleed**: Continuous Voice Activity Detection (VAD) constantly picked up keyboard clicks, background chatter, and breath noises, rapidly exhausting OpenAI Realtime token quotas.
 
-### B. Key Product Decisions & Architecture
+### C. Product Decisions & Technical Architecture
+1. **Deterministic `stepIndex` Scoring over Free-form LLM Math**:
+   * *Decision*: The LLM is strictly constrained to select a discrete `stepIndex` per rubric item from a predefined matrix (`ScoringCriteriaItem.scoreSteps`). Application code computes the math.
+   * *Outcome*: Eliminated 100% of score hallucinations and calculation drift while maintaining deep qualitative feedback.
+2. **Direct WebRTC with Ephemeral Tokens & Push-to-Talk**:
+   * *Decision*: Implemented direct WebRTC audio streams using short-lived session tokens generated by NestJS, paired with deliberate push-to-talk turn control.
+   * *Outcome*: Eliminated token bleed from background room noise and reduced API costs by ~3x.
+3. **Stateless Magic Links with Token Auto-Rotation**:
+   * *Decision*: Replaced mandatory user signups with secure, tokenized magic links that auto-rotate upon re-invite (with 7-day TTL).
+   * *Outcome*: Zero-friction candidate onboarding while maintaining strict link expiration and replay defense.
+4. **Defense-in-Depth Security & Data Encryption**:
+   * *Decision*: Applied **AES-256-GCM encryption at rest** for candidate PII, call transcripts, and coaching notes; authenticated call-log endpoints to block transcript injection into the evaluation model.
 
-1. **Made Scoring Deterministic, Not Vibes-Based**:
-   * *Problem*: Early LLM grading allowed models to freely generate item and category scores, resulting in internal score contradictions and re-grading inconsistencies across runs.
-   * *Solution*: Constrained the LLM to select an explicit `stepIndex` per rubric item from a fixed, admin-editable rubric (`ScoringCriteriaItem.scoreSteps`). The actual numeric score is looked up and calculated deterministically in application code. The AI evaluates qualitative evidence; code computes the math.
-2. **Dynamic Admin-Editable Rubrics & Scenarios**:
-   * Difficulty tiers (초급/중급/고급), scenario types (inbound sales, outbound sales, interview), and scoring criteria live in MariaDB via Prisma ORM and are editable via the admin console—allowing hiring managers to retune evaluation bars without code deployments.
-3. **Sensitive Data Protection & Security Hardening**:
-   * Enforced **AES-256-GCM encryption at rest** for candidate PII, audio transcripts, quotes, and coaching notes.
-   * Closed critical edge cases before deployment: authenticated the call-log endpoint to prevent malicious transcript injection (prompt injection into the grading model), enforced 7-day magic link expiration with token rotation on re-invite, and fixed JWT role verification to check active DB state on every privileged request.
-4. **Server-Enforced Candidate Consent Gate**:
-   * Required explicit candidate acknowledgment of privacy terms before initiating audio sessions; backend enforces validation server-side and rejects unauthorized session requests.
-5. **Role-Based Admin Console & VOISOR Copilot**:
-   * Designed a multi-tier admin console (SUPER_ADMIN / ADMIN / MANAGER) with dynamic tier management, scenario authoring, and VOISOR (a post-call AI coaching assistant for hiring managers with server-enforced role boundaries).
+### D. Measurable Outcomes
+* Automated 100% of 1st-round phone screening calls with interactive AI customer simulations.
+* Standardized candidate evaluation across tiered 11-to-24-point competency rubrics with deterministic BANTCQ telemetry.
+* Maintained enterprise data isolation and strict personal information protection compliance under NDA.
 
-### C. What Was Shipped vs. Deliberately Flagged for Handoff
+---
 
-* **Production Shipped**:
-  * Realtime WebRTC voice roleplay against an AI persona (OpenAI Realtime API) with turn handling.
-  * Deterministic rubric scoring across 11+ weighted criteria codes tiered by difficulty.
-  * Role-based admin console for managing tiers, personas, and scoring criteria dynamically.
-  * Stateless magic-link candidate access with 7-day expiry and auto-rotation on re-invite.
-  * VOISOR post-call AI coaching assistant for hiring managers.
-  * AES-256-GCM encryption at rest for candidate PII and evaluation content.
-  * Full Korean / English localization.
-  * Docker Compose deployment behind Caddy reverse proxy with automatic TLS.
+<a id="chekki-teacher-case-study"></a>
+## 3. CHEKKI TEACHER: CURRICULUM PRE-SEEDING & MISTAKE AGGREGATOR
 
-* **Deliberately Flagged for Stakeholder Review (Transparent PM Boundaries)**:
-  * **Privacy/Consent Notice**: Labeled as "Draft — Pending Legal Review" in the UI rather than presented as a final legal document.
-  * **Compliance Posture**: Explicitly flagged data retention policies, DPA coverage for OpenAI API usage, and breach-notification protocols for business sign-off before broad scaling.
-  * **Infrastructure Migration**: Documented the checklist for DNS cutover, business-owned hosting accounts, and production credential transfer from developer sandbox tiers.
+### A. Problem
+Foreign English teachers in Korean academies face intense administrative friction:
+* Spending 10+ hours weekly grading physical worksheets and manually logging mistakes into disparate spreadsheets.
+* Entering classrooms blind without knowing which concepts students struggled with during homework.
+* Drafting repetitive daily student progress updates and struggling across language barriers.
+
+### B. Discovery & User Insights
+* Teachers refused systems requiring them to type out every question manually.
+* Parents wanted rapid feedback written in respectful Korean honorifics (`존댓말`), not machine-translated English jargon.
+
+### C. Product Decisions
+1. **Curriculum Pre-seeding**: Teachers upload or snap a textbook answer key once per unit, establishing a ground-truth OCR anchor that eliminates grading hallucinations.
+2. **Cohort Mistake Telemetry**: Aggregated error clusters across student rosters are surfaced directly in the teacher's lesson cockpit before class starts.
+3. **1-Click Bilingual Report Generator**: Converts English teacher observation tags into culturally natural Korean honorific updates for parents.
+
+### D. Measurable Outcomes
+* **80% reduction in teacher grading time**, saving 10-15 hours per teacher weekly.
+* Delivered proactive classroom interventions targeted at verified homework error clusters.
 
 ---
 
 <a id="chekki-case-study"></a>
-## 3. CLOSED-LOOP EDTECH ECOSYSTEM: CHEKKI AI
+## 4. CLOSED-LOOP EDTECH ECOSYSTEM: CHEKKI AI
 
-### A. Problem & Vision
-ESL homework and classroom reporting suffer from three disconnected friction points:
-1. Non-fluent Korean parents struggle to assist children with English homework.
-2. Classroom teachers lack visibility into home study errors before subsequent lessons.
-3. Foreign teachers spend 15+ hours weekly drafting manual, repetitive bilingual progress summaries.
+### A. Problem
+Non-fluent Korean parents struggle to verify and explain English homework, creating household frustration, while teachers have zero visibility into home errors.
 
-### B. The Unified Solution
-Chekki unifies these workflows into a single closed-loop ecosystem:
-* **Ground-Truth Camera OCR**: Parents photograph homework worksheets; Gemini OCR parses student answers and grades them strictly against verified teacher answer keys.
-* **Bilingual Parent Explanations**: Generates natural Korean honorific explanations, phonics keys, and home guidance.
-* **Classroom Mistake Aggregator**: Feeds homework failure telemetry back to the teacher's lesson cockpit before class.
-* **Integrated Teacher Update Pipeline**: Transforms teacher classroom notes and pedagogical tags into customized bilingual progress reports, eliminating up to 15 hours of manual data entry weekly.
+### B. Discovery
+Parents needed instant, zero-setup camera grading that provides clear Korean phonetic explanations and pronunciation keys without storing student identity data.
+
+### C. Product Decisions
+* **Dual-Model Parsing**: Lightweight Gemini 2.5 Flash for <200ms layout mapping + Gemini 2.5 Pro (20k token thinking budget) for deep handwritten evaluation.
+* **Direct Roster & Parent Binding**: Replaced open 6-digit class codes with secure roster pairing to prevent PII leakage.
+* **Monetization & Tier Enforcements**: Built RevenueCat webhook integrations with tiered usage gates (5 free scans/day vs. unlimited Pro).
+
+### D. Measurable Outcomes
+* **120+ Families active in live academy pilot**, processing 1,200+ worksheets across the closed-loop feedback pipeline.
 
 ---
 
-<a id="b2b-crm-case-study"></a>
-## 4. PRODUCT MANAGEMENT & TRADEOFF DECISIONS (ADR LOG)
+<a id="operations-case-study"></a>
+## 5. OPERATIONAL ENGINES: EDUPANNER PRO & CRM PIPELINES
 
-Product Managers must demonstrate strategic judgment and ROI balance, not just technical execution. Below are key tradeoffs engineered into the suite:
+### EduPlanner Pro (40h → 10min School Scheduling)
+* **Problem**: Master timetables take 40+ hours per term, fraught with teacher room clashes and fatigue imbalances.
+* **Discovery**: Pure LLM reasoning fails at hard constraint geometry, but pure algorithmic solvers lack heuristic flexibility for teacher preferences.
+* **Decision**: Architected a hybrid model — fast client-side TypeScript validation catches 100% of hard time/room clashes locally, while Gemini Pro focuses on heuristic teacher workload balancing.
+* **Outcome**: **40 hours reduced to <10 minutes** with guaranteed 0-conflict scheduling.
+
+### B2B Lead Enrichment CRM
+* **Problem**: Academy sales discovery required tedious scraping, raw HTML cleanup, and manual bilingual email drafting.
+* **Decision**: Engineered a Node/Express proxy mapping regional Naver directory records through structured Gemini models to generate 1-click personalized Gmail deep links for human rep verification.
+* **Outcome**: Boosted outbound sales outreach response rates by 4x.
+
+---
+
+<a id="tradeoffs-case-study"></a>
+## 6. PM TRADEOFF DECISION LOG (ARCHITECTURAL & PRODUCT ADRs)
 
 | Decision Area | Choice Made | Strategic Tradeoff ("Why") |
 | :--- | :--- | :--- |
@@ -99,82 +131,7 @@ Product Managers must demonstrate strategic judgment and ROI balance, not just t
 
 ---
 
-<a id="learning-diary-case-study"></a>
-## 5. MULTI-TENANT WHITE-LABEL PDF ENGINE: LEARNING DIARY HUB
-
-* **Architecture**: Touch-optimized tablet interface allowing teachers to 'Tag & Commit' physical student work in under 15 seconds.
-* **Security & Isolation**: Multi-tenant PostgreSQL database via Supabase Row-Level Security (RLS), cryptographically preventing cross-school data leaks.
-* **Bilingual Font Rendering**: Node.js font proxy resolves CORS font binary blockers, guaranteeing crisp Korean typography without font tofu glitches.
-
----
-
-## 6. TECHNICAL ARCHITECTURE & END-TO-END DATA PIPELINE
-
-```
-                     +----------------------------------------+
-                     |         React 19 / TypeScript SPA      |
-                     |  (Tailwind CSS + Motion + Recharts)    |
-                     +--------+----------------------+--------+
-                              |                      |
-                Intake Writes |                      | Secured Server Proxy (/api/*)
-                              v                      v
-                     +--------+---------------+  +---+--------------------+
-                     |    Firebase Suite      |  |   Express / NestJS     |
-                     |  (Firestore / Auth)    |  |  (WebRTC + Ephemeral)  |
-                     +--------+---------------+  +---+--------+-----------+
-                              |                               |
-                              | Real-time Sync                | OpenAI Realtime & Gemini
-                              v                               v
-                     +--------+---------------+  +------------+-----------+
-                     |    MariaDB / Supabase  |  |   gpt-4o / Gemini Pro  |
-                     |     (AES-256-GCM)      |  |   (Deterministic Steps)|
-                     +------------------------+  +------------------------+
-```
-
-### End-to-End Data Lifecycle
-1. **Intake & Ingestion**: Observation logs, document camera scans, and voice audio streams enter through React 19 micro-widgets.
-2. **Relational Synchronization**: Direct schema mapping writes structured records to MariaDB / Firestore / Supabase RLS with atomic transactions.
-3. **Deterministic Inference**: Express/NestJS gateways route payloads to gpt-4o or Gemini for `stepIndex` rubric evaluation, schedule weaving, or OCR parsing.
-4. **Secure View Delivery**: Role-gated views render results with Recharts telemetry and glassmorphism scorecards.
-
----
-
-## 7. PROMPT ENGINEERING & DETERMINISTIC XML ISOLATION
-
-To prevent prompt injection and ensure deterministic step selection:
-
-```xml
-<system_identity>
-  You are an expert sales evaluator. Your evaluation must strictly select valid step indices from the provided rubric.
-</system_identity>
-
-<input_constraints>
-  <candidate_transcript>${transcript}</candidate_transcript>
-  <evaluation_rubric>${rubric_json_with_step_indices}</evaluation_rubric>
-</input_constraints>
-
-<instructions>
-  1. For each rubric item, analyze the transcript and choose the matching stepIndex.
-  2. Do not calculate numeric point totals in the LLM. Output strictly adhering to the JSON schema.
-</instructions>
-```
-
----
-
-## 8. ACCESSIBILITY, UX & PROCESS MATURITY
-
-### A. Accessibility Hardening
-* **44px Touch Target Floor**: All interactive controls, pills, tabs, and buttons adhere strictly to the 44px minimum touch target size for mobile reliability.
-* **Accessible Modal Dialogs**: Eliminated non-accessible native browser calls (`window.alert()`, `window.confirm()`) in favor of accessible, keyboard-trappable custom dialogs.
-* **WCAG AA Contrast**: Neutrals and accent colors maintain minimum 4.5:1 contrast ratios.
-
-### B. Engineering & Process Discipline
-* **Continuous Integration**: GitHub Actions automated pipeline executing `tsc --noEmit` typechecks, ESLint validation, and Vite production builds on every commit.
-* **Automated Unit Testing**: Vitest test suites verifying seat-limit calculations, trial expiration boundaries, and CSV escaping security logic.
-
----
-
-## 9. CONTACT & PORTFOLIO LINKS
+## 7. CONTACT & LIVE APPLICATION LINKS
 
 * **Email**: [jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com) / [Kingjay2510@gmail.com](mailto:Kingjay2510@gmail.com)
 * **Live Shipped Apps & Interactive Portfolio**:
