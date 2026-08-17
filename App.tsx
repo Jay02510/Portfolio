@@ -11,6 +11,7 @@ import FeedbackBox from './components/FeedbackBox.tsx';
 import { CaseStudyViewer } from './CaseStudyViewer.tsx';
 import ResumeModal from './components/ResumeModal.tsx';
 import LiveStatusFeed from './components/LiveStatusFeed.tsx';
+import { ExecutiveMatrix } from './components/ExecutiveMatrix.tsx';
 import { MailIcon, SparklesIcon, SendIcon, BookOpenIcon, MapIcon, CodeIcon, ChevronDownIcon, ExternalLinkIcon, XIcon, FileTextIcon, SearchIcon, SunIcon, MoonIcon, DeviceMobileIcon, SettingsIcon, CreditCardIcon, LockIcon, LightbulbIcon, BriefcaseIcon, RocketIcon } from './components/Icons.tsx';
 
 const t = {
@@ -647,6 +648,13 @@ function App() {
                 </div>
             </div>
         </section>
+
+        {/* 5-SECOND EXECUTIVE SCAN / SHIPPED SYSTEMS & STACKS MATRIX */}
+        <ExecutiveMatrix 
+          locale={locale} 
+          theme={theme} 
+          onOpenCaseStudy={setActiveCaseStudyId} 
+        />
 
         {/* LIVE STATUS UPDATE & BUILD TIMELINE */}
         <LiveStatusFeed 
