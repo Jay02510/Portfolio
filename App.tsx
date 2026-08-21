@@ -19,10 +19,10 @@ const t = {
     projectsNav: "Projects",
     playgroundNav: "Interactive Lab",
     storyNav: "Product Philosophy",
-    heroBadge: "JASON BENJAMIN — 0→1 AI PRODUCT MANAGER",
-    heroTitle1: "Generative AI & B2B SaaS",
+    heroBadge: "JASON BENJAMIN — AI PRODUCT MANAGER & ENGINEER",
+    heroTitle1: "Voice AI · LLM Systems · B2B SaaS",
     heroTitle2: "Engineering products that eliminate operational friction.",
-    heroTagline: "0→1 AI Product Manager bridging enterprise B2B SaaS at VodaBi with production-grade EdTech ecosystems. Turning operational friction into measurable workflow velocity.",
+    heroTagline: "Sole engineer and product owner who shipped a production voice-AI interview platform from zero (realtime WebRTC, deterministic LLM evaluation, security hardening, AWS EC2 deploy) and 6 independent Korean EdTech AI products with a 19-entry decision log.",
     viewProjectsBtn: "Explore Solutions",
     playgroundBtn: "Interactive AI Lab",
     toolsBadge: "PRODUCTION PORTFOLIO",
@@ -53,10 +53,10 @@ const t = {
     projectsNav: "프로젝트",
     playgroundNav: "인터랙티브 랩",
     storyNav: "제품 철학 및 배경",
-    heroBadge: "제이슨 벤자민 — 0→1 AI 프로덕트 매니저",
-    heroTitle1: "생성형 AI & B2B SaaS",
+    heroBadge: "제이슨 벤자민 — AI 프로덕트 매니저 & 엔지니어",
+    heroTitle1: "음성 AI · LLM 시스템 · B2B SaaS",
     heroTitle2: "운영 병목을 제거하는 실전 AI 소프트웨어 프로덕트.",
-    heroTagline: "VodaBi에서의 엔터프라이즈 B2B SaaS 경험과 0→1 에듀테크 프로덕트 생태계를 구축한 AI 프로덕트 매니저입니다. 복잡한 운영 병목을 측정 가능한 업무 속도로 전환합니다.",
+    heroTagline: "실시간 WebRTC 음성 파이프라인, LLM 평가 엔진, 보안 하드닝 및 AWS EC2 배포까지 프로덕션 음성 AI 인터뷰 플랫폼을 1인 구축하고, 19개 의사결정 로그를 갖춘 6개 에듀테크 AI 프로덕트를 출시한 0→1 AI PM & 엔지니어입니다.",
     viewProjectsBtn: "프로젝트 포트폴리오 ↓",
     playgroundBtn: "인터랙티브 AI 시험장",
     toolsBadge: "활성 프로덕션 목록",
@@ -503,39 +503,6 @@ function App() {
         </div>
       )}
 
-      {/* UNIFIED MOBILE NAVIGATION */}
-      <nav className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] rounded-[2rem] px-4 py-3 flex items-center gap-2 transition-all duration-500 border shadow-[0_20px_60px_rgba(0,0,0,0.5)] w-[90%] max-w-[385px] pb-[env(safe-area-inset-bottom,0.75rem)] ${
-        theme === 'dark' ? 'bg-alpine-900 border-white/20' : 'bg-white border-black/10 shadow-xl'
-      }`}>
-          <button onClick={scrollToSection('portfolio')} className={`flex-1 flex flex-col items-center gap-1 p-1 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
-            <BookOpenIcon className="w-5 h-5" />
-            <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide">{locale === 'en' ? 'Tools' : '도구'}</span>
-          </button>
-          <button onClick={scrollToSection('lab')} className={`flex-1 flex flex-col items-center gap-1 p-1 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
-            <CodeIcon className="w-5 h-5" />
-            <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide">{locale === 'en' ? 'Lab' : '실험실'}</span>
-          </button>
-          
-          <div className="px-1">
-            <button 
-              onClick={() => setIsChatOpen(!isChatOpen)} 
-              className={`w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-2xl border-4 transform active:scale-90 ${theme === 'dark' ? 'border-alpine-900 bg-accent-gold text-alpine-950' : 'border-white bg-alpine-950 text-accent-gold'}`}
-              aria-label={locale === 'ko' ? "AI 어시스턴트 토글" : "Toggle AI assistant"}
-            >
-              <SparklesIcon className="w-6 h-6" />
-            </button>
-          </div>
-
-          <button onClick={scrollToSection('about')} className={`flex-1 flex flex-col items-center gap-1 p-1 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
-            <MapIcon className="w-5 h-5" />
-            <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide">{locale === 'en' ? 'Story' : '스토리'}</span>
-          </button>
-          <button onClick={scrollToSection('contact')} className={`flex-1 flex flex-col items-center gap-1 p-1 transition-colors ${theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'}`}>
-            <MailIcon className="w-5 h-5" />
-            <span className="text-[10px] sm:text-[11px] font-semibold tracking-wide">{locale === 'en' ? 'Connect' : '연락처'}</span>
-          </button>
-      </nav>
-
       <main>
         {/* REFINED HERO SECTION */}
         <section className="relative min-h-[85vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden pt-36 md:pt-48 pb-16">
@@ -601,7 +568,7 @@ function App() {
                     
                     <button 
                       onClick={() => setIsResumeOpen(true)} 
-                      className={`w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-xl border text-[10px] md:text-xs font-black uppercase tracking-wider transition-all ${
+                      className={`w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-xl border text-[10px] md:text-xs font-black uppercase tracking-wider transition-all min-h-[44px] ${
                         theme === 'dark' 
                           ? 'border-white/20 hover:bg-white/5 text-white' 
                           : 'border-black/20 hover:bg-black/5 text-alpine-950'
@@ -614,7 +581,7 @@ function App() {
                     <a 
                       href="#portfolio" 
                       onClick={scrollToSection('portfolio')} 
-                      className={`w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-xl border text-[10px] md:text-xs font-black uppercase tracking-wider transition-all ${
+                      className={`w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-xl border text-[10px] md:text-xs font-black uppercase tracking-wider transition-all min-h-[44px] ${
                         theme === 'dark' 
                           ? 'border-white/15 hover:bg-white/5 text-white/80' 
                           : 'border-black/15 hover:bg-black/5 text-alpine-950/80'
@@ -634,15 +601,15 @@ function App() {
                     </div>
                   </div>
                   <div className={`p-4 rounded-xl border backdrop-blur-md ${theme === 'dark' ? 'bg-white/[0.03] border-white/10' : 'bg-black/[0.03] border-black/10'}`}>
-                    <div className="text-xl md:text-2xl font-black text-accent-gold">40h → &lt;10m</div>
+                    <div className="text-xl md:text-2xl font-black text-accent-gold">&lt; 4 Weeks</div>
                     <div className="text-[10px] md:text-xs font-semibold tracking-wider uppercase opacity-75 mt-1">
-                      {locale === 'en' ? "Constraint Solver (EduPlanner)" : "제약 최적화 스케줄링 (EduPlanner)"}
+                      {locale === 'en' ? "0→Production Build (VodaBi)" : "0→프로덕션 완성 (VodaBi)"}
                     </div>
                   </div>
                   <div className={`p-4 rounded-xl border backdrop-blur-md ${theme === 'dark' ? 'bg-white/[0.03] border-white/10' : 'bg-black/[0.03] border-black/10'}`}>
-                    <div className="text-xl md:text-2xl font-black text-accent-gold">120+ Families</div>
+                    <div className="text-xl md:text-2xl font-black text-accent-gold">19 Decisions</div>
                     <div className="text-[10px] md:text-xs font-semibold tracking-wider uppercase opacity-75 mt-1">
-                      {locale === 'en' ? "EdTech Closed-Loop Pilot" : "에듀테크 파일럿 사용자"}
+                      {locale === 'en' ? "Documented Architecture Log" : "문서화된 의사결정 로그"}
                     </div>
                   </div>
                 </div>
@@ -708,14 +675,14 @@ function App() {
                     <div className="flex items-center gap-3">
                       <DeviceMobileIcon className="w-5 h-5 text-accent-gold shrink-0" />
                       <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold">
-                        {locale === 'en' ? "AI Product Management & Real-Time Voice" : "AI 제품 관리 & 실시간 음성 AI"}
+                        {locale === 'en' ? "Product Management & 0→1 AI" : "AI 프로덕트 관리 & 0→1 기획"}
                       </h4>
                     </div>
                     <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Direct WebRTC Voice AI & Push-to-Talk Turn Control</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Deterministic stepIndex Rubric Scoring & Fallbacks</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Stateless Magic Links & Automatic Token Rotation</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>AES-256-GCM Sensitive Data Encryption at Rest</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>PRD Authorship & Decision Logging (19 ADRs)</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>LLM Judge Architecture & Rubric Design</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Deterministic stepIndex Rubrics (0% Hallucination)</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Bilingual Product Design & UX (English / Korean)</li>
                     </ul>
                   </div>
 
@@ -724,14 +691,14 @@ function App() {
                     <div className="flex items-center gap-3">
                       <SettingsIcon className="w-5 h-5 text-accent-gold shrink-0" />
                       <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold">
-                        {locale === 'en' ? "Data, Models & Automation" : "데이터, 모델 & 자동화 아키텍처"}
+                        {locale === 'en' ? "Voice AI & LLM Systems" : "음성 AI & LLM 시스템 엔지니어링"}
                       </h4>
                     </div>
                     <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Gemini Flash 2.0 & Structured Output Schema</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Server-Side VAD & Barge-In Turn Interruption</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Airtable Relational Clustering & Make Routers</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Secure Express API Proxy & Webhook Controllers</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Direct WebRTC Voice AI & Push-to-Talk Turn Control</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>OpenAI Realtime API & Ephemeral Client Sessions</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Gemini 2.5 Flash / Pro Multimodal Vision Pipelines</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Stateless Magic Links & AES-256-GCM Encryption</li>
                     </ul>
                   </div>
 
@@ -740,14 +707,14 @@ function App() {
                     <div className="flex items-center gap-3">
                       <CreditCardIcon className="w-5 h-5 text-accent-gold shrink-0" />
                       <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold">
-                        {locale === 'en' ? "Monetization, Mobile & Deployments" : "수익화, 모바일 & 앱스토어 배포"}
+                        {locale === 'en' ? "Full-Stack, Mobile & Infrastructure" : "풀스택, 모바일 & 인프라 배포"}
                       </h4>
                     </div>
                     <ul className={`space-y-2 text-xs font-mono font-light leading-relaxed ${theme === 'dark' ? 'text-text-sec' : 'text-alpine-950/80'}`}>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>RevenueCat In-App Subscriptions Hub</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>App Store Connect & Google Play Console</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Capacitor SDK & Native Mobile Integrations</li>
-                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>React 18, Vite, TypeScript & Tailwind Ecosystem</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>React 19, Vite, TypeScript & Tailwind CSS</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>NestJS 11, Node.js 24, Prisma 7 & MariaDB</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Docker Compose, Caddy Reverse Proxy & AWS EC2</li>
+                      <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent-gold/60"></div>Capacitor (iOS/Android) & RevenueCat Subscriptions</li>
                     </ul>
                   </div>
                 </div>
@@ -1003,7 +970,7 @@ function App() {
 
       {/* MOBILE FLOATING BOTTOM NAVIGATION DOCK */}
       <nav 
-        className={`md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] rounded-full border px-3 py-2 flex items-center justify-around gap-1 w-[92%] max-w-[380px] backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] transition-all ${
+        className={`md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] rounded-full border px-2 py-1.5 flex items-center justify-around gap-1 w-[92%] max-w-[390px] backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] transition-all ${
           theme === 'dark' 
             ? 'bg-alpine-950/90 border-white/15 text-white' 
             : 'bg-white/95 border-black/15 text-alpine-950'
@@ -1013,7 +980,7 @@ function App() {
         <a 
           href="#portfolio" 
           onClick={scrollToSection('portfolio')} 
-          className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+          className={`flex-1 py-2.5 px-2 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all min-h-[44px] ${
             activeSection === 'portfolio'
               ? (theme === 'dark' ? 'bg-accent-gold text-alpine-950 shadow-md font-black' : 'bg-accent-clay text-white shadow-md font-black')
               : (theme === 'dark' ? 'text-white/70 hover:text-white' : 'text-alpine-950/70 hover:text-alpine-950')
@@ -1026,7 +993,7 @@ function App() {
         <a 
           href="#lab" 
           onClick={scrollToSection('lab')} 
-          className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+          className={`flex-1 py-2.5 px-2 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all min-h-[44px] ${
             activeSection === 'lab'
               ? (theme === 'dark' ? 'bg-accent-gold text-alpine-950 shadow-md font-black' : 'bg-accent-clay text-white shadow-md font-black')
               : (theme === 'dark' ? 'text-white/70 hover:text-white' : 'text-alpine-950/70 hover:text-alpine-950')
@@ -1039,7 +1006,7 @@ function App() {
         <a 
           href="#about" 
           onClick={scrollToSection('about')} 
-          className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+          className={`flex-1 py-2.5 px-2 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all min-h-[44px] ${
             activeSection === 'about'
               ? (theme === 'dark' ? 'bg-accent-gold text-alpine-950 shadow-md font-black' : 'bg-accent-clay text-white shadow-md font-black')
               : (theme === 'dark' ? 'text-white/70 hover:text-white' : 'text-alpine-950/70 hover:text-alpine-950')
@@ -1051,7 +1018,7 @@ function App() {
 
         <button 
           onClick={() => setIsChatOpen(true)}
-          className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+          className={`flex-1 py-2.5 px-2 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all min-h-[44px] ${
             isChatOpen
               ? 'bg-accent-gold text-alpine-950 shadow-md font-black'
               : (theme === 'dark' ? 'bg-white/10 text-accent-gold hover:bg-white/20' : 'bg-black/5 text-accent-clay hover:bg-black/10')
