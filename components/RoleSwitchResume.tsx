@@ -10,8 +10,8 @@ export const RESUME_DATA = {
   header: {
     name: "JASON BENJAMIN",
     title: {
-      en: "AI Product Manager — Generative AI & B2B SaaS",
-      ko: "AI 프로덕트 매니저 — 생성형 AI & B2B SaaS"
+      en: "AI Product Manager & Engineer — Voice AI · LLM Systems · B2B SaaS",
+      ko: "AI 프로덕트 매니저 & 엔지니어 — 음성 AI · LLM 시스템 · B2B SaaS"
     },
     contact: {
       email: "jsn.benjamin@gmail.com",
@@ -24,90 +24,98 @@ export const RESUME_DATA = {
     }
   },
   profile: {
-    en: "AI Product Manager with 6 production AI systems shipped and enterprise B2B SaaS experience across voice AI, LLM evaluation frameworks, and automated workflow pipelines — with a measurable track record: 80% reduction in administrative workloads and complex scheduling cut from 40 hours to 10 minutes.\n\nKnown for translating ambiguous technical requirements into clear PRDs and product decisions — running customer discovery, iterating on prompt experiments and UI flows, and coordinating across engineering, design, sales, and executive stakeholders to ship 0-to-1 products fast. Deep domain expertise in the South Korean education and B2B market, with bilingual (EN/KR) product and GTM experience.",
-    ko: "6개의 상용 AI 시스템 배포 및 음성 AI, LLM 평가 프레임워크, 자동화 워크플로우 파이프라인 전반의 엔터프라이즈 B2B SaaS 경험을 보유한 AI 프로덕트 매니저입니다 — 행정 업무 80% 절감 및 복잡한 스케줄링 40시간에서 10분 단축이라는 검증된 성과를 입증했습니다.\n\n모호한 기술 요구사항을 명확한 PRD와 프로덕트 의사결정으로 구체화하는 데 강점이 있으며, 고객 인터뷰 및 디스커버리, 프롬프트 실험 및 UI 흐름 반복 최적화, 엔지니어링·디자인·영업·경영진 이해관계자 조율을 통해 0-to-1 제품을 빠르게 출시합니다. 한국 교육 및 B2B 시장에 대한 깊은 도메인 전문성과 이중언어(EN/KR) 프로덕트 및 GTM 역량을 갖추고 있습니다."
+    en: "Sole engineer and product owner who shipped a production voice-AI interview platform from zero — realtime WebRTC voice pipeline, LLM evaluation engine, admin console, security hardening, and full deployment — in under four weeks. Also built and launched six AI products for Korean education markets independently, with a documented 19-entry product decision log across both portfolios.\n\nWrites PRDs, runs customer discovery, makes and defends architecture trade-offs in writing, and owns the full path from problem to production. Known for rejecting features that don't close a real user gap — and documenting why. Bilingual EN/KR product experience across consumer mobile, B2B SaaS, and enterprise AI contexts.",
+    ko: "실시간 WebRTC 음성 파이프라인, LLM 평가 엔진, 어드민 콘솔, 보안 하드닝 및 전체 배포까지 프로덕션 음성 AI 인터뷰 플랫폼을 4주 만에 0에서 1인으로 구축·배포한 엔지니어 겸 프로덕트 오너입니다. 또한 한국 교육 시장을 위한 6개 AI 프로덕트를 독립 구축·출시하였으며 두 포트폴리오 전반에 걸쳐 19개의 문서화된 프로덕트 의사결정 로그를 보유하고 있습니다.\n\nPRD 작성, 고객 디스커버리 수행, 아키텍처 트레이드오프 문서화 및 방어를 주도하며 문제 정의부터 프로덕션 배포까지 전 과정을 직접 책임집니다. 실제 사용자 문제를 해결하지 않는 불필요한 기능은 과감히 배제하고 그 이유를 문서화합니다. B2C 모바일, B2B SaaS, 엔터프라이즈 AI 맥락 전반에서 검증된 한/영 이중언어 제품 개발 역량을 갖추고 있습니다."
   },
   skills: {
     productAi: {
       label: { en: "Product & AI", ko: "프로덕트 & AI" },
       items: [
-        "AI Product Strategy", "PRD Authorship", "0-to-1 Product Development", "Customer Discovery",
-        "User Research", "Prompt Experimentation", "A/B Testing", "Go-to-Market",
+        "PRD Authorship", "0-to-1 Product Development", "Customer Discovery", "User Research",
+        "Documented Decision-Making", "Prompt Experimentation", "A/B Testing", "Go-to-Market",
         "Cross-Functional Collaboration", "Stakeholder Management", "B2B SaaS", "Enterprise AI SaaS",
         "RBAC", "Agile", "OKRs", "Retention & Churn Analysis", "LLM Judge Architecture",
         "Deterministic AI Evaluation", "Prompt Engineering", "Structured JSON Outputs",
-        "Hallucination Mitigation", "Bilingual AI (EN/KR)"
+        "Hallucination Mitigation", "Bilingual Product Design (EN/KR)"
       ]
     },
     toolsInfra: {
-      label: { en: "Tools & Infra", ko: "도구 & 인프라" },
+      label: { en: "Engineering & Infra", ko: "엔지니어링 & 인프라" },
       items: [
-        "OpenAI Realtime API (gpt-4o-realtime-preview)", "GPT-4o", "Gemini AI", "Claude AI", "WebRTC",
-        "Socket.io", "NestJS 11", "Node.js 24", "Prisma 7", "MariaDB", "Docker Compose",
-        "AWS EC2", "Nginx", "Passport JWT", "AES-256-GCM", "React", "TypeScript",
-        "Firebase", "Supabase (PostgreSQL, RLS)", "Make.com", "Airtable", "Softr", "Vercel"
+        "OpenAI Realtime API (WebRTC)", "GPT-4o", "Gemini 2.5 Flash/Pro", "React 19", "TypeScript",
+        "Vite", "NestJS 11", "Node.js 24", "Prisma 7", "MariaDB", "Firebase/Firestore",
+        "Firestore Security Rules", "Capacitor (iOS/Android)", "RevenueCat", "Docker/Compose",
+        "Caddy", "AWS EC2", "Upstash Redis", "GitHub Actions", "Vitest", "Sentry",
+        "Make.com", "Airtable", "Vercel Serverless"
       ]
     }
   },
   experience: {
     vodabi: {
       title: {
-        en: "AI Product Manager (Internship)",
-        ko: "AI 프로덕트 매니저 (인턴십)"
+        en: "AI Product Manager & Engineer",
+        ko: "AI 프로덕트 매니저 & 엔지니어"
       },
       company: {
-        en: "VodaBi (Enterprise B2B SaaS · Confidential / NDA)",
-        ko: "VodaBi (엔터프라이즈 B2B SaaS · 비공개 / NDA 준수)"
+        en: "VodaBi",
+        ko: "VodaBi"
       },
       period: {
-        en: "July 2026 – Present",
+        en: "Jul 2026 – Present",
         ko: "2026년 7월 – 현재"
       },
       sub: {
-        en: "Enterprise B2B conversational AI coaching and automated sales evaluation platform · Seoul",
-        ko: "엔터프라이즈 B2B 대화형 AI 코칭 및 자동 판매 평가 플랫폼 · 서울"
+        en: "VODABI — AI voice interview practice platform · Solo build · Production-deployed · 39 commits · 85 backend modules",
+        ko: "VODABI — AI 음성 인터뷰 연습 플랫폼 · 1인 개발 0→프로덕션 완성 · 39개 커밋 배포 · 85개 백엔드 모듈"
       },
       bullets: [
         {
-          tag: { en: "Product Pivot & Roadmap", ko: "제품 피봇 & 로드맵" },
+          tag: { en: "Voice Pipeline", ko: "음성 파이프라인" },
           text: {
-            en: "Authored the PRD for \"VOISOR\" — a greenfield 0-to-1 pivot from a legacy analytics dashboard to a 3-step AI coaching widget (Role Selection → Upload → Chat). Mapped a phased rollout from stateless MVP to stateful enterprise architecture; ran structured customer discovery sessions via Wizard of Oz prototyping with executive stakeholders to validate UX before committing engineering resources.",
-            ko: "\"VOISOR\" PRD 작성 — 레거시 분석 대시보드에서 3단계 AI 코칭 위젯(역할 선택 → 업로드 → 대화)으로의 0-to-1 신규 피봇 주도. 상태 비저장 MVP에서 상태 유지 엔터프라이즈 아키텍처로의 단계별 로드맵 수립; 개발 자원 투입 전 경영진 대상 Wizard of Oz 프로토타이핑 고객 디스커버리를 통해 UX 검증."
+            en: "Migrated live voice roleplay from a server-relayed model to a direct browser-to-OpenAI WebRTC connection (OpenAI Realtime API), removing the backend from the live audio path entirely — cutting a network hop out of every conversation turn and eliminating the server as a latency bottleneck.",
+            ko: "실시간 음성 롤플레이를 서버 중계형에서 브라우저-OpenAI 간 직접 WebRTC 연결(OpenAI Realtime API)로 전환하여 백엔드를 실시간 오디오 경로에서 완전히 배제 — 매 대화 턴의 네트워크 홉을 제거하고 백엔드 지연 병목을 해소."
           }
         },
         {
-          tag: { en: "Voice AI Pipeline", ko: "음성 AI 파이프라인" },
+          tag: { en: "LLM Evaluation Engine", ko: "LLM 평가 엔진" },
           text: {
-            en: "Architected a direct WebRTC voice stream using NestJS ephemeral session tokens and gpt-realtime-mini, implementing deliberate push-to-talk turn control to prevent ambient background noise from burning OpenAI token quotas while reducing voice unit costs by ~3x.",
-            ko: "NestJS 임시 세션 토큰 및 gpt-realtime-mini 기반 Direct WebRTC 음성 스트림 아키텍처 설계 — 주변 배경 잡음으로 인한 OpenAI 토큰 과소비를 방지하고 음성 단위 비용을 ~3배 절감하는 의도적 Push-to-Talk 턴 제어 구현."
+            en: "Built a post-call scoring pipeline (transcript → GPT-4o → structured per-criterion scores) graded against an admin-configurable rubric — hardened the grading prompt to enforce deterministic, Korean-only output and full transcript coverage, closing a prompt-level bug class where partial transcripts silently produced inconsistent scores.",
+            ko: "통화 후 트랜스크립트를 어드민 설정 루브릭에 맞춰 GPT-4o로 심사하여 기준별 구조화 점수를 산출하는 사후 채점 파이프라인 구축 — 한국어 전용 출력과 전체 대화록 커버리지를 강제하도록 프롬프트 하드닝을 적용하여 불완전 트랜스크립트로 인한 채점 불일치 버그를 원천 차단."
           }
         },
         {
-          tag: { en: "Deterministic Evaluation Engine", ko: "결정론적 평가 엔진" },
+          tag: { en: "Product Decision — Live Scoring", ko: "프로덕트 결정 — 실시간 채점" },
           text: {
-            en: "Designed an async post-call scoring pipeline using gpt-4o structured outputs across tiered 11-to-24-point competency rubrics, BANTCQ sales discovery telemetry, and WPM speech metrics, backed by defensive fallback handling (createDefaultEvaluation) to guarantee 100% pipeline resilience.",
-            ko: "시나리오별 다계층 11~24개 역량 루브릭, BANTCQ 세일즈 디스커버리 텔레메트리, WPM 발화 속도 지표를 심사하는 gpt-4o 비동기 사후 채점 파이프라인 설계 — 방어적 폴백 핸들링(createDefaultEvaluation)으로 100% 파이프라인 안정성 확보."
+            en: "Made and defended a documented build/no-build call against real-time per-turn AI scoring, on cost, latency, and user-honesty grounds — shipped a client-side progress indicator instead of a fabricated live score.",
+            ko: "비용, 레이턴시, 사용자 정직성을 근거로 실시간 턴당 AI 채점에 대한 명확한 개발 보류(no-build) 결정을 내리고 문서화 — 가짜 실시간 점수 대신 클라이언트 측 진행 지표를 제공."
           }
         },
         {
-          tag: { en: "Security & Access Architecture", ko: "보안 & 접근 아키텍처" },
+          tag: { en: "Admin Console & Scenario System", ko: "어드민 콘솔 & 시나리오 시스템" },
           text: {
-            en: "Designed multi-tier RBAC (SUPER_ADMIN/ADMIN/MANAGER) via NestJS Guards and Passport JWT, stateless magic links with automatic token rotation on re-invite (candidate.service.ts), and a zero-dependency AES-256-GCM PII encryption module.",
-            ko: "NestJS Guards 및 Passport JWT 기반 다단계 RBAC(SUPER_ADMIN/ADMIN/MANAGER), 재초대 시 토큰 자동 로테이션(candidate.service.ts)을 지원하는 무상태 매직링크, 제로 디펜던시 AES-256-GCM PII 암호화 모듈 설계."
+            en: "Built a full backoffice for non-engineers to create interview personas, scenario types, and scoring tiers without touching code — the difference between a one-off demo and a tool a product team can operate.",
+            ko: "비엔지니어가 코드 수정 없이 면접 페르소나, 시나리오 유형, 채점 티어를 직접 생성·관리하는 통합 백오피스 구축 — 일회성 데모와 프로덕트 팀이 지속 운영 가능한 도구 간의 결정적 차이 달성."
           }
         },
         {
-          tag: { en: "Infrastructure & Handover", ko: "인프라 & 벤더 핸드오버" },
+          tag: { en: "Security Hardening", ko: "보안 하드닝" },
           text: {
-            en: "Provisioned an AWS EC2 (ARM64) staging environment — Node.js 24, NestJS 11, Prisma 7 (driver-adapter model) over MariaDB, Docker Compose, Nginx. Authored full vendor handover documentation covering DNS, system architecture, and migration protocol with zero engineering escalations.",
-            ko: "AWS EC2(ARM64) 스테이징 환경 구축 — Node.js 24, NestJS 11, Prisma 7(드라이버 어댑터 모델) 기반 MariaDB, Docker Compose, Nginx. 엔지니어링 에스컬레이션 없이 DNS, 시스템 아키텍처, 마이그레이션 프로토콜을 다루는 종합 벤더 핸드오버 문서 작성."
+            en: "Ran two independent security passes on a system handling candidate PII — field-level encryption at rest, JWT/token hardening, CORS lockdown, DTO validation, role-freshness checks, auth race condition fixes — ahead of any incident, not as cleanup.",
+            ko: "후보자 PII를 다루는 시스템에 대해 2회에 걸친 독립 보안 감사 완결 — 저장 시 AES-256-GCM 필드 레벨 암호화, JWT/토큰 하드닝, CORS 엄격 제한, DTO 검증, 권한 신선도 검사, 인증 레이스 컨디션 해결을 인시던트 발생 전 선제 조치."
           }
         },
         {
-          tag: { en: "GTM & Client Enablement", ko: "GTM & 엔터프라이즈 지원" },
+          tag: { en: "Infrastructure", ko: "인프라 & 배포" },
           text: {
-            en: "Built strategic positioning materials and aligned AI coaching features to existing revenue reports, directly supporting high-stakes B2B sales demonstrations for Tier-1 enterprise clients including BNK.",
-            ko: "전략적 포지셔닝 자료 구축 및 기존 매출 리포트와 AI 코칭 기능 연계, BNK를 포함한 Tier-1 엔터프라이즈 고객 대상 고부가가치 B2B 영업 시연 직접 지원."
+            en: "Containerized full-stack (Docker/Compose), Caddy reverse proxy with automatic HTTPS, healthchecks, resource limits, loopback-only DB ports, log retention caps, DB backup script. Own the full deploy cycle: build → registry push → SSH → rollout → health verify on AWS EC2.",
+            ko: "풀스택 컨테이너화(Docker/Compose), Caddy 자동 HTTPS 역방향 프록시, 헬스체크, 리소스 제한, 루프백 전용 DB 포트, 로그 보존 한도, DB 자동 백업 스크립트 구축. AWS EC2 상에서 빌드 → 레지스트리 푸시 → SSH → 롤아웃 → 헬스 검증의 전체 배포 사이클 전담 소유."
+          }
+        },
+        {
+          tag: { en: "UX Rebuild", ko: "UX 재설계" },
+          text: {
+            en: "Rebuilt self-practice flow from a Figma spec — countdown, live progress, gamified report with XP/badges/ranking. Root-caused a silent data-loss bug (mic permission requested after the countdown, not before) by tracing backend logs rather than guessing from symptoms.",
+            ko: "Figma 스펙에 맞춘 자가 연습 플로우 재구축 — 카운트다운, 실시간 프로그레스, 게이미피케이션 리포트(XP/배지/랭킹). 백엔드 로그 추적을 통해 마이크 권한이 카운트다운 후 요청되어 발생하던 무음 데이터 유실 버그의 근본 원인을 해결."
           }
         }
       ]
@@ -126,64 +134,121 @@ export const RESUME_DATA = {
         ko: "2024년 1월 – 현재"
       },
       sub: {
-        en: "6-product AI suite for South Korean language academies and families · Seoul — greenfield 0-to-1 across all products",
-        ko: "한국 어학원 및 가정을 위한 6개 AI 제품 스위트 · 서울 — 전 제품 0-to-1 신규 기획 및 구축"
+        en: "AI homework grading and teacher/parent report loop for Korean English academies · Web · iOS · Android",
+        ko: "한국 어학원을 위한 AI 숙제 채점 및 교사/학부모 피드백 루프 · Web · iOS · Android"
       },
       bullets: [
         {
-          tag: { en: "B2B Command Center", ko: "B2B Command Center" },
+          tag: { en: "Core Loop", ko: "핵심 루프" },
           text: {
-            en: "Authored the PRD and shipped a Make.com + Gemini AI pipeline converting exception-first teacher observations into bilingual parent notes with Korean honorific formatting — cutting staff reporting time by 80% across academy networks. Iterated on prompt versions and UI flows based on academy director feedback to improve note quality and adoption.",
-            ko: "PRD 작성 및 교사의 예외 중심 관찰 기록을 한국어 존댓말 양식의 이중언어 학부모 알림장으로 변환하는 Make.com + Gemini AI 파이프라인 출시 — 학원 네트워크 전반의 직원 리포팅 시간 80% 절감. 학원장 피드백을 기반으로 프롬프트 버전 및 UI 흐름을 지속 반복하여 알림장 품질과 도입률 향상."
+            en: "Designed a closed parent → teacher → director pipeline: a parent scans homework against a teacher-uploaded answer key (OCR'd into Firestore, not AI-guessed), gets instant bilingual grading in under 5 seconds, mistakes aggregate to a class-level gap view, and the teacher logs the day — with a KT human-confirmation step before any AI-drafted content reaches a parent.",
+            ko: "학부모 → 교사 → 원장으로 이어지는 폐쇄 파이프라인 설계: 교사가 사전 등록한 정답지(Firestore OCR 저장, AI 임의 추측 배제)와 대조해 5초 미만 즉각 이중언어 채점 제공, 오답 패턴을 학급 단위 취약점 뷰로 집계, 한국인 교사의 사전 검토(KT 확인) 후 학부모에게 최종 전달."
           }
         },
         {
-          tag: { en: "EduPlanner Pro", ko: "EduPlanner Pro" },
+          tag: { en: "Grounded Grading", ko: "정답지 기반 채점" },
           text: {
-            en: "Built a two-tier LLM scheduling engine (Gemini Pro for recursive conflict resolution, Gemini Flash for foundational grid generation) with API resilience and automatic model fallback — cutting 40 hours of manual term scheduling to a 10-minute automated run.",
-            ko: "40시간 소요되던 수기 학기 스케줄링을 10분 자동화 실행으로 단축하는 2계층 LLM 스케줄링 엔진(Gemini Pro 재귀 충돌 해결 + Gemini Flash 기초 그리드 생성) 및 API 탄력성/자동 모델 폴백 구축."
+            en: "Built a multimodal grading pipeline (Gemini 2.5 Flash/Pro vision) that grounds every correction in the class's actual answer key rather than model inference — the core differentiator versus generic homework-scanning apps. Structured JSON output via constrained responseSchema; safety-threshold tuned prompts.",
+            ko: "일반 숙제 스캔 앱과 차별화되는 핵심으로, 모델 추론이 아닌 실제 학급 정답지에 모든 채점을 앵커링하는 멀티모달 채점 파이프라인(Gemini 2.5 Flash/Pro 비전) 구축. 제약된 responseSchema 기반 구조화 JSON 출력 및 안전 임계값 튜닝 프롬프트 적용."
           }
         },
         {
-          tag: { en: "Chekki Teacher", ko: "Chekki Teacher" },
+          tag: { en: "Product Decisions", ko: "프로덕트 의사결정" },
           text: {
-            en: "Shipped a live curriculum pre-seeding tool — teachers define AI response boundaries before parents check student homework, reducing hallucination risk at the architecture level. Includes cross-session mistake-pattern tracking and automated parent report generation to support teacher retention decisions.",
-            ko: "교사가 사전에 AI 응답 경계를 정의하여 학부모 과제 확인 시 아키텍처 수준에서 환각 위험을 방지하는 실시간 커리큘럼 사전 주입 도구 출시. 교사의 재등록 결정 지원을 위한 세션 간 오답 패턴 추적 및 자동 학부모 리포트 생성 포함."
+            en: "Maintained a 19-entry architecture/product decision log — including rejecting a unified FT chatbot after mapping actual user friction, cutting five scope-creep features in a stabilization pass, and removing a community feed that contained fabricated placeholder posts (flagged as an honesty problem, not just clutter).",
+            ko: "19개의 아키텍처/제품 의사결정 로그 관리 — 실제 사용자 마찰 매핑 후 원어민 교사용 통합 챗봇 기각, 안정화 패스에서 5개 잉여 기능 정리, 가짜 게시물이 포함된 커뮤니티 피드 제거(단순 군더더기가 아닌 데이터 정직성 이슈로 식별)."
           }
         },
         {
-          tag: { en: "Chekki AI (App Store)", ko: "Chekki AI (App Store)" },
+          tag: { en: "Infrastructure Constraint", ko: "인프라 제약 극복" },
           text: {
-            en: "Led end-to-end product lifecycle for a bilingual AI homework assistant — zero-storage COPPA-compliant architecture, bilingual EN/KR go-to-market executed across TikTok, Instagram, and Kakao channels.",
-            ko: "이중언어 AI 과제 도우미를 위한 엔드투엔드 제품 라이프사이클 총괄 — 제로 스토리지 COPPA 준수 아키텍처, 틱톡, 인스타그램, 카카오 채널 전반에서 실행된 이중언어(EN/KR) GTM."
+            en: "Engineered around Vercel Hobby's 12-function ceiling by consolidating nearly every AI task and four redundant endpoints into shared serverless functions — without breaking already-shipped native mobile builds, via URL-preserving rewrites in vercel.json.",
+            ko: "거의 모든 AI 작업과 4개의 중복 엔드포인트를 공유 서버리스 함수로 통합하여 Vercel Hobby의 12개 함수 한도를 극복 — vercel.json URL 리라이트를 통해 기배포된 네이티브 모바일 앱의 호환성을 100% 유지."
           }
         },
         {
-          tag: { en: "Benchmark AI", ko: "Benchmark AI" },
+          tag: { en: "Refactor & CI", ko: "리팩토링 & CI 파이프라인" },
           text: {
-            en: "Designed a continuous ESL assessment platform mapping real-time student mastery to CEFR and Cambridge YLE standards — predictive churn alerts surface at-risk students to academy directors before retention decisions are made, using longitudinal assessment data to drive intervention timing.",
-            ko: "실시간 학생 학업 성취도를 CEFR 및 Cambridge YLE 표준에 매핑하는 지속적 ESL 평가 플랫폼 설계 — 종단적 평가 데이터를 활용하여 퇴원 결정 전 이탈 위험 학생을 학원장에게 사전 경고하고 개입 타이밍 유도."
+            en: "Split a 4,678-line multi-role monolith (TeacherPage.tsx) into role-scoped hooks and shells across six shipped phases with zero functional regressions. Introduced the codebase's first CI pipeline (typecheck/test/lint/build on every PR) and Vitest suite.",
+            ko: "4,678줄 규모의 다역할 모놀리스(TeacherPage.tsx)를 6단계에 걸쳐 역할별 훅과 셸 컴포넌트로 기능 오류 없이 무결점 분리. 코드베이스 최초의 CI 파이프라인(모든 PR 대상 타입체크/테스트/린트/빌드) 및 Vitest 테스트 스위트 도입."
+          }
+        },
+        {
+          tag: { en: "Cross-Platform", ko: "크로스 플랫폼" },
+          text: {
+            en: "Shipped to web, iOS, and Android from one codebase (React 19 + Capacitor) with full Korean/English parity as a hard non-functional requirement, native subscription billing (RevenueCat + Apple Server API), and multi-provider auth (Apple, Google, Kakao).",
+            ko: "단일 코드베이스(React 19 + Capacitor)로 웹, iOS, 안드로이드 동시 출시 — 한/영 완전 동등성을 필수 비기능 요구사항으로 준수, 네이티브 구독 결제(RevenueCat + Apple Server API) 및 다중 간편 인증(애플, 구글, 카카오) 연동."
           }
         }
       ]
     },
-    domain: {
+    blend: {
       title: {
-        en: "Domain & Pedagogical Foundations",
-        ko: "도메인 & 교수법적 기반"
+        en: "Curriculum Lead & Senior Educator",
+        ko: "커리큘럼 리드 & 수석 강사"
       },
       company: {
-        en: "Blend ENG Academy · YBM PSA Seocho",
-        ko: "Blend ENG Academy · YBM PSA 서초"
+        en: "Blend ENG Academy · Seoul",
+        ko: "Blend ENG Academy · 서울"
       },
       period: {
-        en: "Feb 2019 – Feb 2026",
-        ko: "2019년 2월 – 2026년 2월"
+        en: "Feb 2023 – Feb 2026",
+        ko: "2023년 2월 – 2026년 2월"
       },
-      bullet: {
-        en: "10 years of EFL instruction and curriculum leadership in Seoul: sole author of a 20-volume commercial English textbook series, designer of diagnostic assessment systems for 100+ students, and homeroom manager handling bilingual parent communication — the domain expertise powering every Chekki EdTech product.",
-        ko: "서울에서의 10년 EFL 교육 및 커리큘럼 리더십: 20권 분량의 상용 영어 교재 시리즈 단독 저술, 100명 이상 학생 대상 진단 평가 시스템 설계, 이중언어 학부모 소통을 총괄한 담임 관리 — 모든 Chekki EdTech 제품을 뒷받침하는 핵심 도메인 전문성."
-      }
+      sub: {
+        en: "Private English academy · Kindergarten through Elementary · Senior educator, curriculum designer, and AI content producer",
+        ko: "프라이빗 어학원 · 유치부 및 초등부 · 수석 강사, 커리큘럼 디자이너 및 AI 콘텐츠 기획"
+      },
+      bullets: [
+        {
+          tag: { en: "Commercial Curriculum Series", ko: "상용 교재 시리즈 개발" },
+          text: {
+            en: "Designed and produced a 20-volume commercial English curriculum series using AI tools and Canva — from content architecture and lesson sequencing to print-ready layout — now commercially sold through the institution and in active daily classroom use. Applied AI-assisted content production workflows to cut production time while maintaining pedagogical rigour across 6 skill domains.",
+            ko: "AI 도구와 Canva를 활용해 20권 분량의 상용 영어 교재 시리즈 기획 및 제작 — 콘텐츠 아키텍처, 레슨 시퀀싱부터 인쇄용 레이아웃까지 완성하여 학원을 통해 상용 판매 및 매일 실제 수업에 사용. 6개 역량 영역 전반의 교육학적 엄밀성을 유지하면서 AI 기반 워크플로우로 제작 기간을 대폭 단축."
+          }
+        },
+        {
+          tag: { en: "Diagnostic Benchmark System", ko: "진단 벤치마크 평가 시스템" },
+          text: {
+            en: "Built a school-wide diagnostic benchmark assessment system enabling data-driven identification of learning gaps and targeted intervention for 100+ students — the direct product precedent for Chekki's Benchmark AI.",
+            ko: "100명 이상의 학생을 대상으로 데이터 기반 학습 결손 식별 및 맞춤형 지도를 가능케 하는 원내 진단 벤치마크 평가 시스템 구축 — Chekki의 Benchmark AI 제품의 직접적 모태."
+          }
+        },
+        {
+          tag: { en: "Bilingual Operations", ko: "이중언어 학부모 소통 & 운영" },
+          text: {
+            en: "Managed bilingual parent communication (EN/KR), progress reporting, and homeroom operations — the real-world context informing every parent-facing UX decision in Chekki products.",
+            ko: "한/영 이중언어 학부모 상담, 성취도 리포팅, 담임 학급 운영 총괄 — Chekki 제품군의 모든 학부모 대상 UX 의사결정을 뒷받침하는 현장 도메인 맥락 확립."
+          }
+        }
+      ]
+    },
+    ybm: {
+      title: {
+        en: "Homeroom Educator",
+        ko: "담임 교사 (Homeroom Educator)"
+      },
+      company: {
+        en: "YBM PSA Seocho · Seoul",
+        ko: "YBM PSA 서초 · 서울"
+      },
+      period: {
+        en: "Feb 2019 – Feb 2023",
+        ko: "2019년 2월 – 2023년 2월"
+      },
+      sub: {
+        en: "Full-immersion EFL instruction · One of Seoul's largest English kindergartens",
+        ko: "몰입형 영어 교육 · 서울 최대 규모 프리미엄 영어 유치부"
+      },
+      bullets: [
+        {
+          tag: { en: "Immersive Instruction", ko: "몰입형 교육 & 도메인 전문성" },
+          text: {
+            en: "Four years of full-immersion EFL instruction — building the Korean market domain expertise and bilingual communication instincts behind every Chekki product decision.",
+            ko: "4년간의 전일제 몰입형 영어 교육 전담 — Chekki의 모든 제품 의사결정을 이끄는 한국 교육 시장 도메인 전문성과 이중언어 소통 감각 구축."
+          }
+        }
+      ]
     }
   },
   education: [
@@ -370,29 +435,80 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
             </ul>
           </div>
 
-          {/* 3. DOMAIN & PEDAGOGICAL FOUNDATIONS */}
-          <div className={`p-5 sm:p-7 rounded-2xl border transition-all space-y-3 ${
+          {/* 3. BLEND ENG ACADEMY */}
+          <div className={`p-5 sm:p-7 rounded-2xl border transition-all space-y-4 ${
             isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
           }`}>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-white/10">
               <div>
                 <h4 className="text-base font-bold text-accent-gold font-display">
-                  {data.experience.domain.title[locale]}
+                  {data.experience.blend.title[locale]}
                 </h4>
                 <span className={`text-xs sm:text-sm font-semibold block ${isDark ? 'text-white/90' : 'text-alpine-950'}`}>
-                  {data.experience.domain.company[locale]}
+                  {data.experience.blend.company[locale]}
                 </span>
               </div>
               <span className="text-xs font-mono opacity-60 shrink-0 text-accent-gold font-bold">
-                {data.experience.domain.period[locale]}
+                {data.experience.blend.period[locale]}
               </span>
             </div>
 
-            <p className={`text-xs sm:text-[13px] leading-relaxed font-light ${
-              isDark ? 'text-white/80' : 'text-neutral-800'
-            }`}>
-              – {data.experience.domain.bullet[locale]}
+            <p className={`text-xs font-medium italic ${isDark ? 'text-white/70' : 'text-neutral-600'}`}>
+              {data.experience.blend.sub[locale]}
             </p>
+
+            <ul className="space-y-3 pt-1">
+              {data.experience.blend.bullets.map((b, idx) => (
+                <li key={idx} className="space-y-1">
+                  <div className="text-xs font-bold text-accent-gold font-mono flex items-center gap-1.5">
+                    <span>–</span> <span>{b.tag[locale]}:</span>
+                  </div>
+                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light ${
+                    isDark ? 'text-white/80' : 'text-neutral-800'
+                  }`}>
+                    {b.text[locale]}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 4. YBM PSA SEOCHO */}
+          <div className={`p-5 sm:p-7 rounded-2xl border transition-all space-y-4 ${
+            isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
+          }`}>
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-white/10">
+              <div>
+                <h4 className="text-base font-bold text-accent-gold font-display">
+                  {data.experience.ybm.title[locale]}
+                </h4>
+                <span className={`text-xs sm:text-sm font-semibold block ${isDark ? 'text-white/90' : 'text-alpine-950'}`}>
+                  {data.experience.ybm.company[locale]}
+                </span>
+              </div>
+              <span className="text-xs font-mono opacity-60 shrink-0 text-accent-gold font-bold">
+                {data.experience.ybm.period[locale]}
+              </span>
+            </div>
+
+            <p className={`text-xs font-medium italic ${isDark ? 'text-white/70' : 'text-neutral-600'}`}>
+              {data.experience.ybm.sub[locale]}
+            </p>
+
+            <ul className="space-y-3 pt-1">
+              {data.experience.ybm.bullets.map((b, idx) => (
+                <li key={idx} className="space-y-1">
+                  <div className="text-xs font-bold text-accent-gold font-mono flex items-center gap-1.5">
+                    <span>–</span> <span>{b.tag[locale]}:</span>
+                  </div>
+                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light ${
+                    isDark ? 'text-white/80' : 'text-neutral-800'
+                  }`}>
+                    {b.text[locale]}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </div>
 
         </div>
@@ -631,18 +747,43 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
           </ul>
         </div>
 
-        {/* DOMAIN */}
+        {/* BLEND ENG ACADEMY */}
         <div className="print-exp-block">
           <div className="print-exp-header">
             <div>
-              <span className="print-title">{data.experience.domain.title[locale]}</span>
+              <span className="print-title">{data.experience.blend.title[locale]}</span>
               <span style={{ color: '#1D4ED8', fontWeight: 700 }}> · </span>
-              <span className="print-company">{data.experience.domain.company[locale]}</span>
+              <span className="print-company">{data.experience.blend.company[locale]}</span>
             </div>
-            <span className="print-dates">{data.experience.domain.period[locale]}</span>
+            <span className="print-dates">{data.experience.blend.period[locale]}</span>
           </div>
+          <div className="print-subtitle">{data.experience.blend.sub[locale]}</div>
           <ul>
-            <li>– {data.experience.domain.bullet[locale]}</li>
+            {data.experience.blend.bullets.map((b, idx) => (
+              <li key={idx}>
+                – <strong>{b.tag[locale]}:</strong> {b.text[locale]}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* YBM PSA SEOCHO */}
+        <div className="print-exp-block">
+          <div className="print-exp-header">
+            <div>
+              <span className="print-title">{data.experience.ybm.title[locale]}</span>
+              <span style={{ color: '#1D4ED8', fontWeight: 700 }}> · </span>
+              <span className="print-company">{data.experience.ybm.company[locale]}</span>
+            </div>
+            <span className="print-dates">{data.experience.ybm.period[locale]}</span>
+          </div>
+          <div className="print-subtitle">{data.experience.ybm.sub[locale]}</div>
+          <ul>
+            {data.experience.ybm.bullets.map((b, idx) => (
+              <li key={idx}>
+                – <strong>{b.tag[locale]}:</strong> {b.text[locale]}
+              </li>
+            ))}
           </ul>
         </div>
 

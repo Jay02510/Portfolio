@@ -23,9 +23,9 @@ export interface ProjectExtended extends Project {
 
 export const PORTFOLIO_DATA = {
   name: "Jason Benjamin",
-  role: "AI Product Manager & EdTech Founder",
+  role: "AI Product Manager & Engineer — Voice AI · LLM Systems · B2B SaaS",
   profileImageUrl: "https://res.cloudinary.com/dginphpy4/image/upload/v1769135697/IMG_2852_p7w0p4.jpg",
-  bio: "0→1 AI Product Manager bridging enterprise B2B SaaS (Voice-AI screening & deterministic LLM evaluation) with production-grade EdTech ecosystems. Turning operational friction into measurable workflow velocity.",
+  bio: "0→1 AI Product Manager & Engineer who shipped a production voice-AI interview platform from zero (realtime WebRTC, deterministic LLM evaluation, security hardening, AWS EC2 deploy) and 6 independent Korean EdTech AI products with a 19-entry product decision log.",
   skills: [
     { name: "Product Strategy & PRDs", level: 98, category: "Design" },
     { name: "Voice-AI & LLM Judges", level: 95, category: "AI/ML" },
@@ -39,7 +39,7 @@ export const PORTFOLIO_DATA = {
     { label: "Parent & Teacher Interactions", value: "1,200+ Worksheets Evaluated", icon: "target" }
   ],
   en: {
-    bio: "0→1 AI Product Manager bridging enterprise B2B SaaS (Voice-AI screening & deterministic LLM evaluation) with production-grade EdTech ecosystems. Turning operational friction into measurable workflow velocity.",
+    bio: "0→1 AI Product Manager & Engineer who shipped a production voice-AI interview platform from zero (realtime WebRTC, deterministic LLM evaluation, security hardening, AWS EC2 deploy) and 6 independent Korean EdTech AI products with a 19-entry product decision log.",
     projects: [
       {
         id: "vodabi",
@@ -218,7 +218,7 @@ export const PORTFOLIO_DATA = {
     ]
   },
   ko: {
-    bio: "엔터프라이즈 B2B SaaS(음성 AI 스크리닝 & 결정론적 LLM 평가)와 0→1 에듀테크 프로덕트 생태계를 구축한 AI 프로덕트 매니저입니다. 복잡한 운영 병목을 측정 가능한 업무 속도로 전환합니다.",
+    bio: "실시간 WebRTC 음성 파이프라인, LLM 평가 엔진, 보안 하드닝 및 AWS EC2 배포까지 프로덕션 음성 AI 인터뷰 플랫폼을 1인 구축하고, 19개 의사결정 로그를 갖춘 6개 한국 에듀테크 AI 프로덕트를 출시한 0→1 AI 프로덕트 매니저 & 엔지니어입니다.",
     projects: [
       {
         id: "vodabi",

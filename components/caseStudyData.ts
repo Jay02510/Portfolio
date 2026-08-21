@@ -2,96 +2,102 @@ import { CaseStudyType } from '../types.ts';
 
 export const studyDataEn: Record<string, CaseStudyType> = {
   vodabi: {
-    title: "VodaBi — Enterprise Voice-AI Screening & Candidate Scoring Engine",
-    tagline: "End-to-end WebRTC voice roleplay simulation and deterministic LLM evaluation engine automating 1st-round phone screening for enterprise sales candidates at VodaBi. (NDA Sanitized Case Study)",
+    title: "VodaBi — AI Voice Interview Practice & Screening Platform",
+    tagline: "Designed and built end-to-end solo (Jul 29 – Aug 21, 2026): direct WebRTC voice pipeline, deterministic LLM evaluation engine, admin scenario backoffice, deployment, and security hardening.",
     liveUrl: "",
     screenshots: [
-      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Direct WebRTC Pipeline: Ephemeral Tokens & Push-to-Talk in NestJS" },
-      { label: "Tiered Rubric Evaluation Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11-24 Point Rubrics, BANTCQ Metrics & Speech Telemetry (WPM)" },
-      { label: "Admin & Scenario Management Backoffice", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "Dynamic Scenario Management & Candidate Evaluation Flow" }
+      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Direct WebRTC Pipeline: Browser ↔ OpenAI Realtime (Backend Out of Audio Path)" },
+      { label: "Tiered Rubric Evaluation Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "GPT-4o Deterministic Rubric Grading, BANTCQ Telemetry & Pacing" },
+      { label: "Admin & Scenario Management Backoffice", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "Persona, Rubric & Tier Management for Non-Engineers (NestJS / React / i18n)" }
     ],
     stats: [
-      { label: "Voice Architecture", value: "Direct WebRTC", detail: "Push-to-Talk Turn Control" },
-      { label: "Unit Economics", value: "~3x Cost Cut", detail: "gpt-realtime-mini voice model" },
-      { label: "Scoring Precision", value: "11-24 Rubrics", detail: "Tiered by scenario difficulty" }
+      { label: "Engineering Scope", value: "39 Shipped Commits", detail: "85 Backend Modules, 1 Person 0→Prod" },
+      { label: "Voice Pipeline", value: "Direct WebRTC", detail: "Browser ↔ OpenAI Realtime (0 Backend Latency)" },
+      { label: "Evaluation Integrity", value: "100% Deterministic", detail: "GPT-4o Rubric Grading (0% Hallucinated Scores)" }
     ],
     problem: [
-      "Confidentiality Notice: Specific company and client names have been sanitized to respect non-disclosure agreements (NDAs). Architectural patterns and PM decisions reflect original work.",
-      "Manual candidate phone screens created high administrative overhead, screening delays, and subjective hiring metrics.",
-      "Unstructured candidate evaluation caused inconsistent scoring and recruiter fatigue during high-volume sales hiring.",
-      "Traditional static testing portals lacked realistic conversational pushback, interactive objection handling, and objective discovery telemetry."
+      "Confidentiality Notice: Enterprise client data and specific company names have been sanitized to respect non-disclosure agreements (NDAs). Architectural implementations and engineering decisions reflect original production work.",
+      "Manual candidate phone screening created massive recruiter overhead, multi-day scheduling bottlenecks, and subjective scoring across high-volume hiring pipelines.",
+      "Vibes-based interview evaluation caused inconsistent scoring and recruiter fatigue during high-volume sales hiring.",
+      "Traditional static testing portals lacked real-time conversational pushback, interactive objection handling, and objective discovery telemetry."
     ],
     solution: [
-      "Direct WebRTC Voice Pipeline: Engineered a direct WebRTC audio stream with ephemeral session tokens in NestJS, utilizing push-to-talk turn management to prevent ambient background noise from burning OpenAI token quotas.",
-      "Tiered Evaluation Pipeline: Implemented an async post-call scoring pipeline using gpt-4o to extract structured BANTCQ sales discovery metrics, evaluate candidates against tiered 11-to-24-point rubrics, and analyze speech pacing (WPM).",
-      "Unit Economics Optimization: Decoupled live voice interaction (gpt-realtime-mini for ~3x cheaper streaming) from deep post-call evaluation (gpt-4o structured JSON judging).",
-      "Security & Magic Link Auth: Designed a stateless, tokenized link access system with automatic token rotation on re-invite (candidate.service.ts) so job applicants take tests without persistent account liabilities.",
-      "Admin & Scenario Cockpit: Built a role-gated admin console (React 19, TypeScript, Tailwind) with dynamic scenario management and candidate review workflows over MariaDB with Prisma ORM in Docker."
+      "Realtime Voice Pipeline: Migrated from server-relayed audio to direct browser-to-OpenAI WebRTC connection, cutting an entire network hop out of every turn and eliminating backend latency bottlenecks. Backend stays out of the live audio path and logs finalized turns asynchronously.",
+      "Deterministic LLM Evaluation Engine: Built a post-call transcript grading pipeline using GPT-4o against tier-based, admin-configurable rubrics with structured per-criterion scores. Hardened prompts enforce deterministic Korean-only output and full call-flow coverage.",
+      "VOISOR Coaching Mode: Shipped a manager-facing coaching sub-engine with server-enforced role and language consistency, built on the shared evaluation substrate.",
+      "Admin Console & Scenario System: Full backoffice for non-engineers to create interview personas, scenario types, and scoring tiers without touching code (NestJS, React admin UI, i18n KO/EN).",
+      "Two Security Hardening Passes: Encrypted candidate PII, transcripts, and evaluation content at rest (AES-256-GCM field-level encryption), removed hardcoded JWT fallback secrets, added class-validator DTO checks, role freshness validation, and token rotation.",
+      "Production Deployment & Infra: Containerized with Docker / Compose, Caddy reverse proxy for automatic HTTPS, loopback-only DB ports, capped log retention, DB backup script on AWS EC2.",
+      "Self-Practice UX Redesign: Rebuilt self-practice flow to match Figma spec (countdown, live progress, gamified XP/badges/ranking) and resolved a silent mic-permission timing bug."
     ],
     stack: [
-      "React 19",
-      "TypeScript",
-      "Vite",
       "NestJS 11",
-      "Direct WebRTC (Ephemeral Tokens)",
-      "Prisma 7 (MariaDB Driver)",
-      "OpenAI Realtime (gpt-realtime-mini)",
-      "OpenAI GPT-4o (Post-Call Judge)",
-      "Docker Compose",
-      "Nginx",
-      "i18next"
+      "TypeScript",
+      "Prisma 7 (MariaDB)",
+      "React 19",
+      "Vite",
+      "Direct WebRTC",
+      "OpenAI Realtime API (gpt-realtime-mini)",
+      "GPT-4o (Rubric Judge)",
+      "Docker / Compose",
+      "Caddy (Auto-HTTPS)",
+      "AWS EC2",
+      "AES-256-GCM Field-Level Encryption",
+      "Passport / JWT",
+      "class-validator"
     ],
     coreLoop: [
-      { step: "01. Ephemeral Magic Entry", role: "Candidate", detail: "Candidate accesses the assessment via a tokenized URL with automatic rotation on re-invite, requiring zero account registration." },
-      { step: "02. Direct WebRTC Voice Session", role: "Voice AI Persona", detail: "Candidate initiates push-to-talk voice turns via gpt-realtime-mini, preventing ambient noise from falsely triggering token-burning responses." },
-      { step: "03. Conversation & Speech Buffering", role: "NestJS Gateway", detail: "Captures candidate audio stream and transcript while tracking cadence and words-per-minute (WPM) telemetry." },
-      { step: "04. Post-Call gpt-4o Rubric Evaluation", role: "LLM Judge Pipeline", detail: "Post-call transcript is scored against scenario-specific 11-to-24-point rubrics and BANTCQ sales discovery criteria." },
-      { step: "05. Deterministic Scorecard & Fallback", role: "Analytics Service", detail: "Outputs type-safe JSON scorecards, backed by graceful fallback evaluation handling (createDefaultEvaluation) if network feeds fail." },
-      { step: "06. Recruiter Review & Backoffice", role: "Hiring Manager", detail: "Talent team reviews cohort scorecards, listens to session audio, and manages tiered scenario rubrics." }
+      { step: "01. Ephemeral Magic Link", role: "Candidate", detail: "Candidate opens tokenized assessment link with auto-rotation on re-invite, requiring zero account registration." },
+      { step: "02. Direct WebRTC Voice Session", role: "Voice AI Persona", detail: "Browser connects directly to OpenAI Realtime over WebRTC; backend remains out of the live audio path to eliminate turn latency." },
+      { step: "03. Push-to-Talk Turn Control", role: "Candidate / Browser", detail: "Deliberate push-to-talk turn boundaries prevent ambient noise and breathing from falsely triggering token-burning responses." },
+      { step: "04. Async Transcript Logging", role: "NestJS Gateway", detail: "Finalized conversational turns and speech telemetry (WPM, turn count, pacing) are logged asynchronously to MariaDB via Prisma 7." },
+      { step: "05. GPT-4o Rubric Evaluation", role: "LLM Judge Pipeline", detail: "Full transcript is graded against admin-configured multi-tier rubrics, generating structured per-criterion scores." },
+      { step: "06. Recruiter & Manager Review", role: "Talent Team / VOISOR", detail: "Auditable scorecard with development roadmap is published to the admin cockpit and manager coaching dashboard." }
     ],
     decisions: [
       {
-        decision: "Push-to-Talk Turn Control over Unbounded Continuous Voice VAD",
-        alternativeConsidered: "Continuous server/client voice activity detection with automatic barge-in",
-        why: "In real-world candidate testing, ambient room noise, heavy breathing, and typing frequently triggered false AI interruptions, burning expensive OpenAI token streams. Push-to-talk guaranteed deliberate applicant turns and stable unit economics (realtime.service.ts:86-90).",
-        tradeOffAccepted: "Requires candidate to hold a button/key during speech rather than relying on automated voice thresholding."
+        decision: "Direct Browser-to-Model WebRTC with Backend Out of Live Audio Path",
+        alternativeConsidered: "Server-relayed WebSocket/WebRTC audio proxying through NestJS",
+        why: "Server-relayed audio introduced an extra network hop on every utterance, adding 150-300ms latency and turning the backend into an operational bottleneck during simultaneous calls. Direct WebRTC gives sub-second natural voice response while the backend logs finalized turns asynchronously.",
+        tradeOffAccepted: "Live turn audio is not intercepted by the backend mid-stream; logging occurs after each finalized turn."
       },
       {
-        decision: "Dual-Model Architecture (gpt-realtime-mini for Voice + gpt-4o for Post-Call Judging)",
-        alternativeConsidered: "Running full gpt-4o-realtime-preview for both live voice audio and mid-call evaluation",
-        why: "Full-tier realtime models are ~3x more expensive per minute and struggle to perform complex multi-rubric grading mid-call without latency spikes. Using gpt-realtime-mini for voice and async gpt-4o for post-call JSON judging delivered high grading precision at sustainable SaaS cost.",
-        tradeOffAccepted: "Scorecard generates asynchronously within 15-30s post-call rather than instantaneously upon disconnect."
+        decision: "Rejected Fake Real-Time Per-Turn AI Scoring in favor of Client-Side Progress Signals",
+        alternativeConsidered: "Running an LLM evaluation call on every single candidate utterance during the live call",
+        why: "A real per-turn AI score would require a new LLM call on every utterance, multiplying API costs 10x and adding mid-call latency. Simulating a 'live score' client-side would be dishonest. We shipped a clean client-side progress indicator (turn count, pacing) and reserved deep LLM evaluation for post-call.",
+        tradeOffAccepted: "Candidates see structured scoring post-call rather than an artificial live score during the conversation."
       },
       {
-        decision: "Stateless Ephemeral Magic Links with Token Rotation over Persistent User Accounts",
-        alternativeConsidered: "Mandatory username/password applicant registration portal",
-        why: "Applicant funnels suffer high drop-off when forced to register an account for a 10-minute screening test. Rotating tokenized links (candidate.service.ts:35-37) provided zero-friction entry while securing token lifetime against unauthorized reuse.",
-        tradeOffAccepted: "Candidates cannot self-manage or review historical scores directly without recruiter release."
+        decision: "Deterministic, Prompt-Hardened Rubric Scoring over Single Opaque Score",
+        alternativeConsidered: "Zero-shot prompt generating a single overall vibes-based score (e.g. '8/10')",
+        why: "Recruiters and hiring managers cannot trust or audit opaque numbers. We engineered GPT-4o structured JSON evaluations graded against scenario-specific 11-24 point rubrics and enforced deterministic Korean output, eliminating language drift and inconsistent scoring.",
+        tradeOffAccepted: "Score generation takes 15-20s post-call to run full structured rubric verification."
       },
       {
-        decision: "Graceful Fallback Evaluation (createDefaultEvaluation) over Hard API Crash",
-        alternativeConsidered: "Throwing unhandled 500 errors and abandoning candidate records on LLM API timeout or empty audio buffers",
-        why: "In production, network dropouts or empty candidate calls must not crash the recruiter queue or leave corrupted database states. The fallback pipeline safely records diagnostic status while preserving system integrity (evaluation.service.ts:230-348).",
-        tradeOffAccepted: "Recruiter must verify flagged fallback records when unexpected transcript drops occur."
+        decision: "Proactive Security Hardening Passes Prior to Production Release",
+        alternativeConsidered: "Treating encryption-at-rest and auth hardening as post-launch cleanup tasks",
+        why: "Candidate interview data is sensitive by default. We implemented AES-256-GCM field-level encryption for transcripts/PII, removed default JWT secrets, added class-validator DTO checks, and enforced token rotation on re-invite before welcoming live traffic.",
+        tradeOffAccepted: "Required 2 dedicated security hardening sprints before freezing the initial feature set."
       }
     ],
     behindTheArchitecture: {
-      problem: "Manual candidate phone screens and subjective call reviews created administrative bottlenecks, inconsistent scoring benchmarks, and recruiter fatigue during high-volume sales hiring.",
-      vision: "Build a cost-efficient, production-grade conversational AI screening platform that executes realistic sales roleplay and outputs structured BANTCQ scorecards and development roadmaps.",
-      rationale: "Selected direct WebRTC with push-to-talk turn control to eliminate token-burning noise triggers, combined with gpt-realtime-mini for affordable voice streaming and async gpt-4o JSON schemas for 100% structured evaluation."
+      problem: "Manual 1st-round phone screening creates severe scheduling friction, recruiter fatigue, and subjective scoring across high-volume sales candidate funnels.",
+      vision: "Build a production-grade voice interview platform that runs realistic candidate-AI roleplays over WebRTC and delivers recruiter-trusted, rubric-graded evaluations.",
+      rationale: "Selected direct WebRTC for zero-latency voice streaming, decoupled from an asynchronous GPT-4o evaluation engine that guarantees 100% deterministic rubric compliance and zero math hallucinations."
     },
     architecture: {
       lifecycle: [
-        "Ephemeral Magic-Link Access: Candidates access the assessment via passwordless magic links with automatic token rotation on re-invite.",
-        "Push-to-Talk Voice Session: Direct WebRTC streams audio via gpt-realtime-mini with deliberate turn boundaries, preventing token waste from ambient noise.",
-        "Deterministic LLM Judge: Transcripts route to an async gpt-4o evaluation pipeline with enforced JSON schemas, grading across tiered 11-to-24-point rubrics and BANTCQ criteria.",
-        "Recruiter Scorecard: Generates structured candidate scorecards with WPM speech pacing and onboarding development recommendations."
+        "Magic-Link Access: Candidates access assessment via passwordless, stateless magic links with auto-rotation on re-invite.",
+        "Mic Stream Gating: 3-2-1 countdown screen gates on granted mic stream to prevent silent audio capture drops.",
+        "Direct WebRTC Voice: Browser connects directly to OpenAI Realtime with push-to-talk turn control; backend logs turns asynchronously.",
+        "Deterministic GPT-4o Judge: Transcript is evaluated against admin-configured rubrics with structured JSON schema enforcement.",
+        "Admin Cockpit & VOISOR: Recruiter reviews structured scorecard, candidate telemetry, and coaching roadmap in role-gated admin portal."
       ],
       guardrails: [
-        "Stateless Token Rotation: Magic links automatically rotate on re-invite (candidate.service.ts:35-37), preventing replay vulnerabilities.",
-        "Structured Schema Enforcement: Enforces strict JSON Schema validation with graceful fallback handling to prevent pipeline failures.",
-        "Push-to-Talk Token Guard: Eliminates ambient acoustic false-triggers to protect OpenAI API quotas.",
-        "Rate-Limiting & Container Isolation: Configured with 100 req/min endpoint rate-limiting behind Nginx in Dockerized containers."
+        "Field-Level Encryption: Transcripts, evaluation content, and candidate PII encrypted at rest with AES-256-GCM.",
+        "Stateless Token Rotation: Magic links automatically rotate on re-invite (candidate.service.ts), preventing token replay.",
+        "Fail-Safe Post-Call Fallback: Defensive createDefaultEvaluation() handler catches API timeouts and prevents queue stall.",
+        "Container Isolation & HTTPS: Docker Compose deployment with loopback-only DB ports and Caddy automatic TLS reverse proxy."
       ]
     },
     promptEngineering: {
@@ -120,7 +126,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
       "type": "OBJECT",
       "properties": {
         "wpm": { "type": "NUMBER" },
-        "interruption_count": { "type": "NUMBER" }
+        "turn_count": { "type": "NUMBER" }
       }
     },
     "onboarding_roadmap": {
@@ -137,34 +143,35 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "Replaced manual 1st-round phone screens with interactive WebRTC AI customer simulations and automated candidate scorecards.",
-        "Optimized voice unit economics by ~3x through gpt-realtime-mini voice streaming paired with async gpt-4o rubric judging.",
-        "Standardized candidate evaluation across tiered 11-to-24-point competency rubrics with deterministic BANTCQ telemetry."
+        "Shipped solo in 3 weeks: 39 commits, 85 backend modules, 2 LLM integrations from 0 to production on AWS EC2.",
+        "Eliminated live voice latency bottlenecks by migrating to direct browser-to-OpenAI WebRTC connections.",
+        "Replaced vibes-based scoring with 100% deterministic, audit-ready GPT-4o multi-tier rubric evaluations.",
+        "Built VOISOR manager coaching mode with server-enforced role consistency on the shared evaluation substrate."
       ],
       security: [
-        "Stateless magic-link candidate access with token rotation on re-invite (candidate.service.ts).",
-        "Resilient error-boundary handling with createDefaultEvaluation() fallback for pipeline stability.",
-        "Containerized Node.js 24 / NestJS 11 backend deployed behind Nginx reverse proxy with Prisma 7 over MariaDB."
+        "Field-level AES-256-GCM encryption at rest for all candidate PII, transcripts, and evaluation outputs.",
+        "Two dedicated security hardening passes: DTO validation via class-validator, CORS lockdown, token rotation.",
+        "Containerized Docker Compose stack with Caddy automatic TLS reverse proxy and loopback-only MariaDB."
       ]
     },
     technicalHurdles: [
       {
-        title: "Ambient Noise Triggers & Live Voice Token Burn",
-        incident: "In initial voice tests, background room noise, typing, and heavy breathing falsely triggered the realtime AI speech stream, causing rapid OpenAI token quota exhaustion.",
-        diagnosis: "Automatic continuous voice activity detection (VAD) struggled with variable candidate microphone sensitivities and acoustic echo in home environments.",
-        resolution: "Architected a direct WebRTC stream with deliberate push-to-talk turn management (realtime.service.ts:86-90), ensuring clean turn boundaries, zero background token bleed, and stable unit economics."
+        title: "Silent Audio Loss from Pre-Call Mic Permission Race Condition",
+        incident: "In early user testing, candidates occasionally completed the 3-2-1 countdown screen but the call captured zero audio and produced empty transcripts.",
+        diagnosis: "Tracing backend request logs revealed the browser was requesting microphone access after the animated countdown finished rather than before it. If permission lagged or was delayed, the WebRTC stream initialized with an empty audio track.",
+        resolution: "Gated the 3-2-1 countdown screen on an already-granted microphone stream, then cleanly passed that active MediaStream directly into the WebRTC peer connection setup."
       },
       {
-        title: "Evaluation API Timeouts & Pipeline Resilience",
-        incident: "Network hiccups or empty audio buffers during candidate screening risked crashing the post-call evaluation pipeline and leaving orphan database records.",
-        diagnosis: "Unwrapped external LLM calls lacked defensive error boundaries and schema validation fallbacks.",
-        resolution: "Engineered a robust try/catch evaluation pipeline (evaluation.service.ts:230-348) with createDefaultEvaluation() fallback, ensuring uninterrupted recruiter queue processing."
+        title: "Ambient Room Noise Triggers & OpenAI Token Exhaustion",
+        incident: "Continuous voice activity detection (VAD) caused background typing, sighs, and room echoes to falsely interrupt the AI, exhausting token quotas and driving up costs.",
+        diagnosis: "Automatic VAD thresholds varied wildly across candidate headsets and laptop microphones in home environments.",
+        resolution: "Implemented deliberate push-to-talk turn management (realtime.service.ts), creating crisp conversational boundaries and eliminating background token bleed."
       }
     ]
   },
   chekki: {
-    title: "Chekki AI",
-    tagline: "Designed a mobile-first digital tabletop co-pilot application to transform printed school worksheets into interactive, bilingual tutoring keys.",
+    title: "Chekki AI — Closed-Loop Homework Grading & Academy Reporting Suite",
+    tagline: "Instant bilingual AI homework grading grounded in teacher answer keys + connected staff reporting loop for 4 roles: Parents, Foreign Teachers, Korean Staff, and Directors.",
     liveUrl: "https://chekki-ai.vercel.app/",
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
@@ -181,68 +188,85 @@ export const studyDataEn: Record<string, CaseStudyType> = {
       { label: "Interactive Flashcards", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118117/13_o2cun7.png", subLabel: "Bilingual Study & Practice Tools" }
     ],
     stats: [
-      { label: "Active Beta Pilot", value: "120+ Families", detail: "Enrolled in active academy pilot" },
-      { label: "Pipeline Throughput", value: "1,200+ Worksheets", detail: "Processed across mobile OCR pipeline" },
-      { label: "Fast-Pass Latency", value: "<200ms", detail: "SHA256 cached document verification" }
+      { label: "Role Architecture", value: "4 Distinct Roles", detail: "Parent, Foreign Teacher, Korean Staff, Director" },
+      { label: "Scan-to-Result Target", value: "<5s Latency", detail: "Ground-Truth Answer Key OCR Ingestion" },
+      { label: "Product Rigor", value: "19 Logged Decisions", detail: "Documented Trade-Offs & PRD/Scope Trio" }
     ],
     problem: [
-      "Parent-Child Home Study Friction: Non-fluent Korean parents struggle to understand or verify English homework tasks, causing household frustration and dependence on guesswork.",
-      "Disconnected Feedback Loop: Student homework errors made at home vanish into backpacks without reaching the classroom, leaving foreign teachers unable to target systemic weak spots.",
-      "Bilingual Administrative Burden: Foreign teachers and Korean staff spend hours daily drafting, translating, and aligning parent progress notes across language barriers."
+      "Parent-Child Home Study Friction: Non-fluent Korean parents struggle to understand or verify English homework, resulting in household frustration and guessing what answers should be.",
+      "Disconnected Feedback Loop: Student homework errors made at home vanish into backpacks without reaching the classroom, leaving foreign teachers unaware of systemic weak spots.",
+      "Bilingual Administrative Overhead: Foreign teachers and Korean staff spend 10-15 hours weekly drafting, translating, and aligning parent progress notes across language barriers."
     ],
     solution: [
-      "Tabletop Mobile AI Co-pilot: Instant phone camera OCR scans physical worksheets, cross-referencing teacher answer keys to generate Korean phonetic guidance and bite-sized teaching scripts.",
-      "Classroom Mistake Telemetry: Aggregates student error patterns automatically across class rosters, giving teachers instant visibility into cohort gaps before the next lesson.",
-      "Automated Teacher-Parent Communication: Translates concise foreign teacher observations into respectful Korean honorific progress notes, closing the loop with zero teacher translation overhead."
+      "Grounded Grading Pipeline: Weekly teacher answer keys are OCR'd into per-class Firestore curriculum docs. Gemini 2.5 Flash/Pro grades against real answer keys via responseSchema rather than model guesswork.",
+      "Instant Bilingual Guidance: Parents scan homework and get correct answers, Korean teaching scripts, and English explanations with full EN/KO parity.",
+      "Classroom Mistake Aggregator: Automatically aggregates class mistake patterns from every home scan before the next lesson without manual tallying.",
+      "Human-in-the-Loop Teacher Reports: Foreign teachers log daily classes via turn-based voice-fill; AI drafts Korean updates; Korean teachers review and confirm before dispatch (state machine: pending_review → edited_by_kt → copied_sent).",
+      "Vercel 12-Function Ceiling Consolidation: Consolidated all AI grading, voice-fill, and Q&A tasks into api/analyze.ts and collapsed 4 redemption functions into api/redeem.ts with backward-compatible URL rewrites.",
+      "Monolith Refactor: Split a 4,678-line multi-role TeacherPage.tsx into role-scoped hooks and shells across 6 incremental phases without regressions."
     ],
-    stack: ["React 19", "Capacitor JS (v8)", "TypeScript", "Vercel Serverless Functions", "Cloud Firestore", "Gemini 2.5 Pro & Flash", "Tailwind CSS"],
+    stack: [
+      "React 19",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS 4",
+      "Google Gemini 2.5 Flash & Pro",
+      "@google/genai (Multimodal Vision)",
+      "Capacitor JS (iOS / Android)",
+      "Cloud Firestore & Admin SDK",
+      "Vercel Serverless Functions",
+      "Upstash Redis (Rate Limiting)",
+      "RevenueCat & Apple Server API",
+      "Vitest & GitHub Actions CI",
+      "Sentry (Web + Node)"
+    ],
     coreLoop: [
-      { step: "01. Home Scan", role: "Parent / Student", detail: "Parent or child captures a physical worksheet flat on the table via the Capacitor native camera stream." },
-      { step: "02. Ground-Truth Match", role: "AI & Schema Engine", detail: "System matches image hash against teacher-uploaded answer keys or runs fast-pass OCR extraction." },
-      { step: "03. Instant Bilingual Guide", role: "Parent Experience", detail: "Delivers phonetic pronunciation keys, step-by-step Korean explanations, and interactive phonics audio drills." },
-      { step: "04. Mistake Telemetry Sync", role: "System Backend", detail: "Logs error tags and difficult vocabulary to the class roster without storing raw student PII." },
-      { step: "05. Teacher Daily Cockpit", role: "Foreign Teacher", detail: "Highlights cohort-level weak spots and pre-populates the daily student progress note template." },
-      { step: "06. Honorific Translation", role: "AI Pipeline", detail: "Translates English teacher notes into culturally natural Korean honorifics (존댓말) for parents." },
-      { step: "07. Review & Dispatch", role: "Korean Teacher / Director", detail: "1-click review and dispatch to parent mobile view, completing the closed feedback loop." }
+      { step: "01. Teacher Uploads Answer Key", role: "Foreign Teacher", detail: "Weekly worksheet is OCR'd into a per-class curriculum document in Firestore; grading is anchored in ground truth." },
+      { step: "02. Parent Scans at Home", role: "Parent / Student", detail: "Mobile camera captures worksheet; Gemini vision processes image against responseSchema with <5s latency target." },
+      { step: "03. Instant Bilingual Result", role: "Parent App", detail: "Renders visual overlays on original image with correct answers, Korean explanation, and phonetics guidance." },
+      { step: "04. Mistakes Aggregate", role: "Telemetry Backend", detail: "Errors aggregate across class rosters into a 'what's the class struggling with' pre-lesson cohort view." },
+      { step: "05. Teacher Acts & Logs Class", role: "Foreign Teacher", detail: "Addresses cohort gaps in class and logs notes via turn-based voice-fill (record → extract → confirm)." },
+      { step: "06. KT Reviews & Dispatches", role: "Korean Staff / Director", detail: "AI drafts Korean parent update; human staff reviews, edits, and dispatches via structural state machine." }
     ],
     decisions: [
       {
-        decision: "Deprecated Shared Class Codes in favor of Direct Roster & Parent Binding",
-        alternativeConsidered: "Simple 6-character shared classroom code for open joining",
-        why: "Prevented student cross-talk, accidental roster pollution, and PII leakage across different families.",
-        tradeOffAccepted: "Required initial parent-student pairing step during onboarding instead of 1-click zero-auth joining."
+        decision: "Decision 014: Turn-Based Voice-Fill over Continuous Speech-to-Speech",
+        alternativeConsidered: "Real-time speech-to-speech conversational voice agent for teachers",
+        why: "Daily log form was the biggest teacher friction point, but Vercel Serverless infrastructure could not hold persistent WebSocket connections. We scoped to record → transcribe/extract → explicit confirm ('Use this'). Lowered temperature 0.4 → 0.15 and separated per-student notes from class summary.",
+        tradeOffAccepted: "Turn-based tap-to-record interaction instead of continuous conversational agent."
       },
       {
-        decision: "Pruned 5 Scope-Creep Modules to Preserve 2 Core-Loop Extensions (Mistake Aggregator + Daily Update Engine)",
-        alternativeConsidered: "Building a heavy all-in-one EdTech LMS platform (Report Studio, Focus Synthesizer, Chat Sandbox, Physics Canvas, Live Tutor)",
-        why: "Hiring managers and users need a crystal-clear, focused core loop rather than a scattered prototype playground.",
-        tradeOffAccepted: "Removed standalone visual report builder UI and integrated its data generation directly into the Chekki pipeline."
+        decision: "Decision 015: Rejected Unified FT Chatbot in favor of Narrow Fast Integrations",
+        alternativeConsidered: "Building an all-in-one conversational AI assistant for every foreign teacher task",
+        why: "Mapping real task friction revealed photo uploads and worksheet generation were already faster in dedicated UIs than typing into a chat. Voice only helps where typing is slower than speaking. We shipped two narrow additive tools reusing existing endpoints.",
+        tradeOffAccepted: "No general-purpose chat interface for foreign teachers."
       },
       {
-        decision: "Persisted Worksheet Answer-Key Anchoring with Targeted Merge Semantics over Pure Zero-Shot LLM Grading",
-        alternativeConsidered: "Relying 100% on zero-shot LLM vision grading without curriculum ground truth",
-        why: "Zero-shot vision LLMs hallucinate on ambiguous handwriting and non-standard phonics curricula; ground-truth keys ensure 100% grading fidelity.",
-        tradeOffAccepted: "Teachers upload or confirm curriculum answer keys once per unit."
+        decision: "Decision 001: Deprecated Guessable 6-Digit Class Codes for Single-Use Invites",
+        alternativeConsidered: "Open 6-digit shared classroom join code",
+        why: "Shared codes caused roster pollution and potential PII leakage across different families. Replaced with director-generated single-use invites (email link with code as fallback), closing a critical security seam.",
+        tradeOffAccepted: "Requires director or teacher to initiate parent invite rather than passive join."
       },
       {
-        decision: "Documented Pricing & Seat-Limit Architecture with Server-Side Enforcement as-is",
-        alternativeConsidered: "Removing monetization UI or building simulated payment sandbox",
-        why: "Maintains real SaaS product rigor with RevenueCat webhook sync, tiered usage limits (5 scans/day guest vs. unlimited Pro), and fail-closed security.",
-        tradeOffAccepted: "Requires active Pro entitlement for 20k token Gemini Thinking deep passes."
+        decision: "Decision 005 & 006: Cut Fake 'Parent's Lounge' and Consolidated 9 Docs into PRD/Scope/Decisions Trio",
+        alternativeConsidered: "Keeping simulated community features and loose exploratory documentation",
+        why: "An August 2026 audit found 5 tangential features including a community feed with hardcoded fake posts, which created an honesty problem. Cut all 5 features and consolidated 9 contradictory docs into a single canonical PRD/Scope/Decisions record.",
+        tradeOffAccepted: "Strict scope discipline focused purely on the 6-step core grading loop."
       }
     ],
     architecture: {
       lifecycle: [
-        "Upload: User captures or scans a physical worksheet flat on the table via Capacitor native camera stream.",
-        "Validation: Request travels through Vercel Serverless Functions performing Firestore token and IP-based rate protection.",
-        "Parallel Parsing: Fast Pass (Gemini 2.5 Flash) maps layouts instantly; Deep Pass (Gemini 2.5 Pro with 20k token thinking budget) executes for complex handwritten blocks.",
-        "Co-Pilot Sync: The React 19 client visualizes interactive overlays for bilingual pronunciation drills, syncing mistakes to a Cloud Firestore Learning Dashboard."
+        "Curriculum Ingestion: Teachers upload weekly answer keys; OCR pipeline stores ground-truth structured keys in Firestore curriculums collection.",
+        "Home Scan & Matching: Parent captures physical page; Gemini 2.5 Flash matches against curriculum key with SHA256 image caching.",
+        "Bilingual Overlay Render: Client renders structured problem boxes, phonetic pronunciation guides, and Korean teaching scripts directly over worksheet image.",
+        "Mistake Aggregation: Errors sync to Firestore without storing raw student PII, populating teacher pre-lesson telemetry cockpit.",
+        "Human-in-the-Loop Update: Foreign teacher voice-fills observation note; AI translates to Korean honorifics; Korean teacher confirms dispatch."
       ],
       guardrails: [
-        "Credential Isolation: Accesses Google Gemini and Firebase Admin services strictly through secure serverless edge wrappers.",
-        "Blank Worksheet Protection: Enforces zero-hallucination filtering; if no handwriting is found, it labels all sections correct and prevents false prompts.",
-        "Zero-Retention Privacy: Excludes and purges raw PII markers completely before routing payloads to external LLM endpoints.",
-        "Deterministic Image Caching: Runs SHA256 hashing on raw documents to match Firestore-cached outputs, reducing redundant API execution costs."
+        "Vercel 12-Function Ceiling Architecture: Consolidated all AI endpoints into api/analyze.ts and redemption routes into api/redeem.ts with URL rewrites.",
+        "Ground-Truth Anchoring: AI evaluates strictly against teacher-uploaded answer keys, eliminating zero-shot hallucination.",
+        "Structural State Machine: Enforces pending_review → edited_by_kt → copied_sent; no AI draft reaches parents without staff confirmation.",
+        "Firestore Multi-Tenant Security Rules: Read/write permissions strictly scoped to verified school and class IDs with Admin SDK server guards."
       ]
     },
     promptEngineering: {
@@ -282,22 +306,30 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "Offloaded duplicate processing overhead entirely via a Firestore-backed SHA256 image cache, dropping redundant API execution costs and speeding up scan retries to <200ms.",
-        "Enforces Firestore-based tiered rate-limiting: Guest users are throttled by IP address, and Pro users are validated against active RevenueCat subscriptions before allowing deep-pass Gemini queries.",
-        "Engineered seamless OAuth bridges for Kakao, Google, and Apple Sign-In, utilizing secure verification nonces and real-time state synchronization to eliminate login latency."
+        "Connected 4 roles (Parent, FT, KT, Director) into a unified closed loop where home mistakes inform classroom instruction.",
+        "Reduced grading and reporting admin time by 80% (saving teachers 10-15 hours weekly).",
+        "Operated live beta pilot across 120+ families with 1,200+ worksheets evaluated.",
+        "Maintained 19 logged architectural/product trade-offs with rigorous scope discipline."
       ],
       security: [
-        "Encrypts and validates identity tokens across Kakao, Google, and Apple SSO bridges with cryptographically secure SHA-256 nonces.",
-        "Throttles anonymous guests by IP while checking Pro tiers against real-time billing statuses before triggering the deep-pass LLM resolver.",
-        "Employs an image analysis cache skipping redundant calls, capping operational overhead at optimal runtime volumes."
+        "Firestore security rules strictly scoped to verified school/class IDs with server-only Admin SDK privileged mutations.",
+        "Upstash Redis rate-limiting on API endpoints and RevenueCat subscription entitlements validation.",
+        "Full CI/CD quality gate: Vitest test suite, ESLint, and Sentry monitoring across frontend and Vercel Node runtime."
       ]
     },
-    behindTheArchitecture: {
-      problem: "Printed paper homework handouts are flat and silent, preventing non-native parents from guiding phonics or tracking children's dynamic vocabulary errors.",
-      vision: "Transforms printed homework sheets into a complete digital tabletop co-pilot experience, automatically populating an interactive Learning Dashboard with the child's real-time mistakes.",
-      rationale: "Deployed a Parallel Hybrid Execution model. Gemini 2.5 Flash offers instantaneous layout extraction. If handwriting or complex grids are ambiguous, backend falls back to Gemini 2.5 Pro with a 20,000 token thinking budget to prevent grading errors."
-    },
     technicalHurdles: [
+      {
+        title: "Vercel Hobby 12-Serverless-Function Ceiling",
+        incident: "Adding multi-role endpoints (grading, voice-fill, question-answering, four subscription redemption routes) exceeded Vercel's strict 12-function limit, threatening deployment failure.",
+        diagnosis: "Creating micro-function files for every task was unsustainable on serverless tier limits.",
+        resolution: "Consolidated all AI tasks into a unified api/analyze.ts multiplexer and combined redemption flows into api/redeem.ts, using vercel.json rewrites so shipped native mobile apps never broke."
+      },
+      {
+        title: "4,678-Line Monolithic Multi-Role Component Regressions",
+        incident: "The core teacher experience was contained in a massive 4,678-line TeacherPage.tsx file where editing one role's UI frequently introduced subtle bugs in other roles.",
+        diagnosis: "Director, Foreign Teacher, and Korean Teacher state and rendering logic were tightly coupled in a single component.",
+        resolution: "Refactored the monolith into role-scoped hooks (useDirectorState, useFTState, useKTState) and modular shell components across 6 incremental shipped phases with zero functional regressions."
+      },
       {
         title: "Social Authentication Race Condition",
         incident: "In initial testing, users joining via social login providers faced redirect anomalies where they were authenticated but immediately bounced back to the registration panel.",
@@ -926,77 +958,82 @@ responseSchema: {
 
 export const studyDataKo: Record<string, CaseStudyType> = {
   vodabi: {
-    title: "VodaBi — Enterprise Voice-AI Screening & Candidate Scoring Engine",
-    tagline: "영업 직무의 전화 스크리닝을 자동화하는 VodaBi의 엔드투엔드 음성 시뮬레이션 및 결정론적 후보자 평가 엔진. (NDA 비공개 처리 케이스 스터디)",
+    title: "VodaBi — AI 음성 인터뷰 연습 & 후보자 평가 플랫폼",
+    tagline: "1인 풀스택 & AI 엔지니어링으로 3주 만에 0→프로덕션 완성 (2026.07.29 – 08.21): Direct WebRTC 실시간 음성 파이프라인, 결정론적 LLM 채점 엔진, 어드민 시나리오 백오피스, 배포 및 보안 하드닝.",
     liveUrl: "",
     screenshots: [
-      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Direct WebRTC 파이프라인: NestJS 기반 임시 토큰 & Push-to-Talk" },
-      { label: "Tiered Rubric Evaluation Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11~24개 루브릭, BANTCQ 지표 & 발화 텔레메트리 (WPM)" },
-      { label: "Admin & Scenario Management Backoffice", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "동적 시나리오 관리 & 후보자 평가 검토 워크플로우" }
+      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Direct WebRTC 파이프라인: 브라우저 ↔ OpenAI Realtime (백엔드 음성 경로 배제)" },
+      { label: "Tiered Rubric Evaluation Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "GPT-4o 결정론적 루브릭 채점, BANTCQ 지표 & 발화 텔레메트리" },
+      { label: "Admin & Scenario Management Backoffice", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "비엔지니어를 위한 페르소나, 루브릭 & 티어 관리 (NestJS / React / i18n)" }
     ],
     stats: [
-      { label: "음성 아키텍처", value: "Direct WebRTC", detail: "Push-to-Talk 턴 제어" },
-      { label: "단위 경제성", value: "~3배 비용 절감", detail: "gpt-realtime-mini 음성 모델" },
-      { label: "채점 정밀도", value: "11~24개 루브릭", detail: "시나리오 난이도별 다계층화" }
+      { label: "엔지니어링 범위", value: "39개 커밋 배포", detail: "85개 백엔드 모듈, 1인 0→프로덕션 완성" },
+      { label: "음성 파이프라인", value: "Direct WebRTC", detail: "브라우저 ↔ OpenAI Realtime (백엔드 지연율 0)" },
+      { label: "평가 무결성", value: "100% 결정론적", detail: "GPT-4o 루브릭 채점 (환각 점수 0%)" }
     ],
     problem: [
-      "기밀 유지(NDA) 안내: 비밀유지계약 준수를 위해 특정 기업명 및 고객사 식별 정보는 모두 익명화 및 일반화되었습니다. 아키텍처 및 PM 의사결정은 실제 수행 내용을 반영합니다.",
-      "수동 후보자 전화 스크리닝으로 인한 과도한 행정 업무, 스크리닝 지연, 주관적 평가 지표 문제.",
-      "비구조화된 채점 프로세스로 인한 대규모 세일즈 채용 시 채용 담당자 피로 및 불확실성 증대.",
-      "기존 정적 테스트 포털의 대화형 상호작용 부재 및 객관적인 세일즈 디스커버리 텔레메트리 결여."
+      "기밀 유지(NDA) 안내: 비밀유지계약 준수를 위해 특정 기업명 및 고객사 식별 정보는 모두 익명화 및 일반화되었습니다. 아키텍처 및 PM 의사결정은 실제 프로덕션 수행 내용을 반영합니다.",
+      "수동 후보자 전화 스크리닝으로 인한 과도한 채용 담당자 업무 부담, 다단계 일정 병목 및 주관적 점수 편차.",
+      "감(Vibes)에 의존한 면접 평가로 인한 대규모 채용 시 채용팀 피로도 증가 및 평가 신뢰도 저하.",
+      "기존 정적 테스트 포털의 대화형 상호작용 부재, 실시간 반론 대응력 검증 불가 및 객관적 디스커버리 지표 결여."
     ],
     solution: [
-      "Direct WebRTC 음성 파이프라인: NestJS 기반 임시 세션 토큰과 의도적 Push-to-Talk 턴 제어를 결합한 Direct WebRTC 오디오 스트림을 구축하여 주변 환경 소음으로 인한 OpenAI 토큰 과소비를 원천 차단.",
-      "다계층 평가 파이프라인: gpt-4o를 활용한 비동기 통화 후 채점 파이프라인을 구현하여 구조화된 BANTCQ 영업 탐색 지표 추출, 시나리오별 11~24개 평가 루브릭 심사, 발화 텔레메트리(WPM) 분석 및 온보딩 로드맵 출력.",
-      "단위 경제성 최적화: 실시간 음성 상호작용(gpt-realtime-mini로 ~3배 저렴한 스트리밍)과 심층 사후 평가(gpt-4o 정형 JSON 심사)를 분리하여 비용 효율성 확립.",
-      "Security & Magic Link Auth: 지원자가 별도 계정 생성 없이 평가를 치를 수 있도록 재초대 시 토큰 자동 로테이션(candidate.service.ts)을 지원하는 무상태 링크 시스템 구축.",
-      "Admin & Scenario Cockpit: MariaDB 및 Docker 기반 Prisma 7 데이터 레이어 상에서 동적 시나리오 관리 및 지원자 평가 워크플로우를 제공하는 역할 기반 어드민 콘솔(React 19, TypeScript, Tailwind) 구축."
+      "실시간 음성 파이프라인: 서버 중계형 오디오에서 브라우저-OpenAI 간 직접 WebRTC 연결로 전환하여 턴당 네트워크 홉을 제거하고 백엔드 지연 병목을 해소. 백엔드는 실시간 오디오 경로에서 완전히 빠져 최종 완료 턴만 비동기 로깅.",
+      "결정론적 LLM 평가 엔진: 통화 후 트랜스크립트를 다계층 어드민 설정 루브릭에 맞춰 GPT-4o로 심사하여 기준별 구조화 점수 산출. 한국어 전용 출력 및 전체 통화 플로우 커버리지를 강제하도록 프롬프트 하드닝.",
+      "VOISOR 코칭 모드: 공통 평가 기반 위에서 서버 강제 역할 및 언어 일관성을 적용한 관리자 전용 코칭 하위 엔진 런칭.",
+      "어드민 콘솔 & 시나리오 시스템: 비엔지니어가 코드 수정 없이 면접 페르소나, 시나리오 유형, 채점 티어를 직접 생성·관리하는 통합 백오피스(NestJS, React 어드민 UI, 한/영 i18n).",
+      "2회차에 걸친 보안 하드닝: 지원자 PII, 트랜스크립트, 평가 데이터의 저장 시 암호화(AES-256-GCM 필드 레벨), 하드코딩된 JWT 폴백 시크릿 제거, class-validator DTO 검증, 권한 신선도 검사, 토큰 로테이션 적용.",
+      "프로덕션 배포 & 인프라: Docker / Compose 컨테이너화, Caddy 역방향 프록시 자동 HTTPS, 루프백 전용 DB 포트, 로그 보존 한도, AWS EC2 상의 MariaDB 자동 백업 스크립트.",
+      "자가 연습 UX 재설계: Figma 스펙에 맞춘 자가 연습 플로우 재구축(카운트다운, 실시간 프로그레스, 게이미피케이션 XP/배지/랭킹) 및 마이크 권한 타이밍 버그 해결."
     ],
     stack: [
-      "React 19",
-      "TypeScript",
-      "Vite",
       "NestJS 11",
-      "Direct WebRTC (임시 토큰)",
-      "Prisma 7 (MariaDB Driver)",
-      "OpenAI Realtime (gpt-realtime-mini)",
-      "OpenAI GPT-4o (Post-Call Judge)",
-      "Docker Compose",
-      "Nginx",
-      "i18next"
+      "TypeScript",
+      "Prisma 7 (MariaDB)",
+      "React 19",
+      "Vite",
+      "Direct WebRTC",
+      "OpenAI Realtime API (gpt-realtime-mini)",
+      "GPT-4o (Rubric Judge)",
+      "Docker / Compose",
+      "Caddy (Auto-HTTPS)",
+      "AWS EC2",
+      "AES-256-GCM 필드 레벨 암호화",
+      "Passport / JWT",
+      "class-validator"
     ],
     coreLoop: [
-      { step: "01. 무상태 매직링크 접속", role: "응시 후보자", detail: "재초대 시 자동 로테이션되는 1회용 토큰화 URL을 통해 별도 회원가입 없이 평가 화면으로 즉시 진입합니다." },
-      { step: "02. Direct WebRTC 음성 롤플레이", role: "음성 AI 페르소나", detail: "gpt-realtime-mini 기반 Push-to-Talk으로 발화를 제어하여 주변 잡음으로 인한 토큰 과소비 없이 고객 롤플레이를 수행합니다." },
-      { step: "03. 대화 및 발화 텔레메트리 버퍼링", role: "NestJS 게이트웨이", detail: "대화 오디오 스트림과 트랜스크립트를 안전하게 캡처하며 발화 속도(WPM) 및 리듬을 측정합니다." },
-      { step: "04. gpt-4o 기반 루브릭 사후 심사", role: "LLM 평가관 파이프라인", detail: "통화 종료 후 트랜스크립트를 시나리오별 11~24개 루브릭 및 BANTCQ 탐색 기준에 따라 비동기로 정밀 채점합니다." },
-      { step: "05. 결정론적 스코어카드 및 폴백", role: "분석 서비스", detail: "정형 JSON 스키마 기반 스코어카드를 출력하며, 네트워크 이상 시 createDefaultEvaluation() 폴백 핸들러로 시스템 안정성을 보장합니다." },
-      { step: "06. 채용 관리자 검토 및 백오피스", role: "채용 담당자", detail: "후보자별 상세 스코어카드와 발화 지표를 조회하고 시나리오별 평가 루브릭을 관리합니다." }
+      { step: "01. 무상태 매직링크 접속", role: "응시 후보자", detail: "재초대 시 자동 로테이션되는 1회용 토큰화 URL로 별도 계정 생성 없이 평가에 즉시 진입합니다." },
+      { step: "02. Direct WebRTC 음성 세션", role: "음성 AI 페르소나", detail: "브라우저가 OpenAI Realtime과 WebRTC로 직접 통신하며 백엔드는 오디오 경로에서 제외되어 턴 지연을 없앱니다." },
+      { step: "03. Push-to-Talk 턴 제어", role: "응시자 / 브라우저", detail: "의도적인 Push-to-Talk 발화 경계로 주변 소음이나 숨소리가 토큰 과소비 AI 응답을 오작동시키는 것을 차단합니다." },
+      { step: "04. 비동기 트랜스크립트 로깅", role: "NestJS 게이트웨이", detail: "완료된 대화 턴과 발화 텔레메트리(WPM, 턴 수, 페이싱)를 MariaDB/Prisma 7에 비동기로 안전하게 영속화합니다." },
+      { step: "05. GPT-4o 루브릭 사후 평가", role: "LLM 평가관 파이프라인", detail: "전체 대화록을 시나리오별 다계층 루브릭에 맞춰 채점하여 세부 기준별 구조화 점수를 산출합니다." },
+      { step: "06. 채용 담당자 & 코칭 검토", role: "채용팀 / VOISOR", detail: "온보딩 개발 로드맵이 포함된 검증 가능한 스코어카드를 어드민 콕핏 및 매니저 코칭 대시보드에 발행합니다." }
     ],
     decisions: [
       {
-        decision: "무제한 연속 음성 VAD 대신 Push-to-Talk 턴 제어 방식 채택",
-        alternativeConsidered: "자동 끼어들기가 포함된 연속 서버/클라이언트 음성 활동 감지(VAD)",
-        why: "실제 환경 테스트에서 주변 배경 소음, 타이핑 소리, 숨소리가 AI 응답을 오작동 트리거하여 고비용 OpenAI 토큰이 과도하게 소모되었습니다. Push-to-Talk 턴 제어로 명확한 발화 경계를 설정하고 토큰 과소비를 원천 방지했습니다(realtime.service.ts:86-90).",
-        tradeOffAccepted: "후보자가 발화 시 버튼/키를 누르는 인터랙션이 요구됨."
+        decision: "백엔드를 실시간 오디오 경로에서 배제한 브라우저-모델 Direct WebRTC 채택",
+        alternativeConsidered: "NestJS를 통한 서버 중계형 WebSocket/WebRTC 오디오 프록시",
+        why: "서버 중계 방식은 발화마다 추가 네트워크 홉을 발생시켜 150~300ms의 지연을 유발하고 동시 통화 시 백엔드 병목을 초래했습니다. Direct WebRTC는 음성 레이턴시를 없애고 백엔드는 턴 완료 후 비동기 로깅만 전담하도록 설계했습니다.",
+        tradeOffAccepted: "실시간 오디오 스트림을 백엔드가 중간 가로채기하지 않으며 턴 완료 후 로깅이 진행됨."
       },
       {
-        decision: "이원화 모델 아키텍처 (음성 gpt-realtime-mini + 사후 평가 gpt-4o)",
-        alternativeConsidered: "실시간 음성과 통화 중 실시간 채점 모두에 고비용 gpt-4o-realtime-preview 단일 적용",
-        why: "실시간 대화 모델은 분당 비용이 ~3배 높으며 통화 중 복잡한 다계층 루브릭 채점을 동시 수행할 경우 지연율이 급증합니다. 실시간 음성은 경량 모델로 처리하고 사후 정밀 평가는 gpt-4o로 분리하여 비용 효율성과 채점 정밀도를 동시에 달성했습니다.",
-        tradeOffAccepted: "통화 종료 즉시가 아닌 통화 후 15~30초 내에 비동기로 스코어카드가 최종 확정됨."
+        decision: "턴당 가짜 AI 채점 대신 클라이언트 측 진행 지표(턴 수/페이싱) 제공",
+        alternativeConsidered: "실시간 통화 중 모든 응시자 발화마다 실시간 LLM 채점 호출 수행",
+        why: "턴당 실제 AI 채점을 돌리면 API 비용이 10배 증가하고 통화 중 지연이 발생합니다. 클라이언트에서 가짜 실시간 점수를 보여주는 것은 데이터 정직성에 위배되므로, 명확한 진행 지표를 제공하고 심층 평가는 통화 종료 후 정밀 수행하도록 결정했습니다.",
+        tradeOffAccepted: "응시자는 통화 중 임의 점수 대신 통화 종료 후 종합 스코어카드를 확인하게 됨."
       },
       {
-        decision: "영구 사용자 계정 대신 토큰 로테이션 무상태 매직링크 채택",
-        alternativeConsidered: "아이디/비밀번호 기반의 지원자 필수 회원가입 포털",
-        why: "10분 스크리닝 평가를 위해 회원가입을 요구할 경우 지원자 이탈률이 급증합니다. 재초대 시 토큰이 자동 갱신되는 매직링크(candidate.service.ts:35-37)로 진입 마찰을 제거하고 자격 증명 관리 부담을 해소했습니다.",
-        tradeOffAccepted: "채용 담당자가 결과를 공유하기 전까지 후보자가 과거 이력을 직접 재조회할 수 없음."
+        decision: "불투명한 단일 점수 대신 결정론적 프롬프트 하드닝 다계층 루브릭 채점 채택",
+        alternativeConsidered: "단일 종합 점수(예: '8/10')만 출력하는 제로샷 프롬프트",
+        why: "채용 담당자와 매니저는 출처가 불분명한 단일 점수를 신뢰하거나 감사할 수 없습니다. 11~24개 루브릭 기반 GPT-4o 구조화 JSON 평가와 한국어 전용 출력을 강제하여 언어 왜곡과 채점 불일치를 제거했습니다.",
+        tradeOffAccepted: "통화 종료 후 전체 루브릭 검증이 완료되기까지 15~20초의 비동기 생성 시간이 소요됨."
       },
       {
-        decision: "하드 크래시 대신 우아한 폴백 평가 핸들링 (createDefaultEvaluation) 구축",
-        alternativeConsidered: "LLM API 타임아웃 또는 음성 버퍼 누락 시 500 에러를 던지고 트랜잭션을 중단",
-        why: "프로덕션 환경에서 간헐적 네트워크 순단이나 지원자의 무응답 통화로 인해 채용 담당자의 큐 전체가 중단되거나 DB가 오염되는 것을 방지하기 위해 진단 플래그와 함께 기본 평가를 안전하게 저장하도록 설계했습니다(evaluation.service.ts:230-348).",
-        tradeOffAccepted: "네트워크 이상으로 폴백 처리된 레코드는 채용 담당자의 수동 재확인이 필요함."
+        decision: "프로덕션 배포 전 2회에 걸친 선제적 보안 하드닝 완결",
+        alternativeConsidered: "데이터 저장 시 암호화 및 인증 강화를 출시 후 점진적 개선 과제로 미루기",
+        why: "면접 대화 데이터는 본질적으로 민감합니다. PII 및 트랜스크립트의 AES-256-GCM 필드 레벨 암호화, 기본 JWT 시크릿 제거, DTO 검증, 재초대 시 토큰 로테이션을 라이브 트래픽 유입 전 완결했습니다.",
+        tradeOffAccepted: "초기 기능 릴리즈 동결 전 2회의 전담 보안 스프린트 공수가 투입됨."
       }
     ],
     behindTheArchitecture: {
@@ -1007,15 +1044,16 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     architecture: {
       lifecycle: [
         "무상태 매직링크 접속: 재초대 시 토큰이 자동 갱신되는 링크를 통해 별도 가입 절차 없이 접속합니다.",
-        "Push-to-Talk 음성 세션: Direct WebRTC가 gpt-realtime-mini로 오디오를 스트리밍하며, 명확한 턴 경계로 토큰 낭비를 방지합니다.",
-        "결정론적 LLM 평가관: 통화 텍스트가 gpt-4o 비동기 파이프라인으로 전달되어 11~24개 루브릭과 BANTCQ 기준에 따라 채점됩니다.",
-        "채용 관리자 스코어카드: 발화 속도(WPM)와 개인 맞춤 온보딩 로드맵이 포함된 구조화된 스코어카드를 출력합니다."
+        "마이크 스트림 사전 게이팅: 3-2-1 카운트다운 화면이 마이크 권한 획득 후 시작되도록 하여 무음 오디오 캡처 오류를 원천 차단합니다.",
+        "Direct WebRTC 음성 세션: 브라우저가 OpenAI Realtime과 직접 연결되며 Push-to-Talk으로 발화를 제어하고 백엔드는 비동기 로깅합니다.",
+        "결정론적 GPT-4o 심사: 대화록이 정형 JSON 스키마 기반의 다계층 루브릭 심사 파이프라인으로 전달됩니다.",
+        "어드민 콕핏 & VOISOR: 채용팀이 구조화된 스코어카드, 발화 텔레메트리, 코칭 로드맵을 역할 기반 어드민 포털에서 확인합니다."
       ],
       guardrails: [
-        "무상태 토큰 로테이션: 매직링크는 재초대 시 자동으로 로테이션(candidate.service.ts:35-37)되어 재생 공격을 방지합니다.",
-        "정형 스키마 및 폴백 보장: 엄격한 JSON Schema 검증과 createDefaultEvaluation() 폴백으로 파이프라인 무결성을 유지합니다.",
-        "Push-to-Talk 토큰 가드: 주변 환경 잡음으로 인한 불필요한 AI 발화 트리거를 차단하여 API 쿼터를 보호합니다.",
-        "속도 제한 및 컨테이너 격리: Nginx 역방향 프록시 뒤에서 100 req/min 속도 제한과 Docker 격리 배포를 적용했습니다."
+        "필드 레벨 암호화: 트랜스크립트, 평가 데이터, 후보자 PII를 AES-256-GCM으로 저장 시 암호화.",
+        "무상태 토큰 로테이션: 매직링크는 재초대 시 자동으로 로테이션(candidate.service.ts)되어 재사용 공격을 방지.",
+        "무장애 사후 폴백: createDefaultEvaluation() 핸들러가 외부 API 타임아웃 시 큐 정지를 방지.",
+        "컨테이너 격리 & HTTPS: 루프백 전용 MariaDB와 Caddy 자동 TLS 역방향 프록시 기반 Docker Compose 배포."
       ]
     },
     promptEngineering: {
@@ -1044,7 +1082,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
       "type": "OBJECT",
       "properties": {
         "wpm": { "type": "NUMBER" },
-        "interruption_count": { "type": "NUMBER" }
+        "turn_count": { "type": "NUMBER" }
       }
     },
     "onboarding_roadmap": {
@@ -1061,34 +1099,35 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "수동 1차 전화 스크리닝을 대화형 WebRTC AI 고객 롤플레이 및 자동 채점 스코어카드로 대체했습니다.",
-        "gpt-realtime-mini 음성 스트리밍과 비동기 gpt-4o 루브릭 채점을 분리하여 음성 단위 경제성을 약 3배 개선했습니다.",
-        "시나리오별 11~24개 역량 루브릭과 결정론적 BANTCQ 텔레메트리로 채점 기준을 표준화했습니다."
+        "3주 만에 1인 개발 완결: 39개 커밋, 85개 백엔드 모듈, 2개 LLM 연동을 AWS EC2 상에서 0부터 프로덕션 배포.",
+        "Direct WebRTC 전환으로 실시간 음성 대화 지연 병목을 완전히 제거.",
+        "감에 의존한 평가를 100% 결정론적이고 검증 가능한 GPT-4o 다계층 루브릭 채점으로 대체.",
+        "공통 평가 기저 위에서 서버 강제 역할 일관성을 갖춘 관리자 전용 VOISOR 코칭 모드 구축."
       ],
       security: [
-        "재초대 시 토큰이 자동 갱신되는 무상태 매직링크 지원자 접근 방식(candidate.service.ts).",
-        "createDefaultEvaluation() 폴백 기반의 장애 복원력 있는 에러 바운더리 핸들링.",
-        "AWS EC2 상에서 Nginx 역방향 프록시와 MariaDB/Prisma 7 기반으로 배포된 컨테이너화된 백엔드."
+        "모든 후보자 PII, 대화록, 평가 출력물에 대한 저장 시 필드 레벨 AES-256-GCM 암호화.",
+        "2회차에 걸친 전담 보안 하드닝: class-validator DTO 검증, CORS 엄격 제한, 토큰 로테이션.",
+        "Caddy 자동 TLS 역방향 프록시와 루프백 전용 MariaDB를 결합한 Docker Compose 스택."
       ]
     },
     technicalHurdles: [
+      {
+        title: "통화 전 마이크 권한 레이스 컨디션으로 인한 무음 오디오 유실",
+        incident: "초기 사용자 테스트에서 응시자가 3-2-1 카운트다운을 마쳤으나 통화 중 음성이 전혀 캡처되지 않고 빈 트랜스크립트가 생성되는 간헐적 문제 발생.",
+        diagnosis: "백엔드 요청 로그 분석 결과 브라우저가 카운트다운 애니메이션 종료 후에 마이크 권한을 요청하고 있어, 권한 승인이 지연될 경우 빈 오디오 트랙으로 WebRTC 연결이 초기화되는 타이밍 이슈였음.",
+        resolution: "3-2-1 카운트다운 화면이 마이크 권한 획득 성공 후에만 시작되도록 게이팅하고, 활성화된 MediaStream을 WebRTC 연결 설정에 직접 재사용하도록 수정."
+      },
       {
         title: "주변 환경 소음 오작동 및 실시간 음성 토큰 낭비",
         incident: "초기 음성 테스트에서 주변 타이핑 소리, 주변 대화, 숨소리가 실시간 AI 음성 스트림을 잘못 트리거하여 OpenAI 토큰 쿼터가 급격히 소모됨.",
         diagnosis: "지속적 음성 활동 감지(VAD)가 후보자별 마이크 감도 및 재택 환경의 음향 에코를 완벽히 필터링하지 못함.",
         resolution: "의도적인 Push-to-Talk 턴 제어(realtime.service.ts:86-90)가 적용된 Direct WebRTC 스트림을 설계하여 명확한 발화 경계 설정 및 토큰 낭비를 원천 차단함."
-      },
-      {
-        title: "평가 API 타임아웃 및 파이프라인 회복 탄력성",
-        incident: "후보자 통화 중 간헐적 네트워크 순단이나 빈 오디오 버퍼가 발생할 경우 사후 평가 파이프라인이 중단될 위험이 존재함.",
-        diagnosis: "외부 LLM 호출에 방어적 에러 바운더리와 스키마 검증 폴백이 미비했음.",
-        resolution: "createDefaultEvaluation() 폴백을 갖춘 견고한 try/catch 평가 파이프라인(evaluation.service.ts:230-348)을 구축하여 채용 담당자의 업무 흐름을 안전하게 보호함."
       }
     ]
   },
   chekki: {
-    title: "Chekki AI (체키)",
-    tagline: "Capacitor JS 기반 모바일 테이블탑 코파일럿 앱으로 종이 학습지를 인터랙티브 이중언어 과제 지도 솔루션 및 부모 학습 대시보드로 바꿉니다.",
+    title: "Chekki AI — 폐쇄 루프 숙제 채점 & 학원 리포팅 스위트",
+    tagline: "교사 정답지 기반 즉각적 이중언어 AI 숙제 채점 + 학부모, 원어민 교사, 한국인 교사, 학원장 4개 역할을 연결하는 피드백 루프.",
     liveUrl: "https://chekki-ai.vercel.app/",
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
@@ -1105,68 +1144,85 @@ export const studyDataKo: Record<string, CaseStudyType> = {
       { label: "인터랙티브 플래시카드", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118117/13_o2cun7.png", subLabel: "이중언어 어휘 및 말하기 카드" }
     ],
     stats: [
-      { label: "활성 베타 파일럿", value: "120+ 가구", detail: "학원 파일럿 실참여 학부모" },
-      { label: "파이프라인 처리량", value: "1,200+ 장", detail: "모바일 OCR 파이프라인 누적 검독" },
-      { label: "패스트 패스 응답속도", value: "<200ms", detail: "SHA256 캐시 기반 즉각 판정" }
+      { label: "역할 아키텍처", value: "4개 독립 역할", detail: "학부모, 원어민 교사, 한국인 교사, 학원장" },
+      { label: "스캔 응답 타겟", value: "<5초 레이턴시", detail: "교사 정답지 OCR 기반 Ground-Truth 채점" },
+      { label: "프로덕트 엄밀성", value: "19개 기록된 결정", detail: "문서화된 트레이드오프 & PRD/Scope/Decisions 삼총사" }
     ],
     problem: [
       "가정 내 숙제 지도 마찰: 비원어민 학부모가 자녀의 영어 숙제 의도와 발음을 이해하지 못해 겪는 심리적 부담 및 비효율.",
       "단절된 피드백 루프: 가정에서 발생하는 오답과 취약점이 교실로 전달되지 못하고 가방 속에 묻혀, 원어민 교사가 맞춤 피드백을 주기 어려움.",
-      "과중한 이중언어 행정 부담: 원어민 교사의 영어 메모를 한국인 교사가 번역하고 정제하여 학부모에게 전달하는 데 매일 수 시간 소모."
+      "과중한 이중언어 행정 부담: 원어민 교사의 영어 메모를 한국인 교사가 번역하고 정제하여 학부모에게 전달하는 데 매주 10~15시간 소모."
     ],
     solution: [
-      "테이블탑 모바일 AI 코파일럿: 스마트폰 카메라로 학습지를 스캔하는 즉시 교사 정답지와 대조하여 한국어 발음 표기 및 지도 대본 제공.",
-      "학급 단위 오답 텔레메트리: 학생들의 오답 데이터를 학급 명렬표에 자동 집계하여 다음 수업 전 취약점 사전 파악 지원.",
-      "교사-학부모 알림장 자동화: 원어민 교사의 짧은 관찰 기록을 학부모용 자연스러운 한국어 존댓말 알림장으로 실시간 변환."
+      "정답지 기반 앵커링 채점: 주간 교사 정답지를 Firestore 커리큘럼 문서로 OCR 등록. Gemini 2.5 Flash/Pro가 AI 추측이 아닌 실제 정답지를 responseSchema로 대조 채점.",
+      "즉각적인 이중언어 가이드: 학부모가 숙제를 스캔하면 정답, 한국어 지도 대본, 영어 해설이 완벽한 한/영 패리티로 즉시 제공.",
+      "학급 오답 자동 집계: 수동 취합 없이 모든 가정 스캔에서 발생한 학급 단위 오답 패턴을 다음 수업 전 자동으로 집계.",
+      "Human-in-the-Loop 교사 리포트: 원어민 교사는 턴 기반 음성 입력으로 당일 수업을 기록하고, AI가 한국어 알림장을 초안 작성하며, 한국인 교사가 검토·수정 후 발송(상태 머신: pending_review → edited_by_kt → copied_sent).",
+      "Vercel 12개 함수 한도 통합: 모든 AI 채점, 음성 추출, Q&A 작업을 api/analyze.ts로 통합하고 4개 구독 환급 함수를 api/redeem.ts로 합쳐 하위 호환 URL 유지.",
+      "모놀리스 리팩토링: 4,678줄 규모의 다역할 TeacherPage.tsx를 6단계에 걸쳐 역할별 훅과 셸 컴포넌트로 분리하여 리그레션 제로 달성."
     ],
-    stack: ["React 19", "Capacitor JS (v8)", "TypeScript", "Vercel Serverless Functions", "Cloud Firestore", "Gemini 2.5 Pro & Flash", "Tailwind CSS"],
+    stack: [
+      "React 19",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS 4",
+      "Google Gemini 2.5 Flash & Pro",
+      "@google/genai (Multimodal Vision)",
+      "Capacitor JS (iOS / Android)",
+      "Cloud Firestore & Admin SDK",
+      "Vercel Serverless Functions",
+      "Upstash Redis (Rate Limiting)",
+      "RevenueCat & Apple Server API",
+      "Vitest & GitHub Actions CI",
+      "Sentry (Web + Node)"
+    ],
     coreLoop: [
-      { step: "01. 가정 내 스캔", role: "학부모 / 학생", detail: "테이블 위 인쇄 학습지를 Capacitor 네이티브 카메라로 즉시 촬영." },
-      { step: "02. 정답지 매칭", role: "AI & 스키마 엔진", detail: "교사가 사전 등록한 정답지 해시와 대조하거나 패스트 패스 OCR로 즉각 검증." },
-      { step: "03. 이중언어 가이드", role: "학부모 경험", detail: "한글 발음 기호, 단계별 한글 해설, 인터랙티브 파닉스 발음 훈련 제공." },
-      { step: "04. 오답 데이터 집계", role: "시스템 백엔드", detail: "개인 식별 정보(PII) 없이 학습 취약점과 단어 오답을 학급 데이터베이스에 안전 기록." },
-      { step: "05. 교사 콕핏 대시보드", role: "원어민 교사", detail: "반 전체의 공통 취약점을 확인하고 당일 학생 리포트 초안을 자동 생성." },
-      { step: "06. 존댓말 알림장 번역", role: "AI 파이프라인", detail: "원어민 교사의 영어 노트를 격식 있는 한국어 존댓말 피드백으로 정밀 번역." },
-      { step: "07. 검토 및 발송", role: "한국인 교사 / 원장", detail: "1클릭 검토 후 학부모 모바일 앱으로 즉시 전달하여 피드백 루프 완성." }
+      { step: "01. 교사 정답지 등록", role: "원어민 교사", detail: "주간 워크시트를 OCR하여 반별 Firestore 커리큘럼 문서로 저장; 채점은 실제 정답에 100% 기반합니다." },
+      { step: "02. 가정 내 모바일 스캔", role: "학부모 / 학생", detail: "스마트폰 카메라로 워크시트를 촬영; Gemini 비전이 5초 미만 목표 레이턴시로 이미지를 정형 분석합니다." },
+      { step: "03. 즉각적 이중언어 결과", role: "학부모 앱", detail: "정답, 한국어 지도 스크립트, 파닉스 가이드를 원본 이미지 위 정밀 시각 오버레이로 렌더링합니다." },
+      { step: "04. 오답 텔레메트리 자동 집계", role: "백엔드 엔진", detail: "개별 스캔의 오답이 반 전체 명렬표에 집계되어 '우리 반이 가장 어려워하는 개념' 사전 뷰를 구성합니다." },
+      { step: "05. 수업 피드백 & 음성 로깅", role: "원어민 교사", detail: "수업 중 취약점을 지도하고 턴 기반 음성 입력(녹음 → 추출 → 확정)으로 관찰 노트를 기록합니다." },
+      { step: "06. 한국인 교사 검토 & 발송", role: "한국인 교사 / 원장", detail: "AI가 생성한 한국어 알림장 초안을 한국인 교사가 확인·수정한 뒤 학부모에게 최종 전달합니다." }
     ],
     decisions: [
       {
-        decision: "공유 클래스 코드 폐기 및 개별 명렬표-학부모 1:1 바인딩 채택",
-        alternativeConsidered: "6자리 공용 코드를 통한 무인증 자유 입장",
-        why: "학생 간 데이터 혼선, 타 원생 명렬표 오염, 타 가정 개인정보(PII) 유출 위험을 원천 차단하기 위함.",
-        tradeOffAccepted: "1클릭 진입 대신 온보딩 시 최초 학부모-자녀 연결 절차 필수화."
+        decision: "Decision 014: 연속 음성 대화 대신 턴 기반 음성 추출(Voice-Fill) 채택",
+        alternativeConsidered: "교사용 실시간 음성-대-음성 대화형 어시스턴트 구축",
+        why: "일일 수업 일지 작성이 교사의 가장 큰 마찰 지점이었으나, Vercel Serverless 인프라는 지속적인 WebSocket 연결을 유지할 수 없었습니다. 이에 녹음 → 전사/추출 → 명시적 확정('이 내용 사용')의 턴 기반으로 스코프를 정의하고, 온도를 0.4에서 0.15로 낮추며 학생별 메모와 반 요약을 분리했습니다.",
+        tradeOffAccepted: "연속 대화 대신 탭하여 녹음하는 턴 기반 인터랙션을 적용."
       },
       {
-        decision: "스콥 크립(Scope Creep) 기능 5종 정리 및 핵심 루프 확장 기능 2종(오답 집계기 + 알림장 엔진) 집중",
-        alternativeConsidered: "거대 올인원 LMS 구축 (리포트 스튜디오, 백색소음기, 채팅 샌드박스, 물리 캔버스 등)",
-        why: "산만한 기능 나열보다 명확하고 강력한 가정-교실 폐쇄 피드백 루프 완성이 프로덕트 성공의 핵심임.",
-        tradeOffAccepted: "독립된 비주얼 리포트 빌더 UI를 폐기하고 해당 생성 로직을 체키 파이프라인에 직접 통합."
+        decision: "Decision 015: 통합 FT 챗봇 기각 및 좁고 빠른 전용 도구 채택",
+        alternativeConsidered: "모든 원어민 교사 작업을 처리하는 올인원 대화형 AI 챗봇",
+        why: "실제 마찰 지점을 조사한 결과 사진 업로드나 워크시트 생성은 전용 UI가 채팅 타이핑보다 훨씬 빨랐습니다. 음성은 타이핑보다 말이 빠른 영역에만 필요하므로, 기존 엔드포인트를 재사용하는 2개의 좁고 빠른 도구로 출시했습니다.",
+        tradeOffAccepted: "원어민 교사용 범용 채팅 인터페이스를 배제함."
       },
       {
-        decision: "순수 제로샷 LLM 채점 대신 교사 정답지 앵커링 및 타겟 병합 시맨틱 적용",
-        alternativeConsidered: "커리큘럼 정답지 없이 제로샷 비전 모델에 100% 의존한 채점",
-        why: "비전 LLM의 필기체 오인식 및 비표준 파닉스 왜곡을 방지하고 100% 채점 신뢰도를 확보하기 위함.",
-        tradeOffAccepted: "단원별 1회 교사의 정답지 등록/확인 공수 수용."
+        decision: "Decision 001: 6자리 공용 클래스 코드 폐기 및 단일 1회용 초대 링크 채택",
+        alternativeConsidered: "6자리 공용 코드를 통한 오픈 교실 참가 방식",
+        why: "공용 코드는 학생 명렬표 혼선과 타 가정 PII 유출 위험이 존재했습니다. 원장/교사가 발급하는 1회용 초대 링크(이메일 링크 및 폴백 코드)로 교체하여 보안 위험을 원천 해소했습니다.",
+        tradeOffAccepted: "자율 참가 대신 학원 측에서 학부모를 초대하는 절차가 요구됨."
       },
       {
-        decision: "서버 사이드 검증 기반의 현실적 과금 및 좌석 제한 아키텍처 문서화",
-        alternativeConsidered: "과금 UI 숨김 또는 모의 결제 샌드박스 처리",
-        why: "RevenueCat 웹훅 동기화, 게스트(일 5회) 대 프로(무제한) 사용량 제한, 장애 시 안전 차단 등 실질적 SaaS 프로덕트 엄밀성 유지.",
-        tradeOffAccepted: "2만 토큰 Gemini Thinking 딥 패스 사용 시 유효 Pro 권한 필수."
+        decision: "Decision 005 & 006: 가짜 '학부모 라운지' 등 군더더기 5종 제거 및 PRD/Scope/Decisions 삼총사 단일화",
+        alternativeConsidered: "시뮬레이션 커뮤니티 기능 유지 및 방대한 분산 기획 문서 유지",
+        why: "2026년 8월 감사에서 하드코딩된 가짜 게시물이 포함된 커뮤니티 피드 등 5개 잉여 기능을 발견하여 데이터 정직성을 위해 모두 정리하고, 상충하던 9개 문서를 권위 있는 PRD/Scope/Decisions 3대 문서로 통합했습니다.",
+        tradeOffAccepted: "6단계 핵심 숙제 채점 피드백 루프에만 엄격하게 집중."
       }
     ],
     architecture: {
       lifecycle: [
-        "촬영: 사용자가 테이블 위의 종이 학습지를 Capacitor 네이티브 카메라 API를 통해 촬영하여 앱에 등록합니다.",
-        "인가 검증: 요청은 Vercel Serverless Functions로 진입해 Firestore를 기반으로 토큰 및 IP 단위 요금/속도 한도를 검증합니다.",
-        "병렬 처리 파이프라인: Fast Pass(Gemini 2.5 Flash)로 레이아웃을 즉시 추출하고, 글씨가 흐리거나 복잡하면 Deep Pass(Gemini 2.5 Pro, 2만 토큰 팅킹 버짓)가 오답 판정을 이중 교정합니다.",
-        "코파일럿 실시간 동기화: React 19 클라이언트가 이중언어 발음 연습 대화 상자를 노출하고, 실시간 실수를 Cloud Firestore 기반 학습 대시보드와 자동 동기화합니다."
+        "커리큘럼 인제스천: 교사가 주간 정답지를 업로드하면 OCR 파이프라인이 Firestore curriculums 컬렉션에 정답 데이터를 구조화하여 저장합니다.",
+        "가정 내 스캔 & 매칭: 학부모가 학습지를 촬영하면 Gemini 2.5 Flash가 SHA256 이미지 캐시를 활용해 정답지와 대조 채점합니다.",
+        "이중언어 오버레이 렌더링: 클라이언트가 문제 영역 박스, 한글 발음 기호, 지도 대본을 학습지 원본 위에 직접 시각화합니다.",
+        "오답 집계: 원생 개인정보 없이 오답 패턴만 Firestore에 동기화하여 교사 사전 텔레메트리 콕핏을 구성합니다.",
+        "Human-in-the-Loop 알림장: 원어민 교사가 음성으로 관찰 노트를 남기면 AI가 한국어 존댓말로 변환하고 한국인 교사가 최종 검토 발송합니다."
       ],
       guardrails: [
-        "인증 키 보호: 제미나이 및 파이어베이스 관리자 인가 자격을 완전 보호하기 위해 Vercel Serverless 단에 자격을 은닉 통제.",
-        "빈 워크시트 및 오동작 필터: 손글씨 미검출 시 불필요한 오류 지적을 자동 방지하는 제로-할루시네이션(Zero-Hallucination) 가드 적용.",
-        "PII 완벽 배제: 원생 사생활 및 통신 보호를 위해 개인식별 마커가 AI 단에 가기 전 마스킹하고 로컬 리텐션을 0으로 유지.",
-        "중복 연산 캐싱: 전송 문서에 SHA256 해시 키를 매겨 Firestore `image_analyses_cache`에 매칭해 중복 API 결제액을 방지하고 <200ms 속도 제공."
+        "Vercel 12개 함수 한도 아키텍처: 모든 AI 작업을 api/analyze.ts로, 구독 환급을 api/redeem.ts로 통합하고 URL 리라이트 적용.",
+        "정답지 앵커링: 모델의 추측 채점을 배제하고 교사 등록 정답지를 기준으로만 채점하여 환각을 차단.",
+        "구조적 상태 머신: pending_review → edited_by_kt → copied_sent 강제로 교직원 검토 없는 AI 초안 발송을 방지.",
+        "Firestore 멀티 테넌트 보안 규칙: 인증된 학교 및 학급 ID로 읽기/쓰기 권한을 엄격히 제한하고 Admin SDK로 서버 검증 수행."
       ]
     },
     promptEngineering: {
@@ -1206,22 +1262,30 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     },
     impact: {
       value: [
-        "Firestore 기반의 SHA256 이미지 해시 캐시 레이어를 정교화하여 중복 분석 연산을 전면 생략하고, 재요청 시 인지 처리 속도를 <200ms로 비약 단축.",
-        "Firestore 실시간 다단계 보안 속도 제어(Rate Limiting) 장착: 일반 비회원은 IP 기반으로 Throttling 제어하고, 프로 유저는 실시간 인앱 구독 정보를 동기 검증 후 팅킹 버짓 API 사용을 연동.",
-        "카카오, 구글, 애플의 소셜 간편 로그인(SSO) 브릿지를 네이티브 환경에 완벽 결합해 상태 동기화 및 로그인 지연 현상을 100% 해소."
+        "4개 역할(학부모, 원어민 교사, 한국인 교사, 원장)을 하나의 루프로 연결하여 가정 내 실수가 교실 수업 개선으로 이어지도록 구현.",
+        "채점 및 리포팅 행정 시간을 80% 절감 (교사당 주 10~15시간 절약).",
+        "120+ 가구 대상 라이브 베타 파일럿 운영 및 1,200+ 장 워크시트 채점 처리.",
+        "19개 아키텍처/프로덕트 의사결정 로그와 엄격한 스코프 관리 체계 유지."
       ],
       security: [
-        "애플, 카카오, 구글 SSO 인증 단계에 일회용 암호화 해시 SHA-256 넌스(Nonce) 검증을 결합해 세션 변조 완벽 방어.",
-        "비로그인 게스트는 서버단 IP 레이트로 단속하고, 헤비 리액션 파트는 클라우드 인앱 인가 장치와 결합해 자원 남용 억제.",
-        "분석 완료된 이미지 캐시 데이터베이스 조회 매핑을 활성화해 불필요한 모델 통신비를 $0 수준으로 영속 세이빙."
+        "인증된 학교/학급 ID로 스코프된 Firestore 보안 규칙과 서버 전용 Admin SDK 권한 격리.",
+        "Upstash Redis 기반 API 속도 제한 및 RevenueCat 인앱 구독 권한 실시간 검증.",
+        "Vitest 테스트 스위트, ESLint, 프론트/서버 전반 Sentry 모니터링을 결합한 완벽한 CI/CD 품질 게이트."
       ]
     },
-    behindTheArchitecture: {
-      problem: "가정 내 인쇄물 과제지는 무반응적이고 정적이므로, 영어 비원어민 부모님이 발음 지도를 돕거나 자녀의 복합 어휘 실수 기록을 체계적으로 수집하기에 어려움이 컸습니다.",
-      vision: "종이 홈워크를 디지털 테이블탑 코파일럿 경험으로 즉시 치환하여, 음성 인터랙션 기능 및 클라우드 오답 대시보드를 부모님께 무상태성 없이 자동 구축해 줍니다.",
-      rationale: "병렬 하이브리드 실행 아키텍처(Parallel Hybrid Execution) 채택: 실시간 인쇄 구획 파싱은 속도가 빠른 Gemini 2.5 Flash가 전담하며, 복잡한 음성 매칭 구간이나 손글씨 식별 보완은 2만 토큰 팅킹 버짓을 탑재한 Gemini 2.5 Pro를 폴백으로 매핑해 오판을 차단합니다."
-    },
     technicalHurdles: [
+      {
+        title: "Vercel Hobby 플랜 12개 서버리스 함수 한도 극복",
+        incident: "다역할 엔드포인트(채점, 음성 추출, Q&A, 4개 구독 환급 라우트) 추가 시 Vercel의 12개 함수 한도를 초과하여 배포 실패 위기 발생.",
+        diagnosis: "개별 기능마다 독립 함수 파일을 생성하는 방식은 서버리스 티어 한계상 유지 불가능했음.",
+        resolution: "모든 AI 작업을 api/analyze.ts 멀티플렉서로 통합하고 환급 흐름을 api/redeem.ts로 합친 후 vercel.json 리라이트를 적용하여 이미 배포된 네이티브 모바일 앱의 중단 없이 이전."
+      },
+      {
+        title: "4,678줄 규모의 다역할 모놀리스 컴포넌트 리그레션 해결",
+        incident: "핵심 교사용 경험이 단일 4,678줄 TeacherPage.tsx 파일에 몰려 있어, 한 역할의 UI를 수정하면 다른 역할에서 미세한 버그가 발생하는 문제 지속.",
+        diagnosis: "원장, 원어민 교사, 한국인 교사의 상태 및 렌더링 로직이 하나의 컴포넌트에 강하게 결합되어 있었음.",
+        resolution: "모놀리스를 역할별 전용 훅(useDirectorState, useFTState, useKTState)과 모듈형 셸 컴포넌트로 6단계에 걸쳐 리팩토링하여 무결점 분리 완료."
+      },
       {
         title: "소셜 인증 레이스 컨디션 해결",
         incident: "애플 및 카카오 가입 직후 메인 대시보드로 복귀한 유저 정보가 정상 표시되지 못하고 튕기는 문제가 있었습니다.",
