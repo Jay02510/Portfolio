@@ -595,9 +595,9 @@ function App() {
                 {/* QUICK STATS BAR */}
                 <div className="w-full max-w-4xl mx-auto pt-6 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-4 text-center mt-4">
                   <div className={`p-4 rounded-xl border backdrop-blur-md ${theme === 'dark' ? 'bg-white/[0.03] border-white/10' : 'bg-black/[0.03] border-black/10'}`}>
-                    <div className="text-base md:text-lg font-black text-accent-gold">Direct WebRTC</div>
+                    <div className="text-base md:text-lg font-black text-accent-gold">-200ms Latency</div>
                     <div className="text-[10px] md:text-xs font-semibold tracking-wider uppercase opacity-75 mt-1">
-                      {locale === 'en' ? "Voice AI & Ephemeral Tokens" : "음성 AI & 임시 세션 토큰"}
+                      {locale === 'en' ? "Direct WebRTC vs Server-Relayed" : "직접 WebRTC vs 서버 릴레이 대비"}
                     </div>
                   </div>
                   <div className={`p-4 rounded-xl border backdrop-blur-md ${theme === 'dark' ? 'bg-white/[0.03] border-white/10' : 'bg-black/[0.03] border-black/10'}`}>

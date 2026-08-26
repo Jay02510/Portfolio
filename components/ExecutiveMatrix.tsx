@@ -104,7 +104,7 @@ const SYSTEMS_DATA: SystemItem[] = [
     problemEn: "Automated manual 1st-round sales phone screening calls with real-time WebRTC customer simulations & deterministic grading.",
     problemKo: "수동 1차 전화 스크리닝을 실시간 WebRTC AI 고객 롤플레이 및 결정론적 채점으로 100% 자동화.",
     techStack: ["Direct WebRTC", "NestJS", "OpenAI Realtime", "GPT-4o Judge", "Prisma 7", "MariaDB", "AES-256-GCM", "Docker"],
-    highlightMetricEn: "100% Deterministic Step Rubrics (0% Math Hallucination)",
+    highlightMetricEn: "100% Deterministic Step Rubrics (0% Score Hallucination)",
     highlightMetricKo: "100% 결정론적 스텝 루브릭 (채점 환각 0%)",
     caseStudyId: "vodabi"
   },
