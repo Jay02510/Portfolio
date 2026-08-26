@@ -190,10 +190,21 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
                   theme === 'dark' ? 'text-text-sec hover:text-accent-gold' : 'text-alpine-950/60 hover:text-accent-clay'
                 }`}
               >
-                {project.websiteUrl 
-                  ? (locale === 'ko' ? '실시간 실행 ↗' : 'Launch Live') 
+                {project.websiteUrl
+                  ? (locale === 'ko' ? '실시간 실행 ↗' : 'Launch Live')
                   : (locale === 'ko' ? '데모 부스 ↗' : 'Launch Demo')}
                 <ExternalLinkIcon className="w-3 h-3 opacity-60" />
+              </a>
+            )}
+
+            {project.collaborationUrl && (
+              <a
+                href={project.collaborationUrl}
+                className={`flex items-center gap-1.5 text-[8.5px] sm:text-[9px] font-black uppercase tracking-widest transition-all whitespace-nowrap shrink-0 ${
+                  theme === 'dark' ? 'text-text-sec hover:text-accent-gold' : 'text-alpine-950/60 hover:text-accent-clay'
+                }`}
+              >
+                {locale === 'ko' ? '파일럿 대기명단 신청 ↗' : 'Join Pilot Waitlist ↗'}
               </a>
             )}
           </div>

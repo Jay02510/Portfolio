@@ -10,6 +10,7 @@ export interface Project {
   demoUrl?: string;
   websiteUrl?: string;
   githubUrl?: string;
+  collaborationUrl?: string;
   category: 'K-12' | 'Higher Ed' | 'Corporate' | 'Tools' | 'Pipelines';
 }
 

@@ -356,6 +356,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                       <ExternalLinkIcon className="w-3.5 h-3.5" />
                     </a>
                   )}
+
+                  {project.collaborationUrl && (
+                    <a
+                      href={project.collaborationUrl}
+                      className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest transition-all ${
+                        theme === 'dark' ? 'text-white/70 hover:text-accent-gold' : 'text-alpine-950/70 hover:text-accent-clay'
+                      }`}
+                    >
+                      {locale === 'ko' ? '파일럿 대기명단 신청 ↗' : 'Join Pilot Waitlist ↗'}
+                    </a>
+                  )}
                 </div>
 
                 <button
