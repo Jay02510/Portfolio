@@ -122,8 +122,8 @@ const SYSTEMS_DATA: SystemItem[] = [
     problemEn: "Eliminated repetitive worksheet grading via curriculum pre-seeding and aggregates class mistake patterns before lessons.",
     problemKo: "정답지 사전 시딩으로 반복 채점을 제거하고 수업 전 학급별 오답 취약 패턴을 사전 집계.",
     techStack: ["React 19", "Gemini 2.5 Pro", "Cloud Firestore", "Atomic Transactions", "Bilingual Engine", "TypeScript"],
-    highlightMetricEn: "80% Grading Time Saved (10-15h / week / teacher)",
-    highlightMetricKo: "채점 시간 80% 절감 (주당 10~15시간 세이브)",
+    highlightMetricEn: "Est. 80% Grading Time Saved (10-15h / week / teacher) — retest pending Chekki Schools launch",
+    highlightMetricKo: "채점 시간 약 80% 절감 추정 (주당 10~15시간) — Chekki Schools 출시 후 재검증 예정",
     liveUrl: "https://chekki-ai.vercel.app/",
     caseStudyId: "chekki"
   },
@@ -141,8 +141,8 @@ const SYSTEMS_DATA: SystemItem[] = [
     problemEn: "Instant camera OCR homework evaluation with respectful Korean explanations for non-English speaking parents.",
     problemKo: "영어가 어려운 학부모를 위한 즉각적인 카메라 OCR 숙제 채점 및 자연스러운 한국어 존댓말 해설.",
     techStack: ["Capacitor (iOS/Android)", "Gemini 2.5 Flash", "RevenueCat IAP", "Zero-Storage COPPA", "Tailwind CSS"],
-    highlightMetricEn: "120+ Families Pilot · <200ms Parsing Latency",
-    highlightMetricKo: "120+ 학부모 파일럿 운영 · 200ms 미만 파싱",
+    highlightMetricEn: "100+ Users Pilot · <200ms Parsing Latency",
+    highlightMetricKo: "100+ 사용자 파일럿 운영 · 200ms 미만 파싱",
     liveUrl: "https://chekki-ai.vercel.app/",
     caseStudyId: "chekki"
   },
@@ -160,8 +160,8 @@ const SYSTEMS_DATA: SystemItem[] = [
     problemEn: "Replaced 40+ hours of manual timetable scheduling with hybrid TypeScript validation and Gemini heuristic optimization.",
     problemKo: "40시간 이상의 시간표 편성 작업을 TypeScript 하드 제약 검증 및 Gemini Pro 휴리스틱 최적화로 대체.",
     techStack: ["TypeScript Constraint Engine", "Gemini 2.5 Pro", "React", "Local Persistence", "Vite"],
-    highlightMetricEn: "40h → <10min with 0 Room & Teacher Clashes",
-    highlightMetricKo: "40시간 → 10분 미만 단축 (충돌 0건 보장)",
+    highlightMetricEn: "MVP: 40h → <10min with 0 Room & Teacher Clashes",
+    highlightMetricKo: "MVP: 40시간 → 10분 미만 단축 (충돌 0건 보장)",
     liveUrl: "https://scheduling-app-five.vercel.app/"
   },
   {
@@ -400,7 +400,7 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
             </span>
           </div>
           <span className="mt-2 sm:mt-0 font-semibold text-accent-gold">
-            {locale === 'en' ? "100% Production Verified" : "전 제품 프로덕션 검증 완료"}
+            {locale === 'en' ? "Live in Production" : "프로덕션 운영 중"}
           </span>
         </div>
 

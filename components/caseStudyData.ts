@@ -307,8 +307,8 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     impact: {
       value: [
         "Connected 4 roles (Parent, FT, KT, Director) into a unified closed loop where home mistakes inform classroom instruction.",
-        "Reduced grading and reporting admin time by 80% (saving teachers 10-15 hours weekly).",
-        "Operated live beta pilot across 120+ families with 1,200+ worksheets evaluated.",
+        "Est. 80% reduction in grading/reporting admin time (10-15h/week/teacher) — retest pending Chekki Schools launch.",
+        "Operating live beta pilot with 100+ active users.",
         "Maintained 19 logged architectural/product trade-offs with rigorous scope discipline."
       ],
       security: [
@@ -1263,8 +1263,8 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     impact: {
       value: [
         "4개 역할(학부모, 원어민 교사, 한국인 교사, 원장)을 하나의 루프로 연결하여 가정 내 실수가 교실 수업 개선으로 이어지도록 구현.",
-        "채점 및 리포팅 행정 시간을 80% 절감 (교사당 주 10~15시간 절약).",
-        "120+ 가구 대상 라이브 베타 파일럿 운영 및 1,200+ 장 워크시트 채점 처리.",
+        "채점·리포팅 행정 시간 약 80% 절감 추정 (교사당 주 10~15시간) — Chekki Schools 출시 후 재검증 예정.",
+        "100+ 활성 사용자 대상 라이브 베타 파일럿 운영 중.",
         "19개 아키텍처/프로덕트 의사결정 로그와 엄격한 스코프 관리 체계 유지."
       ],
       security: [
