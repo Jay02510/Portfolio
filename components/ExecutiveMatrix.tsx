@@ -3,11 +3,9 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   SparklesIcon, 
   DeviceMobileIcon, 
-  SettingsIcon, 
   FileTextIcon, 
-  ExternalLinkIcon,
   RocketIcon,
-  LockIcon
+  CheckCircleIcon
 } from './Icons.tsx';
 
 // Inline SVGs for specialized matrix controls
@@ -40,27 +38,6 @@ const SlidersIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const ArrowUpRightIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M7 7h10v10" />
-    <path d="M7 17 17 7" />
-  </svg>
-);
-
-const CheckCircleIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-    <polyline points="22 4 12 14.01 9 11.01" />
-  </svg>
-);
-
-const ShieldCheckIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-    <path d="m9 12 2 2 4-4" />
-  </svg>
-);
-
 interface ExecutiveMatrixProps {
   locale: 'en' | 'ko';
   theme: 'light' | 'dark';
@@ -68,15 +45,16 @@ interface ExecutiveMatrixProps {
 }
 
 type FilterCategory = 'all' | 'voice' | 'multimodal' | 'mobile' | 'ops';
+type SystemStatus = 'enterprise' | 'beta' | 'live' | 'internal';
 
 interface SystemItem {
   id: string;
   name: string;
   categoryEn: string;
   categoryKo: string;
+  status: SystemStatus;
   badgeEn: string;
   badgeKo: string;
-  badgeColor: string;
   domain: FilterCategory[];
   roleEn: string;
   roleKo: string;
@@ -95,9 +73,9 @@ const SYSTEMS_DATA: SystemItem[] = [
     name: "VodaBi Voice-AI Screening Engine",
     categoryEn: "Enterprise B2B SaaS",
     categoryKo: "엔터프라이즈 B2B SaaS",
+    status: "enterprise",
     badgeEn: "Enterprise Case Study",
     badgeKo: "기업 케이스 스터디",
-    badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/30",
     domain: ['voice', 'ops'],
     roleEn: "AI Product Manager (Enterprise Voice & LLM Judges)",
     roleKo: "AI 프로덕트 매니저 (음성 AI & 채점 모델)",
@@ -113,17 +91,17 @@ const SYSTEMS_DATA: SystemItem[] = [
     name: "Chekki Schools — Teacher Operations Cockpit",
     categoryEn: "EdTech Operations & Telemetry",
     categoryKo: "에듀테크 운영 & 텔레메트리",
+    status: "beta",
     badgeEn: "Beta — Pilot Waitlist Open",
     badgeKo: "베타 — 파일럿 대기명단 모집중",
-    badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
     domain: ['multimodal', 'ops'],
     roleEn: "0→1 Product Architect & Founder",
     roleKo: "0→1 프로덕트 아키텍트 & 창업자",
     problemEn: "Eliminated repetitive worksheet grading via curriculum pre-seeding and aggregates class mistake patterns before lessons.",
     problemKo: "정답지 사전 시딩으로 반복 채점을 제거하고 수업 전 학급별 오답 취약 패턴을 사전 집계.",
     techStack: ["React 19", "Gemini 2.5 Pro", "Cloud Firestore", "Atomic Transactions", "Bilingual Engine", "TypeScript"],
-    highlightMetricEn: "Est. 80% Grading Time Saved (10-15h / week / teacher) — retest pending public pilot launch",
-    highlightMetricKo: "채점 시간 약 80% 절감 추정 (주당 10~15시간) — 정식 파일럿 출시 후 재검증 예정",
+    highlightMetricEn: "Est. 80% Grading Time Saved (10-15h / week / teacher)",
+    highlightMetricKo: "채점 시간 약 80% 절감 추정 (주당 10~15시간 절약)",
     liveUrl: "https://chekki-ai.vercel.app/",
     caseStudyId: "chekki"
   },
@@ -132,9 +110,9 @@ const SYSTEMS_DATA: SystemItem[] = [
     name: "Chekki AI Homework Companion",
     categoryEn: "Closed-Loop EdTech Ecosystem",
     categoryKo: "학부모 AI 숙제 검사기",
+    status: "live",
     badgeEn: "Live Shipped App",
     badgeKo: "라이브 프로덕션",
-    badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
     domain: ['multimodal', 'mobile'],
     roleEn: "0→1 Product Architect & Founder",
     roleKo: "0→1 프로덕트 아키텍트 & 창업자",
@@ -151,9 +129,9 @@ const SYSTEMS_DATA: SystemItem[] = [
     name: "EduPlanner Pro Scheduler",
     categoryEn: "AI Constraint Engine",
     categoryKo: "AI 제약 최적화 스케줄러",
+    status: "live",
     badgeEn: "Live Shipped App",
     badgeKo: "라이브 프로덕션",
-    badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
     domain: ['ops'],
     roleEn: "Full-Stack AI Engineer & PM",
     roleKo: "풀스택 AI 엔지니어 & PM",
@@ -169,9 +147,9 @@ const SYSTEMS_DATA: SystemItem[] = [
     name: "Benchmark Explorer & Radar",
     categoryEn: "Assessment & Data Analytics",
     categoryKo: "장기 성취도 분석 포털",
+    status: "live",
     badgeEn: "Live Shipped App",
     badgeKo: "라이브 프로덕션",
-    badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
     domain: ['multimodal', 'ops'],
     roleEn: "Product Designer & Data Lead",
     roleKo: "프로덕트 디자이너 & 데이터 리드",
@@ -187,9 +165,9 @@ const SYSTEMS_DATA: SystemItem[] = [
     name: "B2B Lead Enrichment CRM",
     categoryEn: "Sales Automation Pipeline",
     categoryKo: "B2B 영업 자동화 CRM",
+    status: "internal",
     badgeEn: "Production Tool",
     badgeKo: "사내 운영 툴",
-    badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
     domain: ['ops'],
     roleEn: "Technical PM & Automation Lead",
     roleKo: "테크니컬 PM & 자동화 리드",
@@ -204,13 +182,36 @@ const SYSTEMS_DATA: SystemItem[] = [
 export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme, onOpenCaseStudy }) => {
   const [selectedFilter, setSelectedFilter] = useState<FilterCategory>('all');
 
+  const isDark = theme === 'dark';
+
   const filterOptions: { id: FilterCategory; labelEn: string; labelKo: string; icon: React.ReactNode }[] = [
-    { id: 'all', labelEn: 'All 6 Systems', labelKo: '전체 6개 시스템', icon: <LayersIcon className="w-3.5 h-3.5" /> },
-    { id: 'voice', labelEn: '🎙️ Voice AI & LLMs', labelKo: '🎙️ 음성 AI & 채점 LLM', icon: <RadioIcon className="w-3.5 h-3.5" /> },
-    { id: 'multimodal', labelEn: '🧠 Multimodal Vision', labelKo: '🧠 멀티모달 & OCR', icon: <SparklesIcon className="w-3.5 h-3.5" /> },
-    { id: 'mobile', labelEn: '📱 Mobile & Apps', labelKo: '📱 모바일 & 크로스플랫폼', icon: <DeviceMobileIcon className="w-3.5 h-3.5" /> },
-    { id: 'ops', labelEn: '⚙️ Operations & Solvers', labelKo: '⚙️ 제약 엔진 & 자동화', icon: <SlidersIcon className="w-3.5 h-3.5" /> }
+    { id: 'all', labelEn: 'All 6 Systems', labelKo: '전체 6개 시스템', icon: <LayersIcon className="w-4 h-4" /> },
+    { id: 'voice', labelEn: 'Voice AI & LLMs', labelKo: '음성 AI & 채점 LLM', icon: <RadioIcon className="w-4 h-4" /> },
+    { id: 'multimodal', labelEn: 'Multimodal Vision', labelKo: '멀티모달 & OCR', icon: <SparklesIcon className="w-4 h-4" /> },
+    { id: 'mobile', labelEn: 'Mobile & Cross-Platform', labelKo: '모바일 & 크로스플랫폼', icon: <DeviceMobileIcon className="w-4 h-4" /> },
+    { id: 'ops', labelEn: 'Operations & Solvers', labelKo: '제약 엔진 & 자동화', icon: <SlidersIcon className="w-4 h-4" /> }
   ];
+
+  const getStatusBadgeStyle = (status: SystemStatus) => {
+    switch (status) {
+      case 'enterprise':
+        return isDark
+          ? 'bg-purple-500/15 text-purple-300 border-purple-500/30'
+          : 'bg-purple-100 text-purple-900 border-purple-300 font-bold';
+      case 'beta':
+        return isDark
+          ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+          : 'bg-amber-100 text-amber-900 border-amber-300 font-bold';
+      case 'live':
+        return isDark
+          ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+          : 'bg-emerald-100 text-emerald-900 border-emerald-300 font-bold';
+      case 'internal':
+        return isDark
+          ? 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30'
+          : 'bg-indigo-100 text-indigo-900 border-indigo-300 font-bold';
+    }
+  };
 
   const filteredSystems = selectedFilter === 'all'
     ? SYSTEMS_DATA
@@ -220,13 +221,15 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
     <section className="w-full max-w-7xl mx-auto px-6 py-12">
       {/* CONTAINER */}
       <div className={`p-6 sm:p-8 rounded-3xl border transition-all duration-300 backdrop-blur-xl ${
-        theme === 'dark' 
+        isDark 
           ? 'bg-[#181c24]/90 border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.4)]' 
-          : 'bg-white/90 border-black/10 shadow-[0_10px_40px_rgba(0,0,0,0.06)]'
+          : 'bg-white border-black/10 shadow-[0_10px_40px_rgba(0,0,0,0.06)]'
       }`}>
         
         {/* TOP TITLE ROW */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-white/10">
+        <div className={`flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b ${
+          isDark ? 'border-white/10' : 'border-black/10'
+        }`}>
           <div className="space-y-2">
             <div className="flex items-center gap-2.5">
               <span className="inline-flex items-center justify-center p-1.5 rounded-lg bg-accent-gold/15 text-accent-gold border border-accent-gold/30">
@@ -237,12 +240,12 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
               </span>
             </div>
             <h2 className={`text-2xl sm:text-3xl font-display font-medium tracking-tight ${
-              theme === 'dark' ? 'text-white' : 'text-alpine-950'
+              isDark ? 'text-white' : 'text-alpine-950'
             }`}>
               {locale === 'en' ? "Shipped AI Products & Core Tech Stacks" : "배포된 6대 AI 제품 & 아키텍처 매트릭스"}
             </h2>
-            <p className={`text-xs sm:text-sm font-normal max-w-2xl leading-relaxed ${
-              theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
+            <p className={`text-xs sm:text-sm max-w-2xl leading-relaxed ${
+              isDark ? 'text-white/70' : 'text-neutral-700'
             }`}>
               {locale === 'en'
                 ? "A high-density overview of production-grade AI systems, exact technical architectures, and verified business outcomes."
@@ -251,15 +254,17 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
           </div>
 
           {/* FILTER BUTTONS */}
-          <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10">
+          <div className={`flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl border ${
+            isDark ? 'bg-black/30 border-white/10' : 'bg-neutral-100 border-black/10'
+          }`}>
             {filterOptions.map((opt) => (
               <button
                 key={opt.id}
                 onClick={() => setSelectedFilter(opt.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5 ${
+                className={`px-3 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all flex items-center gap-2 min-h-[38px] ${
                   selectedFilter === opt.id
-                    ? 'bg-accent-gold text-alpine-950 shadow-md font-bold'
-                    : (theme === 'dark' ? 'text-white/60 hover:text-white hover:bg-white/5' : 'text-alpine-950/60 hover:text-alpine-950 hover:bg-black/5')
+                    ? (isDark ? 'bg-accent-gold text-alpine-950 shadow-md font-bold' : 'bg-accent-clay text-white shadow-md font-bold')
+                    : (isDark ? 'text-white/70 hover:text-white hover:bg-white/5' : 'text-neutral-700 hover:text-neutral-950 hover:bg-black/5')
                 }`}
               >
                 {opt.icon}
@@ -280,10 +285,10 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96 }}
                 transition={{ duration: 0.25, delay: idx * 0.04 }}
-                className={`p-5 sm:p-6 rounded-2xl border transition-all flex flex-col justify-between group hover:border-accent-gold/40 ${
-                  theme === 'dark' 
-                    ? 'bg-[#1e232d]/80 border-white/5 hover:bg-[#232936]' 
-                    : 'bg-alpine-50/80 border-black/5 hover:bg-white hover:shadow-lg'
+                className={`p-5 sm:p-6 rounded-2xl border transition-all flex flex-col justify-between group ${
+                  isDark 
+                    ? 'bg-[#1e232d]/80 border-white/10 hover:border-accent-gold/40 hover:bg-[#232936]' 
+                    : 'bg-neutral-50 border-black/10 hover:border-accent-clay/40 hover:bg-white hover:shadow-lg'
                 }`}
               >
                 <div className="space-y-4">
@@ -291,20 +296,24 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
                   <div className="flex items-start justify-between gap-3">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-accent-gold">
+                        <span className={`text-[10px] font-mono font-bold uppercase tracking-wider ${
+                          isDark ? 'text-accent-gold' : 'text-accent-clay'
+                        }`}>
                           {locale === 'en' ? item.categoryEn : item.categoryKo}
                         </span>
-                        <span className="text-white/20 dark:text-white/20">•</span>
-                        <span className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-full border ${item.badgeColor}`}>
+                        <span className={isDark ? 'text-white/30' : 'text-neutral-400'}>•</span>
+                        <span className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full border ${getStatusBadgeStyle(item.status)}`}>
                           {locale === 'en' ? item.badgeEn : item.badgeKo}
                         </span>
                       </div>
                       <h3 className={`text-lg sm:text-xl font-display font-semibold tracking-tight ${
-                        theme === 'dark' ? 'text-white' : 'text-alpine-950'
+                        isDark ? 'text-white' : 'text-neutral-950'
                       }`}>
                         {item.name}
                       </h3>
-                      <div className="text-[11px] font-medium text-text-tert font-mono">
+                      <div className={`text-xs font-medium font-mono ${
+                        isDark ? 'text-neutral-400' : 'text-neutral-600'
+                      }`}>
                         {locale === 'en' ? item.roleEn : item.roleKo}
                       </div>
                     </div>
@@ -312,14 +321,16 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
 
                   {/* CORE PROBLEM & 0→1 CONTRIBUTION */}
                   <p className={`text-xs leading-relaxed ${
-                    theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'
+                    isDark ? 'text-neutral-300' : 'text-neutral-700'
                   }`}>
                     {locale === 'en' ? item.problemEn : item.problemKo}
                   </p>
 
                   {/* TECH STACK CHIPS */}
                   <div className="space-y-1.5 pt-1">
-                    <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-black/40 dark:text-white/40 block">
+                    <span className={`text-[10px] font-mono font-bold uppercase tracking-wider block ${
+                      isDark ? 'text-white/50' : 'text-neutral-500'
+                    }`}>
                       {locale === 'en' ? "Architecture & Stack" : "핵심 아키텍처 및 스택"}
                     </span>
                     <div className="flex flex-wrap gap-1.5">
@@ -327,9 +338,9 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
                         <span 
                           key={tIdx} 
                           className={`text-[10px] font-mono px-2.5 py-1 rounded-md border font-semibold ${
-                            theme === 'dark' 
-                              ? 'bg-black/30 border-white/10 text-white/90 group-hover:border-accent-gold/20' 
-                              : 'bg-white border-black/10 text-alpine-950 shadow-xs'
+                            isDark 
+                              ? 'bg-black/30 border-white/10 text-neutral-200' 
+                              : 'bg-white border-black/10 text-neutral-800 shadow-xs'
                           }`}
                         >
                           {tech}
@@ -341,11 +352,15 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
 
                 {/* BOTTOM ROW: KEY OUTCOME METRIC & ACTIONS */}
                 <div className={`mt-5 pt-4 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
-                  theme === 'dark' ? 'border-white/5' : 'border-black/5'
+                  isDark ? 'border-white/10' : 'border-black/10'
                 }`}>
                   <div className="flex items-center gap-2">
-                    <CheckCircleIcon className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span className="text-xs font-bold font-mono tracking-tight text-emerald-400">
+                    <CheckCircleIcon className={`w-4 h-4 shrink-0 ${
+                      isDark ? 'text-emerald-400' : 'text-emerald-700'
+                    }`} />
+                    <span className={`text-xs font-bold font-mono tracking-tight ${
+                      isDark ? 'text-emerald-400' : 'text-emerald-700'
+                    }`}>
                       {locale === 'en' ? item.highlightMetricEn : item.highlightMetricKo}
                     </span>
                   </div>
@@ -354,13 +369,13 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
                     {item.caseStudyId && (
                       <button
                         onClick={() => onOpenCaseStudy(item.caseStudyId!)}
-                        className={`text-[11px] font-bold font-mono uppercase tracking-wider px-3 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 ${
-                          theme === 'dark'
-                            ? 'bg-accent-gold/10 border-accent-gold/30 text-accent-gold hover:bg-accent-gold hover:text-alpine-950'
-                            : 'bg-accent-gold/10 border-accent-gold/40 text-alpine-950 hover:bg-accent-gold'
+                        className={`text-xs font-bold font-mono uppercase tracking-wider px-3.5 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 ${
+                          isDark
+                            ? 'bg-accent-gold/15 border-accent-gold/30 text-accent-gold hover:bg-accent-gold hover:text-alpine-950'
+                            : 'bg-accent-clay/10 border-accent-clay/30 text-accent-clay hover:bg-accent-clay hover:text-white'
                         }`}
                       >
-                        <FileTextIcon className="w-3 h-3" />
+                        <FileTextIcon className="w-3.5 h-3.5" />
                         <span>{locale === 'en' ? "Case Study" : "케이스 스터디"}</span>
                       </button>
                     )}
@@ -370,14 +385,14 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
                         href={item.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`text-[11px] font-bold font-mono uppercase tracking-wider px-3 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 ${
-                          theme === 'dark'
-                            ? 'bg-white/5 border-white/10 text-white hover:bg-white/15'
-                            : 'bg-black/5 border-black/10 text-alpine-950 hover:bg-black/10'
+                        className={`text-xs font-bold font-mono uppercase tracking-wider px-3.5 py-1.5 rounded-lg border transition-all flex items-center gap-1 ${
+                          isDark
+                            ? 'border-white/15 text-white/80 hover:bg-white/10 hover:text-white'
+                            : 'border-black/15 text-neutral-800 hover:bg-black/5 hover:text-black'
                         }`}
                       >
-                        <span>{locale === 'en' ? "Live App" : "라이브 앱"}</span>
-                        <ArrowUpRightIcon className="w-3 h-3" />
+                        <span>{locale === 'en' ? "Launch" : "실행"}</span>
+                        <span>↗</span>
                       </a>
                     )}
                   </div>
@@ -386,24 +401,6 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
             ))}
           </AnimatePresence>
         </div>
-
-        {/* BOTTOM CONFIDENTIALITY & TRUST FOOTNOTE */}
-        <div className={`mt-6 pt-4 border-t flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono ${
-          theme === 'dark' ? 'border-white/5 text-white/50' : 'border-black/5 text-black/50'
-        }`}>
-          <div className="flex items-center gap-2">
-            <ShieldCheckIcon className="w-4 h-4 text-accent-gold/80" />
-            <span>
-              {locale === 'en'
-                ? "VodaBi enterprise client data & private datasets sanitized under NDA. Independent apps live in production."
-                : "VodaBi 기업 고객사 및 상용 데이터는 NDA에 따라 익명화되었으며, 독립 에듀테크 앱은 상용 프로덕션 운영 중입니다."}
-            </span>
-          </div>
-          <span className="mt-2 sm:mt-0 font-semibold text-accent-gold">
-            {locale === 'en' ? "Live in Production" : "프로덕션 운영 중"}
-          </span>
-        </div>
-
       </div>
     </section>
   );

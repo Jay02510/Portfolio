@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { XIcon } from './Icons.tsx';
 
 interface BuildItem {
   id: string;
@@ -12,7 +13,7 @@ interface BuildItem {
   relatedProjectId?: string;
 }
 
-const LIVE_UPDATES_DATA: BuildItem[] = [
+const BUILD_UPDATES_DATA: BuildItem[] = [
   {
     id: "voice-ai-deterministic-scoring-release",
     date: "2026-08-14",
@@ -75,32 +76,6 @@ const LIVE_UPDATES_DATA: BuildItem[] = [
   }
 ];
 
-function getRelativeTime(dateStr: string, locale: 'en' | 'ko'): string {
-  const itemDate = new Date(dateStr + "T00:00:00");
-  const today = new Date();
-  
-  // Set times to midnight to calculate absolute day-to-day diff
-  const itemMidnight = new Date(itemDate.getFullYear(), itemDate.getMonth(), itemDate.getDate());
-  const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  
-  const diffTime = todayMidnight.getTime() - itemMidnight.getTime();
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  
-  if (diffDays <= 0) {
-    return locale === 'en' ? "Just now" : "방금 전";
-  } else if (diffDays === 1) {
-    return locale === 'en' ? "Yesterday" : "어제";
-  } else if (diffDays < 7) {
-    return locale === 'en' ? `${diffDays} days ago` : `${diffDays}일 전`;
-  } else {
-    const weeks = Math.floor(diffDays / 7);
-    if (weeks === 1) {
-      return locale === 'en' ? "1 week ago" : "1주일 전";
-    }
-    return locale === 'en' ? `${weeks} weeks ago` : `${weeks}주일 전`;
-  }
-}
-
 interface LiveStatusFeedProps {
   locale: 'en' | 'ko';
   theme: 'light' | 'dark';
@@ -111,49 +86,51 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
   const [isOpen, setIsOpen] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   
-  const latestItem = LIVE_UPDATES_DATA[0];
+  const latestItem = BUILD_UPDATES_DATA[0];
 
   if (isDismissed) return null;
+
+  const isDark = theme === 'dark';
 
   return (
     <div className="w-full max-w-7xl mx-auto px-6 md:px-8 mt-10 md:mt-12 relative z-50">
       {/* Outer Banner Wrapper */}
       <div 
-        className={`rounded-3xl border transition-all duration-300 relative overflow-hidden ${
-          theme === 'dark' 
-            ? 'bg-alpine-900 border-white/10 shadow-[0_15px_30px_rgba(0,0,0,0.4)]' 
-            : 'bg-white border-black/8 shadow-xl'
+        className={`rounded-2xl border transition-all duration-300 relative overflow-hidden ${
+          isDark 
+            ? 'bg-alpine-900 border-white/10 shadow-xl' 
+            : 'bg-white border-black/10 shadow-md'
         }`}
       >
         {/* Banner Quick Strip */}
-        <div className="p-4 md:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-3 min-w-0">
-            {/* Live Indicator Dot */}
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-            </span>
-            
+        <div className="p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
             {/* Tag */}
-            <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-red-500/10 text-red-400 font-mono shrink-0`}>
-              {locale === 'en' ? "LIVE DEV FEED" : "실시간 빌드 로그"}
+            <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded font-mono shrink-0 border ${
+              isDark 
+                ? 'bg-accent-gold/15 text-accent-gold border-accent-gold/30' 
+                : 'bg-accent-clay/10 text-accent-clay border-accent-clay/20'
+            }`}>
+              {locale === 'en' ? "BUILD LOG" : "빌드 로그"}
             </span>
 
             {/* Headline */}
-            <div className={`text-xs md:text-sm font-semibold line-clamp-1 ${
-              theme === 'dark' ? 'text-white/90' : 'text-alpine-950/90'
+            <div className={`text-xs md:text-sm font-semibold truncate ${
+              isDark ? 'text-white' : 'text-alpine-950'
             }`}>
-              <strong className="text-accent-gold mr-1.5">
+              <span className={`mr-1.5 font-mono text-[11px] font-bold uppercase ${
+                isDark ? 'text-accent-gold' : 'text-accent-clay'
+              }`}>
                 [{latestItem.type.toUpperCase()}]
-              </strong>
-              {locale === 'en' ? latestItem.titleEn : latestItem.titleKo}
+              </span>
+              <span>{locale === 'en' ? latestItem.titleEn : latestItem.titleKo}</span>
             </div>
 
-            {/* Time badge */}
-            <span className={`text-[10px] font-mono whitespace-nowrap shrink-0 px-2 py-0.5 rounded-full ${
-              theme === 'dark' ? 'bg-white/5 text-white/40' : 'bg-black/5 text-alpine-950/40'
+            {/* Date badge */}
+            <span className={`text-[11px] font-mono whitespace-nowrap shrink-0 px-2.5 py-0.5 rounded-full border ${
+              isDark ? 'bg-white/5 border-white/10 text-white/60' : 'bg-neutral-100 border-black/10 text-neutral-600'
             }`}>
-              {getRelativeTime(latestItem.date, locale)}
+              {latestItem.date}
             </span>
           </div>
 
@@ -161,34 +138,39 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
           <div className="flex items-center gap-2.5 shrink-0 ml-auto md:ml-0">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`px-3 py-1.5 rounded-xl text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all border ${
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border min-h-[40px] flex items-center gap-1.5 ${
                 isOpen
-                  ? (theme === 'dark' ? 'bg-white/10 border-white/20 text-white' : 'bg-black/10 border-black/20 text-alpine-950')
-                  : (theme === 'dark' ? 'bg-white/5 border-white/5 text-white/70 hover:bg-white/10 hover:text-white' : 'bg-black/5 border-black/5 text-alpine-950/70 hover:bg-black/10 hover:text-alpine-950')
+                  ? (isDark ? 'bg-white/10 border-white/20 text-white' : 'bg-neutral-200 border-black/20 text-alpine-950')
+                  : (isDark ? 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10 hover:text-white' : 'bg-neutral-100 border-black/10 text-neutral-700 hover:bg-neutral-200 hover:text-black')
               }`}
             >
-              {isOpen 
-                ? (locale === 'en' ? "Close History ▲" : "히스토리 닫기 ▲") 
-                : (locale === 'en' ? "Browse Feed ▼" : "연혁 전체보기 ▼")}
+              <span>
+                {isOpen 
+                  ? (locale === 'en' ? "Hide History ▲" : "로그 닫기 ▲") 
+                  : (locale === 'en' ? "View Log ▼" : "연혁 보기 ▼")}
+              </span>
             </button>
             
             {latestItem.relatedProjectId && (
               <button
                 onClick={() => onOpenCaseStudy(latestItem.relatedProjectId || null)}
-                className="px-3.5 py-1.5 rounded-xl text-[10px] sm:text-[11px] font-black uppercase tracking-widest bg-accent-gold text-alpine-950 hover:brightness-110 active:scale-95 transition-all shadow-md shadow-accent-gold/10"
+                className="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-accent-gold text-alpine-950 hover:brightness-110 active:scale-95 transition-all shadow-sm min-h-[40px] flex items-center gap-1"
               >
-                {locale === 'en' ? "See Fix" : "적용부 보기"} ↗
+                <span>{locale === 'en' ? "See Fix" : "적용부 보기"}</span>
+                <span>↗</span>
               </button>
             )}
 
             <button
               onClick={() => setIsDismissed(true)}
-              className={`p-1.5 rounded-lg transition-colors ${
-                theme === 'dark' ? 'text-white/20 hover:text-white/50 hover:bg-white/5' : 'text-alpine-950/20 hover:text-alpine-950/50 hover:bg-black/5'
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors border ${
+                isDark 
+                  ? 'border-white/10 text-white/70 hover:text-white hover:bg-white/10' 
+                  : 'border-black/10 text-neutral-700 hover:text-black hover:bg-neutral-100'
               }`}
-              title={locale === 'en' ? "Dismiss alert" : "알림 숨기기"}
+              aria-label={locale === 'en' ? "Dismiss build log" : "빌드 로그 닫기"}
             >
-              ✕
+              <XIcon className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -201,65 +183,69 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className={`border-t ${theme === 'dark' ? 'border-white/10 bg-[#0c0f13]/60' : 'border-black/5 bg-black/[0.01]'}`}
+              className={`border-t ${isDark ? 'border-white/10 bg-[#0c0f13]/80' : 'border-black/10 bg-neutral-50'}`}
             >
-              <div className="p-6 md:p-8 space-y-8">
+              <div className="p-6 md:p-8 space-y-6">
                 <div className="flex flex-col gap-1">
-                  <h4 className={`text-xs font-black uppercase tracking-[0.2em] ${theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay'}`}>
-                    {locale === 'en' ? "Active Workspace Deployment Timeline" : "실제 작동 반영 타임라인 및 마일스톤 로그"}
+                  <h4 className={`text-xs font-bold uppercase tracking-wider font-mono ${
+                    isDark ? 'text-accent-gold' : 'text-accent-clay'
+                  }`}>
+                    {locale === 'en' ? "Production Deployment Log" : "프로덕션 배포 및 변경 이력"}
                   </h4>
-                  <p className={`text-[11px] leading-relaxed max-w-2xl font-light ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'}`}>
+                  <p className={`text-xs leading-relaxed max-w-2xl ${isDark ? 'text-white/70' : 'text-neutral-700'}`}>
                     {locale === 'en' 
-                      ? "A chronological record of structural fixes, algorithm enhancements, and production-ready deployments applied directly to classroom-tested ecosystems." 
-                      : "교육 현장 피드백과 QA 수정을 거쳐 포트폴리오 프로덕션 및 데이터 허브 전반에 반영된 핵심 실시간 개선 명세 목록입니다."}
+                      ? "A chronological changelog of structural architecture updates, algorithm improvements, and security enhancements shipped across production systems." 
+                      : "교육 현장 피드백과 QA를 거쳐 배포된 아키텍처 개선 및 보안 모델 업데이트 명세입니다."}
                   </p>
                 </div>
 
-                <div className="relative border-l border-white/5 dark:border-white/10 ml-1.5 space-y-8 pl-6 md:pl-8">
-                  {LIVE_UPDATES_DATA.map((item, idx) => (
+                {/* Timeline Spine */}
+                <div className={`relative border-l ml-2 space-y-6 pl-6 md:pl-8 ${
+                  isDark ? 'border-white/15' : 'border-neutral-300'
+                }`}>
+                  {BUILD_UPDATES_DATA.map((item, idx) => (
                     <div key={item.id} className="relative group/timeline">
-                      {/* Interactive dot */}
-                      <span className={`absolute -left-[31px] md:-left-[39px] top-1.5 w-2 h-2 rounded-full border transition-all duration-300 ${
+                      {/* Timeline dot */}
+                      <span className={`absolute -left-[31px] md:-left-[39px] top-1.5 w-2.5 h-2.5 rounded-full border transition-all duration-300 ${
                         idx === 0
                           ? 'bg-accent-gold border-accent-gold scale-125 ring-4 ring-accent-gold/20'
-                          : 'bg-[#181D25] border-white/20 group-hover/timeline:border-white/40'
+                          : (isDark ? 'bg-neutral-800 border-white/30' : 'bg-white border-neutral-400')
                       }`}></span>
 
-                      <div className="space-y-2">
+                      <div className="space-y-1.5">
                         {/* Meta */}
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                          <span className="text-[10px] font-mono font-bold tracking-wider text-accent-gold bg-accent-gold/10 px-2 py-0.5 rounded uppercase">
+                          <span className={`text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded uppercase ${
+                            isDark ? 'text-accent-gold bg-accent-gold/15' : 'text-accent-clay bg-accent-clay/10'
+                          }`}>
                             {item.type}
                           </span>
-                          <span className={`text-[10px] font-mono ${theme === 'dark' ? 'text-white/40' : 'text-alpine-950/40'}`}>
+                          <span className={`text-xs font-mono font-medium ${isDark ? 'text-white/60' : 'text-neutral-600'}`}>
                             {item.date}
-                          </span>
-                          <span className={`text-[9px] font-mono font-semibold uppercase ${theme === 'dark' ? 'text-white/30' : 'text-alpine-950/30'}`}>
-                            ({getRelativeTime(item.date, locale)})
                           </span>
                         </div>
 
                         {/* Title */}
-                        <h5 className={`text-sm md:text-base font-bold tracking-tight ${theme === 'dark' ? 'text-white/95' : 'text-alpine-950/95'}`}>
+                        <h5 className={`text-sm md:text-base font-bold tracking-tight ${isDark ? 'text-white' : 'text-neutral-900'}`}>
                           {locale === 'en' ? item.titleEn : item.titleKo}
                         </h5>
 
                         {/* Description */}
-                        <p className={`text-xs leading-relaxed max-w-3xl ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/75'}`}>
+                        <p className={`text-xs leading-relaxed max-w-3xl ${isDark ? 'text-white/80' : 'text-neutral-700'}`}>
                           {locale === 'en' ? item.descEn : item.descKo}
                         </p>
 
                         {/* Linked Project CTA */}
                         {item.relatedProjectId && (
-                          <div className="pt-1.5">
+                          <div className="pt-1">
                             <button
                               onClick={() => onOpenCaseStudy(item.relatedProjectId || null)}
-                              className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest ${
-                                theme === 'dark' ? 'text-white/45 hover:text-accent-gold' : 'text-alpine-950/45 hover:text-accent-clay'
+                              className={`inline-flex items-center gap-1 text-xs font-bold ${
+                                isDark ? 'text-accent-gold hover:underline' : 'text-accent-clay hover:underline'
                               } transition-colors`}
                             >
-                              <span>{locale === 'en' ? "Open Module Case Study" : "솔루션 스토리보드 열람"}</span>
-                              <span className="text-[11px]">→</span>
+                              <span>{locale === 'en' ? "Open Case Study" : "케이스 스터디 보기"}</span>
+                              <span className="text-sm">→</span>
                             </button>
                           </div>
                         )}

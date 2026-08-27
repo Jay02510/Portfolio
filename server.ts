@@ -68,18 +68,35 @@ const getGeminiClient = () => {
 // API Routes
 app.post("/api/chat", async (req, res) => {
   try {
-    const { message } = req.body;
-    if (!message) return res.status(400).json({ error: "Message is required" });
-
-    // Enforce strict length constraint
-    if (typeof message !== "string" || message.length > 2000) {
-      return res.status(400).json({ error: "Message is too long. Please restrict instructions to 2000 characters." });
+    const { message, history } = req.body;
+    if (!message && (!history || !Array.isArray(history) || history.length === 0)) {
+      return res.status(400).json({ error: "Message or history is required" });
     }
 
     const ai = getGeminiClient();
+
+    // Prepare contents array for multi-turn conversation if history is provided
+    let contentsPayload: any = message || "";
+    if (Array.isArray(history) && history.length > 0) {
+      // Map the last 6 turns to the Gemini contents structure
+      const recentHistory = history.slice(-6);
+      contentsPayload = recentHistory.map((item: { role: string; text: string }) => ({
+        role: item.role === 'model' ? 'model' : 'user',
+        parts: [{ text: item.text || '' }]
+      }));
+
+      // Append current message if passed separately
+      if (message) {
+        contentsPayload.push({
+          role: 'user',
+          parts: [{ text: message }]
+        });
+      }
+    }
+
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
-      contents: message,
+      contents: contentsPayload,
       config: {
         systemInstruction: CHAT_SYSTEM_INSTRUCTION,
         temperature: 0.7,
@@ -130,6 +147,27 @@ app.post("/api/ideate", async (req, res) => {
   } catch (error: any) {
     console.error("Server Ideate Error:", error.message);
     res.status(500).json({ error: error.message || "Internal server error. Please try again later." });
+  }
+});
+
+app.post("/api/feedback", async (req, res) => {
+  try {
+    const { feedback, contact } = req.body;
+    if (!feedback || typeof feedback !== "string" || !feedback.trim()) {
+      return res.status(400).json({ error: "Feedback content is required" });
+    }
+
+    if (feedback.length > 3000) {
+      return res.status(400).json({ error: "Feedback is too long (max 3000 characters)" });
+    }
+
+    console.log(`[Feedback Received] from=${contact || "anonymous"}: ${feedback}`);
+
+    // Successfully log and acknowledge the received feedback
+    res.json({ success: true, message: "Thank you for the candid feedback!" });
+  } catch (error: any) {
+    console.error("Server Feedback Error:", error.message);
+    res.status(500).json({ error: error.message || "Failed to record feedback" });
   }
 });
 

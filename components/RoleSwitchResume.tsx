@@ -371,8 +371,16 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
             </div>
             
             <div className={`text-xs space-y-1 sm:text-right font-mono ${isDark ? 'text-white/70' : 'text-alpine-950/70'}`}>
-              <div>{data.header.contact.email}</div>
-              <div>{data.header.contact.phone}</div>
+              <div>
+                <a href={`mailto:${data.header.contact.email}`} className="hover:underline hover:text-accent-gold">
+                  {data.header.contact.email}
+                </a>
+              </div>
+              <div>
+                <a href="tel:+821039828238" className="hover:underline hover:text-accent-gold">
+                  {data.header.contact.phone}
+                </a>
+              </div>
               <div>{data.header.contact.location[locale]}</div>
               <div className="text-accent-gold font-bold">{data.header.contact.website}</div>
             </div>

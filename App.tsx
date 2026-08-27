@@ -726,10 +726,10 @@ function App() {
                 {/* Category Pills */}
                 <div className="flex overflow-x-auto flex-nowrap items-center gap-2 py-1 justify-start max-w-full scrollbar-none -mx-6 px-6 md:mx-0 md:px-0">
                     {[
-                      { id: 'all', label: t[locale].allSolutions, count: 7 },
-                      { id: 'chekki-eco', label: t[locale].chekkiEcoTab, count: 2 },
-                      { id: 'work', label: t[locale].workProjectsTab, count: 1 },
-                      { id: 'independent', label: t[locale].independentProjectsTab, count: 4 }
+                      { id: 'all', label: t[locale].allSolutions, count: PORTFOLIO_DATA[locale].projects.length },
+                      { id: 'chekki-eco', label: t[locale].chekkiEcoTab, count: PORTFOLIO_DATA[locale].projects.filter(p => p.id === 'chekki' || p.id === 'chekki-teacher' || p.id === 'consultation-pipeline').length },
+                      { id: 'work', label: t[locale].workProjectsTab, count: PORTFOLIO_DATA[locale].projects.filter(p => p.id === 'vodabi').length },
+                      { id: 'independent', label: t[locale].independentProjectsTab, count: PORTFOLIO_DATA[locale].projects.filter(p => p.id !== 'vodabi').length }
                     ].map(tab => {
                       const isActive = selectedCategory === tab.id;
                       return (
