@@ -15,6 +15,26 @@ interface BuildItem {
 
 const BUILD_UPDATES_DATA: BuildItem[] = [
   {
+    id: "vodabi-production-release-2026",
+    date: "2026-09-01",
+    type: "feature",
+    titleEn: "VODABI: Outbound Telemarketing Voice-AI & 11-Rubric Evaluator Shipped",
+    titleKo: "VODABI: 아웃바운드 텔레마케팅 음성 AI 및 11개 루브릭 평가 엔진 배포",
+    descEn: "Shipped the production platform featuring Direct WebRTC voice roleplay (<200ms latency), post-call GPT-4o 11-rubric evaluation with BANTCQ evidence, VOISOR coaching assistant, multi-tenant RBAC, and 5-vulnerability pre-prod security audit.",
+    descKo: "Direct WebRTC 실시간 음성 롤플레이(<200ms 지연), BANTCQ 근거가 포함된 사후 GPT-4o 11개 루브릭 평가, VOISOR 코칭 어시스턴트, 멀티테넌트 RBAC 및 5대 취약점 사전 보안 감사가 완결된 프로덕션 버전을 배포했습니다.",
+    relatedProjectId: "vodabi"
+  },
+  {
+    id: "chekki-production-consolidation-2026",
+    date: "2026-09-01",
+    type: "infra",
+    titleEn: "Chekki AI: Vercel 12-Function Consolidation & 4,678-Line Monolith Refactoring",
+    titleKo: "Chekki AI: Vercel 12개 함수 한도 통합 & 4,678줄 모놀리스 리팩토링 완결",
+    descEn: "Consolidated all AI routes into api/analyze.ts and billing into api/redeem.ts under Vercel limits; successfully refactored 4,678-line TeacherPage monolith into role-scoped hooks with zero regressions.",
+    descKo: "Vercel 12개 함수 한도 내에서 모든 AI 작업을 api/analyze.ts로, 결제를 api/redeem.ts로 통합하였으며, 4,678줄 규모의 교사용 모놀리스를 역할별 전용 훅으로 분리하여 리그레션 제로를 달성했습니다.",
+    relatedProjectId: "chekki"
+  },
+  {
     id: "voice-ai-deterministic-scoring-release",
     date: "2026-08-14",
     type: "feature",
