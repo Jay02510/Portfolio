@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { CaseStudyViewer } from './CaseStudyViewer.tsx';
 import ResumeModal from './components/ResumeModal.tsx';
+import AIChat from './components/AIChat.tsx';
+import InteractiveDemo from './components/InteractiveDemo.tsx';
+import FeedbackBox from './components/FeedbackBox.tsx';
 import { SunIcon, MoonIcon, SearchIcon, ExternalLinkIcon } from './components/Icons.tsx';
 
 interface Decision {
@@ -54,7 +57,7 @@ const COPY = {
     localeSwitch: "한국어",
     resumeBtn: "Résumé",
     heroTitle: "AI product manager and engineer. Voice-AI, LLM evaluation, and the operations work around them.",
-    heroBody: "At VodaBi I own an outbound sales-call screening platform: the product spec, the realtime WebRTC voice roleplay, the 11-code scoring rubric, and the deploy. On my own I built Chekki AI, now on the App Store and Play Store, BridgeRecruit for international school admissions, and four more products used by Korean academies and teachers.",
+    heroBody: "At VodaBi I own the product spec, the real-time voice AI, and the scoring rubric end to end. I've also independently built and shipped 7 products — including Chekki AI, live on the App Store and Play Store — used by Korean academies, teachers, and international schools.",
     ctaWork: "See the work",
     ctaResume: "Interactive résumé",
     caseLabel: "Case study ↗",
@@ -75,6 +78,7 @@ const COPY = {
     contactTitle: "Hiring for an AI PM or AI engineer role?",
     contactBody: "I work best where the product thinking and the implementation sit with one person: evaluation design, voice and multimodal pipelines, and the plumbing that makes them usable day to day.",
     contactCta: "Email me",
+    linkedinLabel: "LinkedIn ↗",
     lookingLabel: "Looking for",
     lookingValue: "AI PM or AI engineer, 0→1 product teams",
     basedLabel: "Based in",
@@ -91,7 +95,7 @@ const COPY = {
     localeSwitch: "English",
     resumeBtn: "이력서",
     heroTitle: "AI 프로덕트 매니저 겸 엔지니어. 음성 AI, LLM 평가, 그리고 그 주변의 운영 문제.",
-    heroBody: "VodaBi에서 아웃바운드 세일즈 통화 스크리닝 플랫폼을 담당합니다. 제품 정의, 실시간 WebRTC 음성 롤플레이, 11개 코드 채점 루브릭, 배포까지 직접 맡았습니다. 개인적으로는 App Store와 Play Store에 출시한 Chekki AI, 국제학교 입학처를 위한 BridgeRecruit, 그리고 한국 학원과 교사가 쓰는 독립 시스템들을 직접 만들었습니다.",
+    heroBody: "VodaBi에서 제품 정의, 실시간 음성 AI, 채점 루브릭까지 전 과정을 직접 담당합니다. 개인적으로도 App Store와 Play Store에 출시한 Chekki AI를 포함해 제품 7개를 직접 만들어 출시했고, 한국 학원과 교사, 국제학교에서 실제로 쓰이고 있습니다.",
     ctaWork: "프로젝트 보기",
     ctaResume: "인터랙티브 이력서",
     caseLabel: "케이스 스터디 ↗",
@@ -112,6 +116,7 @@ const COPY = {
     contactTitle: "AI PM 또는 AI 엔지니어를 찾고 계신가요?",
     contactBody: "제품 판단과 구현을 한 사람이 함께 맡는 자리에서 가장 잘 일합니다. 평가 설계, 음성·멀티모달 파이프라인, 그리고 이를 매일 쓸 수 있게 만드는 작업.",
     contactCta: "메일 보내기",
+    linkedinLabel: "LinkedIn ↗",
     lookingLabel: "찾는 자리",
     lookingValue: "AI PM 또는 AI 엔지니어, 0→1 제품 팀",
     basedLabel: "거주지",
@@ -549,7 +554,18 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isLogExpanded, setIsLogExpanded] = useState<boolean>(false);
   const [isResumeOpen, setIsResumeOpen] = useState<boolean>(false);
+  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
   const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(null);
+
+  // Keep the CSS custom-property theme (index.html body.light rules) in sync with React state
+  useEffect(() => {
+    document.body.classList.toggle('light', theme === 'light');
+  }, [theme]);
+
+  // Keep the document language in sync so screen readers and :lang(ko) CSS rules work correctly
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   // Hash-based routing for direct case study links
   useEffect(() => {
@@ -570,7 +586,7 @@ export default function App() {
 
   const L = COPY[locale];
 
-  const filteredShipped = SHIPPED_PROJECTS[locale].filter(item => {
+  const filteredShipped = useMemo(() => SHIPPED_PROJECTS[locale].filter(item => {
     const matchesFilter = activeFilter === 'all' || item.domains.includes(activeFilter);
     const q = searchQuery.trim().toLowerCase();
     if (!q) return matchesFilter;
@@ -581,9 +597,12 @@ export default function App() {
       item.stack.some(s => s.toLowerCase().includes(q))
     );
     return matchesFilter && matchesQuery;
-  });
+  }), [locale, activeFilter, searchQuery]);
 
-  const displayedLog = isLogExpanded ? LOG : LOG.slice(0, 3);
+  const displayedLog = useMemo(() => isLogExpanded ? LOG : LOG.slice(0, 3), [isLogExpanded]);
+
+  const closeResumeModal = useCallback(() => setIsResumeOpen(false), []);
+  const closeCaseStudy = useCallback(() => setActiveCaseStudyId(null), []);
 
   const scrollToSection = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -657,7 +676,7 @@ export default function App() {
             <button
               onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
               aria-label="Toggle theme"
-              className={`w-[34px] h-[34px] rounded-lg border flex items-center justify-center transition-colors ${
+              className={`relative w-[34px] h-[34px] rounded-lg border flex items-center justify-center transition-colors before:absolute before:inset-[-5px] before:content-[''] ${
                 isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
               }`}
             >
@@ -681,11 +700,25 @@ export default function App() {
         {/* HERO SECTION */}
         <section className="pt-16 md:pt-20 pb-14 grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-12 lg:gap-16 items-end">
           <div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[4.1rem] font-display font-normal leading-[1.06] tracking-tight text-balance">
+            <div className="flex items-center gap-3 mb-5">
+              <img
+                src="/images/jason-benjamin.jpg"
+                alt="Jason Benjamin"
+                className={`w-11 h-11 rounded-full object-cover border ${
+                  isDark ? 'border-white/15' : 'border-black/10'
+                }`}
+              />
+              <span className={`text-sm font-medium tracking-wide ${
+                isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
+              }`}>
+                Jason Benjamin
+              </span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[4.1rem] font-display font-semibold leading-[1.06] tracking-tight text-balance">
               {L.heroTitle}
             </h1>
             <p className={`mt-6 max-w-[62ch] text-base md:text-[17px] leading-relaxed font-normal text-pretty ${
-              isDark ? 'text-[#b9c0ca]' : 'text-[#4b5563]'
+              isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
             }`}>
               {L.heroBody}
             </p>
@@ -708,7 +741,7 @@ export default function App() {
               <a
                 href="mailto:jsn.benjamin@gmail.com"
                 className={`h-[46px] px-5 rounded-xl border text-[13px] font-medium tracking-wide inline-flex items-center transition-colors ${
-                  isDark ? 'border-white/10 text-[#868f9c] hover:text-white' : 'border-black/10 text-[#6b7280] hover:text-black'
+                  isDark ? 'border-white/10 text-[#788290] hover:text-white' : 'border-black/10 text-[#6b7280] hover:text-black'
                 }`}
               >
                 jsn.benjamin@gmail.com
@@ -741,7 +774,7 @@ export default function App() {
                 {f.value}
               </div>
               <div className={`mt-1.5 text-xs md:text-[13px] leading-relaxed ${
-                isDark ? 'text-[#b9c0ca]' : 'text-[#4b5563]'
+                isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
               }`}>
                 {f.label}
               </div>
@@ -749,42 +782,14 @@ export default function App() {
           ))}
         </section>
 
-        {/* HOW I WORK SECTION */}
-        <section className="pt-16 pb-6">
-          <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight">
-            {L.roleTitle}
-          </h2>
-          <div className={`mt-6 grid grid-cols-1 md:grid-cols-3 gap-8 pt-6 border-t ${
-            isDark ? 'border-white/10' : 'border-black/10'
-          }`}>
-            {ROLE_COLS[locale].map((col, i) => (
-              <div key={i} className="space-y-3">
-                <h3 className="text-sm md:text-[15px] font-bold tracking-wide text-accent-gold">
-                  {col.head}
-                </h3>
-                <ul className="space-y-2.5 pt-1">
-                  {col.items.map((item, j) => (
-                    <li key={j} className={`text-xs md:text-[13.5px] leading-relaxed flex items-start gap-2.5 ${
-                      isDark ? 'text-[#b9c0ca]' : 'text-[#4b5563]'
-                    }`}>
-                      <span className="text-accent-gold/80 font-bold shrink-0 mt-0.5">·</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* SELECTED WORK SECTION */}
         <section id="work" className="pt-16">
           <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-2">
-            <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-display font-semibold tracking-tight">
               {L.workTitle}
             </h2>
             <p className={`text-xs md:text-[13.5px] max-w-[46ch] ${
-              isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'
+              isDark ? 'text-[#788290]' : 'text-[#6b7280]'
             }`}>
               {L.workNote}
             </p>
@@ -800,13 +805,13 @@ export default function App() {
               >
                 <div className={`grid grid-cols-1 ${project.image ? 'lg:grid-cols-[0.9fr_1.1fr]' : 'grid-cols-1'}`}>
                   {project.image && (
-                    <div className={`aspect-video lg:aspect-auto h-full overflow-hidden border-b lg:border-b-0 lg:border-r relative ${
+                    <div className={`aspect-video lg:aspect-auto h-full overflow-hidden border-b lg:border-b-0 lg:border-r relative p-8 ${
                       isDark ? 'bg-[#101319] border-white/10' : 'bg-[#f2f1ec] border-black/10'
                     }`}>
                       <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover object-top hover:scale-102 transition-transform duration-500"
+                        className="w-full h-full object-contain hover:scale-102 transition-transform duration-500"
                         loading="lazy"
                         referrerPolicy="no-referrer"
                       />
@@ -817,7 +822,7 @@ export default function App() {
                     <div>
                       <div className="flex items-center gap-3 flex-wrap">
                         <span className={`text-[11px] font-bold tracking-widest uppercase ${
-                          isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'
+                          isDark ? 'text-[#788290]' : 'text-[#6b7280]'
                         }`}>
                           {project.context}
                         </span>
@@ -831,7 +836,7 @@ export default function App() {
                       </h3>
 
                       <p className={`mt-3 text-sm md:text-[14.5px] leading-relaxed ${
-                        isDark ? 'text-[#b9c0ca]' : 'text-[#4b5563]'
+                        isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
                       }`}>
                         {project.problem}
                       </p>
@@ -839,7 +844,7 @@ export default function App() {
                       {/* WHAT I BUILT */}
                       <div className={`mt-6 pt-5 border-t ${isDark ? 'border-white/10' : 'border-black/10'}`}>
                         <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                          isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'
+                          isDark ? 'text-[#788290]' : 'text-[#6b7280]'
                         }`}>
                           {L.ownedLabel}
                         </h4>
@@ -856,7 +861,7 @@ export default function App() {
                       {/* DECISIONS & TRADEOFFS */}
                       <div className={`mt-6 pt-5 border-t ${isDark ? 'border-white/10' : 'border-black/10'}`}>
                         <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                          isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'
+                          isDark ? 'text-[#788290]' : 'text-[#6b7280]'
                         }`}>
                           {L.decisionsLabel}
                         </h4>
@@ -864,8 +869,8 @@ export default function App() {
                           {project.decisions.map((d, idx) => (
                             <div key={idx} className="text-xs md:text-[13px] leading-relaxed">
                               <div className="font-semibold text-accent-gold">{d.choice}</div>
-                              <div className={`mt-0.5 ${isDark ? 'text-[#b9c0ca]' : 'text-[#4b5563]'}`}>{d.why}</div>
-                              <div className={`mt-0.5 italic ${isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'}`}>{d.tradeoff}</div>
+                              <div className={`mt-0.5 ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>{d.why}</div>
+                              <div className={`mt-0.5 italic ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>{d.tradeoff}</div>
                             </div>
                           ))}
                         </div>
@@ -877,7 +882,7 @@ export default function App() {
                           <span
                             key={idx}
                             className={`text-[11px] font-mono px-2 py-0.5 rounded border ${
-                              isDark ? 'border-white/10 text-[#b9c0ca] bg-white/[0.02]' : 'border-black/10 text-[#4b5563] bg-black/[0.02]'
+                              isDark ? 'border-white/10 text-[#a3acb9] bg-white/[0.02]' : 'border-black/10 text-[#4b5563] bg-black/[0.02]'
                             }`}
                           >
                             {tech}
@@ -918,7 +923,7 @@ export default function App() {
                           target="_blank"
                           rel="noopener noreferrer"
                           className={`h-[40px] px-3.5 rounded-lg border text-xs font-semibold tracking-wider inline-flex items-center gap-1 transition-colors ${
-                            isDark ? 'border-white/10 text-[#b9c0ca] hover:text-white hover:bg-white/5' : 'border-black/10 text-[#4b5563] hover:text-black hover:bg-black/5'
+                            isDark ? 'border-white/10 text-[#a3acb9] hover:text-white hover:bg-white/5' : 'border-black/10 text-[#4b5563] hover:text-black hover:bg-black/5'
                           }`}
                         >
                           <span>{store.label}</span>
@@ -932,6 +937,39 @@ export default function App() {
           </div>
         </section>
 
+        {/* LIVE AI PLAYGROUND */}
+        <section className="pt-16">
+          <InteractiveDemo theme={theme} />
+        </section>
+
+        {/* HOW I WORK SECTION */}
+        <section className="pt-16 pb-6">
+          <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight">
+            {L.roleTitle}
+          </h2>
+          <div className={`mt-6 grid grid-cols-1 md:grid-cols-3 gap-8 pt-6 border-t ${
+            isDark ? 'border-white/10' : 'border-black/10'
+          }`}>
+            {ROLE_COLS[locale].map((col, i) => (
+              <div key={i} className="space-y-3">
+                <h3 className="text-sm md:text-[15px] font-bold tracking-wide text-accent-gold">
+                  {col.head}
+                </h3>
+                <ul className="space-y-2.5 pt-1">
+                  {col.items.map((item, j) => (
+                    <li key={j} className={`text-xs md:text-[13.5px] leading-relaxed flex items-start gap-2.5 ${
+                      isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
+                    }`}>
+                      <span className="text-accent-gold/80 font-bold shrink-0 mt-0.5">·</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* ALSO SHIPPED SECTION */}
         <section id="more" className="pt-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
@@ -940,7 +978,7 @@ export default function App() {
                 {L.moreTitle}
               </h2>
               <p className={`mt-1 text-xs md:text-[13.5px] max-w-[58ch] ${
-                isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'
+                isDark ? 'text-[#788290]' : 'text-[#6b7280]'
               }`}>
                 {L.moreNote}
               </p>
@@ -996,7 +1034,7 @@ export default function App() {
               >
                 <div>
                   <div className={`text-[10.5px] font-bold tracking-widest uppercase ${
-                    isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'
+                    isDark ? 'text-[#788290]' : 'text-[#6b7280]'
                   }`}>
                     {p.status}
                   </div>
@@ -1004,7 +1042,7 @@ export default function App() {
                     {p.title}
                   </h3>
                   <p className={`mt-1.5 text-xs md:text-[13.5px] leading-relaxed max-w-[44ch] ${
-                    isDark ? 'text-[#b9c0ca]' : 'text-[#4b5563]'
+                    isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
                   }`}>
                     {p.desc}
                   </p>
@@ -1021,7 +1059,7 @@ export default function App() {
                     <span
                       key={idx}
                       className={`text-[11px] font-mono px-2 py-0.5 rounded ${
-                        isDark ? 'bg-white/[0.05] text-[#b9c0ca]' : 'bg-black/[0.05] text-[#4b5563]'
+                        isDark ? 'bg-white/[0.05] text-[#a3acb9]' : 'bg-black/[0.05] text-[#4b5563]'
                       }`}
                     >
                       {t}
@@ -1042,7 +1080,7 @@ export default function App() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`text-xs font-semibold whitespace-nowrap hover:underline ${
-                        isDark ? 'text-[#b9c0ca]' : 'text-[#4b5563]'
+                        isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
                       }`}
                     >
                       Launch Live ↗
@@ -1061,7 +1099,7 @@ export default function App() {
             ))}
 
             {filteredShipped.length === 0 && (
-              <p className={`py-10 text-center text-sm ${isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'}`}>
+              <p className={`py-10 text-center text-sm ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>
                 {L.noResults}
               </p>
             )}
@@ -1092,7 +1130,7 @@ export default function App() {
                 key={idx}
                 className="py-4.5 grid grid-cols-1 sm:grid-cols-[110px_90px_1fr] gap-2 sm:gap-6 items-start"
               >
-                <span className={`text-xs font-mono shrink-0 ${isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'}`}>
+                <span className={`text-xs font-mono shrink-0 ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>
                   {e.date}
                 </span>
                 <span className="text-[10.5px] font-bold tracking-widest uppercase text-accent-gold shrink-0">
@@ -1103,7 +1141,7 @@ export default function App() {
                     {locale === 'ko' ? e.titleKo : e.titleEn}
                   </div>
                   <p className={`mt-1 text-xs md:text-[13px] leading-relaxed max-w-[78ch] ${
-                    isDark ? 'text-[#b9c0ca]' : 'text-[#4b5563]'
+                    isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
                   }`}>
                     {locale === 'ko' ? e.descKo : e.descEn}
                   </p>
@@ -1123,7 +1161,7 @@ export default function App() {
                 {L.contactTitle}
               </h2>
               <p className={`mt-4 text-sm md:text-base leading-relaxed max-w-[52ch] ${
-                isDark ? 'text-[#b9c0ca]' : 'text-[#4b5563]'
+                isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
               }`}>
                 {L.contactBody}
               </p>
@@ -1133,6 +1171,16 @@ export default function App() {
                   className="h-[46px] px-6 rounded-xl bg-accent-gold text-[#14171d] text-xs font-bold tracking-wider inline-flex items-center hover:brightness-105 transition-all shadow-sm"
                 >
                   {L.contactCta}
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/jason-benjamin/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`h-[46px] px-6 rounded-xl border text-xs font-bold tracking-wider inline-flex items-center transition-colors ${
+                    isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
+                  }`}
+                >
+                  {L.linkedinLabel}
                 </a>
                 <button
                   onClick={() => setIsResumeOpen(true)}
@@ -1150,7 +1198,7 @@ export default function App() {
             }`}>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'
+                  isDark ? 'text-[#788290]' : 'text-[#6b7280]'
                 }`}>
                   {L.lookingLabel}
                 </dt>
@@ -1160,7 +1208,7 @@ export default function App() {
               </div>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'
+                  isDark ? 'text-[#788290]' : 'text-[#6b7280]'
                 }`}>
                   {L.basedLabel}
                 </dt>
@@ -1170,7 +1218,7 @@ export default function App() {
               </div>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#868f9c]' : 'text-[#6b7280]'
+                  isDark ? 'text-[#788290]' : 'text-[#6b7280]'
                 }`}>
                   {L.langLabel}
                 </dt>
@@ -1184,9 +1232,11 @@ export default function App() {
 
       </main>
 
+      <FeedbackBox theme={theme} />
+
       {/* FOOTER */}
       <footer className={`border-t py-8 transition-colors ${
-        isDark ? 'border-white/10 text-[#868f9c]' : 'border-black/10 text-[#6b7280]'
+        isDark ? 'border-white/10 text-[#788290]' : 'border-black/10 text-[#6b7280]'
       }`}>
         <div className="max-w-[1180px] mx-auto px-6 md:px-10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium">
           <span>© Jason Benjamin</span>
@@ -1197,7 +1247,7 @@ export default function App() {
       {/* MODALS */}
       <ResumeModal
         isOpen={isResumeOpen}
-        onClose={() => setIsResumeOpen(false)}
+        onClose={closeResumeModal}
         theme={theme}
         locale={locale}
       />
@@ -1205,11 +1255,18 @@ export default function App() {
       {activeCaseStudyId && (
         <CaseStudyViewer
           projectId={activeCaseStudyId}
-          onClose={() => setActiveCaseStudyId(null)}
+          onClose={closeCaseStudy}
           theme={theme}
           locale={locale}
         />
       )}
+
+      <AIChat
+        isOpen={isChatOpen}
+        setIsOpen={setIsChatOpen}
+        theme={theme}
+        locale={locale}
+      />
     </div>
   );
 }

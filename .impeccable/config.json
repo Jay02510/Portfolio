@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-06T10:48:55.440Z",
+        "reason": "false positive: degraded regex detector (htmlparser2 unavailable) compares an isolated .skip-to-content font-size against unrelated CSS rules as if part of one type scale; actual heading hierarchy lives in App.tsx Tailwind classes and was already fixed there"
+      }
+    ]
+  }
+}

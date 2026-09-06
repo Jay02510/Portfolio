@@ -641,9 +641,9 @@ const ArchitectureFlowchart: React.FC<{ projectId: string; theme: 'light' | 'dar
   );
 };
 
-export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({ 
-  projectId, 
-  onClose, 
+export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
+  projectId,
+  onClose,
   theme = 'dark',
   locale = 'en',
   backgroundScrollY
@@ -1478,10 +1478,11 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                       >
                         {coverImg ? (
                           <>
-                            <img 
-                              src={coverImg} 
-                              alt="Video Walkthrough Thumbnail" 
+                            <img
+                              src={coverImg}
+                              alt="Video Walkthrough Thumbnail"
                               referrerPolicy="no-referrer"
+                              loading="lazy"
                               className="w-full h-full object-cover transition-transform duration-700 ease-out brightness-[0.35] group-hover/vid:scale-[1.03] absolute inset-0"
                               onError={(e) => {
                                 e.currentTarget.style.display = 'none';
@@ -1544,11 +1545,12 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                       <div className="w-full h-full relative flex flex-col items-center justify-center p-6 text-center select-none rounded-[15px] overflow-hidden bg-neutral-950">
                         {coverImg && (
                           <div className="absolute inset-0 z-0 opacity-15">
-                            <img 
-                              src={coverImg} 
-                              alt="Background Preview" 
+                            <img
+                              src={coverImg}
+                              alt="Background Preview"
                               className="w-full h-full object-cover blur-md"
                               referrerPolicy="no-referrer"
+                              loading="lazy"
                             />
                             <div className="absolute inset-0 bg-neutral-950/80" />
                           </div>
@@ -2016,4 +2018,4 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
       )}
     </div>
   );
-};
+});

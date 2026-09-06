@@ -248,9 +248,9 @@ const AIChat: React.FC<AIChatProps> = ({
               <div className={`rounded-full px-5 py-3 flex gap-2 items-center border ${
                 theme === 'dark' ? 'bg-[#1e232d] border-white/10' : 'bg-white border-black/10'
               }`}>
-                <div className="w-2 h-2 bg-accent-gold rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                <div className="w-2 h-2 bg-accent-gold rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                <div className="w-2 h-2 bg-accent-gold rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                <div className="w-2 h-2 bg-accent-gold rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-accent-gold rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-accent-gold rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
               </div>
             </div>
           )}
