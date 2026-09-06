@@ -82,7 +82,9 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
+                <label htmlFor="feedback-message" className="sr-only">Feedback</label>
                 <textarea
+                  id="feedback-message"
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
                   placeholder="Tell it to me straight..."
@@ -96,7 +98,9 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
                 />
 
                 <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <label htmlFor="feedback-contact" className="sr-only">Your email or LinkedIn (optional)</label>
                   <input
+                    id="feedback-contact"
                     type="text"
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}

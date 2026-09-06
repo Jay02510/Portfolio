@@ -1007,6 +1007,7 @@ export default function App() {
                     <button
                       key={f.id}
                       onClick={() => setActiveFilter(f.id)}
+                      aria-pressed={isActive}
                       className={`h-[34px] px-3.5 rounded-lg text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
                         isActive
                           ? (isDark ? 'bg-white text-[#14171d]' : 'bg-[#14171d] text-white')

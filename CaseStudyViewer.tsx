@@ -607,11 +607,11 @@ const ArchitectureFlowchart: React.FC<{ projectId: string; theme: 'light' | 'dar
 
                 {/* Labels */}
                 <div className="space-y-1">
-                  <h5 className={`text-[11px] font-bold uppercase tracking-wider font-display ${
+                  <h4 className={`text-[11px] font-bold uppercase tracking-wider font-display ${
                     theme === 'dark' ? 'text-white' : 'text-alpine-950'
                   }`}>
                     {node.title}
-                  </h5>
+                  </h4>
                   <p className={`text-[9px] leading-relaxed max-w-[200px] mx-auto opacity-60 ${
                     theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'
                   }`}>
@@ -721,17 +721,27 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
     };
   }, []);
 
-  // Lightbox escape key handler
+  // Move focus into the modal on open, restore it to the trigger on close (WCAG 2.4.3)
+  useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    scrollRef.current?.focus();
+    return () => {
+      previouslyFocused?.focus?.();
+    };
+  }, []);
+
+  // Escape closes the lightbox if it's open, otherwise closes the whole modal
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && lightboxImage) {
+      if (e.key !== 'Escape') return;
+      e.preventDefault();
+      if (lightboxImage) {
         setLightboxImage(null);
-        e.preventDefault();
+      } else {
+        handleClose();
       }
     };
-    if (lightboxImage) {
-      document.addEventListener('keydown', handleEscape);
-    }
+    document.addEventListener('keydown', handleEscape);
     return () => {
       document.removeEventListener('keydown', handleEscape);
     };
@@ -804,7 +814,11 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
   return (
     <div
       ref={scrollRef}
-      className={`fixed inset-0 z-[200] overflow-y-auto overflow-x-hidden w-full min-w-0 transition-colors duration-300 ${
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="case-study-title"
+      tabIndex={-1}
+      className={`outline-none fixed inset-0 z-[200] overflow-y-auto overflow-x-hidden w-full min-w-0 transition-colors duration-300 ${
         theme === 'dark' ? 'bg-alpine-950 text-white' : 'bg-alpine-50 text-alpine-950'
       } ${
         prefersReducedMotion
@@ -857,6 +871,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           )}
           <button
             onClick={handleClose}
+            aria-label={locale === 'ko' ? "케이스 스터디 닫기" : "Close case study"}
             className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors active:scale-95 shrink-0 ${
               theme === 'dark' ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-black/5 hover:bg-black/10 text-alpine-950'
             }`}
@@ -873,7 +888,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             <SparklesIcon className="w-4 h-4" />
             {t.architecturalStudy}
           </div>
-          <h1 className="text-4xl md:text-8xl font-medium tracking-tighter leading-[1.1] font-display text-pretty">
+          <h1 id="case-study-title" className="text-4xl md:text-8xl font-medium tracking-tighter leading-[1.1] font-display text-pretty">
             {projectData.title}
           </h1>
           <p className={`text-base md:text-2xl max-w-4xl font-normal leading-relaxed text-pretty ${
@@ -963,8 +978,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               ? 'bg-white/[0.02] border-white/5 shadow-2xl relative overflow-hidden' 
               : 'bg-black/[0.02] border-black/5 shadow-lg relative overflow-hidden'
           }`}>
-            <button 
+            <button
               onClick={() => setIsArchOpen(!isArchOpen)}
+              aria-expanded={isArchOpen}
+              aria-controls="arch-panel"
               className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent-gold/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -985,7 +1002,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             </button>
             
             {isArchOpen && (
-              <div className="p-6 md:p-10 pt-0 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10">
+              <div id="arch-panel" className="p-6 md:p-10 pt-0 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10">
                 {/* THE HUMAN PROBLEM */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
@@ -1036,8 +1053,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               ? 'bg-[#0B1017]/60 border-blue-500/10 shadow-[0_20px_50px_rgba(59,130,246,0.03)] relative overflow-hidden' 
               : 'bg-[#F4F8FC]/70 border-blue-500/10 shadow-lg relative overflow-hidden'
           }`}>
-            <button 
+            <button
               onClick={() => setIsCoreLoopOpen(!isCoreLoopOpen)}
+              aria-expanded={isCoreLoopOpen}
+              aria-controls="core-loop-panel"
               className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -1058,7 +1077,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             </button>
 
             {isCoreLoopOpen && (
-              <div className="p-6 md:p-10 pt-0 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 space-y-4">
+              <div id="core-loop-panel" className="p-6 md:p-10 pt-0 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {projectData.coreLoop.map((item, idx) => (
                     <div 
@@ -1103,8 +1122,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               ? 'bg-[#100D14]/60 border-purple-500/10 shadow-[0_20px_50px_rgba(168,85,247,0.03)] relative overflow-hidden' 
               : 'bg-[#FAF6FD]/70 border-purple-500/10 shadow-lg relative overflow-hidden'
           }`}>
-            <button 
+            <button
               onClick={() => setIsDecisionsOpen(!isDecisionsOpen)}
+              aria-expanded={isDecisionsOpen}
+              aria-controls="decisions-panel"
               className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -1125,7 +1146,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             </button>
 
             {isDecisionsOpen && (
-              <div className="p-6 md:p-10 pt-0 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 space-y-6">
+              <div id="decisions-panel" className="p-6 md:p-10 pt-0 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {projectData.decisions.map((dec, idx) => (
                     <div 
@@ -1202,8 +1223,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               ? 'bg-[#120D0D]/50 border-red-500/10 shadow-[0_20px_50px_rgba(239,68,68,0.05)] relative overflow-hidden' 
               : 'bg-[#FFF5F5]/60 border-red-500/10 shadow-lg relative overflow-hidden'
           }`}>
-            <button 
+            <button
               onClick={() => setIsHurdlesOpen(!isHurdlesOpen)}
+              aria-expanded={isHurdlesOpen}
+              aria-controls="hurdles-panel"
               className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -1234,7 +1257,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 : [projectData.technicalHurdles];
               
               return (
-                <div className="border-t border-red-500/5 divide-y divide-red-500/5 relative z-10 animate-in fade-in slide-in-from-top-2 duration-300">
+                <div id="hurdles-panel" className="border-t border-red-500/5 divide-y divide-red-500/5 relative z-10 animate-in fade-in slide-in-from-top-2 duration-300">
                   {hurdlesList.map((hurdle, hIdx) => (
                     <div key={hIdx} className={`${hIdx > 0 ? 'pt-8 md:pt-12' : ''} p-6 md:p-10 pb-8 md:pb-12 space-y-6`}>
                       {hurdle.title && (
@@ -1733,8 +1756,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               ? 'bg-white/[0.01] border-white/5'
               : 'bg-black/[0.01] border-black/5 shadow-md'
           }`}>
-            <button 
+            <button
               onClick={() => setIsBreakdownOpen(!isBreakdownOpen)}
+              aria-expanded={isBreakdownOpen}
+              aria-controls="breakdown-panel"
               className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
             >
               <div className="flex items-center gap-3">
@@ -1754,7 +1779,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             </button>
 
             {isBreakdownOpen && (
-              <div className="p-4 sm:p-6 md:p-10 pt-0 grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 w-full min-w-0 overflow-hidden">
+              <div id="breakdown-panel" className="p-4 sm:p-6 md:p-10 pt-0 grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 w-full min-w-0 overflow-hidden">
                 {/* LEFT RAIL - THE STACK / INFO */}
                 <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-24 h-fit w-full min-w-0">
                   <div className="space-y-4">
@@ -2012,9 +2037,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
                 </div>
-                <h5 className="text-sm font-bold tracking-wider text-white uppercase font-mono block">
+                <p className="text-sm font-bold tracking-wider text-white uppercase font-mono block">
                   {locale === 'en' ? "Full Screen Asset View" : "전체 슬라이드 뷰어"}
-                </h5>
+                </p>
                 <p className="mt-4 text-xs text-white/60 leading-relaxed max-w-xs">
                   {locale === 'en'
                     ? "Interactive high-contrast image preview completed. Click anywhere to return, or explore via the live running project link below."
