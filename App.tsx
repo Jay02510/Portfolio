@@ -681,7 +681,7 @@ export default function App() {
           <div className="flex items-center gap-2.5">
             <button
               onClick={() => setLocale(l => l === 'en' ? 'ko' : 'en')}
-              className={`h-[34px] px-3 rounded-lg border text-xs font-semibold tracking-wider transition-colors ${
+              className={`h-[34px] px-3 rounded-lg border text-xs font-semibold tracking-wider transition-[background-color,transform] active:scale-95 ${
                 isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
               }`}
             >
@@ -698,7 +698,7 @@ export default function App() {
             </button>
             <button
               onClick={() => setIsResumeOpen(true)}
-              className={`h-[34px] px-4 rounded-lg font-bold text-xs tracking-wider transition-all shadow-sm ${
+              className={`h-[34px] px-4 rounded-lg font-bold text-xs tracking-wider transition-[background-color,transform] active:scale-95 shadow-sm ${
                 isDark ? 'bg-white text-[#14171d] hover:bg-white/90' : 'bg-[#14171d] text-white hover:bg-black/90'
               }`}
             >
@@ -712,22 +712,8 @@ export default function App() {
       <main id="top" className="max-w-[1180px] mx-auto px-6 md:px-10">
 
         {/* HERO SECTION */}
-        <section className="pt-16 md:pt-20 pb-14 grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-12 lg:gap-16 items-end">
+        <section className="pt-16 md:pt-20 pb-14 grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-12 lg:gap-16 items-start">
           <div>
-            <div className="flex items-center gap-3 mb-5">
-              <img
-                src="/images/jason-benjamin.jpg"
-                alt="Jason Benjamin"
-                className={`w-11 h-11 rounded-full object-cover border ${
-                  isDark ? 'border-white/15' : 'border-black/10'
-                }`}
-              />
-              <span className={`text-sm font-medium tracking-wide ${
-                isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
-              }`}>
-                Jason Benjamin
-              </span>
-            </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[4.1rem] font-display font-semibold leading-[1.06] tracking-tight text-balance">
               {L.heroTitle}
             </h1>
@@ -740,13 +726,13 @@ export default function App() {
               <a
                 href="#work"
                 onClick={scrollToSection('work')}
-                className="h-[46px] px-6 rounded-xl bg-accent-gold text-[#14171d] text-[13px] font-bold tracking-wide inline-flex items-center hover:brightness-105 transition-all shadow-sm"
+                className="h-[46px] px-6 rounded-xl bg-accent-gold text-[#14171d] text-[13px] font-bold tracking-wide inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform] duration-150 shadow-sm"
               >
                 {L.ctaWork}
               </a>
               <button
                 onClick={() => setIsResumeOpen(true)}
-                className={`h-[46px] px-6 rounded-xl border text-[13px] font-bold tracking-wide transition-colors ${
+                className={`h-[46px] px-6 rounded-xl border text-[13px] font-bold tracking-wide active:scale-95 transition-[background-color,border-color,color,transform] duration-150 ${
                   isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
                 }`}
               >
@@ -763,19 +749,31 @@ export default function App() {
             </div>
           </div>
 
-          <aside className={`border rounded-2xl p-6 transition-colors ${
-            isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
-          }`}>
-            <div className="flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-[#5fd48b]">
-              <span className="w-2 h-2 rounded-full bg-[#5fd48b] animate-pulse"></span>
-              <span>{L.nowLabel}</span>
-            </div>
-            <p className={`mt-3 text-sm md:text-[15px] leading-relaxed font-medium ${
-              isDark ? 'text-[#faf9f6]' : 'text-[#14171d]'
+          <div className="flex flex-col gap-6">
+            <div className={`rounded-2xl overflow-hidden border ${
+              isDark ? 'border-white/10' : 'border-black/10'
             }`}>
-              {L.nowBody}
-            </p>
-          </aside>
+              <img
+                src="/images/jason-benjamin.jpg"
+                alt="Jason Benjamin"
+                className="w-full aspect-[4/5] object-cover object-top"
+              />
+            </div>
+
+            <aside className={`border rounded-2xl p-6 transition-colors ${
+              isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
+            }`}>
+              <div className="flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-[#5fd48b]">
+                <span className="w-2 h-2 rounded-full bg-[#5fd48b] animate-pulse"></span>
+                <span>{L.nowLabel}</span>
+              </div>
+              <p className={`mt-3 text-sm md:text-[15px] leading-relaxed font-medium ${
+                isDark ? 'text-[#faf9f6]' : 'text-[#14171d]'
+              }`}>
+                {L.nowBody}
+              </p>
+            </aside>
+          </div>
         </section>
 
         {/* FACTS BAR */}
@@ -813,7 +811,7 @@ export default function App() {
             {FEATURED_PROJECTS[locale].map((project) => (
               <article
                 key={project.id}
-                className={`border rounded-2xl overflow-hidden transition-all ${
+                className={`border rounded-2xl overflow-hidden transition-[background-color,border-color] ${
                   isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
                 }`}
               >
@@ -909,7 +907,7 @@ export default function App() {
                     <div className={`mt-6 pt-5 border-t flex flex-wrap items-center gap-3 ${isDark ? 'border-white/10' : 'border-black/10'}`}>
                       <button
                         onClick={() => setActiveCaseStudyId(project.id)}
-                        className={`h-[40px] px-4 rounded-lg font-bold text-xs tracking-wider transition-all shadow-sm ${
+                        className={`h-[40px] px-4 rounded-lg font-bold text-xs tracking-wider transition-[background-color,transform] active:scale-95 shadow-sm ${
                           isDark ? 'bg-white text-[#14171d] hover:bg-white/90' : 'bg-[#14171d] text-white hover:bg-black/90'
                         }`}
                       >
@@ -921,7 +919,7 @@ export default function App() {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`h-[40px] px-4 rounded-lg border text-xs font-semibold tracking-wider inline-flex items-center gap-1.5 transition-colors ${
+                          className={`h-[40px] px-4 rounded-lg border text-xs font-semibold tracking-wider inline-flex items-center gap-1.5 transition-[background-color,transform] active:scale-95 ${
                             isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
                           }`}
                         >
@@ -936,7 +934,7 @@ export default function App() {
                           href={store.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`h-[40px] px-3.5 rounded-lg border text-xs font-semibold tracking-wider inline-flex items-center gap-1 transition-colors ${
+                          className={`h-[40px] px-3.5 rounded-lg border text-xs font-semibold tracking-wider inline-flex items-center gap-1 transition-[background-color,color,transform] active:scale-95 ${
                             isDark ? 'border-white/10 text-[#a3acb9] hover:text-white hover:bg-white/5' : 'border-black/10 text-[#4b5563] hover:text-black hover:bg-black/5'
                           }`}
                         >
@@ -1006,7 +1004,7 @@ export default function App() {
                     <button
                       key={f.id}
                       onClick={() => setActiveFilter(f.id)}
-                      className={`h-[34px] px-3.5 rounded-lg text-xs font-bold tracking-wider transition-colors ${
+                      className={`h-[34px] px-3.5 rounded-lg text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
                         isActive
                           ? (isDark ? 'bg-white text-[#14171d]' : 'bg-[#14171d] text-white')
                           : (isDark ? 'border border-white/15 text-white/70 hover:bg-white/5' : 'border border-black/15 text-black/70 hover:bg-black/5')
@@ -1030,7 +1028,7 @@ export default function App() {
                   className="bg-transparent border-none outline-none text-xs w-[120px] sm:w-[150px] placeholder-inherit"
                 />
                 {searchQuery && (
-                  <button onClick={() => setSearchQuery('')} className="text-xs opacity-50 hover:opacity-100">
+                  <button onClick={() => setSearchQuery('')} className="text-xs opacity-50 hover:opacity-100 transition-[opacity,transform] active:scale-95">
                     ✕
                   </button>
                 )}
@@ -1136,7 +1134,7 @@ export default function App() {
             </h2>
             <button
               onClick={() => setIsLogExpanded(!isLogExpanded)}
-              className={`h-[34px] px-3.5 rounded-lg border text-xs font-bold tracking-wider transition-colors ${
+              className={`h-[34px] px-3.5 rounded-lg border text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
                 isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
               }`}
             >
@@ -1190,7 +1188,7 @@ export default function App() {
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <a
                   href="mailto:jsn.benjamin@gmail.com"
-                  className="h-[46px] px-6 rounded-xl bg-accent-gold text-[#14171d] text-xs font-bold tracking-wider inline-flex items-center hover:brightness-105 transition-all shadow-sm"
+                  className="h-[46px] px-6 rounded-xl bg-accent-gold text-[#14171d] text-xs font-bold tracking-wider inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform] shadow-sm"
                 >
                   {L.contactCta}
                 </a>
@@ -1198,7 +1196,7 @@ export default function App() {
                   href="https://www.linkedin.com/in/jason-benjamin/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`h-[46px] px-6 rounded-xl border text-xs font-bold tracking-wider inline-flex items-center transition-colors ${
+                  className={`h-[46px] px-6 rounded-xl border text-xs font-bold tracking-wider inline-flex items-center transition-[background-color,transform] active:scale-95 ${
                     isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
                   }`}
                 >
@@ -1206,7 +1204,7 @@ export default function App() {
                 </a>
                 <button
                   onClick={() => setIsResumeOpen(true)}
-                  className={`h-[46px] px-6 rounded-xl border text-xs font-bold tracking-wider transition-colors ${
+                  className={`h-[46px] px-6 rounded-xl border text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
                     isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
                   }`}
                 >

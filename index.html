@@ -187,7 +187,7 @@
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.15s ease-out, box-shadow 0.3s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -214,6 +214,11 @@
             color: #0d0f14;
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .shiny-cta:active {
+            transform: scale(0.97);
+            transition-duration: 0.1s;
         }
 
 

@@ -67,7 +67,7 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
       tabIndex={-1}
       className="fixed inset-0 z-[300] flex items-center justify-center p-4 md:p-6 bg-black/80 backdrop-blur-md overflow-y-auto print:static print:bg-white print:p-0 outline-none"
     >
-      <div className={`relative w-full max-w-4xl rounded-2xl border shadow-2xl overflow-hidden transition-all duration-300 max-h-[90vh] flex flex-col ${
+      <div className={`relative w-full max-w-4xl rounded-2xl border shadow-2xl overflow-hidden transition-[background-color,border-color] duration-300 max-h-[90vh] flex flex-col ${
         isDark 
           ? 'bg-alpine-950 border-white/10 text-white' 
           : 'bg-[#faf9f6] border-black/10 text-alpine-950'
@@ -89,14 +89,14 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button 
               onClick={triggerPdfDownload}
-              className="px-3 py-2 sm:px-4 sm:py-2 bg-accent-gold hover:brightness-110 text-alpine-950 rounded-full text-xs font-bold uppercase tracking-wider transition-all active:scale-95 shadow-md flex items-center gap-1.5 whitespace-nowrap"
+              className="px-3 py-2 sm:px-4 sm:py-2 bg-accent-gold hover:brightness-110 text-alpine-950 rounded-full text-xs font-bold uppercase tracking-wider transition-[filter,transform] active:scale-95 shadow-md flex items-center gap-1.5 whitespace-nowrap"
             >
               <PrinterIcon className="w-3.5 h-3.5" />
               <span>{locale === 'en' ? "Print / Save PDF" : "인쇄 / PDF 저장"}</span>
             </button>
             <button 
               onClick={onClose}
-              className={`w-11 h-11 rounded-full border transition-colors flex items-center justify-center ${
+              className={`w-11 h-11 rounded-full border transition-[background-color,color,transform] active:scale-95 flex items-center justify-center ${
                 isDark ? 'border-white/10 hover:bg-white/10 text-white/80 hover:text-white' : 'border-black/10 hover:bg-black/10 text-alpine-950/80 hover:text-alpine-950'
               }`}
               aria-label={locale === 'ko' ? "이력서 닫기" : "Close resume"}
@@ -130,7 +130,7 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
             <div className="flex flex-col sm:flex-row gap-4 shrink-0">
               <a 
                 href="mailto:jsn.benjamin@gmail.com?subject=Strategic%20Opportunity%20Inquiry"
-                className="px-5 py-3 rounded-full bg-accent-gold text-alpine-950 text-xs font-black uppercase tracking-widest inline-flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all shadow-md font-mono"
+                className="px-5 py-3 rounded-full bg-accent-gold text-alpine-950 text-xs font-black uppercase tracking-widest inline-flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-[filter,transform] shadow-md font-mono"
               >
                 <MailIcon className="w-3.5 h-3.5" />
                 <span>jsn.benjamin@gmail.com</span>

@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-09-06T10:48:55.440Z",
         "reason": "false positive: degraded regex detector (htmlparser2 unavailable) compares an isolated .skip-to-content font-size against unrelated CSS rules as if part of one type scale; actual heading hierarchy lives in App.tsx Tailwind classes and was already fixed there"
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "border-t-2",
+        "files": [
+          "components/InteractiveDemo.tsx"
+        ],
+        "createdAt": "2026-09-06T12:16:45.709Z",
+        "reason": "false positive, confirmed earlier this session: this is a CSS loading spinner (border-t-2 rounded-full animate-spin), not a decorative card border-radius clash"
       }
     ]
   }

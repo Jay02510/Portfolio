@@ -30,7 +30,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
         }
       }}
       aria-label={`${project.title} — ${locale === 'ko' ? '케이스 스터디 열기' : 'Open Case Study'}`}
-      className={`rounded-2xl border flex flex-col group h-full cursor-pointer transition-all duration-300 focus-visible:ring-2 focus-visible:ring-accent-gold outline-none ${
+      className={`rounded-2xl border flex flex-col group h-full cursor-pointer transition-[border-color,box-shadow] duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-accent-gold outline-none ${
         isDark 
           ? 'bg-[#15181e] border-white/10 hover:border-accent-gold/40 hover:shadow-xl shadow-black/40' 
           : 'bg-white border-black/10 hover:border-accent-clay/40 hover:shadow-xl shadow-black/5'
@@ -181,7 +181,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
               e.stopPropagation();
               onOpenCaseStudy?.(project.id);
             }}
-            className={`group rounded-full px-4 py-2 text-xs font-bold flex items-center gap-2 transition-all shrink-0 ${
+            className={`group rounded-full px-4 py-2 text-xs font-bold flex items-center gap-2 transition-[background-color] active:scale-95 shrink-0 ${
               isDark 
                 ? 'bg-accent-gold text-alpine-950 hover:bg-white' 
                 : 'bg-accent-clay text-white hover:bg-neutral-900'
@@ -198,7 +198,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
                 target="_blank" 
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className={`flex items-center gap-1 text-xs font-bold transition-all whitespace-nowrap ${
+                className={`flex items-center gap-1 text-xs font-bold transition-colors whitespace-nowrap ${
                   isDark ? 'text-neutral-300 hover:text-accent-gold' : 'text-neutral-700 hover:text-accent-clay'
                 }`}
               >
@@ -212,7 +212,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
               <a
                 href={project.collaborationUrl}
                 onClick={(e) => e.stopPropagation()}
-                className={`flex items-center gap-1 text-xs font-bold transition-all whitespace-nowrap ${
+                className={`flex items-center gap-1 text-xs font-bold transition-colors whitespace-nowrap ${
                   isDark ? 'text-neutral-300 hover:text-accent-gold' : 'text-neutral-700 hover:text-accent-clay'
                 }`}
               >

@@ -116,7 +116,7 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
     <div className="w-full max-w-7xl mx-auto px-6 md:px-8 mt-10 md:mt-12 relative z-50">
       {/* Outer Banner Wrapper */}
       <div 
-        className={`rounded-2xl border transition-all duration-300 relative overflow-hidden ${
+        className={`rounded-2xl border relative overflow-hidden ${
           isDark 
             ? 'bg-alpine-900 border-white/10 shadow-xl' 
             : 'bg-white border-black/10 shadow-md'
@@ -158,7 +158,7 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
           <div className="flex items-center gap-2.5 shrink-0 ml-auto md:ml-0">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border min-h-[40px] flex items-center gap-1.5 ${
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-[background-color,border-color,color] active:scale-95 border min-h-[40px] flex items-center gap-1.5 ${
                 isOpen
                   ? (isDark ? 'bg-white/10 border-white/20 text-white' : 'bg-neutral-200 border-black/20 text-alpine-950')
                   : (isDark ? 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10 hover:text-white' : 'bg-neutral-100 border-black/10 text-neutral-700 hover:bg-neutral-200 hover:text-black')
@@ -174,7 +174,7 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
             {latestItem.relatedProjectId && (
               <button
                 onClick={() => onOpenCaseStudy(latestItem.relatedProjectId || null)}
-                className="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-accent-gold text-alpine-950 hover:brightness-110 active:scale-95 transition-all shadow-sm min-h-[40px] flex items-center gap-1"
+                className="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-accent-gold text-alpine-950 hover:brightness-110 active:scale-95 transition-[filter] shadow-sm min-h-[40px] flex items-center gap-1"
               >
                 <span>{locale === 'en' ? "See Fix" : "적용부 보기"}</span>
                 <span>↗</span>
@@ -183,9 +183,9 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
 
             <button
               onClick={() => setIsDismissed(true)}
-              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors border ${
-                isDark 
-                  ? 'border-white/10 text-white/70 hover:text-white hover:bg-white/10' 
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors active:scale-95 border ${
+                isDark
+                  ? 'border-white/10 text-white/70 hover:text-white hover:bg-white/10'
                   : 'border-black/10 text-neutral-700 hover:text-black hover:bg-neutral-100'
               }`}
               aria-label={locale === 'en' ? "Dismiss build log" : "빌드 로그 닫기"}
@@ -224,9 +224,13 @@ export default function LiveStatusFeed({ locale, theme, onOpenCaseStudy }: LiveS
                   isDark ? 'border-white/15' : 'border-neutral-300'
                 }`}>
                   {BUILD_UPDATES_DATA.map((item, idx) => (
-                    <div key={item.id} className="relative group/timeline">
+                    <div
+                      key={item.id}
+                      className="relative group/timeline animate-in fade-in slide-in-from-left-2 duration-300"
+                      style={{ animationDelay: `${idx * 50}ms` }}
+                    >
                       {/* Timeline dot */}
-                      <span className={`absolute -left-[31px] md:-left-[39px] top-1.5 w-2.5 h-2.5 rounded-full border transition-all duration-300 ${
+                      <span className={`absolute -left-[31px] md:-left-[39px] top-1.5 w-2.5 h-2.5 rounded-full border transition-[transform,background-color,border-color] duration-300 ${
                         idx === 0
                           ? 'bg-accent-gold border-accent-gold scale-125 ring-4 ring-accent-gold/20'
                           : (isDark ? 'bg-neutral-800 border-white/30' : 'bg-white border-neutral-400')

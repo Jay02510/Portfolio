@@ -30,7 +30,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   };
 
   return (
-    <article className={`rounded-[2rem] border transition-all duration-500 overflow-hidden ${
+    <article className={`rounded-[2rem] border transition-[border-color] duration-500 overflow-hidden ${
       theme === 'dark' 
         ? 'bg-alpine-900/40 border-white/10 hover:border-white/20 shadow-xl' 
         : 'bg-white border-black/10 hover:border-black/20 shadow-lg'
@@ -123,9 +123,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <div className="flex items-center gap-3 shrink-0 self-start md:self-center" onClick={(e) => e.stopPropagation()}>
           <button
             onClick={() => onOpenCaseStudy?.(project.id)}
-            className={`px-4 py-2 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all ${
-              theme === 'dark' 
-                ? 'bg-accent-gold text-alpine-950 hover:bg-white' 
+            className={`px-4 py-2 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-[background-color] active:scale-95 ${
+              theme === 'dark'
+                ? 'bg-accent-gold text-alpine-950 hover:bg-white'
                 : 'bg-accent-clay text-white hover:bg-alpine-950'
             }`}
           >
@@ -134,7 +134,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
           <button
             onClick={() => setIsUnfolded(!isUnfolded)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-[9px] md:text-[10px] font-extrabold uppercase tracking-widest border transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-[9px] md:text-[10px] font-extrabold uppercase tracking-widest border transition-[background-color,border-color,color] active:scale-95 ${
               isUnfolded
                 ? 'bg-accent-gold/20 text-accent-gold border-accent-gold/40'
                 : (theme === 'dark' ? 'border-white/20 text-white/80 hover:bg-white/10' : 'border-black/20 text-alpine-950/80 hover:bg-black/5')
@@ -161,7 +161,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     <img 
                       src={project.images[currentSlideIdx]} 
                       onClick={() => onOpenCaseStudy?.(project.id)}
-                      className="w-full h-full object-cover cursor-pointer transition-all duration-500" 
+                      className="w-full h-full object-cover cursor-pointer"
                       alt={project.title}
                       referrerPolicy="no-referrer"
                     />
@@ -174,7 +174,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                             e.stopPropagation();
                             setCurrentSlideIdx(prev => (prev === 0 ? project.images.length - 1 : prev - 1));
                           }}
-                          className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-alpine-950/80 hover:bg-accent-gold hover:text-alpine-950 flex items-center justify-center text-white transition-all shadow-lg z-10"
+                          className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-alpine-950/80 hover:bg-accent-gold hover:text-alpine-950 flex items-center justify-center text-white transition-[background-color,color] active:scale-95 shadow-lg z-10"
                         >
                           ◀
                         </button>
@@ -183,7 +183,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                             e.stopPropagation();
                             setCurrentSlideIdx(prev => (prev === project.images.length - 1 ? 0 : prev + 1));
                           }}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-alpine-950/80 hover:bg-accent-gold hover:text-alpine-950 flex items-center justify-center text-white transition-all shadow-lg z-10"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-alpine-950/80 hover:bg-accent-gold hover:text-alpine-950 flex items-center justify-center text-white transition-[background-color,color] active:scale-95 shadow-lg z-10"
                         >
                           ▶
                         </button>
@@ -195,7 +195,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                 e.stopPropagation();
                                 setCurrentSlideIdx(idx);
                               }}
-                              className={`w-2 h-2 rounded-full transition-all ${
+                              className={`w-2 h-2 rounded-full transition-[transform,background-color] ${
                                 idx === currentSlideIdx ? 'bg-accent-gold scale-125' : 'bg-white/40'
                               }`}
                             />
@@ -316,7 +316,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     )}
                   </div>
                   <div onClick={handleCopy} className="flex justify-between items-center cursor-pointer group/code">
-                    <code className={`text-sm md:text-lg font-mono tracking-widest px-4 py-2 rounded-lg border transition-all ${
+                    <code className={`text-sm md:text-lg font-mono tracking-widest px-4 py-2 rounded-lg border transition-[border-color] ${
                       theme === 'dark' ? 'bg-white/5 border-white/10 group-hover/code:border-accent-gold/50 text-white' : 'bg-white border-black/10 text-alpine-950'
                     }`}>
                       {project.betaCode}
@@ -333,9 +333,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 <div className="flex flex-wrap items-center gap-3">
                   <button 
                     onClick={() => onOpenCaseStudy?.(project.id)}
-                    className={`rounded-full px-6 py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all ${
-                      theme === 'dark' 
-                        ? 'bg-accent-gold text-alpine-950 hover:bg-white' 
+                    className={`rounded-full px-6 py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-[background-color] active:scale-95 ${
+                      theme === 'dark'
+                        ? 'bg-accent-gold text-alpine-950 hover:bg-white'
                         : 'bg-accent-clay text-white hover:bg-alpine-950'
                     }`}
                   >
@@ -348,7 +348,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                       href={project.demoUrl || project.websiteUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest transition-all ${
+                      className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest transition-colors ${
                         theme === 'dark' ? 'text-white/70 hover:text-accent-gold' : 'text-alpine-950/70 hover:text-accent-clay'
                       }`}
                     >
@@ -360,7 +360,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   {project.collaborationUrl && (
                     <a
                       href={project.collaborationUrl}
-                      className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest transition-all ${
+                      className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest transition-colors ${
                         theme === 'dark' ? 'text-white/70 hover:text-accent-gold' : 'text-alpine-950/70 hover:text-accent-clay'
                       }`}
                     >
@@ -371,7 +371,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
                 <button
                   onClick={() => setIsUnfolded(false)}
-                  className={`px-4 py-2 rounded-full text-[9px] font-extrabold uppercase tracking-widest border transition-all ${
+                  className={`px-4 py-2 rounded-full text-[9px] font-extrabold uppercase tracking-widest border transition-[border-color,color] active:scale-95 ${
                     theme === 'dark' ? 'border-white/10 text-white/60 hover:text-white hover:border-white/20' : 'border-black/10 text-alpine-950/60 hover:text-black hover:border-black/20'
                   }`}
                 >

@@ -220,7 +220,7 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
   return (
     <section className="w-full max-w-7xl mx-auto px-6 py-12">
       {/* CONTAINER */}
-      <div className={`p-6 sm:p-8 rounded-3xl border transition-all duration-300 backdrop-blur-xl ${
+      <div className={`p-6 sm:p-8 rounded-3xl border backdrop-blur-xl ${
         isDark 
           ? 'bg-[#181c24]/90 border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.4)]' 
           : 'bg-white border-black/10 shadow-[0_10px_40px_rgba(0,0,0,0.06)]'
@@ -261,7 +261,7 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
               <button
                 key={opt.id}
                 onClick={() => setSelectedFilter(opt.id)}
-                className={`px-3 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all flex items-center gap-2 min-h-[38px] ${
+                className={`px-3 py-2 rounded-xl text-xs font-semibold tracking-wide transition-[background-color,color,box-shadow] active:scale-95 flex items-center gap-2 min-h-[38px] ${
                   selectedFilter === opt.id
                     ? (isDark ? 'bg-accent-gold text-alpine-950 shadow-md font-bold' : 'bg-accent-clay text-white shadow-md font-bold')
                     : (isDark ? 'text-white/70 hover:text-white hover:bg-white/5' : 'text-neutral-700 hover:text-neutral-950 hover:bg-black/5')
@@ -285,7 +285,7 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96 }}
                 transition={{ duration: 0.25, delay: idx * 0.04 }}
-                className={`p-5 sm:p-6 rounded-2xl border transition-all flex flex-col justify-between group ${
+                className={`p-5 sm:p-6 rounded-2xl border transition-[border-color,background-color,box-shadow] flex flex-col justify-between group ${
                   isDark 
                     ? 'bg-[#1e232d]/80 border-white/10 hover:border-accent-gold/40 hover:bg-[#232936]' 
                     : 'bg-neutral-50 border-black/10 hover:border-accent-clay/40 hover:bg-white hover:shadow-lg'
@@ -369,7 +369,7 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
                     {item.caseStudyId && (
                       <button
                         onClick={() => onOpenCaseStudy(item.caseStudyId!)}
-                        className={`text-xs font-bold font-mono uppercase tracking-wider px-3.5 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 ${
+                        className={`text-xs font-bold font-mono uppercase tracking-wider px-3.5 py-1.5 rounded-lg border transition-[background-color,border-color,color] active:scale-95 flex items-center gap-1.5 ${
                           isDark
                             ? 'bg-accent-gold/15 border-accent-gold/30 text-accent-gold hover:bg-accent-gold hover:text-alpine-950'
                             : 'bg-accent-clay/10 border-accent-clay/30 text-accent-clay hover:bg-accent-clay hover:text-white'
@@ -385,7 +385,7 @@ export const ExecutiveMatrix: React.FC<ExecutiveMatrixProps> = ({ locale, theme,
                         href={item.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`text-xs font-bold font-mono uppercase tracking-wider px-3.5 py-1.5 rounded-lg border transition-all flex items-center gap-1 ${
+                        className={`text-xs font-bold font-mono uppercase tracking-wider px-3.5 py-1.5 rounded-lg border transition-[background-color,border-color,color] active:scale-95 flex items-center gap-1 ${
                           isDark
                             ? 'border-white/15 text-white/80 hover:bg-white/10 hover:text-white'
                             : 'border-black/15 text-neutral-800 hover:bg-black/5 hover:text-black'

@@ -352,7 +352,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
       <div className="print:hidden space-y-8">
         
         {/* RESUME HEADER CARD */}
-        <div className={`p-6 sm:p-8 rounded-2xl border transition-all ${
+        <div className={`p-6 sm:p-8 rounded-2xl border ${
           isDark ? 'bg-white/[0.02] border-white/10' : 'bg-black/[0.02] border-black/10 shadow-sm'
         }`}>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-6 border-accent-gold/20">
@@ -406,7 +406,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
           </h3>
 
           {/* 1. VODABI */}
-          <div className={`p-5 sm:p-7 rounded-2xl border transition-all space-y-4 ${
+          <div className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
             isDark ? 'bg-white/[0.02] border-accent-gold/30' : 'bg-white border-accent-clay/30 shadow-sm'
           }`}>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-accent-gold/20">
@@ -444,7 +444,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
           </div>
 
           {/* 2. CHEKKI */}
-          <div className={`p-5 sm:p-7 rounded-2xl border transition-all space-y-4 ${
+          <div className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
             isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
           }`}>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-white/10">
@@ -482,7 +482,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
           </div>
 
           {/* 3. BLEND ENG ACADEMY */}
-          <div className={`p-5 sm:p-7 rounded-2xl border transition-all space-y-4 ${
+          <div className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
             isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
           }`}>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-white/10">
@@ -520,7 +520,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
           </div>
 
           {/* 4. YBM PSA SEOCHO */}
-          <div className={`p-5 sm:p-7 rounded-2xl border transition-all space-y-4 ${
+          <div className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
             isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
           }`}>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-white/10">

@@ -141,7 +141,7 @@ const AIChat: React.FC<AIChatProps> = ({
       <div className="fixed bottom-20 right-4 md:bottom-10 md:right-10 z-[90] md:z-[100]">
         <button
           onClick={() => setIsOpen(true)}
-          className={`w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all group border ${
+          className={`w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-transform group border ${
             theme === 'dark' ? 'bg-alpine-900 border-white/10 text-accent-gold' : 'bg-white border-black/10 text-accent-clay'
           }`}
           aria-label={locale === 'ko' ? "AI 어시스턴트 열기" : "Open AI assistant"}
@@ -205,7 +205,7 @@ const AIChat: React.FC<AIChatProps> = ({
             {messageCount > 0 && (
               <button
                 onClick={handleReset}
-                className={`min-h-[44px] px-3.5 py-2 text-xs uppercase tracking-wider font-bold rounded-full border transition-all ${
+                className={`min-h-[44px] px-3.5 py-2 text-xs uppercase tracking-wider font-bold rounded-full border transition-[background-color,border-color,color,transform] active:scale-95 ${
                   theme === 'dark'
                     ? 'border-white/20 text-white/80 hover:border-accent-gold hover:text-accent-gold hover:bg-white/5'
                     : 'border-black/20 text-alpine-950/80 hover:border-accent-clay hover:text-accent-clay hover:bg-black/5'
@@ -217,7 +217,7 @@ const AIChat: React.FC<AIChatProps> = ({
             )}
             <button 
               onClick={() => setIsOpen(false)} 
-              className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
+              className={`w-11 h-11 rounded-full flex items-center justify-center transition-[background-color,color,transform] active:scale-95 ${
                 theme === 'dark' ? 'hover:bg-white/10 text-white/70 hover:text-white' : 'hover:bg-black/10 text-alpine-950/70 hover:text-alpine-950'
               }`}
               aria-label={locale === 'ko' ? "AI 어시스턴트 닫기" : "Close AI assistant"}
@@ -267,14 +267,14 @@ const AIChat: React.FC<AIChatProps> = ({
                <div className="flex flex-col items-center gap-3 w-full px-6">
                  <a 
                   href="mailto:jsn.benjamin@gmail.com" 
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-accent-gold text-alpine-950 rounded-full text-xs font-bold uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-md"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-accent-gold text-alpine-950 rounded-full text-xs font-bold uppercase tracking-widest hover:brightness-110 active:scale-95 transition-[filter,transform] shadow-md"
                  >
                    <MailIcon className="w-4 h-4" />
                    {locale === 'ko' ? "제이슨과 메일 대화 나누기" : "Contact Jason"}
                  </a>
                  <button
                    onClick={handleReset}
-                   className={`text-xs uppercase tracking-widest font-bold px-6 py-3 rounded-full border transition-all hover:scale-105 active:scale-95 w-full text-center ${
+                   className={`text-xs uppercase tracking-widest font-bold px-6 py-3 rounded-full border transition-[transform,border-color,color,background-color] hover:scale-105 active:scale-95 w-full text-center ${
                      theme === 'dark'
                        ? 'border-white/20 text-white/80 hover:border-accent-gold hover:text-accent-gold hover:bg-white/5'
                        : 'border-black/20 text-alpine-950/80 hover:border-accent-clay hover:text-accent-clay hover:bg-black/5'
@@ -299,7 +299,7 @@ const AIChat: React.FC<AIChatProps> = ({
                   key={idx}
                   onClick={() => handleSend(suggestion)}
                   disabled={isLoading}
-                  className={`whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all hover:scale-105 active:scale-95 disabled:opacity-50 ${
+                  className={`whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium border transition-[transform,border-color,color,opacity] hover:scale-105 active:scale-95 disabled:opacity-50 ${
                     theme === 'dark' 
                       ? 'bg-white/5 border-white/15 text-white/80 hover:border-accent-gold hover:text-accent-gold' 
                       : 'bg-neutral-100 border-black/15 text-neutral-800 hover:border-accent-clay hover:text-accent-clay'
@@ -321,7 +321,7 @@ const AIChat: React.FC<AIChatProps> = ({
               placeholder={isLimitReached 
                 ? (locale === 'ko' ? "보유 세션 횟수를 초과했습니다" : "Conversation limit reached") 
                 : (locale === 'ko' ? "무엇이든 물어보세요..." : "Ask me anything...")}
-              className={`w-full pl-5 pr-14 py-4 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-all text-sm ${
+              className={`w-full pl-5 pr-14 py-4 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-[box-shadow,opacity,filter] text-sm ${
                 theme === 'dark' 
                   ? 'bg-white/5 border border-white/15 text-white placeholder-white/40' 
                   : 'bg-neutral-100 border border-black/15 text-neutral-900 placeholder-neutral-500'
@@ -331,7 +331,7 @@ const AIChat: React.FC<AIChatProps> = ({
               <button 
                 onClick={() => handleSend()} 
                 disabled={isLoading || !input.trim()}
-                className={`absolute right-3 p-2.5 transition-all disabled:opacity-20 ${
+                className={`absolute right-3 p-2.5 transition-[color,opacity,transform] active:scale-95 disabled:opacity-20 ${
                   theme === 'dark' ? 'text-white/70 hover:text-accent-gold' : 'text-neutral-700 hover:text-accent-clay'
                 }`}
                 aria-label="Send message"

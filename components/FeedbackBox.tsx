@@ -58,11 +58,11 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
   return (
     <section className="py-24 px-6">
       <div className="max-w-3xl mx-auto">
-        <div className={`rounded-2xl p-8 sm:p-12 md:p-16 relative overflow-hidden group transition-all duration-500 border ${
+        <div className={`rounded-2xl p-8 sm:p-12 md:p-16 relative overflow-hidden group transition-[background-color,border-color] duration-500 border ${
           isDark ? 'bg-alpine-900 border-white/10' : 'bg-white border-black/10'
         }`}>
           {/* Decorative background element */}
-          <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-all duration-1000 ${
+          <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-[transform,background-color] duration-1000 ${
             isDark ? 'bg-accent-gold/5 group-hover:bg-accent-gold/10' : 'bg-accent-clay/5 group-hover:bg-accent-clay/10'
           }`}></div>
 
@@ -87,7 +87,7 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
                   onChange={(e) => setFeedback(e.target.value)}
                   placeholder="Tell it to me straight..."
                   rows={4}
-                  className={`w-full border rounded-2xl p-5 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-all resize-none ${
+                  className={`w-full border rounded-2xl p-5 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-[box-shadow,border-color] resize-none ${
                     isDark 
                       ? 'bg-white/[0.03] border-white/15 text-white placeholder-white/40 focus:border-accent-gold/50' 
                       : 'bg-black/[0.03] border-black/15 text-alpine-950 placeholder-black/40 focus:border-accent-clay/50'
@@ -101,7 +101,7 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
                     placeholder="Your email or LinkedIn (optional)"
-                    className={`w-full sm:flex-1 border rounded-xl px-4 py-3 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-all ${
+                    className={`w-full sm:flex-1 border rounded-xl px-4 py-3 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-[box-shadow,border-color] ${
                       isDark 
                         ? 'bg-white/[0.03] border-white/15 text-white placeholder-white/40' 
                         : 'bg-black/[0.03] border-black/15 text-alpine-950 placeholder-black/40'
@@ -137,9 +137,9 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
                 <button
                   type="button"
                   onClick={copyToClipboard}
-                  className={`text-xs px-4 py-2 rounded-lg border font-mono font-medium transition-all ${
-                    isDark 
-                      ? 'border-white/15 hover:border-white/30 text-white/80' 
+                  className={`text-xs px-4 py-2 rounded-lg border font-mono font-medium transition-[border-color,transform] active:scale-95 ${
+                    isDark
+                      ? 'border-white/15 hover:border-white/30 text-white/80'
                       : 'border-black/15 hover:border-black/30 text-alpine-950/80'
                   }`}
                 >
@@ -148,7 +148,7 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="text-xs px-4 py-2 rounded-lg bg-accent-gold text-alpine-950 font-bold hover:brightness-110 transition-all"
+                  className="text-xs px-4 py-2 rounded-lg bg-accent-gold text-alpine-950 font-bold hover:brightness-110 active:scale-95 transition-[filter,transform]"
                 >
                   Send another note
                 </button>

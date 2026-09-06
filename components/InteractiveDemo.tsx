@@ -49,9 +49,9 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-8 relative">
-      <div className={`absolute inset-0 rounded-[3rem] blur-[120px] opacity-20 pointer-events-none transition-all duration-1000 ${theme === 'dark' ? 'bg-accent-gold/10' : 'bg-accent-clay/10'}`}></div>
+      <div className={`absolute inset-0 rounded-[3rem] blur-[120px] opacity-20 pointer-events-none transition-[background-color] duration-1000 ${theme === 'dark' ? 'bg-accent-gold/10' : 'bg-accent-clay/10'}`}></div>
       
-      <div className={`rounded-2xl overflow-hidden shadow-2xl relative z-10 lab-blueprint-bg min-h-[650px] border transition-all duration-500 ${theme === 'dark' ? 'bg-alpine-950 border-white/10' : 'bg-white border-black/8 shadow-2xl'}`}>
+      <div className={`rounded-2xl overflow-hidden shadow-2xl relative z-10 lab-blueprint-bg min-h-[650px] border transition-[background-color,border-color] duration-500 ${theme === 'dark' ? 'bg-alpine-950 border-white/10' : 'bg-white border-black/8 shadow-2xl'}`}>
         <div className="grid lg:grid-cols-12 min-h-[inherit]">
           {/* Input Panel */}
           <div className={`lg:col-span-5 p-5 sm:p-10 md:p-16 border-r flex flex-col justify-between transition-colors duration-500 ${theme === 'dark' ? 'bg-alpine-950/80 border-white/10' : 'bg-white/95 border-black/10'}`}>
@@ -76,7 +76,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                   value={problem}
                   onChange={(e) => setProblem(e.target.value)}
                   placeholder="Example: It takes me too long to check if every student has handed in their permission slips..."
-                  className={`w-full rounded-2xl px-8 py-8 text-base placeholder-current focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-alpine-950 transition-all font-medium min-h-[200px] resize-none border ${
+                  className={`w-full rounded-2xl px-8 py-8 text-base placeholder-current focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-alpine-950 transition-[box-shadow] font-medium min-h-[200px] resize-none border ${
                     theme === 'dark' 
                       ? 'bg-white/[0.04] border-white/10 text-white placeholder-white/20 focus:ring-accent-gold/20' 
                       : 'bg-black/[0.05] border-black/10 text-alpine-950 placeholder-alpine-950/40 focus:ring-accent-clay/20'
@@ -89,7 +89,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                 <span className={`text-[9px] font-black uppercase tracking-[0.15em] block w-full opacity-40 mb-1 ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>Or try an example challenge:</span>
                 <button 
                   onClick={() => setProblem("It takes me 30 minutes per sheet to prepare Korean translation worksheets and matching audio pronunciation notes for my parents.")}
-                  className={`text-[10px] font-medium px-3.5 py-1.5 rounded-full border transition-all duration-300 ${
+                  className={`text-[10px] font-medium px-3.5 py-1.5 rounded-full border transition-[background-color,color,border-color,transform] duration-300 active:scale-95 ${
                     theme === 'dark' 
                       ? 'bg-white/[0.02] border-white/10 hover:bg-white/10 text-white hover:text-accent-gold hover:border-accent-gold/40' 
                       : 'bg-black/[0.02] border-black/10 hover:bg-black/5 text-alpine-950/80 hover:text-accent-clay hover:border-accent-clay/40'
@@ -99,7 +99,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                 </button>
                 <button 
                   onClick={() => setProblem("I spend 10+ hours a week copying student test results into spreadsheets and writing customized reports to parents.")}
-                  className={`text-[10px] font-medium px-3.5 py-1.5 rounded-full border transition-all duration-300 ${
+                  className={`text-[10px] font-medium px-3.5 py-1.5 rounded-full border transition-[background-color,color,border-color,transform] duration-300 active:scale-95 ${
                     theme === 'dark' 
                       ? 'bg-white/[0.02] border-white/10 hover:bg-white/10 text-white hover:text-accent-gold hover:border-accent-gold/40' 
                       : 'bg-black/[0.02] border-black/10 hover:bg-black/5 text-alpine-950/80 hover:text-accent-clay hover:border-accent-clay/40'
@@ -109,7 +109,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                 </button>
                 <button 
                   onClick={() => setProblem("Our school staff gets bogged down manually aligning rooms, substitute schedules, and staff rotations by hand every semester.")}
-                  className={`text-[10px] font-medium px-3.5 py-1.5 rounded-full border transition-all duration-300 ${
+                  className={`text-[10px] font-medium px-3.5 py-1.5 rounded-full border transition-[background-color,color,border-color,transform] duration-300 active:scale-95 ${
                     theme === 'dark' 
                       ? 'bg-white/[0.02] border-white/10 hover:bg-white/10 text-white hover:text-accent-gold hover:border-accent-gold/40' 
                       : 'bg-black/[0.02] border-black/10 hover:bg-black/5 text-alpine-950/80 hover:text-accent-clay hover:border-accent-clay/40'
@@ -122,7 +122,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
               <button 
                 onClick={handleGenerate}
                 disabled={loading || !problem.trim()}
-                className="w-full shiny-cta disabled:opacity-40 transition-all shadow-xl py-6"
+                className="w-full shiny-cta disabled:opacity-40 transition-opacity shadow-xl py-6"
                 aria-label="Generate solutions"
               >
                 {loading ? 'Finding ideas...' : 'Show Me Helpers'}
@@ -134,7 +134,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
           <div className={`lg:col-span-7 p-5 sm:p-10 md:p-16 relative flex flex-col transition-colors duration-500 ${theme === 'dark' ? 'bg-black/30' : 'bg-alpine-100/40'}`}>
              {!solutions && !loading && (
                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-10 animate-in fade-in duration-1000">
-                  <div className={`w-24 h-24 rounded-full border flex items-center justify-center transition-all ${theme === 'dark' ? 'border-white/10 bg-white/[0.02]' : 'border-black/5 bg-white shadow-xl'}`}>
+                  <div className={`w-24 h-24 rounded-full border flex items-center justify-center transition-[background-color,border-color] ${theme === 'dark' ? 'border-white/10 bg-white/[0.02]' : 'border-black/5 bg-white shadow-xl'}`}>
                       <CodeIcon className={`w-10 h-10 ${theme === 'dark' ? 'text-white/10' : 'text-black/10'} shrink-0`} />
                   </div>
                   <div className="space-y-4">
@@ -163,13 +163,13 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                       <div 
                         key={i} 
                         onClick={() => handleSelect(i)}
-                        className={`rounded-[2.2rem] border p-2 cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-[1.01] ${
+                        className={`rounded-[2.2rem] border p-2 cursor-pointer transition-[transform,background-color,border-color,box-shadow] duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-[1.01] active:scale-95 ${
                           selectedSolution === i 
                           ? (theme === 'dark' ? 'bg-accent-gold/25 border-accent-gold/40 shadow-2xl shadow-accent-gold/5' : 'bg-accent-clay/20 border-accent-clay/35 shadow-2xl shadow-accent-clay/5') 
                           : (theme === 'dark' ? 'bg-white/[0.01] border-white/5 hover:border-white/15' : 'bg-black/[0.02] border-black/5 hover:border-black/10')
                         }`}
                       >
-                        <div className={`rounded-[1.8rem] p-6 md:p-10 relative overflow-hidden h-full border transition-all duration-500 ${
+                        <div className={`rounded-[1.8rem] p-6 md:p-10 relative overflow-hidden h-full border transition-[background-color,border-color,color] duration-500 ${
                           selectedSolution === i 
                           ? (theme === 'dark' ? 'bg-accent-gold border-accent-gold text-alpine-950' : 'bg-accent-clay border-accent-clay text-white') 
                           : (theme === 'dark' ? 'bg-white/[0.04] border-white/5' : 'bg-white border-black/5 shadow-inner')
@@ -184,9 +184,9 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                             </h5>
                             <button 
                               onClick={(e) => handleCopySummary(i, e)}
-                              className={`p-3 rounded-xl border transition-all ${
-                                selectedSolution === i 
-                                ? (theme === 'dark' ? 'border-black/15 hover:bg-black/10 text-black' : 'border-white/20 hover:bg-white/10 text-white') 
+                              className={`p-3 rounded-xl border transition-[background-color,transform] active:scale-95 ${
+                                selectedSolution === i
+                                ? (theme === 'dark' ? 'border-black/15 hover:bg-black/10 text-black' : 'border-white/20 hover:bg-white/10 text-white')
                                 : (theme === 'dark' ? 'border-white/10 hover:bg-white/10 text-white/40' : 'border-black/10 hover:bg-black/5 text-black/40')
                               }`}
                               title="Copy Summary"
@@ -206,7 +206,7 @@ const InteractiveDemo: React.FC<InteractiveDemoProps> = ({ theme = 'dark' }) => 
                             {sol.description}
                           </p>
 
-                          <div className={`flex items-center gap-6 text-[11px] font-bold uppercase tracking-[0.4em] transition-all duration-500 relative z-10 ${
+                          <div className={`flex items-center gap-6 text-[11px] font-bold uppercase tracking-[0.4em] transition-[color] duration-500 relative z-10 ${
                             selectedSolution === i ? (theme === 'dark' ? 'text-alpine-950' : 'text-white') : (theme === 'dark' ? 'text-accent-gold' : 'text-accent-clay')
                           }`}>
                             <div className={`px-5 py-3 rounded-xl border flex items-center gap-4 ${selectedSolution === i ? 'border-current' : (theme === 'dark' ? 'border-white/10' : 'border-black/10')}`}>

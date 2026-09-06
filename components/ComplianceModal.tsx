@@ -123,23 +123,23 @@ Users agree not to use the AI Assistant or tools to generate harmful, illegal, o
               {activeContent.title}
             </h2>
             <div className="flex bg-white/5 rounded-full p-1 border border-white/10">
-              <button 
+              <button
                 onClick={() => setLang('EN')}
-                className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'EN' ? 'bg-accent-gold text-alpine-950' : 'text-white/65 hover:text-white'}`}
+                className={`px-3 py-1 rounded-full text-[10px] font-bold transition-[background-color,color] active:scale-95 ${lang === 'EN' ? 'bg-accent-gold text-alpine-950' : 'text-white/65 hover:text-white'}`}
               >
                 EN
               </button>
-              <button 
+              <button
                 onClick={() => setLang('KR')}
-                className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'KR' ? 'bg-accent-gold text-alpine-950' : 'text-white/65 hover:text-white'}`}
+                className={`px-3 py-1 rounded-full text-[10px] font-bold transition-[background-color,color] active:scale-95 ${lang === 'KR' ? 'bg-accent-gold text-alpine-950' : 'text-white/65 hover:text-white'}`}
               >
                 KR
               </button>
             </div>
           </div>
-          <button 
-            onClick={onClose} 
-            className="p-2 text-white/60 hover:text-white transition-all"
+          <button
+            onClick={onClose}
+            className="p-2 text-white/60 hover:text-white transition-colors active:scale-95"
             aria-label={lang === 'KR' ? "닫기" : "Close"}
           >
             <XIcon className="w-5 h-5" />
@@ -153,9 +153,9 @@ Users agree not to use the AI Assistant or tools to generate harmful, illegal, o
 
         {/* Footer */}
         <div className="p-6 border-t border-white/10 text-center bg-alpine-950/50">
-          <button 
+          <button
             onClick={onClose}
-            className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent-gold hover:text-white transition-all"
+            className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent-gold hover:text-white transition-colors active:scale-95"
           >
             {lang === 'KR' ? '확인 및 닫기' : 'I UNDERSTAND'}
           </button>
