@@ -662,6 +662,21 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+  const [isEntered, setIsEntered] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Case study open/close is the site's core interaction (card -> full technical depth);
+  // it earns an authored transition instead of the instant hard cut a plain conditional render gives it.
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setIsEntered(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(onClose, prefersReducedMotion ? 0 : 200);
+  };
 
   // Reset video player state when changing tab or project
   useEffect(() => {
@@ -787,18 +802,24 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
   const hasLiveApp = projectData.liveUrl && projectData.liveUrl !== "https://jason-portfolio.com/";
 
   return (
-    <div 
+    <div
       ref={scrollRef}
-      className={`fixed inset-0 z-[200] overflow-y-auto overflow-x-hidden w-full min-w-0 transition-all duration-300 ${
+      className={`fixed inset-0 z-[200] overflow-y-auto overflow-x-hidden w-full min-w-0 transition-colors duration-300 ${
         theme === 'dark' ? 'bg-alpine-950 text-white' : 'bg-alpine-50 text-alpine-950'
+      } ${
+        prefersReducedMotion
+          ? (isEntered && !isClosing ? 'opacity-100' : 'opacity-0') + ' transition-opacity duration-150'
+          : (isEntered && !isClosing ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3') +
+            ' transition-[opacity,transform] ease-[cubic-bezier(0.16,1,0.3,1)] ' +
+            (isClosing ? 'duration-200' : 'duration-300')
       }`}
     >
       {/* HEADER BAR */}
       <div className={`sticky top-0 z-[210] flex items-center justify-between px-3.5 sm:px-6 py-3 sm:py-4 border-b backdrop-blur-xl ${
         theme === 'dark' ? 'bg-alpine-950/90 border-white/10' : 'bg-white/90 border-black/10'
       }`}>
-        <button 
-          onClick={onClose}
+        <button
+          onClick={handleClose}
           className={`flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap shrink-0 ${
             theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'
           }`}
@@ -834,8 +855,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               {t.storeLink}
             </a>
           )}
-          <button 
-            onClick={onClose}
+          <button
+            onClick={handleClose}
             className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors shrink-0 ${
               theme === 'dark' ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-black/5 hover:bg-black/10 text-alpine-950'
             }`}

@@ -71,7 +71,8 @@ const COPY = {
     moreTitle: "Side projects",
     moreNote: "Six systems, designed and built solo.",
     searchPlaceholder: "Search projects...",
-    noResults: "Nothing matches that filter.",
+    noResults: "Nothing matches that — probably means I haven't built it yet.",
+    clearFilters: "Clear filters",
     logTitle: "Build log",
     logToggleMore: "Show all",
     logToggleLess: "Show less",
@@ -109,7 +110,8 @@ const COPY = {
     moreTitle: "사이드 프로젝트",
     moreNote: "혼자 설계하고 만든 6개의 시스템.",
     searchPlaceholder: "프로젝트 검색...",
-    noResults: "조건에 맞는 프로젝트가 없습니다.",
+    noResults: "조건에 맞는 프로젝트가 없습니다 — 아직 안 만들었을 가능성이 높습니다.",
+    clearFilters: "필터 초기화",
     logTitle: "빌드 로그",
     logToggleMore: "전체 보기",
     logToggleLess: "접기",
@@ -566,6 +568,18 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = locale;
   }, [locale]);
+
+  // If you're reading this, you're exactly who this section is for.
+  useEffect(() => {
+    console.log(
+      '%cOkay, you opened devtools.',
+      'font-weight: bold; font-size: 14px; color: #e2b87d;'
+    );
+    console.log(
+      "%cI'm the one who wrote every line here, including the parts that aren't as clean as this one. If you want to talk about how any of it actually works: jsn.benjamin@gmail.com",
+      'font-size: 12px; color: #a3acb9;'
+    );
+  }, []);
 
   // Hash-based routing for direct case study links
   useEffect(() => {
@@ -1099,9 +1113,17 @@ export default function App() {
             ))}
 
             {filteredShipped.length === 0 && (
-              <p className={`py-10 text-center text-sm ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>
-                {L.noResults}
-              </p>
+              <div className="py-10 flex flex-col items-center gap-3 text-center">
+                <p className={`text-sm ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>
+                  {L.noResults}
+                </p>
+                <button
+                  onClick={() => { setActiveFilter('all'); setSearchQuery(''); }}
+                  className="text-xs font-bold text-accent-gold hover:underline"
+                >
+                  {L.clearFilters}
+                </button>
+              </div>
             )}
           </div>
         </section>
