@@ -15,6 +15,16 @@ interface BuildItem {
 
 const BUILD_UPDATES_DATA: BuildItem[] = [
   {
+    id: "bridgerecruit-launch-2026",
+    date: "2026-09-06",
+    type: "feature",
+    titleEn: "BridgeRecruit: Inbox-Native Admissions CRM Shipped",
+    titleKo: "BridgeRecruit: 인박스 네이티브 입학처 CRM 배포",
+    descEn: "Shipped a solo-built CRM for international school admissions: an Outlook add-in that logs email touchpoints in one click, backed by a Next.js territory & pipeline dashboard, 2 OAuth flows, and 19 scoped API routes.",
+    descKo: "국제학교 입학 담당자를 위한 아웃룩 인박스 네이티브 CRM을 단독 구축해 배포했습니다. 원클릭 접점 기록 애드인, Next.js 지역 관리·파이프라인 대시보드, 2개 OAuth 플로우, 19개 스코프 API 라우트로 구성됩니다.",
+    relatedProjectId: "bridgerecruit"
+  },
+  {
     id: "vodabi-production-release-2026",
     date: "2026-09-01",
     type: "feature",

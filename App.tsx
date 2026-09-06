@@ -56,7 +56,7 @@ const COPY = {
     localeSwitch: "한국어",
     resumeBtn: "Résumé",
     heroTitle: "AI product manager and engineer. Voice-AI, LLM evaluation, and the operations work around them.",
-    heroBody: "At VodaBi I own the product spec, the real-time voice AI, and the scoring rubric end to end. I've also independently built and shipped 7 products — including Chekki AI, live on the App Store and Play Store — used by Korean academies, teachers, and international schools.",
+    heroBody: "At VodaBi I own the product spec, the real-time voice AI, and the scoring rubric end to end. I've also independently built and shipped 8 products — including Chekki AI, live on the App Store and Play Store — used by Korean academies, teachers, and international schools.",
     ctaWork: "See the work",
     ctaResume: "Interactive résumé",
     caseLabel: "Case study ↗",
@@ -95,7 +95,7 @@ const COPY = {
     localeSwitch: "English",
     resumeBtn: "이력서",
     heroTitle: "AI 프로덕트 매니저 겸 엔지니어. 음성 AI, LLM 평가, 그리고 그 주변의 운영 문제.",
-    heroBody: "VodaBi에서 제품 정의, 실시간 음성 AI, 채점 루브릭까지 전 과정을 직접 담당합니다. 개인적으로도 App Store와 Play Store에 출시한 Chekki AI를 포함해 제품 7개를 직접 만들어 출시했고, 한국 학원과 교사, 국제학교에서 실제로 쓰이고 있습니다.",
+    heroBody: "VodaBi에서 제품 정의, 실시간 음성 AI, 채점 루브릭까지 전 과정을 직접 담당합니다. 개인적으로도 App Store와 Play Store에 출시한 Chekki AI를 포함해 제품 8개를 직접 만들어 출시했고, 한국 학원과 교사, 국제학교에서 실제로 쓰이고 있습니다.",
     ctaWork: "프로젝트 보기",
     ctaResume: "인터랙티브 이력서",
     caseLabel: "케이스 스터디 ↗",
@@ -131,12 +131,12 @@ const COPY = {
 const FACTS = {
   en: [
     { value: "PM + sole engineer", label: "Spec, rubric design, backend, deploy — one person, on VodaBi and on the independent products." },
-    { value: "7 products shipped", label: "Independently built and released across admissions, academies, teachers, and parents." },
+    { value: "8 products shipped", label: "Independently built and released across admissions, academies, teachers, and parents." },
     { value: "23 decisions logged", label: "Architecture and product calls written down with the alternative and the tradeoff accepted." }
   ],
   ko: [
     { value: "PM 겸 단독 엔지니어", label: "기획, 루브릭 설계, 백엔드, 배포까지 한 사람이 담당했습니다. VodaBi와 독립 제품 모두." },
-    { value: "제품 7개 출시", label: "입학처, 실제 학원, 교사, 학부모를 대상으로 직접 만들어 배포했습니다." },
+    { value: "제품 8개 출시", label: "입학처, 실제 학원, 교사, 학부모를 대상으로 직접 만들어 배포했습니다." },
     { value: "의사결정 23건 기록", label: "검토한 대안과 감수한 트레이드오프까지 함께 남긴 아키텍처·제품 판단 기록." }
   ]
 };
