@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { CaseStudyViewer } from './CaseStudyViewer.tsx';
 import ResumeModal from './components/ResumeModal.tsx';
-import AIChat from './components/AIChat.tsx';
-import InteractiveDemo from './components/InteractiveDemo.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import { SunIcon, MoonIcon, SearchIcon, ExternalLinkIcon } from './components/Icons.tsx';
 
@@ -556,7 +554,6 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isLogExpanded, setIsLogExpanded] = useState<boolean>(false);
   const [isResumeOpen, setIsResumeOpen] = useState<boolean>(false);
-  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
   const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(null);
 
   // Keep the CSS custom-property theme (index.html body.light rules) in sync with React state
@@ -738,6 +735,16 @@ export default function App() {
               >
                 {L.ctaResume}
               </button>
+              <a
+                href="https://www.linkedin.com/in/jason-benjamin/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`h-[46px] px-6 rounded-xl border text-[13px] font-bold tracking-wide inline-flex items-center active:scale-95 transition-[background-color,border-color,color,transform] duration-150 ${
+                  isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
+                }`}
+              >
+                {L.linkedinLabel}
+              </a>
               <a
                 href="mailto:jsn.benjamin@gmail.com"
                 className={`h-[46px] px-5 rounded-xl border text-[13px] font-medium tracking-wide inline-flex items-center transition-colors ${
@@ -947,11 +954,6 @@ export default function App() {
               </article>
             ))}
           </div>
-        </section>
-
-        {/* LIVE AI PLAYGROUND */}
-        <section className="pt-16">
-          <InteractiveDemo theme={theme} />
         </section>
 
         {/* HOW I WORK SECTION */}
@@ -1280,13 +1282,6 @@ export default function App() {
           locale={locale}
         />
       )}
-
-      <AIChat
-        isOpen={isChatOpen}
-        setIsOpen={setIsChatOpen}
-        theme={theme}
-        locale={locale}
-      />
     </div>
   );
 }
