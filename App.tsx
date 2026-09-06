@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { CaseStudyViewer } from './CaseStudyViewer.tsx';
 import ResumeModal from './components/ResumeModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
+import { CompactProjectCard } from './components/CompactProjectCard.tsx';
 import { SunIcon, MoonIcon, SearchIcon, ExternalLinkIcon } from './components/Icons.tsx';
 
 interface Decision {
@@ -789,7 +790,7 @@ export default function App() {
         }`}>
           {FACTS[locale].map((f, i) => (
             <div key={i} className="pr-4">
-              <div className="font-display text-xl md:text-2xl font-semibold tracking-tight text-accent-gold">
+              <div className="font-display text-lg md:text-xl font-semibold tracking-tight text-accent-gold">
                 {f.value}
               </div>
               <div className={`mt-1.5 text-xs md:text-[13px] leading-relaxed ${
@@ -802,7 +803,7 @@ export default function App() {
         </section>
 
         {/* SELECTED WORK SECTION */}
-        <section id="work" className="pt-16">
+        <section id="work" className="pt-20 md:pt-24">
           <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-2">
             <h2 className="text-3xl md:text-4xl font-display font-semibold tracking-tight">
               {L.workTitle}
@@ -896,7 +897,7 @@ export default function App() {
                       </div>
 
                       {/* STACK TAGS */}
-                      <div className={`mt-6 pt-5 border-t flex flex-wrap gap-1.5 ${isDark ? 'border-white/10' : 'border-black/10'}`}>
+                      <div className="mt-5 flex flex-wrap gap-1.5">
                         {project.stack.map((tech, idx) => (
                           <span
                             key={idx}
@@ -957,19 +958,19 @@ export default function App() {
         </section>
 
         {/* HOW I WORK SECTION */}
-        <section className="pt-16 pb-6">
+        <section className="pt-12 pb-4">
           <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight">
             {L.roleTitle}
           </h2>
-          <div className={`mt-6 grid grid-cols-1 md:grid-cols-3 gap-8 pt-6 border-t ${
+          <div className={`mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t ${
             isDark ? 'border-white/10' : 'border-black/10'
           }`}>
             {ROLE_COLS[locale].map((col, i) => (
-              <div key={i} className="space-y-3">
+              <div key={i} className="space-y-2.5">
                 <h3 className="text-sm md:text-[15px] font-bold tracking-wide text-accent-gold">
                   {col.head}
                 </h3>
-                <ul className="space-y-2.5 pt-1">
+                <ul className="space-y-2 pt-1">
                   {col.items.map((item, j) => (
                     <li key={j} className={`text-xs md:text-[13.5px] leading-relaxed flex items-start gap-2.5 ${
                       isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
@@ -1038,94 +1039,34 @@ export default function App() {
             </div>
           </div>
 
-          <div className={`mt-6 border-t divide-y ${
-            isDark ? 'border-white/10 divide-white/10' : 'border-black/10 divide-black/10'
-          }`}>
-            {filteredShipped.map(p => (
-              <div
-                key={p.id}
-                className="py-5 grid grid-cols-1 md:grid-cols-[1.4fr_1.1fr_1fr_auto] gap-4 md:gap-6 items-start hover:bg-white/[0.01] transition-colors"
+          {filteredShipped.length > 0 ? (
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredShipped.map(p => (
+                <CompactProjectCard
+                  key={p.id}
+                  project={p}
+                  theme={theme}
+                  locale={locale}
+                  caseLabel={L.caseLabel}
+                  onOpenCaseStudy={setActiveCaseStudyId}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className={`mt-6 py-10 flex flex-col items-center gap-3 text-center border-t ${
+              isDark ? 'border-white/10' : 'border-black/10'
+            }`}>
+              <p className={`text-sm ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>
+                {L.noResults}
+              </p>
+              <button
+                onClick={() => { setActiveFilter('all'); setSearchQuery(''); }}
+                className="text-xs font-bold text-accent-gold hover:underline"
               >
-                <div>
-                  <div className={`text-[10.5px] font-bold tracking-widest uppercase ${
-                    isDark ? 'text-[#788290]' : 'text-[#6b7280]'
-                  }`}>
-                    {p.status}
-                  </div>
-                  <h3 className="mt-1 text-base md:text-lg font-display font-medium tracking-tight">
-                    {p.title}
-                  </h3>
-                  <p className={`mt-1.5 text-xs md:text-[13.5px] leading-relaxed max-w-[44ch] ${
-                    isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
-                  }`}>
-                    {p.desc}
-                  </p>
-                </div>
-
-                <div>
-                  <div className="text-xs md:text-[13.5px] font-semibold leading-relaxed text-accent-gold">
-                    {p.outcome}
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5">
-                  {p.stack.map((t, idx) => (
-                    <span
-                      key={idx}
-                      className={`text-[11px] font-mono px-2 py-0.5 rounded ${
-                        isDark ? 'bg-white/[0.05] text-[#a3acb9]' : 'bg-black/[0.05] text-[#4b5563]'
-                      }`}
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex flex-col gap-1.5 md:items-end">
-                  <button
-                    onClick={() => setActiveCaseStudyId(p.caseStudyId)}
-                    className="text-xs font-bold text-accent-gold hover:underline whitespace-nowrap text-left md:text-right"
-                  >
-                    {L.caseLabel}
-                  </button>
-                  {p.liveUrl && (
-                    <a
-                      href={p.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`text-xs font-semibold whitespace-nowrap hover:underline ${
-                        isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
-                      }`}
-                    >
-                      Launch Live ↗
-                    </a>
-                  )}
-                  {p.contactUrl && (
-                    <a
-                      href={p.contactUrl}
-                      className="text-xs font-bold text-accent-gold hover:underline whitespace-nowrap text-left md:text-right"
-                    >
-                      {locale === 'en' ? "Contact to try ↗" : "체험 문의 ↗"}
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))}
-
-            {filteredShipped.length === 0 && (
-              <div className="py-10 flex flex-col items-center gap-3 text-center">
-                <p className={`text-sm ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>
-                  {L.noResults}
-                </p>
-                <button
-                  onClick={() => { setActiveFilter('all'); setSearchQuery(''); }}
-                  className="text-xs font-bold text-accent-gold hover:underline"
-                >
-                  {L.clearFilters}
-                </button>
-              </div>
-            )}
-          </div>
+                {L.clearFilters}
+              </button>
+            </div>
+          )}
         </section>
 
         {/* BUILD LOG SECTION */}
