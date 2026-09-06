@@ -32,6 +32,7 @@ interface ShippedProject {
   outcome: string;
   stack: string[];
   liveUrl?: string;
+  contactUrl?: string;
   caseStudyId: string;
 }
 
@@ -47,13 +48,13 @@ interface LogEntry {
 const COPY = {
   en: {
     navWork: "Work",
-    navMore: "Also shipped",
+    navMore: "Side projects",
     navLog: "Build log",
     navContact: "Contact",
     localeSwitch: "한국어",
     resumeBtn: "Résumé",
     heroTitle: "AI product manager and engineer. Voice-AI, LLM evaluation, and the operations work around them.",
-    heroBody: "At VodaBi I own an outbound sales-call screening platform: the product spec, the realtime WebRTC voice roleplay, the 11-code scoring rubric, and the deploy. On my own I built Chekki AI, now on the App Store and Play Store, and five more products used by Korean academies and teachers.",
+    heroBody: "At VodaBi I own an outbound sales-call screening platform: the product spec, the realtime WebRTC voice roleplay, the 11-code scoring rubric, and the deploy. On my own I built Chekki AI, now on the App Store and Play Store, BridgeRecruit for international school admissions, and four more products used by Korean academies and teachers.",
     ctaWork: "See the work",
     ctaResume: "Interactive résumé",
     caseLabel: "Case study ↗",
@@ -64,8 +65,8 @@ const COPY = {
     workNote: "Two products in depth: the problem, what I built, and the calls I made along the way.",
     ownedLabel: "What I built",
     decisionsLabel: "Decisions and tradeoffs",
-    moreTitle: "Also shipped",
-    moreNote: "Five smaller systems, designed and built solo.",
+    moreTitle: "Side projects",
+    moreNote: "Six systems, designed and built solo.",
     searchPlaceholder: "Search projects...",
     noResults: "Nothing matches that filter.",
     logTitle: "Build log",
@@ -84,13 +85,13 @@ const COPY = {
   },
   ko: {
     navWork: "주요 프로젝트",
-    navMore: "그 외 배포",
+    navMore: "사이드 프로젝트",
     navLog: "빌드 로그",
     navContact: "연락",
     localeSwitch: "English",
     resumeBtn: "이력서",
     heroTitle: "AI 프로덕트 매니저 겸 엔지니어. 음성 AI, LLM 평가, 그리고 그 주변의 운영 문제.",
-    heroBody: "VodaBi에서 아웃바운드 세일즈 통화 스크리닝 플랫폼을 담당합니다. 제품 정의, 실시간 WebRTC 음성 롤플레이, 11개 코드 채점 루브릭, 배포까지 직접 맡았습니다. 개인적으로는 App Store와 Play Store에 출시한 Chekki AI를 포함해, 한국 학원과 교사가 쓰는 제품 5개를 더 만들었습니다.",
+    heroBody: "VodaBi에서 아웃바운드 세일즈 통화 스크리닝 플랫폼을 담당합니다. 제품 정의, 실시간 WebRTC 음성 롤플레이, 11개 코드 채점 루브릭, 배포까지 직접 맡았습니다. 개인적으로는 App Store와 Play Store에 출시한 Chekki AI, 국제학교 입학처를 위한 BridgeRecruit, 그리고 한국 학원과 교사가 쓰는 독립 시스템들을 직접 만들었습니다.",
     ctaWork: "프로젝트 보기",
     ctaResume: "인터랙티브 이력서",
     caseLabel: "케이스 스터디 ↗",
@@ -101,8 +102,8 @@ const COPY = {
     workNote: "두 제품을 깊게 다룹니다. 문제, 직접 만든 부분, 그 과정에서 내린 판단.",
     ownedLabel: "직접 만든 부분",
     decisionsLabel: "판단과 트레이드오프",
-    moreTitle: "그 외 배포한 시스템",
-    moreNote: "혼자 설계하고 만든 5개의 소규모 시스템.",
+    moreTitle: "사이드 프로젝트",
+    moreNote: "혼자 설계하고 만든 6개의 시스템.",
     searchPlaceholder: "프로젝트 검색...",
     noResults: "조건에 맞는 프로젝트가 없습니다.",
     logTitle: "빌드 로그",
@@ -124,13 +125,13 @@ const COPY = {
 const FACTS = {
   en: [
     { value: "PM + sole engineer", label: "Spec, rubric design, backend, deploy — one person, on VodaBi and on the independent products." },
-    { value: "6 products shipped", label: "Independently built and released to real academies, teachers, and parents in Korea." },
-    { value: "19 decisions logged", label: "Architecture and product calls written down with the alternative and the tradeoff accepted." }
+    { value: "7 products shipped", label: "Independently built and released across admissions, academies, teachers, and parents." },
+    { value: "23 decisions logged", label: "Architecture and product calls written down with the alternative and the tradeoff accepted." }
   ],
   ko: [
     { value: "PM 겸 단독 엔지니어", label: "기획, 루브릭 설계, 백엔드, 배포까지 한 사람이 담당했습니다. VodaBi와 독립 제품 모두." },
-    { value: "제품 6개 출시", label: "한국의 실제 학원, 교사, 학부모를 대상으로 직접 만들어 배포했습니다." },
-    { value: "의사결정 19건 기록", label: "검토한 대안과 감수한 트레이드오프까지 함께 남긴 아키텍처·제품 판단 기록." }
+    { value: "제품 7개 출시", label: "입학처, 실제 학원, 교사, 학부모를 대상으로 직접 만들어 배포했습니다." },
+    { value: "의사결정 23건 기록", label: "검토한 대안과 감수한 트레이드오프까지 함께 남긴 아키텍처·제품 판단 기록." }
   ]
 };
 
@@ -139,7 +140,7 @@ const ROLE_COLS = {
     {
       head: "Product",
       items: [
-        "PRD authorship and a 19-entry decision log",
+        "PRD authorship and a 23-entry decision log",
         "Rubric and LLM-judge design (11 scoring codes, deterministic lookups)",
         "Tiered model routing: light model for drafting, reasoning model for conflict resolution",
         "Pricing and trial windows aligned to the customer's planning cycle",
@@ -170,7 +171,7 @@ const ROLE_COLS = {
     {
       head: "프로덕트",
       items: [
-        "PRD 작성 및 19건의 의사결정 로그",
+        "PRD 작성 및 23건의 의사결정 로그",
         "루브릭 및 LLM 채점 설계 (11개 채점 코드, 결정론적 조회)",
         "모델 계층 분리: 초안은 경량 모델, 충돌 해결은 추론 모델",
         "고객의 운영 주기에 맞춘 가격 정책과 체험 기간 설계",
@@ -349,6 +350,18 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
 const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
   en: [
     {
+      id: "bridgerecruit",
+      domains: ["ops", "automation"],
+      title: "BridgeRecruit",
+      status: "Solo Build · Live Demo",
+      desc: "Inbox-native CRM for international school admissions: Outlook add-in reads emails and logs touchpoints in one click, paired with a Next.js territory & pipeline dashboard.",
+      outcome: "1-click touchpoint logging, 2 OAuth flows, 19 scoped API routes",
+      stack: ["Next.js", "Supabase / Postgres", "Microsoft Graph OBO", "Office.js", "OpenAI"],
+      liveUrl: "https://bridgerecruit-demo.vercel.app/",
+      contactUrl: "mailto:jsn.benjamin@gmail.com?subject=BridgeRecruit%20Access%20Request",
+      caseStudyId: "bridgerecruit"
+    },
+    {
       id: "eduplanner",
       domains: ["ops"],
       title: "EduPlanner Pro",
@@ -403,6 +416,18 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
     }
   ],
   ko: [
+    {
+      id: "bridgerecruit",
+      domains: ["ops", "automation"],
+      title: "BridgeRecruit",
+      status: "단독 구축 · 라이브 데모",
+      desc: "국제학교 입학 담당자를 위한 아웃룩 인박스 네이티브 CRM: 이메일 발신 도메인 매칭과 원클릭 접점 기록 애드인, Next.js 지역 관리·파이프라인 대시보드.",
+      outcome: "원클릭 접점 기록, 2개 OAuth 플로우, 19개 스코프 API 라우트",
+      stack: ["Next.js", "Supabase / Postgres", "Microsoft Graph OBO", "Office.js", "OpenAI"],
+      liveUrl: "https://bridgerecruit-demo.vercel.app/",
+      contactUrl: "mailto:jsn.benjamin@gmail.com?subject=BridgeRecruit%20Access%20Request",
+      caseStudyId: "bridgerecruit"
+    },
     {
       id: "eduplanner",
       domains: ["ops"],
@@ -530,7 +555,7 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      const validCaseIds = ['vodabi', 'chekki', 'eduplanner', 'consultation-pipeline', 'benchmark-explorer', 'white-label-hub', 'lead-enrichment'];
+      const validCaseIds = ['vodabi', 'chekki', 'bridgerecruit', 'eduplanner', 'consultation-pipeline', 'benchmark-explorer', 'white-label-hub', 'lead-enrichment'];
       if (validCaseIds.includes(hash)) {
         setActiveCaseStudyId(hash);
       } else if (!hash || hash === 'work' || hash === 'more' || hash === 'log' || hash === 'contact' || hash === 'top') {
@@ -1021,6 +1046,14 @@ export default function App() {
                       }`}
                     >
                       Launch Live ↗
+                    </a>
+                  )}
+                  {p.contactUrl && (
+                    <a
+                      href={p.contactUrl}
+                      className="text-xs font-bold text-accent-gold hover:underline whitespace-nowrap text-left md:text-right"
+                    >
+                      {locale === 'en' ? "Contact to try ↗" : "체험 문의 ↗"}
                     </a>
                   )}
                 </div>

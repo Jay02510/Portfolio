@@ -1,0 +1,188 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%" style="background:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Yellow Demo Banner -->
+  <rect x="24" y="16" width="1152" height="42" rx="8" fill="#fffbeb" stroke="#fef3c7" stroke-width="1" />
+  <text x="44" y="42" font-size="13" font-weight="500" fill="#92400e">Read-only demo — seeded data, writes disabled.</text>
+  <text x="1054" y="42" font-size="13" font-weight="600" fill="#92400e" text-decoration="underline">Request live access</text>
+
+  <!-- Navigation Bar -->
+  <g transform="translate(24, 72)">
+    <rect x="0" y="0" width="1152" height="56" rx="16" fill="#ffffff" stroke="#f1f5f9" stroke-width="1.5" />
+    <circle cx="34" cy="28" r="4" fill="#4f46e5" />
+    <text x="46" y="33" font-size="15" font-weight="700" fill="#0f172a">BridgeRecruit</text>
+
+    <!-- Active Tab: Institutions -->
+    <rect x="160" y="12" width="106" height="32" rx="16" fill="#4338ca" />
+    <text x="180" y="32" font-size="13" font-weight="600" fill="#ffffff">Institutions</text>
+
+    <!-- Other Tabs -->
+    <text x="290" y="32" font-size="13" font-weight="500" fill="#64748b">Pipeline</text>
+    <text x="366" y="32" font-size="13" font-weight="500" fill="#64748b">Calendar</text>
+    <text x="450" y="32" font-size="13" font-weight="500" fill="#64748b">Needs Attention</text>
+    <text x="580" y="32" font-size="13" font-weight="500" fill="#64748b">Reports</text>
+    <text x="654" y="32" font-size="13" font-weight="500" fill="#64748b">Settings</text>
+  </g>
+
+  <!-- Page Content -->
+  <g transform="translate(24, 156)">
+    <text x="0" y="32" font-size="28" font-weight="800" fill="#0f172a">Institutions</text>
+    <text x="0" y="60" font-size="13.5" font-weight="400" fill="#475569">Every school and partner in your territory — search, filter, and click a row for its full profile. Add one manually, import an existing spreadsheet, or export the current list as CSV.</text>
+
+    <!-- Top Action Buttons -->
+    <g transform="translate(0, 84)">
+      <!-- Add Institution -->
+      <rect x="0" y="0" width="124" height="36" rx="8" fill="#4338ca" />
+      <text x="18" y="23" font-size="13" font-weight="600" fill="#ffffff">Add Institution</text>
+
+      <!-- Export CSV -->
+      <rect x="134" y="0" width="98" height="36" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1" />
+      <text x="148" y="23" font-size="13" font-weight="600" fill="#334155">Export CSV</text>
+
+      <!-- Import Spreadsheet -->
+      <rect x="242" y="0" width="154" height="36" rx="8" fill="#ede9fe" stroke="#ddd6fe" stroke-width="1" />
+      <text x="256" y="23" font-size="13" font-weight="600" fill="#4338ca">Import Spreadsheet</text>
+    </g>
+
+    <!-- Filter Bar -->
+    <g transform="translate(0, 140)">
+      <rect x="0" y="0" width="180" height="38" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <text x="14" y="24" font-size="13" fill="#94a3b8">Search by name...</text>
+
+      <rect x="190" y="0" width="160" height="38" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <text x="204" y="24" font-size="13" fill="#334155">All tiers</text>
+      <path d="M 334 20 L 338 24 L 342 20" stroke="#64748b" stroke-width="1.8" fill="none" stroke-linecap="round" />
+
+      <rect x="360" y="0" width="160" height="38" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <text x="374" y="24" font-size="13" fill="#334155">All health statuses</text>
+      <path d="M 504 20 L 508 24 L 512 20" stroke="#64748b" stroke-width="1.8" fill="none" stroke-linecap="round" />
+
+      <rect x="530" y="0" width="130" height="38" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <text x="544" y="24" font-size="13" fill="#334155">All countries</text>
+      <path d="M 644 20 L 648 24 L 652 20" stroke="#64748b" stroke-width="1.8" fill="none" stroke-linecap="round" />
+
+      <rect x="670" y="0" width="160" height="38" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <text x="684" y="24" font-size="13" fill="#334155">All ownership types</text>
+      <path d="M 814 20 L 818 24 L 822 20" stroke="#64748b" stroke-width="1.8" fill="none" stroke-linecap="round" />
+
+      <rect x="840" y="0" width="170" height="38" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <text x="854" y="24" font-size="13" fill="#334155">Any partnership status</text>
+      <path d="M 994 20 L 998 24 L 1002 20" stroke="#64748b" stroke-width="1.8" fill="none" stroke-linecap="round" />
+    </g>
+
+    <!-- Institutions Data Table -->
+    <g transform="translate(0, 198)">
+      <!-- Table Header -->
+      <rect x="0" y="0" width="1152" height="38" fill="#ffffff" />
+      <line x1="0" y1="38" x2="1152" y2="38" stroke="#e2e8f0" stroke-width="1" />
+      <rect x="4" y="11" width="16" height="16" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+      <text x="36" y="24" font-size="13" font-weight="700" fill="#0f172a">Name ▲</text>
+      <text x="360" y="24" font-size="13" font-weight="700" fill="#0f172a">Location</text>
+      <text x="600" y="24" font-size="13" font-weight="700" fill="#0f172a">Tier</text>
+      <text x="790" y="24" font-size="13" font-weight="700" fill="#0f172a">Health</text>
+      <text x="960" y="24" font-size="13" font-weight="700" fill="#0f172a">Last Interaction</text>
+
+      <!-- Row 1: Bangkok Prep School -->
+      <g transform="translate(0, 38)">
+        <rect x="0" y="0" width="1152" height="42" fill="#ffffff" />
+        <line x1="0" y1="42" x2="1152" y2="42" stroke="#f1f5f9" stroke-width="1" />
+        <rect x="4" y="13" width="16" height="16" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+        <text x="36" y="26" font-size="13" font-weight="600" fill="#0f172a">Bangkok Prep School</text>
+        <text x="360" y="26" font-size="13" fill="#475569">Bangkok, Thailand</text>
+        <text x="600" y="26" font-size="13" fill="#475569">tier 1 feeder</text>
+        <rect x="790" y="11" width="102" height="22" rx="11" fill="#dcfce7" />
+        <text x="806" y="26" font-size="11.5" font-weight="600" fill="#15803d">Active / Warm</text>
+        <text x="960" y="26" font-size="13" fill="#475569">8/31/2026</text>
+      </g>
+
+      <!-- Row 2: Busan Global Institute -->
+      <g transform="translate(0, 80)">
+        <rect x="0" y="0" width="1152" height="42" fill="#ffffff" />
+        <line x1="0" y1="42" x2="1152" y2="42" stroke="#f1f5f9" stroke-width="1" />
+        <rect x="4" y="13" width="16" height="16" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+        <text x="36" y="26" font-size="13" font-weight="600" fill="#0f172a">Busan Global Institute</text>
+        <text x="360" y="26" font-size="13" fill="#475569">Busan, South Korea</text>
+        <text x="600" y="26" font-size="13" fill="#475569">tier 1 feeder</text>
+        <rect x="790" y="11" width="102" height="22" rx="11" fill="#dcfce7" />
+        <text x="806" y="26" font-size="11.5" font-weight="600" fill="#15803d">Active / Warm</text>
+        <text x="960" y="26" font-size="13" fill="#475569">9/5/2026</text>
+      </g>
+
+      <!-- Row 3: Gangnam International Academy -->
+      <g transform="translate(0, 122)">
+        <rect x="0" y="0" width="1152" height="42" fill="#ffffff" />
+        <line x1="0" y1="42" x2="1152" y2="42" stroke="#f1f5f9" stroke-width="1" />
+        <rect x="4" y="13" width="16" height="16" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+        <text x="36" y="26" font-size="13" font-weight="600" fill="#0f172a">Gangnam International Academy</text>
+        <text x="360" y="26" font-size="13" fill="#475569">Seoul, South Korea</text>
+        <text x="600" y="26" font-size="13" fill="#475569">tier 1 feeder</text>
+        <rect x="790" y="11" width="102" height="22" rx="11" fill="#dcfce7" />
+        <text x="806" y="26" font-size="11.5" font-weight="600" fill="#15803d">Active / Warm</text>
+        <text x="960" y="26" font-size="13" fill="#475569">9/3/2026</text>
+      </g>
+
+      <!-- Row 4: Ho Chi Minh Foreign School -->
+      <g transform="translate(0, 164)">
+        <rect x="0" y="0" width="1152" height="42" fill="#ffffff" />
+        <line x1="0" y1="42" x2="1152" y2="42" stroke="#f1f5f9" stroke-width="1" />
+        <rect x="4" y="13" width="16" height="16" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+        <text x="36" y="26" font-size="13" font-weight="600" fill="#0f172a">Ho Chi Minh Foreign School</text>
+        <text x="360" y="26" font-size="13" fill="#475569">Ho Chi Minh City, Vietnam</text>
+        <text x="600" y="26" font-size="13" fill="#475569">tier 2 high potential</text>
+        <rect x="790" y="11" width="102" height="22" rx="11" fill="#dcfce7" />
+        <text x="806" y="26" font-size="11.5" font-weight="600" fill="#15803d">Active / Warm</text>
+        <text x="960" y="26" font-size="13" fill="#475569">8/27/2026</text>
+      </g>
+
+      <!-- Row 5: Jakarta Global High School -->
+      <g transform="translate(0, 206)">
+        <rect x="0" y="0" width="1152" height="42" fill="#ffffff" />
+        <line x1="0" y1="42" x2="1152" y2="42" stroke="#f1f5f9" stroke-width="1" />
+        <rect x="4" y="13" width="16" height="16" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+        <text x="36" y="26" font-size="13" font-weight="600" fill="#0f172a">Jakarta Global High School</text>
+        <text x="360" y="26" font-size="13" fill="#475569">Jakarta, Indonesia</text>
+        <text x="600" y="26" font-size="13" fill="#475569">tier 2 high potential</text>
+        <rect x="790" y="11" width="102" height="22" rx="11" fill="#dcfce7" />
+        <text x="806" y="26" font-size="11.5" font-weight="600" fill="#15803d">Active / Warm</text>
+        <text x="960" y="26" font-size="13" fill="#475569">9/4/2026</text>
+      </g>
+
+      <!-- Row 6: Kuala Lumpur STEM Academy -->
+      <g transform="translate(0, 248)">
+        <rect x="0" y="0" width="1152" height="42" fill="#ffffff" />
+        <line x1="0" y1="42" x2="1152" y2="42" stroke="#f1f5f9" stroke-width="1" />
+        <rect x="4" y="13" width="16" height="16" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+        <text x="36" y="26" font-size="13" font-weight="600" fill="#0f172a">Kuala Lumpur STEM Academy</text>
+        <text x="360" y="26" font-size="13" fill="#475569">Kuala Lumpur, Malaysia</text>
+        <text x="600" y="26" font-size="13" fill="#475569">tier 3 standard</text>
+        <rect x="790" y="11" width="98" height="22" rx="11" fill="#fee2e2" />
+        <text x="804" y="26" font-size="11.5" font-weight="600" fill="#b91c1c">Stalled / Cold</text>
+        <text x="960" y="26" font-size="13" fill="#475569">7/18/2026</text>
+      </g>
+
+      <!-- Row 7: Manila Heritage School -->
+      <g transform="translate(0, 290)">
+        <rect x="0" y="0" width="1152" height="42" fill="#ffffff" />
+        <line x1="0" y1="42" x2="1152" y2="42" stroke="#f1f5f9" stroke-width="1" />
+        <rect x="4" y="13" width="16" height="16" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+        <text x="36" y="26" font-size="13" font-weight="600" fill="#0f172a">Manila Heritage School</text>
+        <text x="360" y="26" font-size="13" fill="#475569">Manila, Philippines</text>
+        <text x="600" y="26" font-size="13" fill="#475569">tier 3 standard</text>
+        <rect x="790" y="11" width="98" height="22" rx="11" fill="#fee2e2" />
+        <text x="804" y="26" font-size="11.5" font-weight="600" fill="#b91c1c">Stalled / Cold</text>
+        <text x="960" y="26" font-size="13" fill="#475569">7/23/2026</text>
+      </g>
+
+      <!-- Row 8: Taipei American Partner School -->
+      <g transform="translate(0, 332)">
+        <rect x="0" y="0" width="1152" height="42" fill="#ffffff" />
+        <line x1="0" y1="42" x2="1152" y2="42" stroke="#f1f5f9" stroke-width="1" />
+        <rect x="4" y="13" width="16" height="16" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+        <text x="36" y="26" font-size="13" font-weight="600" fill="#0f172a">Taipei American Partner School</text>
+        <text x="360" y="26" font-size="13" fill="#475569">Taipei, Taiwan</text>
+        <text x="600" y="26" font-size="13" fill="#475569">tier 2 high potential</text>
+        <rect x="790" y="11" width="76" height="22" rx="11" fill="#fef9c3" />
+        <text x="808" y="26" font-size="11.5" font-weight="600" fill="#a16207">Cooling</text>
+        <text x="960" y="26" font-size="13" fill="#475569">8/23/2026</text>
+      </g>
+    </g>
+  </g>
+</svg>

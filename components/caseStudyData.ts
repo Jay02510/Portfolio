@@ -980,6 +980,218 @@ responseSchema: {
         resolution: "Engineered a self-healing CORS-enabled backend font proxy. Retrieves raw Noto Sans KR .ttf files using old-agent headers, caches them in the Express memory buffer, and supplies them to the client compiler securely with dual resilient fallback CDNs."
       }
     ]
+  },
+  bridgerecruit: {
+    title: "BridgeRecruit — Inbox-Native Admissions CRM",
+    tagline: "An inbox-native CRM that lets international-school admissions recruiters log every touchpoint, track territory health, and draft AI-assisted follow-ups without leaving Outlook.",
+    liveUrl: "https://bridgerecruit-demo.vercel.app/",
+    contactUrl: "mailto:jsn.benjamin@gmail.com?subject=BridgeRecruit%20Access%20Request",
+    screenshots: [
+      {
+        label: "Microsoft Outlook Plugin (Reading Pane)",
+        url: "/screenshots/bridgerecruit/outlook-plugin.svg",
+        subLabel: "Inbox-native taskpane: matches email sender to school profile, previews touchpoints, and logs interactions or generates AI summaries in 1 click."
+      },
+      {
+        label: "Institutions Directory & Filter Engine",
+        url: "/screenshots/bridgerecruit/institutions.svg",
+        subLabel: "Territory school directory across APAC, filterable by tier, health status, and country with CSV import/export capabilities."
+      },
+      {
+        label: "Institution Detail & Touchpoint History",
+        url: "/screenshots/bridgerecruit/institution-detail.svg",
+        subLabel: "Bangkok Prep School profile: primary counselor contacts, categorized interaction history, and open follow-up scheduling."
+      },
+      {
+        label: "Recruitment Pipeline Kanban",
+        url: "/screenshots/bridgerecruit/pipeline.svg",
+        subLabel: "5-stage visual kanban moving schools from Initial Outreach through In Discussion and Visit Scheduled to Agreement / Feeder Active."
+      },
+      {
+        label: "Live Synced Outlook Calendar",
+        url: "/screenshots/bridgerecruit/calendar.svg",
+        subLabel: "Direct read-only sync of real Outlook calendar via Microsoft Graph On-Behalf-Of flow, tagged with institution context."
+      },
+      {
+        label: "Needs Attention — Inactivity Detection",
+        url: "/screenshots/bridgerecruit/needs-attention.svg",
+        subLabel: "Proactively identifies partner schools with 30+ days of inactivity and drafts low-pressure re-engagement emails in one click."
+      },
+      {
+        label: "Leadership Partnership & Activity Briefing",
+        url: "/screenshots/bridgerecruit/reports.svg",
+        subLabel: "AI-generated executive briefing synthesized from real interaction telemetry with headline metrics and watch list."
+      },
+      {
+        label: "Microsoft Graph & Calendar Permissions",
+        url: "/screenshots/bridgerecruit/settings.svg",
+        subLabel: "Separated, incremental OAuth consent scopes for basic identity verification and optional calendar synchronization."
+      }
+    ],
+    stats: [
+      { label: "OAuth Security", value: "2 OAuth Flows", detail: "Delegated Sign-in + Server-Side On-Behalf-Of Graph Exchange" },
+      { label: "API Surface", value: "19 Scoped Routes", detail: "Each scoped to the signed-in recruiter's own data" },
+      { label: "AI Workflows", value: "3 Workflows", detail: "OpenAI Structured Outputs (Follow-ups, Summaries, Reports)" },
+      { label: "Capture Velocity", value: "1 Click", detail: "From reading an email to a logged, categorized touchpoint" }
+    ],
+    problem: [
+      "Recruiting happens in email. Tracking happens somewhere else.",
+      "An admissions recruiter covering a territory of international schools spends most of a day in Outlook — introducing a program, replying to a counselor, scheduling a campus visit.",
+      "The record of that relationship usually lives in a spreadsheet or a general-purpose CRM that requires a tab switch, a copy-paste, and a moment of remembering to actually do it. Follow-ups get set on paper and forgotten. A school that has gone quiet for six weeks doesn't surface itself. Nobody outside the recruiter's own head knows a partnership is close to finalizing.",
+      "The cost isn't a missing feature — it's the friction between where the work happens and where the record is kept. Any fix that adds a second system to check will lose to the inbox by default."
+    ],
+    solution: [
+      "Two Surfaces, One Source of Truth: The Outlook add-in acts as the capture surface directly inside the reading pane, matching the sender domain to an institution and offering a 1-click 'Log Touchpoint' action covering emails, in-person visits, fairs, calls, and virtual meetings.",
+      "Companion Management Dashboard: Next.js App Router dashboard handles territory management, a drag-to-advance pipeline, a live Outlook calendar view, and a leadership-facing report generator.",
+      "Single Postgres Source of Truth: Both surfaces read and write the same Postgres tables through the same authenticated API, so nothing recorded in one place is invisible in the other.",
+      "Database-Generated Relationship Health: Active / cooling / stalled status is computed once in Postgres as a generated column driven by an interaction timestamp trigger, eliminating client-side calculation discrepancy.",
+      "On-Behalf-Of Token Exchange: Client authenticates with narrow API scope; server exchanges it for a Microsoft Graph token via OAuth On-Behalf-Of flow, keeping Graph tokens completely out of browser storage.",
+      "Incremental, Separated Consent: Interactive consent is split into 3 steps (sign-in, profile access, calendar access) requested only when needed, avoiding broad up-front permission friction.",
+      "Public Demo That Cannot Leak or Cost Money: Runs against an isolated Supabase project seeded with fictional institutions, bypassing Microsoft sign-in and blocking all writes and OpenAI calls at the API layer with static mock responses."
+    ],
+    stack: [
+      "Next.js / App Router",
+      "Supabase / Postgres",
+      "Microsoft Entra ID (MSAL)",
+      "Graph API — On-Behalf-Of",
+      "Office.js Outlook Add-in",
+      "OpenAI Structured Outputs",
+      "Vercel"
+    ],
+    coreLoop: [
+      { step: "01. Open Email & Domain Match", role: "Outlook Add-in", detail: "Office.js reads the open email's sender domain and queries the authenticated Next.js API to match with the corresponding institution." },
+      { step: "02. One-Click Touchpoint Logging", role: "Admissions Recruiter", detail: "Recruiter logs interactions (email, campus visit, fair, phone call, virtual meeting) in one unified form without leaving the Outlook reading pane." },
+      { step: "03. Server-Side On-Behalf-Of Exchange", role: "Next.js Route Handler", detail: "Server exchanges recruiter's user token for a Microsoft Graph token via OAuth On-Behalf-Of, fetching Outlook calendar events securely." },
+      { step: "04. Trigger-Driven Health Calculation", role: "Postgres Database", detail: "Database trigger evaluates last interaction timestamp to update relationship health status (active, cooling, stalled) in a generated column." },
+      { step: "05. Kanban Territory Management", role: "Next.js Dashboard", detail: "Recruiter drags institutions across pipeline stages (Initial Outreach → Agreement / Feeder Active) and manages open follow-ups." },
+      { step: "06. Structured AI Report Generation", role: "OpenAI Structured Outputs", detail: "System generates a leadership-facing briefing with headline highlights, touchpoint telemetry, and a cooling relationship watch list." }
+    ],
+    decisions: [
+      {
+        decision: "On-Behalf-Of Token Exchange over Direct Client-Side Graph Tokens",
+        alternativeConsidered: "Issuing Microsoft Graph access tokens directly to the Outlook add-in and storing them in browser localStorage",
+        why: "The add-in and dashboard sign a user in with a narrow, self-issued API scope — not a direct Microsoft Graph token. The server exchanges that token for a Graph-scoped one via OAuth's On-Behalf-Of flow before ever calling Graph. It's one extra hop, but it means Graph access tokens never sit in browser storage, and the server — not the client — controls exactly which Graph scopes get requested and when.",
+        tradeOffAccepted: "Introduces one extra server-side token exchange hop before calling Microsoft Graph."
+      },
+      {
+        decision: "Incremental, Separated Consent over Broad Up-Front OAuth Permissions",
+        alternativeConsidered: "Requesting full mailbox, calendar, and profile scopes on initial user sign-in",
+        why: "Azure only allows one resource per interactive consent request, so signing in, granting profile access, and granting calendar access are three distinct steps requested only when needed — not a single broad up-front consent screen that would ask for calendar access before a recruiter has any reason to trust the app with it.",
+        tradeOffAccepted: "Requires handling separate permission states and prompt triggers across the UI as calendar features are accessed."
+      },
+      {
+        decision: "Database-Generated Column for Relationship Health over Client-Side Computation",
+        alternativeConsidered: "Calculating 'active', 'cooling', or 'stalled' status dynamically in the Outlook add-in and React dashboard",
+        why: "Independent client recalculations inevitably drift or disagree due to timezone differences, cached states, or differing date math. Computing health once in Postgres via interaction timestamp triggers guarantees uniform state across every surface.",
+        tradeOffAccepted: "Adding or modifying health-status decay formulas requires database migration and trigger updates."
+      },
+      {
+        decision: "Isolated Seeded Demo Mode over Read-Only Production Mirror",
+        alternativeConsidered: "Connecting the public live demo to a production database with read-only flags",
+        why: "The live demo runs against an isolated Supabase project seeded with fictional institutions, bypasses real Microsoft sign-in entirely, and blocks every write and every OpenAI call at the API layer — the report generator returns a real narrative built from the seeded stats instead of a live model call. A visitor gets the full interaction, and nothing they do can touch real data or real billing.",
+        tradeOffAccepted: "Public demo visitors cannot save persistent changes or test arbitrary school domains."
+      }
+    ],
+    behindTheArchitecture: {
+      problem: "Admissions recruiters for international schools live in their inbox, but tracking happens in detached spreadsheets or bloated CRMs. The resulting friction causes missed follow-ups, silent relationship decay, and fragmented institutional memory.",
+      vision: "Put the entire CRM directly inside the Outlook email reading pane so logging a touchpoint takes one click, backed by a companion management dashboard sharing a single source of truth.",
+      rationale: "Paired Office.js add-in with a Next.js App Router and Supabase Postgres backend. Used OAuth On-Behalf-Of to secure Microsoft Graph access server-side, and computed relationship health deterministically in the database."
+    },
+    architecture: {
+      lifecycle: [
+        "Inbox Trigger: Recruiter opens an email in Outlook; Office.js extracts sender domain and requests institution metadata.",
+        "OBO Auth Exchange: Next.js server receives client token and exchanges it for a Graph token via Microsoft Entra ID On-Behalf-Of flow.",
+        "Touchpoint Logging: Recruiter commits interaction details; server validates user tenancy and writes to Supabase Postgres.",
+        "Trigger-Based Health Update: Postgres database trigger computes relationship health column based on interaction timestamps.",
+        "Pipeline & AI Briefing: Dashboard synchronizes Kanban pipeline stages and invokes OpenAI Structured Outputs for leadership reports."
+      ],
+      guardrails: [
+        "Tenant Isolation: Every server route strictly scopes database queries to the authenticated recruiter's user_id, preventing cross-tenant reads.",
+        "OBO Token Shielding: Microsoft Graph access tokens are exchanged and held strictly in server memory, never exposed to the client.",
+        "CSV Formula Sanitization: Strips leading =, +, -, @ characters on institution and contact export to block spreadsheet injection exploits.",
+        "Add-in HTML Escaping: All user-generated text rendered in the Office.js reading pane is sanitized against XSS injection."
+      ]
+    },
+    promptEngineering: {
+      logic: `<system_instructions>
+  You are an international school admissions intelligence assistant.
+  Analyze the recruiter's interaction log, campus visit notes, and counselor correspondence to generate a concise, factual executive briefing.
+  Never invent admissions agreements, student feeder numbers, or dates.
+</system_instructions>
+
+<report_structure>
+  1. Executive Summary: Key partnership developments this quarter
+  2. Highlights: High-tier schools with active feeder agreements
+  3. Needs Attention Watch-List: Institutions with no touchpoints in 45+ days
+</report_structure>`,
+      schema: `{
+  "type": "OBJECT",
+  "properties": {
+    "headline": { "type": "STRING", "description": "Brief quarterly admissions summary" },
+    "highlights": {
+      "type": "ARRAY",
+      "items": {
+        "type": "OBJECT",
+        "properties": {
+          "institution_name": { "type": "STRING" },
+          "country": { "type": "STRING" },
+          "key_milestone": { "type": "STRING" }
+        }
+      }
+    },
+    "watch_list": {
+      "type": "ARRAY",
+      "items": {
+        "type": "OBJECT",
+        "properties": {
+          "institution_name": { "type": "STRING" },
+          "days_since_touchpoint": { "type": "NUMBER" },
+          "recommended_action": { "type": "STRING" }
+        }
+      }
+    }
+  },
+  "required": ["headline", "highlights", "watch_list"]
+}`,
+      guardrails: [
+        "Structured Outputs Enforcement: Strict JSON schema ensures generated executive briefs parse directly into dashboard cards without markdown syntax issues.",
+        "Hallucination Guardrails: Report summaries are strictly grounded in interaction records and calendar events present in the database.",
+        "Prompt Injection Shield: Free-form recruiter notes are encapsulated within XML delimiters before passing into the OpenAI model context."
+      ]
+    },
+    impact: {
+      value: [
+        "Reduced touchpoint logging from multi-minute tab-switching spreadsheet friction to a single click within Outlook.",
+        "19 API routes and 2 distinct OAuth flows providing full multi-tenant security and zero client-side token exposure.",
+        "Automated relationship health monitoring (active/cooling/stalled) surfacing quiet accounts before partnerships lapse.",
+        "Delivered a zero-leakage, zero-billing public demo environment allowing prospective users to test the full workflow safely."
+      ],
+      security: [
+        "Audited all 19 API endpoints to enforce strict user_id tenancy filtering, blocking cross-recruiter institution reads.",
+        "Secured Graph API access via server-side On-Behalf-Of exchange, keeping high-privilege tokens out of browser storage.",
+        "Hardened export endpoints against CSV formula injection and sanitized Office.js add-in fields against DOM XSS."
+      ]
+    },
+    technicalHurdles: [
+      {
+        title: "A Three-Layer OAuth Failure",
+        incident: "Sign-in broke in a way that looked like one bug and was three: an OS-level certificate trust issue, a third-party security tool silently intercepting TLS in one browser, and the Outlook add-in's dialog domain not matching its manifest's allowlist.",
+        diagnosis: "Fixing the first two without touching the third would have looked like progress and still failed at sign-in.",
+        resolution: "Isolating each layer independently, rather than guessing from the symptom, was the only way to actually close it out: verified certificate trust chains, resolved proxy interception, and aligned manifest allowlists."
+      },
+      {
+        title: "Security Audit, Not an Afterthought",
+        incident: "Supabase's row-level security policies existed but were inert, because every server route used the service-role key.",
+        diagnosis: "A deliberate pass across every route caught the real gap that left: missing application-layer user_id scoping that would have let any signed-in recruiter read or edit another recruiter's institutions — plus CSV formula-injection on export and unescaped HTML in add-in-rendered fields.",
+        resolution: "All three were fixed before anything shipped, not found by a user later: enforced strict application-layer user_id filtering across all 19 routes, sanitized CSV exports against spreadsheet injection, and escaped HTML in all add-in rendered fields."
+      },
+      {
+        title: "A Manifest That Wouldn't Refresh",
+        incident: "Outlook caches a sideloaded add-in manifest aggressively — bumping the version number alone doesn't force a refresh; a stale copy kept pointing at pre-fix domains for a full 'Could not open sign-in dialog' cycle after the actual fix had already shipped.",
+        diagnosis: "Outlook's desktop host aggressively caches sideloaded manifests independently of XML version bumps.",
+        resolution: "The only reliable fix was a version bump plus an explicit remove-and-re-add script of the manifest file, completely clearing the Office add-in cache."
+      }
+    ]
   }
 };
 
@@ -1963,5 +2175,218 @@ responseSchema: {
         resolution: "Express 미들웨어 영역에 사용자 맞춤 헤더를 속이는 폰트 수합 우회 proxy를 개발했습니다. 원시 Noto Sans KR .ttf 파일을 기동 버퍼로 가져온 뒤 클라이언트에 안전 공급해 한글 깨짐을 100% 영구 해결했습니다."
       }
     ]
+  },
+  bridgerecruit: {
+    title: "BridgeRecruit — 인박스 네이티브 입학처 CRM",
+    tagline: "국제학교 입학 담당자가 아웃룩을 벗어나지 않고 모든 접점을 기록하고, 지역 관계 건전도를 추적하며, AI 기반 후속 조치를 작성할 수 있는 인박스 네이티브 CRM.",
+    liveUrl: "https://bridgerecruit-demo.vercel.app/",
+    contactUrl: "mailto:jsn.benjamin@gmail.com?subject=BridgeRecruit%20Access%20Request",
+    screenshots: [
+      {
+        label: "마이크로소프트 아웃룩 플러그인 (본문 읽기 창)",
+        url: "/screenshots/bridgerecruit/outlook-plugin.svg",
+        subLabel: "아웃룩 본문 우측 창: 발신자 도메인을 기관과 자동 매칭하고, 최근 접점 이력을 보며 1-클릭 기록 및 AI 요약 생성을 지원합니다."
+      },
+      {
+        label: "담당 지역 학교 디렉토리 & 필터 엔진",
+        url: "/screenshots/bridgerecruit/institutions.svg",
+        subLabel: "한국, 태국, 베트남 등 아시아태평양 관할 학교를 등급, 건전도, 국가별로 검색 및 필터링하며 CSV 가져오기/내보내기를 지원합니다."
+      },
+      {
+        label: "학교 상세 프로필 & 상호작용 기록",
+        url: "/screenshots/bridgerecruit/institution-detail.svg",
+        subLabel: "방콕 프렙 스쿨 프로필: 수석 카운슬러 연락처, 카테고리별 상호작용 이력, 미결 후속 일정까지 한 화면에서 통합 관리합니다."
+      },
+      {
+        label: "입학 유치 파이프라인 칸반",
+        url: "/screenshots/bridgerecruit/pipeline.svg",
+        subLabel: "초기 접촉(Initial Outreach)부터 논의 중, 방문 예약, 협약/피더 활성화(Agreement / Feeder Active)까지 시각적으로 전진 배치합니다."
+      },
+      {
+        label: "실시간 연동 아웃룩 캘린더",
+        url: "/screenshots/bridgerecruit/calendar.svg",
+        subLabel: "Microsoft Graph On-Behalf-Of 흐름을 통해 실제 아웃룩 캘린더와 실시간 동기화되어 학교 맥락이 태깅된 후속 일정을 표시합니다."
+      },
+      {
+        label: "집중 관리 (Needs Attention) — 소통 단절 감지",
+        url: "/screenshots/bridgerecruit/needs-attention.svg",
+        subLabel: "30일 이상 접점이 없는 정체/냉각 학교를 선제적으로 식별하고 부담 없는 재접촉(Re-engagement) 이메일 초안을 1클릭 생성합니다."
+      },
+      {
+        label: "리더십 파트너십 & 활동 브리핑 리포트",
+        url: "/screenshots/bridgerecruit/reports.svg",
+        subLabel: "실제 상호작용 데이터와 관계 건전도 지표를 바탕으로 핵심 메트릭과 모니터링 목록이 포함된 AI 경영진 보고서를 작성합니다."
+      },
+      {
+        label: "마이크로소프트 Graph & 캘린더 권한 설정",
+        url: "/screenshots/bridgerecruit/settings.svg",
+        subLabel: "기본 프로필 인증과 선택적 캘린더 동기화를 분리하여 필요한 순간에만 최소 권한을 요청하는 안전한 동의 구조를 갖춥니다."
+      }
+    ],
+    stats: [
+      { label: "OAuth 보안", value: "2개 OAuth 흐름", detail: "위임 로그인 + 서버 사이드 On-Behalf-Of Graph 토큰 교환" },
+      { label: "API 범위", value: "19개 스코프 라우트", detail: "로그인한 담당자 고유의 데이터로 격리된 API 엔드포인트" },
+      { label: "AI 워크플로", value: "3개 자동화 루프", detail: "OpenAI Structured Outputs 기반 팔로업 초안 및 리포트 작성" },
+      { label: "입력 소요 속도", value: "단 1회 클릭", detail: "이메일 열람 상태에서 카테고리별 접점 DB 기록까지" }
+    ],
+    problem: [
+      "채용과 모집은 이메일에서 일어나지만, 기록과 추적은 다른 곳(스프레드시트)에서 일어납니다.",
+      "국제학교 관할 지역을 담당하는 입학 담당자는 하루의 대부분을 아웃룩에서 보냅니다 — 프로그램을 소개하고, 카운슬러에게 답장하고, 캠퍼스 방문 일정을 잡습니다.",
+      "하지만 그 관계의 기록은 대개 탭을 전환하고, 복사-붙여넣기하고, 잊지 않고 적어야 하는 스프레드시트나 일반 CRM에 남아 있습니다. 후속 조치는 메모지에 적혔다 잊혀지고, 6주 동안 조용해진 학교는 저절로 드러나지 않으며, 파트너십 체결이 임박했다는 사실도 담당자 본인 외에는 아무도 알지 못합니다.",
+      "문제의 본질은 기능의 부재가 아니라 '실제 업무가 일어나는 곳'과 '기록이 보관되는 곳' 사이의 마찰력입니다. 확인할 시스템을 하나 더 늘리는 식의 해결책은 언제나 인박스(받은편지함) 앞에서 패배합니다."
+    ],
+    solution: [
+      "두 개의 접점, 하나의 진실의 원천: 아웃룩 애드인은 이메일을 읽는 화면 안에 직접 위치하여 발신자 도메인을 기관과 자동 매칭하고, 이메일·방문·박람회·전화·화상 미팅을 단일 폼에서 기록하는 1-클릭 접점 캡처 레이어 역할을 합니다.",
+      "동반 관리 대시보드: Next.js App Router 대시보드는 지역 관리, 드래그 파이프라인, 실제 아웃룩 캘린더 연동 뷰, 리더십 보고서 자동 생성기를 제공합니다.",
+      "단일 Postgres 데이터 일관성: 두 접점 모두 동일한 인증 API를 통해 동일한 Postgres 테이블을 읽고 쓰므로 한 곳에서 기록된 내용이 다른 곳에서 누락되지 않습니다.",
+      "데이터베이스 트리거 기반 관계 건전도 산출: 활성(Active) / 관심 감소(Cooling) / 정체(Stalled) 상태를 클라이언트가 분리 계산하지 않고, 상호작용 타임스탬프 트리거를 통해 Postgres 생성 열(Generated Column)에서 단 한 번 계산합니다.",
+      "On-Behalf-Of (OBO) 토큰 교환: 애드인과 대시보드는 좁은 범위의 자체 API 스코프로 로그인하며, 서버가 OAuth OBO 흐름을 통해 Graph 토큰으로 교환합니다. 브라우저 스토리지에 Graph 액세스 토큰이 절대 노출되지 않습니다.",
+      "점진적 분리 동의 (Incremental Consent): Azure의 제약을 감안해 로그인, 프로필 접근, 캘린더 접근을 3단계로 분리하여 필요할 때만 요청함으로써 불필요한 초기 권한 마찰을 제거했습니다.",
+      "유출 및 과금 위험 없는 공개 데모: 허구의 교육기관 데이터로 시딩된 격리 Supabase 프로젝트에서 구동되며, 실제 MS 로그인을 우회하고 API 계층에서 모든 쓰기 및 OpenAI 호출을 정적 응답으로 차단하여 안전하게 전체 경험을 제공합니다."
+    ],
+    stack: [
+      "Next.js / App Router",
+      "Supabase / Postgres",
+      "Microsoft Entra ID (MSAL)",
+      "Graph API — On-Behalf-Of",
+      "Office.js Outlook Add-in",
+      "OpenAI Structured Outputs",
+      "Vercel"
+    ],
+    coreLoop: [
+      { step: "01. 수신 메일 열람 및 도메인 매칭", role: "아웃룩 애드인", detail: "Office.js가 열린 메일의 발신자 도메인을 읽고 인증된 Next.js API를 호출하여 기관 레코드와 즉각 매칭합니다." },
+      { step: "02. 원클릭 접점 기록 (Log Touchpoint)", role: "입학 담당자", detail: "아웃룩을 벗어나지 않고 이메일, 현장 방문, 유학 박람회, 전화 통화 등의 상호작용 내역을 통합 폼으로 기록합니다." },
+      { step: "03. 서버 측 On-Behalf-Of 토큰 교환", role: "Next.js 라우트 핸들러", detail: "서버가 담당자 사용자 토큰을 Microsoft Entra ID OBO 플로우를 통해 Graph 토큰으로 교환하여 캘린더 일정을 안전하게 동기화합니다." },
+      { step: "04. DB 트리거 기반 관계 건전도 갱신", role: "Postgres 데이터베이스", detail: "데이터베이스 내부 트리거가 마지막 접점 일자를 평가하여 관계 상태(Active, Cooling, Stalled)를 생성 열에 단일 산출합니다." },
+      { step: "05. 칸반 파이프라인 지역 관리", role: "Next.js 대시보드", detail: "담당자가 파이프라인 단계별로 기관을 드래그하여 진척시키고 미결 후속 조치를 한눈에 관리합니다." },
+      { step: "06. 구조화된 AI 리더십 브리핑 생성", role: "OpenAI Structured Outputs", detail: "실제 접점 텔레메트리 데이터를 바탕으로 헤드라인, 핵심 파트너십 성과, 소통 부재 학교 워치리스트를 자동 생성합니다." }
+    ],
+    decisions: [
+      {
+        decision: "클라이언트 직접 Graph 토큰 대신 On-Behalf-Of (OBO) 서버 토큰 교환 선택",
+        alternativeConsidered: "아웃룩 애드인 클라이언트가 직접 Microsoft Graph 액세스 토큰을 발급받아 브라우저 localStorage에 보관",
+        why: "애드인과 대시보드는 좁은 자체 API 스코프로 로그인하고, 서버가 Graph를 호출하기 직전에 OAuth OBO 플로우로 토큰을 교환합니다. 한 단계 거치게 되지만 Graph 액세스 토큰이 브라우저 스토리지에 머물지 않으며, 서버가 요청할 Graph 스코프와 시점을 철저히 통제합니다.",
+        tradeOffAccepted: "Graph API 호출 시 서버 측에서 1회의 추가적인 토큰 교환 네트워크 홉이 발생합니다."
+      },
+      {
+        decision: "포괄적 일괄 권한 요청 대신 점진적 분리 동의(Incremental Consent) 도입",
+        alternativeConsidered: "최초 사용자 로그인 시 이메일, 프로필, 캘린더 전체 권한을 한 번에 일괄 요청",
+        why: "Azure는 대화형 동의 요청당 하나의 리소스만 허용합니다. 또한 아직 서비스의 효용을 경험하지 못한 입학 담당자에게 초기부터 캘린더 전체 권한을 요구하는 것은 신뢰와 사용 전환율을 심각하게 훼손합니다.",
+        tradeOffAccepted: "UI 전반에서 캘린더 기능 진입 시점마다 권한 상태 전이와 동의 유도 분기를 관리해야 합니다."
+      },
+      {
+        decision: "클라이언트 연산 대신 Postgres 데이터베이스 생성 열 기반 관계 건전도 산출",
+        alternativeConsidered: "아웃룩 애드인과 웹 대시보드 각 화면에서 날짜 라이브러리를 통해 동적으로 상태를 재계산",
+        why: "독립된 클라이언트들이 각자 계산할 경우 타임존 오차나 캐시 시점에 따라 상태가 불일치하게 됩니다. 상호작용 타임스탬프 트리거로 Postgres 생성 열에서 단 한 번 계산함으로써 두 화면 간 데이터 불일치를 원천 차단했습니다.",
+        tradeOffAccepted: "건전도 기준 일수나 계산 공식을 수정할 때 데이터베이스 마이그레이션과 트리거 갱신이 필요합니다."
+      },
+      {
+        decision: "실서버 읽기 전용 미러 대신 시딩 데이터 기반 격리 데모 환경 구축",
+        alternativeConsidered: "실제 운영 데이터베이스에 읽기 전용 플래그를 설정하여 공개 데모 연동",
+        why: "공개 라이브 데모는 허구의 학교 데이터로 시딩된 독립 Supabase 프로젝트에서 작동하며, 실제 MS 로그인을 완전히 우회하고 API 레이어에서 모든 쓰기와 OpenAI 호출을 차단합니다. 방문자는 모든 인터랙션을 체험할 수 있으며 실제 데이터 유출이나 과금 위험이 0%입니다.",
+        tradeOffAccepted: "데모 사용자는 변경 사항을 영구 저장하거나 임의의 실제 학교 도메인을 테스트할 수 없습니다."
+      }
+    ],
+    behindTheArchitecture: {
+      problem: "국제학교 입학 담당자들은 이메일에서 살아가지만, 관계 관리는 흩어진 시트나 무거운 범용 CRM에서 이루어져 후속 조치 누락과 소통 단절이 만성적으로 발생했습니다.",
+      vision: "이메일을 읽는 그 자리에서 클릭 한 번으로 모든 접점을 기록할 수 있도록 CRM을 아웃룩 인박스 안에 직접 내장하고, 진실의 원천을 공유하는 관리 대시보드를 구축.",
+      rationale: "Office.js 애드인과 Next.js App Router, Supabase Postgres를 연결했습니다. OAuth On-Behalf-Of로 Graph 토큰 보안을 지키고, 데이터베이스 트리거로 관계 건전도를 결정론적으로 단일 산출했습니다."
+    },
+    architecture: {
+      lifecycle: [
+        "인박스 감지: 담당자가 아웃룩에서 메일을 열면 Office.js가 발신자 도메인을 추출해 기관 메타데이터를 질의합니다.",
+        "OBO 인증 교환: Next.js 서버가 클라이언트 토큰을 수신하고 Microsoft Entra ID OBO 플로우를 통해 Graph 토큰으로 안전 교환합니다.",
+        "접점 기록: 담당자가 상호작용 내역을 제출하면 서버가 사용자 테넌시를 검증한 뒤 Supabase Postgres에 기록합니다.",
+        "트리거 기반 건전도 갱신: Postgres DB 트리거가 상호작용 일자를 계산해 관계 건전도 생성 열을 즉각 갱신합니다.",
+        "파이프라인 & AI 브리핑: 대시보드가 칸반 상태를 실시간 동기화하고 OpenAI Structured Outputs를 통해 경영진 보고서를 생성합니다."
+      ],
+      guardrails: [
+        "테넌트 격리: 모든 서버 API 라우트에서 DB 쿼리에 로그인한 담당자의 user_id를 강제하여 타 사용자 데이터 열람을 차단.",
+        "OBO 토큰 은폐: Microsoft Graph 액세스 토큰은 서버 메모리에서만 처리되며 브라우저 스토리지에 일절 노출되지 않음.",
+        "CSV 수식 주입 방어: 기관 및 연락처 내보내기 시 =, +, -, @ 시작 문자를 소거하여 엑셀 수식 주입 공격을 차단.",
+        "애드인 HTML 이스케이프: Office.js 읽기 창에 렌더링되는 모든 사용자 입력 텍스트를 XSS 방어 처리."
+      ]
+    },
+    promptEngineering: {
+      logic: `<system_instructions>
+  You are an international school admissions intelligence assistant.
+  Analyze the recruiter's interaction log, campus visit notes, and counselor correspondence to generate a concise, factual executive briefing.
+  Never invent admissions agreements, student feeder numbers, or dates.
+</system_instructions>
+
+<report_structure>
+  1. Executive Summary: Key partnership developments this quarter
+  2. Highlights: High-tier schools with active feeder agreements
+  3. Needs Attention Watch-List: Institutions with no touchpoints in 45+ days
+</report_structure>`,
+      schema: `{
+  "type": "OBJECT",
+  "properties": {
+    "headline": { "type": "STRING", "description": "Brief quarterly admissions summary" },
+    "highlights": {
+      "type": "ARRAY",
+      "items": {
+        "type": "OBJECT",
+        "properties": {
+          "institution_name": { "type": "STRING" },
+          "country": { "type": "STRING" },
+          "key_milestone": { "type": "STRING" }
+        }
+      }
+    },
+    "watch_list": {
+      "type": "ARRAY",
+      "items": {
+        "type": "OBJECT",
+        "properties": {
+          "institution_name": { "type": "STRING" },
+          "days_since_touchpoint": { "type": "NUMBER" },
+          "recommended_action": { "type": "STRING" }
+        }
+      }
+    }
+  },
+  "required": ["headline", "highlights", "watch_list"]
+}`,
+      guardrails: [
+        "구조화된 출력(Structured Outputs): 엄격한 JSON 스키마를 강제하여 마크다운 깨짐 없이 대시보드 카드에 안정 파싱.",
+        "환각 차단 가드레일: 보고서 요약은 데이터베이스에 실제 존재하는 상호작용 및 캘린더 일정에만 철저히 근거.",
+        "프롬프트 주입 방어: 자유 형식의 담당자 메모를 XML 경계 태그로 래핑하여 모델 지시문 오염을 방지."
+      ]
+    },
+    impact: {
+      value: [
+        "수 분씩 걸리던 탭 전환 및 스프레드시트 복사-붙여넣기 수작업을 아웃룩 내 단 1회의 원클릭 기록으로 단축.",
+        "2개의 독립 OAuth 플로우와 19개 스코프드 API 라우트를 통해 완벽한 다중 테넌트 보안과 토큰 무노출 달성.",
+        "활성/냉각/정체 자동 건전도 모니터링을 통해 파트너십 단절 위험이 있는 학교를 사전에 표면화.",
+        "과금 및 유출 위험 없는 시딩 데모 환경을 구축하여 실제 담당자가 안전하게 전체 플로우를 검증할 수 있도록 지원."
+      ],
+      security: [
+        "19개 모든 API 엔드포인트를 감사하여 애플리케이션 계층 user_id 테넌시 필터링을 강제, 타 담당자 기관 접근 차단.",
+        "서버 사이드 On-Behalf-Of 토큰 교환을 적용해 고권한 Microsoft Graph 토큰을 브라우저 스토리지로부터 완전 격리.",
+        "데이터 내보내기 시 CSV 수식 주입을 방어하고 Office.js 애드인 화면의 모든 동적 렌더링 필드에 HTML 이스케이프 적용."
+      ]
+    },
+    technicalHurdles: [
+      {
+        title: "3개 계층에 걸친 복합 OAuth 인증 장애",
+        incident: "아웃룩 애드인 테스트 중 모호한 TLS 및 네트워크 오류 팝업과 함께 로그인이 반복 실패했습니다.",
+        diagnosis: "하나의 버그처럼 보였으나 실제로는 3가지 원인(OS 레벨 인증서 신뢰 체인 문제, 엔드포인트 보안 도구의 TLS 인터셉트, 애드인 대화상자 도메인과 매니페스트 허용 목록 불일치)이 복합적으로 얽혀 있었습니다.",
+        resolution: "증상에 따라 추측하지 않고 각 계층을 독립적으로 격리 해결했습니다: 로컬 인증서 신뢰 체인 재설정, 보안 프록시 예외 등록, 매니페스트 AppDomains 허용 목록 정렬."
+      },
+      {
+        title: "보안 감사: Supabase Service-Role 키 RLS 무력화 및 테넌시 누락",
+        incident: "Supabase 콘솔에서는 행 레벨 보안(RLS) 정책이 활성화되어 있었으나 실제 런타임에서는 작동하지 않았습니다.",
+        diagnosis: "모든 서버 라우트가 service-role 키를 사용하여 RLS가 우회되었으며, 여러 엔드포인트에서 애플리케이션 계층 user_id 필터링이 누락되어 타 담당자 기관을 열람/수정할 수 있는 취약점이 발견되었습니다.",
+        resolution: "출시 전 19개 모든 라우트에 대해 철저한 감사를 실시하여 user_id 테넌시 필터링을 적용하고, CSV 내보내기 수식 주입 방지 및 애드인 HTML 이스케이프 처리를 전면 완료했습니다."
+      },
+      {
+        title: "캐시가 갱신되지 않는 아웃룩 사이드로딩 매니페스트",
+        incident: "대화상자 URL을 수정한 뒤에도 아웃룩이 이전 엔드포인트를 계속 호출하며 'Could not open sign-in dialog' 오류를 반복 발생시켰습니다.",
+        diagnosis: "아웃룩 데스크톱 클라이언트는 사이드로딩된 매니페스트를 극도로 강하게 캐싱하며, XML 버전 번호 변경만으로는 호스트 컨테이너의 캐시가 무효화되지 않았습니다.",
+        resolution: "버전 번호 변경과 함께 매니페스트 파일을 명시적으로 제거하고 로컬 오피스 캐시를 완전히 비운 뒤 재등록하는 스크립트를 구축하여 배포 안정성을 확보했습니다."
+      }
+    ]
   }
 };
+

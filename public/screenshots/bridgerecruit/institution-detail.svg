@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%" style="background:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Yellow Demo Banner -->
+  <rect x="24" y="16" width="1152" height="42" rx="8" fill="#fffbeb" stroke="#fef3c7" stroke-width="1" />
+  <text x="44" y="42" font-size="13" font-weight="500" fill="#92400e">Read-only demo — seeded data, writes disabled.</text>
+  <text x="1054" y="42" font-size="13" font-weight="600" fill="#92400e" text-decoration="underline">Request live access</text>
+
+  <!-- Navigation Bar -->
+  <g transform="translate(24, 72)">
+    <rect x="0" y="0" width="1152" height="56" rx="16" fill="#ffffff" stroke="#f1f5f9" stroke-width="1.5" />
+    <circle cx="34" cy="28" r="4" fill="#4f46e5" />
+    <text x="46" y="33" font-size="15" font-weight="700" fill="#0f172a">BridgeRecruit</text>
+    <text x="160" y="32" font-size="13" font-weight="500" fill="#64748b">Institutions</text>
+    <text x="250" y="32" font-size="13" font-weight="500" fill="#64748b">Pipeline</text>
+    <text x="330" y="32" font-size="13" font-weight="500" fill="#64748b">Calendar</text>
+    <text x="414" y="32" font-size="13" font-weight="500" fill="#64748b">Needs Attention</text>
+    <text x="544" y="32" font-size="13" font-weight="500" fill="#64748b">Reports</text>
+    <text x="618" y="32" font-size="13" font-weight="500" fill="#64748b">Settings</text>
+  </g>
+
+  <!-- Detail Content -->
+  <g transform="translate(24, 150)">
+    <!-- Back Link -->
+    <text x="0" y="16" font-size="13" font-weight="600" fill="#4f46e5">← All Institutions</text>
+
+    <!-- School Header with Badge & Edit/Delete -->
+    <text x="0" y="56" font-size="28" font-weight="800" fill="#0f172a">Bangkok Prep School</text>
+    
+    <!-- Active / Warm Pill -->
+    <rect x="420" y="34" width="102" height="26" rx="13" fill="#dcfce7" />
+    <text x="436" y="51" font-size="12" font-weight="600" fill="#15803d">Active / Warm</text>
+
+    <!-- Edit Button -->
+    <rect x="532" y="34" width="56" height="26" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1" />
+    <text x="548" y="51" font-size="12" font-weight="600" fill="#334155">Edit</text>
+
+    <!-- Delete Button -->
+    <rect x="596" y="34" width="66" height="26" rx="6" fill="#fee2e2" stroke="#fecaca" stroke-width="1" />
+    <text x="612" y="51" font-size="12" font-weight="600" fill="#b91c1c">Delete</text>
+
+    <!-- Metadata Grid Card -->
+    <g transform="translate(0, 78)">
+      <rect x="0" y="0" width="700" height="170" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+      
+      <!-- Col 1 -->
+      <text x="20" y="32" font-size="12" font-weight="500" fill="#64748b">Location</text>
+      <text x="20" y="52" font-size="13.5" font-weight="600" fill="#0f172a">Bangkok, Thailand</text>
+
+      <text x="20" y="86" font-size="12" font-weight="500" fill="#64748b">Tier</text>
+      <text x="20" y="106" font-size="13.5" font-weight="600" fill="#0f172a">tier 1 feeder</text>
+
+      <text x="20" y="140" font-size="12" font-weight="500" fill="#64748b">Curriculum</text>
+      <text x="20" y="158" font-size="13.5" font-weight="600" fill="#64748b">—</text>
+
+      <!-- Col 2 -->
+      <text x="360" y="32" font-size="12" font-weight="500" fill="#64748b">Address</text>
+      <text x="360" y="52" font-size="13.5" font-weight="600" fill="#64748b">—</text>
+
+      <text x="360" y="86" font-size="12" font-weight="500" fill="#64748b">Type</text>
+      <text x="360" y="106" font-size="13.5" font-weight="600" fill="#0f172a">international high school</text>
+
+      <text x="360" y="140" font-size="12" font-weight="500" fill="#64748b">Domain</text>
+      <text x="360" y="158" font-size="13.5" font-weight="600" fill="#0f172a">bangkokprep-demo.placeholder</text>
+    </g>
+
+    <!-- Contacts Card -->
+    <g transform="translate(0, 268)">
+      <rect x="0" y="0" width="700" height="92" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+      <text x="20" y="28" font-size="14" font-weight="700" fill="#0f172a">Contacts</text>
+      
+      <!-- Add Contact Button -->
+      <rect x="590" y="12" width="94" height="28" rx="6" fill="#4338ca" />
+      <text x="604" y="30" font-size="11.5" font-weight="600" fill="#ffffff">Add Contact</text>
+
+      <text x="20" y="56" font-size="13" font-weight="600" fill="#0f172a">Counselor at Bangkok <tspan fill="#64748b" font-weight="400">(primary) — Head of College Counseling</tspan></text>
+      <text x="20" y="74" font-size="12" fill="#64748b">counselor@bangkokprep-demo.placeholder</text>
+    </g>
+
+    <!-- Interaction History Card -->
+    <g transform="translate(0, 380)">
+      <rect x="0" y="0" width="700" height="94" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+      <text x="20" y="28" font-size="14" font-weight="700" fill="#0f172a">Interaction history (1)</text>
+
+      <!-- Log Interaction Button -->
+      <rect x="580" y="12" width="104" height="28" rx="6" fill="#4338ca" />
+      <text x="592" y="30" font-size="11.5" font-weight="600" fill="#ffffff">Log Interaction</text>
+
+      <text x="20" y="56" font-size="13" font-weight="600" fill="#0f172a">Program introduction <tspan fill="#64748b" font-weight="400">(in person visit · 8/31/2026)</tspan></text>
+      <text x="20" y="74" font-size="12" fill="#475569">Introduced BridgeRecruit’s partnership program to Bangkok Prep School. Discussed scholarship tiers and campus visit logistics.</text>
+    </g>
+
+    <!-- Follow-ups Card -->
+    <g transform="translate(0, 494)">
+      <rect x="0" y="0" width="700" height="86" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+      <text x="20" y="28" font-size="14" font-weight="700" fill="#0f172a">Follow-ups (1)</text>
+      <text x="20" y="54" font-size="13" font-weight="600" fill="#0f172a">Follow up with Bangkok Prep School <tspan fill="#64748b" font-weight="400">(due 9/9/2026 · pending)</tspan></text>
+      <text x="20" y="72" font-size="12" fill="#475569">Confirm next steps and share updated scholarship terms.</text>
+    </g>
+  </g>
+</svg>

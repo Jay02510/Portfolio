@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%" style="background:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Yellow Demo Banner -->
+  <rect x="24" y="16" width="1152" height="42" rx="8" fill="#fffbeb" stroke="#fef3c7" stroke-width="1" />
+  <text x="44" y="42" font-size="13" font-weight="500" fill="#92400e">Read-only demo — seeded data, writes disabled.</text>
+  <text x="1054" y="42" font-size="13" font-weight="600" fill="#92400e" text-decoration="underline">Request live access</text>
+
+  <!-- Navigation Bar -->
+  <g transform="translate(24, 72)">
+    <rect x="0" y="0" width="1152" height="56" rx="16" fill="#ffffff" stroke="#f1f5f9" stroke-width="1.5" />
+    <circle cx="34" cy="28" r="4" fill="#4f46e5" />
+    <text x="46" y="33" font-size="15" font-weight="700" fill="#0f172a">BridgeRecruit</text>
+
+    <text x="160" y="32" font-size="13" font-weight="500" fill="#64748b">Institutions</text>
+    <!-- Active Tab: Pipeline -->
+    <rect x="230" y="12" width="82" height="32" rx="16" fill="#4338ca" />
+    <text x="250" y="32" font-size="13" font-weight="600" fill="#ffffff">Pipeline</text>
+
+    <text x="340" y="32" font-size="13" font-weight="500" fill="#64748b">Calendar</text>
+    <text x="424" y="32" font-size="13" font-weight="500" fill="#64748b">Needs Attention</text>
+    <text x="554" y="32" font-size="13" font-weight="500" fill="#64748b">Reports</text>
+    <text x="628" y="32" font-size="13" font-weight="500" fill="#64748b">Settings</text>
+  </g>
+
+  <!-- Title & Export Button -->
+  <g transform="translate(24, 156)">
+    <div style="display:flex;">
+      <text x="0" y="32" font-size="28" font-weight="800" fill="#0f172a">Recruitment Pipeline</text>
+      <!-- Export Snapshot Button -->
+      <rect x="1000" y="8" width="152" height="34" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1" />
+      <text x="1016" y="30" font-size="12.5" font-weight="600" fill="#334155">Export Snapshot (CSV)</text>
+    </div>
+    <text x="0" y="60" font-size="13.5" font-weight="400" fill="#475569">Every institution in the system, grouped by how far along the partnership process it is. New institutions start in Initial Outreach — drag a card right as the relationship progresses (visit scheduled, agreement signed) or into Dormant if it's no longer active.</text>
+
+    <!-- 5 Kanban Columns -->
+    <g transform="translate(0, 96)">
+      <!-- Column 1: Initial Outreach (1) -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="222" height="420" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+        <circle cx="18" cy="24" r="3.5" fill="#94a3b8" />
+        <text x="28" y="28" font-size="13.5" font-weight="700" fill="#1e293b">Initial Outreach</text>
+        <text x="136" y="28" font-size="13" font-weight="500" fill="#64748b">(1)</text>
+
+        <!-- Card 1 -->
+        <g transform="translate(10, 48)">
+          <rect x="0" y="0" width="202" height="66" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+          <text x="12" y="24" font-size="12" font-weight="700" fill="#0f172a">Jakarta Global High School</text>
+          <text x="12" y="44" font-size="11" fill="#64748b">Jakarta, Indonesia · tier 2 high potential</text>
+        </g>
+      </g>
+
+      <!-- Column 2: In Discussion (2) -->
+      <g transform="translate(232, 0)">
+        <rect x="0" y="0" width="222" height="420" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+        <circle cx="18" cy="24" r="3.5" fill="#6366f1" />
+        <text x="28" y="28" font-size="13.5" font-weight="700" fill="#1e293b">In Discussion</text>
+        <text x="124" y="28" font-size="13" font-weight="500" fill="#64748b">(2)</text>
+
+        <!-- Card 1 -->
+        <g transform="translate(10, 48)">
+          <rect x="0" y="0" width="202" height="76" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+          <text x="12" y="24" font-size="12" font-weight="700" fill="#0f172a">Ho Chi Minh Foreign School</text>
+          <text x="12" y="44" font-size="11" fill="#64748b">Ho Chi Minh City, Vietnam · tier 2 high</text>
+          <text x="12" y="60" font-size="11" fill="#64748b">potential</text>
+        </g>
+
+        <!-- Card 2 -->
+        <g transform="translate(10, 134)">
+          <rect x="0" y="0" width="202" height="66" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+          <text x="12" y="24" font-size="12" font-weight="700" fill="#0f172a">Taipei American Partner School</text>
+          <text x="12" y="44" font-size="11" fill="#64748b">Taipei, Taiwan · tier 2 high potential</text>
+        </g>
+      </g>
+
+      <!-- Column 3: Visit Scheduled (2) -->
+      <g transform="translate(464, 0)">
+        <rect x="0" y="0" width="222" height="420" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+        <circle cx="18" cy="24" r="3.5" fill="#a855f7" />
+        <text x="28" y="28" font-size="13.5" font-weight="700" fill="#1e293b">Visit Scheduled</text>
+        <text x="140" y="28" font-size="13" font-weight="500" fill="#64748b">(2)</text>
+
+        <!-- Card 1 -->
+        <g transform="translate(10, 48)">
+          <rect x="0" y="0" width="202" height="66" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+          <text x="12" y="24" font-size="12" font-weight="700" fill="#0f172a">Bangkok Prep School</text>
+          <text x="12" y="44" font-size="11" fill="#64748b">Bangkok, Thailand · tier 1 feeder</text>
+        </g>
+
+        <!-- Card 2 -->
+        <g transform="translate(10, 124)">
+          <rect x="0" y="0" width="202" height="66" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+          <text x="12" y="24" font-size="12" font-weight="700" fill="#0f172a">Busan Global Institute</text>
+          <text x="12" y="44" font-size="11" fill="#64748b">Busan, South Korea · tier 1 feeder</text>
+        </g>
+      </g>
+
+      <!-- Column 4: Agreement / Feeder Active (1) -->
+      <g transform="translate(696, 0)">
+        <rect x="0" y="0" width="222" height="420" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+        <circle cx="18" cy="24" r="3.5" fill="#22c55e" />
+        <text x="28" y="28" font-size="13.5" font-weight="700" fill="#1e293b">Agreement / Feeder Active</text>
+        <text x="202" y="28" font-size="13" font-weight="500" fill="#64748b">(1)</text>
+
+        <!-- Card 1 -->
+        <g transform="translate(10, 48)">
+          <rect x="0" y="0" width="202" height="66" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+          <text x="12" y="24" font-size="12" font-weight="700" fill="#0f172a">Gangnam International Academy</text>
+          <text x="12" y="44" font-size="11" fill="#64748b">Seoul, South Korea · tier 1 feeder</text>
+        </g>
+      </g>
+
+      <!-- Column 5: Dormant (2) -->
+      <g transform="translate(928, 0)">
+        <rect x="0" y="0" width="224" height="420" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+        <circle cx="18" cy="24" r="3.5" fill="#64748b" />
+        <text x="28" y="28" font-size="13.5" font-weight="700" fill="#1e293b">Dormant</text>
+        <text x="96" y="28" font-size="13" font-weight="500" fill="#64748b">(2)</text>
+
+        <!-- Card 1 -->
+        <g transform="translate(10, 48)">
+          <rect x="0" y="0" width="204" height="66" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+          <text x="12" y="24" font-size="12" font-weight="700" fill="#0f172a">Kuala Lumpur STEM Academy</text>
+          <text x="12" y="44" font-size="11" fill="#64748b">Kuala Lumpur, Malaysia · tier 3 standard</text>
+        </g>
+
+        <!-- Card 2 -->
+        <g transform="translate(10, 124)">
+          <rect x="0" y="0" width="204" height="66" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+          <text x="12" y="24" font-size="12" font-weight="700" fill="#0f172a">Manila Heritage School</text>
+          <text x="12" y="44" font-size="11" fill="#64748b">Manila, Philippines · tier 3 standard</text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

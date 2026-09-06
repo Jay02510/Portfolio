@@ -63,7 +63,7 @@ Unlike standard AI prototypes, this suite is engineered with strict production s
 * 🚀 **EduPlanner Pro (Live App)**: [https://scheduling-app-five.vercel.app/](https://scheduling-app-five.vercel.app/)
 * 📱 **Chekki AI (Live App)**: [https://chekki-ai.vercel.app/](https://chekki-ai.vercel.app/)
 * 📊 **Benchmark Explorer (Live App)**: [https://education-benchmark-system.vercel.app/](https://education-benchmark-system.vercel.app/)
-* 📧 **Email Contact**: [jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com) / [Kingjay2510@gmail.com](mailto:Kingjay2510@gmail.com)
+* 📧 **Email Contact**: [jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com)
 
 ---
 *© Jason Benjamin. Built with a human-centered, production-first approach.*

@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 900" width="100%" height="100%" style="background:#f8fafc; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <filter id="card-shadow" x="-5%" y="-3%" width="110%" height="108%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.06" />
+    </filter>
+  </defs>
+
+  <!-- Top Outlook Tab Bar -->
+  <rect x="0" y="0" width="460" height="54" fill="#ffffff" />
+  <line x1="0" y1="54" x2="460" y2="54" stroke="#e2e8f0" stroke-width="1" />
+
+  <!-- Tab 1: BridgeRecruit (Active) -->
+  <path d="M 12 12 L 230 12 A 8 8 0 0 1 238 20 L 238 54 L 4 54 L 4 20 A 8 8 0 0 1 12 12 Z" fill="#ffffff" />
+  <text x="24" y="36" font-size="16" font-weight="700" fill="#0f172a">BridgeRecruit</text>
+  <!-- Close icon X -->
+  <line x1="206" y1="26" x2="218" y2="38" stroke="#64748b" stroke-width="2" stroke-linecap="round" />
+  <line x1="218" y1="26" x2="206" y2="38" stroke="#64748b" stroke-width="2" stroke-linecap="round" />
+  <!-- Active blue underline -->
+  <rect x="4" y="51" width="234" height="3" fill="#2563eb" />
+
+  <!-- Tab 2: My Day (Inactive) -->
+  <text x="256" y="36" font-size="15" font-weight="600" fill="#64748b">My Day</text>
+
+  <!-- Main Scrollable Pane Body -->
+  <g transform="translate(18, 72)">
+    <!-- School Profile Card -->
+    <rect x="0" y="0" width="424" height="236" rx="14" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#card-shadow)" />
+
+    <!-- School Header -->
+    <text x="20" y="32" font-size="19" font-weight="800" fill="#0f172a">Jason’s School</text>
+    <text x="20" y="54" font-size="12" font-weight="500" fill="#64748b">tier 2 high potential · Seoul, South Korea · active warm</text>
+    
+    <text x="20" y="80" font-size="13" font-weight="600" fill="#334155">No primary contact on file</text>
+
+    <!-- Bullet 1: Recent interaction -->
+    <circle cx="26" cy="106" r="3" fill="#0f172a" />
+    <text x="36" y="110" font-size="13" font-weight="700" fill="#0f172a">Re: Jason School</text>
+    <text x="146" y="110" font-size="12" font-weight="500" fill="#64748b">(8/26/2026)</text>
+    <text x="36" y="128" font-size="12" font-weight="400" fill="#334155">The meeting was productive, focusing on the</text>
+    <text x="36" y="144" font-size="12" font-weight="400" fill="#334155">timeline for getting set up with the university. Further</text>
+    <text x="36" y="160" font-size="12" font-weight="400" fill="#334155">details on the setup process will be provided.</text>
+
+    <!-- Bullet 2: Previous meeting -->
+    <circle cx="26" cy="184" r="3" fill="#0f172a" />
+    <text x="36" y="188" font-size="13" font-weight="700" fill="#0f172a">virtual meeting — 8/24/2026</text>
+    <text x="220" y="188" font-size="12" font-weight="500" fill="#64748b">(8/24/2026)</text>
+    <text x="36" y="206" font-size="12" font-weight="400" fill="#334155">Met via zoom</text>
+
+    <!-- Quick Action Buttons -->
+    <g transform="translate(0, 252)">
+      <!-- Log Touchpoint Button -->
+      <rect x="0" y="0" width="138" height="42" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2" />
+      <text x="20" y="26" font-size="13" font-weight="600" fill="#1e293b">Log Touchpoint</text>
+
+      <!-- Set Follow-Up Button -->
+      <rect x="150" y="0" width="132" height="42" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2" />
+      <text x="170" y="26" font-size="13" font-weight="600" fill="#1e293b">Set Follow-Up</text>
+    </g>
+
+    <!-- Form Container -->
+    <g transform="translate(0, 310)">
+      <rect x="0" y="0" width="424" height="464" rx="14" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#card-shadow)" />
+
+      <!-- Channel Field -->
+      <text x="18" y="28" font-size="13" font-weight="600" fill="#475569">Channel</text>
+      <rect x="18" y="38" width="388" height="38" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+      <text x="30" y="62" font-size="14" font-weight="500" fill="#0f172a">Email</text>
+      <!-- Dropdown arrows -->
+      <path d="M 384 54 L 388 50 L 392 54 M 384 58 L 388 62 L 392 58" stroke="#64748b" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+
+      <!-- Regenerate AI summary Button -->
+      <g transform="translate(18, 90)">
+        <rect x="0" y="0" width="194" height="34" rx="7" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
+        <text x="16" y="22" font-size="12.5" font-weight="600" fill="#1e293b">Regenerate AI summary</text>
+      </g>
+
+      <!-- Notes Field -->
+      <text x="18" y="152" font-size="13" font-weight="600" fill="#475569">Notes</text>
+      <rect x="18" y="162" width="388" height="114" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+      <text x="30" y="186" font-size="13" font-weight="400" fill="#0f172a">The meeting focused on understanding the setup</text>
+      <text x="30" y="204" font-size="13" font-weight="400" fill="#0f172a">process for prospective students at the university.</text>
+      <text x="30" y="222" font-size="13" font-weight="400" fill="#0f172a">The recruiter will provide detailed information</text>
+      <text x="30" y="240" font-size="13" font-weight="400" fill="#0f172a">regarding timelines and procedures.</text>
+
+      <!-- Textarea resize handle -->
+      <line x1="396" y1="268" x2="402" y2="262" stroke="#94a3b8" stroke-width="1.5" />
+      <line x1="399" y1="271" x2="405" y2="265" stroke="#94a3b8" stroke-width="1.5" />
+
+      <!-- Suggested Action Note -->
+      <text x="18" y="298" font-size="12" font-weight="400" fill="#334155">Suggested action: Provide detailed information to the</text>
+      <text x="18" y="314" font-size="12" font-weight="400" fill="#334155">counselor regarding the setup process and timelines.</text>
+
+      <!-- Materials Shared -->
+      <text x="18" y="348" font-size="13" font-weight="600" fill="#475569">Materials shared (comma-separated)</text>
+      <rect x="18" y="358" width="388" height="38" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+
+      <!-- Save Button -->
+      <g transform="translate(18, 412)">
+        <rect x="0" y="0" width="76" height="38" rx="8" fill="#2563eb" />
+        <text x="22" y="24" font-size="13.5" font-weight="700" fill="#ffffff">Save</text>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -272,6 +272,34 @@ const stackExplains: Record<string, { en: string; ko: string }> = {
   "i18next": {
     en: "Internationalization framework delivering seamless bilingual UI localizations across evaluation portals.",
     ko: "평가 포털 전반에 입체적인 이중언어 UI 지역화를 제공하는 국제화 프레임워크."
+  },
+  "Next.js / App Router": {
+    en: "Modern full-stack React framework utilizing Server Components and scoped API route handlers.",
+    ko: "서버 컴포넌트와 스코프드 API 라우트 핸들러를 제공하는 모던 풀스택 React 프레임워크."
+  },
+  "Supabase / Postgres": {
+    en: "Managed relational Postgres database running timestamp-driven triggers and relationship health columns.",
+    ko: "타임스탬프 기반 DB 트리거와 관계 건전도 생성 열을 지원하는 관리형 관계형 Postgres."
+  },
+  "Microsoft Entra ID (MSAL)": {
+    en: "Enterprise identity provider handling delegated sign-in and token acquisition across Outlook and web.",
+    ko: "아웃룩 애드인과 웹 전반에서 위임 로그인 및 토큰 발급을 처리하는 엔터프라이즈 ID 인증 공급자."
+  },
+  "Graph API — On-Behalf-Of": {
+    en: "Server-side OAuth flow exchanging recruiter tokens for Graph-scoped access without browser exposure.",
+    ko: "브라우저 노출 없이 서버 단에서 담당자 토큰을 Graph 스코프 토큰으로 교환하는 서버 OAuth 플로우."
+  },
+  "Office.js Outlook Add-in": {
+    en: "Native Microsoft Office client runtime executing domain matching and touchpoint logging in the reading pane.",
+    ko: "아웃룩 읽기 창에서 이메일 도메인 매칭과 원클릭 접점 수집을 수행하는 Office.js 클라이언트 런타임."
+  },
+  "OpenAI Structured Outputs": {
+    en: "Deterministic JSON schema model inference generating executive partnership briefings without hallucinations.",
+    ko: "환각 없이 경영진용 파트너십 브리핑을 정확한 JSON 스키마로 산출하는 OpenAI 구조화 출력."
+  },
+  "Vercel": {
+    en: "Global edge deployment platform providing automated CI/CD and secure serverless route execution.",
+    ko: "자동화된 CI/CD와 안전한 서버리스 라우트 실행 환경을 제공하는 글로벌 엣지 배포 플랫폼."
   }
 };
 
@@ -464,6 +492,32 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
         subtitle: lang === 'en' ? "Executes custom @react-pdf/renderer compiler to build fully-branded bilingual PDFs" : "브라우저 단에서 직접 브랜드 맞춤 색상 및 글꼴의 PDF 즉시 인쇄 컴파일",
         tech: "@react-pdf/renderer",
         icon: "sparkles"
+      }
+    ],
+    'bridgerecruit': [
+      {
+        title: lang === 'en' ? "Outlook Add-in Capture" : "아웃룩 애드인 수집 레이어",
+        subtitle: lang === 'en' ? "Office.js reads open email, matches sender domain to institution record" : "Office.js로 수신 이메일 도메인을 학교 기관 레코드와 즉시 매칭",
+        tech: "Office.js / Manifest",
+        icon: "fileText"
+      },
+      {
+        title: lang === 'en' ? "On-Behalf-Of Token Exchange" : "On-Behalf-Of 토큰 교환",
+        subtitle: lang === 'en' ? "Entra ID auth with server-side Graph OBO exchange; zero tokens in browser" : "Entra ID 자가 발행 토큰을 서버에서 Graph 토큰으로 안전 교환",
+        tech: "Microsoft Entra ID / MSAL",
+        icon: "lock"
+      },
+      {
+        title: lang === 'en' ? "Scoped Next.js API Routes" : "Next.js 스코프드 API 엔진",
+        subtitle: lang === 'en' ? "19 routes enforcing recruiter user_id tenancy and AI structured outputs" : "19개 API 라우트에서 담당자 테넌시 격리 및 OpenAI 구조화 출력 처리",
+        tech: "Next.js App Router / OpenAI",
+        icon: "code"
+      },
+      {
+        title: lang === 'en' ? "Territory & Pipeline Engine" : "지역 관리 & 파이프라인 엔진",
+        subtitle: lang === 'en' ? "Supabase Postgres with DB-computed relationship health & kanban pipeline" : "DB 트리거 기반 관계 건전도 산출 및 칸반 파이프라인 동기화",
+        tech: "Supabase / Postgres",
+        icon: "settings"
       }
     ]
   };
@@ -762,6 +816,14 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
               {t.launchLive}
             </a>
           )}
+          {projectData.contactUrl && (
+            <a 
+              href={projectData.contactUrl} 
+              className="flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-widest text-accent-gold transition-colors hover:text-accent-gold/80 whitespace-nowrap"
+            >
+              {locale === 'en' ? "Contact to try ↗" : "체험 문의 ↗"}
+            </a>
+          )}
           {projectData.storeUrl && (
             <a 
               href={projectData.storeUrl} 
@@ -823,6 +885,19 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
                 }`}
               >
                 <span className="whitespace-nowrap leading-snug">{t.launchLiveApp}</span>
+              </a>
+            )}
+            {projectData.contactUrl && (
+              <a 
+                href={projectData.contactUrl}
+                className={`w-full sm:w-auto py-4 sm:py-5 px-5 rounded-xl border flex items-center justify-center gap-2 sm:gap-2.5 font-extrabold uppercase text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest transition-all text-center ${
+                  theme === 'dark' 
+                    ? 'border-accent-gold/50 bg-accent-gold/10 hover:bg-accent-gold/20 text-accent-gold' 
+                    : 'border-accent-gold/60 bg-accent-gold/10 hover:bg-accent-gold/20 text-accent-gold'
+                }`}
+              >
+                <span className="text-xs">✉</span>
+                <span className="whitespace-nowrap leading-snug">{locale === 'en' ? "Contact to try" : "체험 문의하기"}</span>
               </a>
             )}
             {projectData.storeUrl && (
@@ -1326,7 +1401,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
               {/* Bottom Interactive Thumbnail / Tab Track */}
               <div className={`grid gap-2.5 pt-1 ${
                 projectData.screenshots.length > 4 
-                   ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-5' 
+                   ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4' 
                    : 'grid-cols-1 sm:grid-cols-3'
               }`}>
                 {projectData.screenshots.map((scr, sIdx) => {
@@ -1873,10 +1948,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = ({
           </p>
           <div className="pt-4">
             <a 
-              href="mailto:jsn.benjamin@gmail.com" 
+              href={projectData.contactUrl || "mailto:jsn.benjamin@gmail.com"} 
               className="shiny-cta inline-block px-12 py-5 rounded-xl"
             >
-              {t.startCollaboration}
+              {projectData.contactUrl ? (locale === 'en' ? "Contact to Try BridgeRecruit" : "BridgeRecruit 체험 문의하기") : t.startCollaboration}
             </a>
           </div>
         </div>

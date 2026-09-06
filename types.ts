@@ -39,6 +39,7 @@ export interface CaseStudyType {
   tagline: string;
   liveUrl: string;
   storeUrl?: string;
+  contactUrl?: string;
   walkthroughVideo?: string;
   screenshots?: { label: string; url: string; subLabel?: string }[];
   stats: { label: string; value: string; detail?: string }[];

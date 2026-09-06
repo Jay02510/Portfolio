@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%" style="background:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Yellow Demo Banner -->
+  <rect x="24" y="16" width="1152" height="42" rx="8" fill="#fffbeb" stroke="#fef3c7" stroke-width="1" />
+  <text x="44" y="42" font-size="13" font-weight="500" fill="#92400e">Read-only demo — seeded data, writes disabled.</text>
+  <text x="1054" y="42" font-size="13" font-weight="600" fill="#92400e" text-decoration="underline">Request live access</text>
+
+  <!-- Navigation Bar -->
+  <g transform="translate(24, 72)">
+    <rect x="0" y="0" width="1152" height="56" rx="16" fill="#ffffff" stroke="#f1f5f9" stroke-width="1.5" />
+    <circle cx="34" cy="28" r="4" fill="#4f46e5" />
+    <text x="46" y="33" font-size="15" font-weight="700" fill="#0f172a">BridgeRecruit</text>
+    <text x="160" y="32" font-size="13" font-weight="500" fill="#64748b">Institutions</text>
+    <text x="250" y="32" font-size="13" font-weight="500" fill="#64748b">Pipeline</text>
+    <text x="330" y="32" font-size="13" font-weight="500" fill="#64748b">Calendar</text>
+    <text x="414" y="32" font-size="13" font-weight="500" fill="#64748b">Needs Attention</text>
+    <!-- Active Tab: Reports -->
+    <rect x="526" y="12" width="82" height="32" rx="16" fill="#4338ca" />
+    <text x="546" y="32" font-size="13" font-weight="600" fill="#ffffff">Reports</text>
+    <text x="632" y="32" font-size="13" font-weight="500" fill="#64748b">Settings</text>
+  </g>
+
+  <!-- Reports Content -->
+  <g transform="translate(24, 156)">
+    <text x="0" y="32" font-size="28" font-weight="800" fill="#0f172a">Reports</text>
+    <text x="0" y="60" font-size="13.5" font-weight="400" fill="#475569">A plain-language activity summary for leadership — grounded in real interaction, follow-up, and relationship-health data, not a raw export.</text>
+
+    <!-- 4 KPI Cards -->
+    <g transform="translate(0, 84)">
+      <!-- Total institutions -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="160" height="74" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+        <text x="16" y="24" font-size="11" font-weight="500" fill="#64748b">Total institutions</text>
+        <text x="16" y="58" font-size="28" font-weight="800" fill="#0f172a">8</text>
+      </g>
+
+      <!-- Active / Warm -->
+      <g transform="translate(174, 0)">
+        <rect x="0" y="0" width="160" height="74" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+        <rect x="0" y="0" width="4" height="74" rx="2" fill="#22c55e" />
+        <text x="16" y="24" font-size="11" font-weight="500" fill="#15803d">Active / Warm</text>
+        <text x="16" y="58" font-size="28" font-weight="800" fill="#15803d">5</text>
+      </g>
+
+      <!-- Cooling -->
+      <g transform="translate(348, 0)">
+        <rect x="0" y="0" width="160" height="74" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+        <rect x="0" y="0" width="4" height="74" rx="2" fill="#eab308" />
+        <text x="16" y="24" font-size="11" font-weight="500" fill="#a16207">Cooling</text>
+        <text x="16" y="58" font-size="28" font-weight="800" fill="#a16207">1</text>
+      </g>
+
+      <!-- Stalled / Cold -->
+      <g transform="translate(522, 0)">
+        <rect x="0" y="0" width="160" height="74" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+        <rect x="0" y="0" width="4" height="74" rx="2" fill="#ef4444" />
+        <text x="16" y="24" font-size="11" font-weight="500" fill="#b91c1c">Stalled / Cold</text>
+        <text x="16" y="58" font-size="28" font-weight="800" fill="#b91c1c">2</text>
+      </g>
+    </g>
+
+    <!-- Filters + Generate Button -->
+    <g transform="translate(0, 174)">
+      <rect x="0" y="0" width="120" height="34" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <text x="14" y="22" font-size="12.5" fill="#0f172a">This month</text>
+      <path d="M 98 18 L 102 22 L 106 18" stroke="#64748b" stroke-width="1.8" fill="none" stroke-linecap="round" />
+
+      <rect x="130" y="0" width="170" height="34" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <text x="144" y="22" font-size="12.5" fill="#0f172a">All tiers</text>
+      <path d="M 278 18 L 282 22 L 286 18" stroke="#64748b" stroke-width="1.8" fill="none" stroke-linecap="round" />
+
+      <rect x="310" y="0" width="130" height="34" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <text x="324" y="22" font-size="12.5" fill="#0f172a">All countries</text>
+      <path d="M 418 18 L 422 22 L 426 18" stroke="#64748b" stroke-width="1.8" fill="none" stroke-linecap="round" />
+
+      <rect x="450" y="0" width="130" height="34" rx="8" fill="#4338ca" />
+      <text x="466" y="22" font-size="12.5" font-weight="600" fill="#ffffff">Generate Report</text>
+    </g>
+
+    <text x="0" y="232" font-size="11.5" fill="#64748b">Calendar month to date — resets on the 1st, so early in a month this is a short window.</text>
+
+    <!-- Generated Report Box -->
+    <g transform="translate(0, 248)">
+      <rect x="0" y="0" width="700" height="260" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
+      
+      <!-- Date range & Actions -->
+      <text x="20" y="32" font-size="12" font-weight="600" fill="#64748b">8/31/2026 – 9/6/2026</text>
+      <rect x="536" y="16" width="46" height="24" rx="5" fill="#f1f5f9" />
+      <text x="548" y="32" font-size="11" font-weight="600" fill="#334155">Edit</text>
+      <rect x="588" y="16" width="98" height="24" rx="5" fill="#f1f5f9" />
+      <text x="596" y="32" font-size="11" font-weight="600" fill="#334155">Copy to clipboard</text>
+
+      <!-- Headline -->
+      <text x="20" y="66" font-size="16" font-weight="800" fill="#0f172a">8 new institutions engaged and 1 partnerships finalized this period.</text>
+
+      <!-- Highlights -->
+      <text x="20" y="96" font-size="12" font-weight="700" fill="#0f172a">Highlights</text>
+      <circle cx="26" cy="112" r="2.5" fill="#0f172a" />
+      <text x="34" y="116" font-size="12" fill="#334155">3 touchpoints logged across 3 channels.</text>
+      <circle cx="26" cy="130" r="2.5" fill="#0f172a" />
+      <text x="34" y="134" font-size="12" fill="#334155">0 follow-ups completed, 0 still open.</text>
+      <circle cx="26" cy="148" r="2.5" fill="#0f172a" />
+      <text x="34" y="152" font-size="12" fill="#334155">2 institutions have gone quiet and may need re-engagement.</text>
+
+      <!-- Narrative -->
+      <text x="20" y="180" font-size="12" fill="#475569">Outreach stayed active across the territory this period, with steady progress moving institutions</text>
+      <text x="20" y="196" font-size="12" fill="#475569">through the pipeline. Engagement was strongest for tier-1 feeder schools.</text>
+
+      <!-- Telemetry Divider -->
+      <line x1="20" y1="222" x2="680" y2="222" stroke="#f1f5f9" stroke-width="1" />
+      <text x="20" y="244" font-size="11" fill="#64748b">New institutions: 8    Partnerships finalized: 1    Follow-ups completed: 0    Follow-ups open: 0</text>
+    </g>
+  </g>
+</svg>

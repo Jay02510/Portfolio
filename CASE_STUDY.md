@@ -134,7 +134,7 @@ Parents needed instant, zero-setup camera grading that provides clear Korean pho
 
 ## 7. CONTACT & LIVE APPLICATION LINKS
 
-* **Email**: [jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com) / [Kingjay2510@gmail.com](mailto:Kingjay2510@gmail.com)
+* **Email**: [jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com)
 * **Live Shipped Apps & Interactive Portfolio**:
   * [Interactive Portfolio Web App ↗](https://jason-portfolio.com/)
   * [Chekki AI Live App ↗](https://chekki-ai.vercel.app/)
