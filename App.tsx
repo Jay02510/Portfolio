@@ -805,7 +805,7 @@ export default function App() {
         {/* SELECTED WORK SECTION */}
         <section id="work" className="pt-20 md:pt-24">
           <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-2">
-            <h2 className="text-3xl md:text-4xl font-display font-semibold tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-display font-semibold tracking-tight text-balance">
               {L.workTitle}
             </h2>
             <p className={`text-xs md:text-[13.5px] max-w-[46ch] ${
@@ -959,7 +959,7 @@ export default function App() {
 
         {/* HOW I WORK SECTION */}
         <section className="pt-12 pb-4">
-          <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight">
+          <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-balance">
             {L.roleTitle}
           </h2>
           <div className={`mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t ${
@@ -989,7 +989,7 @@ export default function App() {
         <section id="more" className="pt-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
             <div>
-              <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight">
+              <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-balance">
                 {L.moreTitle}
               </h2>
               <p className={`mt-1 text-xs md:text-[13.5px] max-w-[58ch] ${
@@ -1028,7 +1028,7 @@ export default function App() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={L.searchPlaceholder}
-                  className="bg-transparent border-none outline-none text-xs w-[120px] sm:w-[150px] placeholder-inherit"
+                  className="bg-transparent border-none outline-none text-base sm:text-xs w-[120px] sm:w-[150px] placeholder-inherit"
                 />
                 {searchQuery && (
                   <button onClick={() => setSearchQuery('')} className="text-xs opacity-50 hover:opacity-100 transition-[opacity,transform] active:scale-95">
@@ -1072,7 +1072,7 @@ export default function App() {
         {/* BUILD LOG SECTION */}
         <section id="log" className="pt-20">
           <div className="flex items-baseline justify-between gap-4 pb-2">
-            <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-balance">
               {L.logTitle}
             </h2>
             <button
@@ -1120,7 +1120,7 @@ export default function App() {
             isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
           }`}>
             <div>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-medium tracking-tight leading-tight">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-medium tracking-tight leading-tight text-balance">
                 {L.contactTitle}
               </h2>
               <p className={`mt-4 text-sm md:text-base leading-relaxed max-w-[52ch] ${

@@ -873,10 +873,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             <SparklesIcon className="w-4 h-4" />
             {t.architecturalStudy}
           </div>
-          <h1 className="text-4xl md:text-8xl font-medium tracking-tighter leading-none font-display text-pretty">
+          <h1 className="text-4xl md:text-8xl font-medium tracking-tighter leading-[1.1] font-display text-pretty">
             {projectData.title}
           </h1>
-          <p className={`text-base md:text-2xl max-w-4xl font-light leading-relaxed text-pretty ${
+          <p className={`text-base md:text-2xl max-w-4xl font-normal leading-relaxed text-pretty ${
             theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
           }`}>
             {projectData.tagline}
@@ -992,7 +992,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     <span className="text-xl">😫</span>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.humanProblem}</h4>
                   </div>
-                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
+                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                     theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
                   }`}>
                     {projectData.behindTheArchitecture.problem}
@@ -1005,7 +1005,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     <span className="text-xl">💡</span>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.productVision}</h4>
                   </div>
-                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
+                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                     theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
                   }`}>
                     {projectData.behindTheArchitecture.vision}
@@ -1018,7 +1018,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     <span className="text-xl">🧠</span>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-[#44D9C5]">{t.coreRationale}</h4>
                   </div>
-                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
+                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                     theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
                   }`}>
                     {projectData.behindTheArchitecture.rationale}
@@ -1082,7 +1082,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                             </span>
                           )}
                         </div>
-                        <p className={`text-xs leading-relaxed font-light ${
+                        <p className={`text-xs leading-relaxed font-normal ${
                           theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
                         }`}>
                           {item.detail}
@@ -1155,7 +1155,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                           <span>↪</span>
                           <span>{t.alternativeLabel}</span>
                         </div>
-                        <p className={`leading-relaxed font-light ${
+                        <p className={`leading-relaxed font-normal ${
                           theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
                         }`}>
                           {dec.alternativeConsidered}
@@ -1169,7 +1169,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                             <span>✓</span>
                             <span>{t.whyLabel}</span>
                           </div>
-                          <p className={`text-[11px] leading-relaxed font-light ${
+                          <p className={`text-[11px] leading-relaxed font-normal ${
                             theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
                           }`}>
                             {dec.why}
@@ -1180,7 +1180,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                             <span>⚡</span>
                             <span>{t.tradeoffLabel}</span>
                           </div>
-                          <p className={`text-[11px] leading-relaxed font-light ${
+                          <p className={`text-[11px] leading-relaxed font-normal ${
                             theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
                           }`}>
                             {dec.tradeOffAccepted}
@@ -1252,7 +1252,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                             <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-xs text-red-500">❌</div>
                             <h4 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.incident}</h4>
                           </div>
-                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
+                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                             theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
                           }`}>
                             {hurdle.incident}
@@ -1265,7 +1265,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                             <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center text-xs text-orange-500">🔍</div>
                             <h4 className="text-[10px] font-black uppercase tracking-widest text-orange-500">{t.diagnosis}</h4>
                           </div>
-                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
+                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                             theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
                           }`}>
                             {hurdle.diagnosis}
@@ -1278,7 +1278,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                             <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center text-xs text-green-500 font-bold">✓</div>
                             <h4 className="text-[10px] font-black uppercase tracking-widest text-green-500">{t.resolution}</h4>
                           </div>
-                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-light ${
+                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                             theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
                           }`}>
                             {hurdle.resolution}
@@ -1580,7 +1580,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                           <div className="w-14 h-14 rounded-full bg-accent-gold/10 border border-accent-gold/25 flex items-center justify-center mb-4 text-accent-gold shadow-lg animate-in fade-in duration-500">
                             <span className="text-xl">📽️</span>
                           </div>
-                          <h4 className="text-xs font-bold tracking-wider text-accent-gold uppercase font-mono block">
+                          <h4 className="text-sm font-bold tracking-wider text-accent-gold uppercase font-mono block">
                             {locale === 'en' ? "Guidde Video Playbook" : "인터랙티브 데모 가이드북"}
                           </h4>
                           <p className="mt-3 text-[11px] text-white/70 leading-relaxed">
@@ -1611,7 +1611,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                             </svg>
                           </div>
-                          <h4 className="text-xs font-bold tracking-wider text-accent-gold uppercase font-mono block">
+                          <h4 className="text-sm font-bold tracking-wider text-accent-gold uppercase font-mono block">
                             {locale === 'en' ? "Full Screen Demo Stream" : "데모 스트림 연동 완료"}
                           </h4>
                           <p className="mt-3 text-[11px] text-white/60 leading-relaxed">
@@ -1683,7 +1683,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   <div className="w-16 h-16 rounded-full bg-accent-gold/10 flex items-center justify-center mx-auto animate-pulse">
                     <span className="text-2xl">📽️</span>
                   </div>
-                  <h4 className="text-base font-bold font-display uppercase tracking-wider text-pretty text-accent-gold">
+                  <h4 className="text-sm font-bold font-mono uppercase tracking-wider text-pretty text-accent-gold">
                     {locale === 'en' ? "Walkthrough Video Slot Ready" : "비동기 파이프라인 시연 준비 완료"}
                   </h4>
                   <p className="text-xs text-white/70 leading-relaxed font-sans max-w-prose text-pretty">
@@ -1882,7 +1882,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     <h3 className="text-xl md:text-3xl font-bold uppercase tracking-wider font-display border-b pb-4 text-pretty">
                       {t.promptOrchestration}
                     </h3>
-                    <div className="space-y-6 font-mono font-light text-pretty">
+                    <div className="space-y-6 font-mono font-normal text-pretty">
                       <div className="w-full min-w-0">
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.structuredInstruction}</h4>
                         <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-green-400 w-full max-w-full whitespace-pre-wrap break-words md:whitespace-pre md:break-normal">
