@@ -282,7 +282,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki-teacher",
       context: "Same platform, staff-facing · Chekki Schools",
       status: "Beta",
-      image: "/screenshots/chekki-schools/02-landing-schools.png",
+      image: "/screenshots/chekki-schools/mascot-logo.png",
       title: "Role-scoped CRM for academy directors and teachers",
       problem: "Chekki AI is the app parents open; this is what the academy behind it runs on. A director managing the account, a foreign teacher grading homework, and a Korean teacher messaging parents were all stuck in the same single-page tool, each staring at menus meant for someone else's job.",
       owned: [
@@ -383,7 +383,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki-teacher",
       context: "같은 플랫폼, 교직원용 · Chekki Schools",
       status: "베타",
-      image: "/screenshots/chekki-schools/02-landing-schools.png",
+      image: "/screenshots/chekki-schools/mascot-logo.png",
       title: "원장·교사를 위한 역할별 CRM",
       problem: "Chekki AI가 학부모가 여는 앱이라면, 이건 그 뒤에 있는 학원이 돌아가는 도구입니다. 계정을 관리하는 원장, 숙제를 채점하는 원어민 교사, 학부모에게 메시지를 보내는 한국인 교사가 전부 같은 단일 페이지 도구에 갇혀, 서로 다른 사람의 업무용 메뉴를 마주하고 있었습니다.",
       owned: [
