@@ -638,97 +638,104 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     ]
   },
 
-  "consultation-pipeline": {
-    title: "Automated Report Generator & Pipeline",
-    tagline: "A zero-maintenance relational data pipeline automating student intake, report generation, and portal visualization.",
-    liveUrl: "https://jason-portfolio.com/",
-    walkthroughVideo: "https://embed.app.guidde.com/playbooks/fXwhH7ayipdTFcXASDJx5K?mode=videoOnly",
+  "chekki-teacher": {
+    title: "Chekki Schools — Role-Scoped Admissions & Classroom CRM",
+    tagline: "The staff-facing side of the Chekki platform: a director HQ, a foreign-teacher grading cockpit, and a Korean-teacher parent-communication console, each scoped to its own role, on top of the same worksheet-grading engine that powers the Chekki AI parent app.",
+    liveUrl: "https://www.chekkiai.com/schools",
     screenshots: [
-      { label: "Airtable Preview", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.35.34_PM_susvx4.png", subLabel: "Relational Database Backend" },
-      { label: "FT Fillout form", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757946/Screenshot_2026-06-03_at_5.35.38_PM_wywtjr.png", subLabel: "Dynamic Assessment Form" },
-      { label: "Report Generator Scenario", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757338/Screenshot_2026-06-06_at_11.10.34_PM_eij0wx.png", subLabel: "Make.com Automation Loom" },
-      { label: "Automated Consult Prep Scenario", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757338/Screenshot_2026-06-06_at_11.13.31_PM_nkcfga.png", subLabel: "Make.com Consultation Routing" },
-      { label: "Director Overview", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.34.00_PM_atnp3r.png", subLabel: "Softr Administration Portal" },
-      { label: "KT Dashboard (Main)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.32.00_PM_tnqzky.png", subLabel: "Bilingual Progress View" },
-      { label: "KT Dashboard (Details)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.32.40_PM_frctym.png", subLabel: "Detailed Observation Reports" }
+      { label: "Schools Landing", url: "/screenshots/chekki-schools/02-landing-schools.png", subLabel: "Staff-Facing Entry Point" },
+      { label: "Role-Aware Login", url: "/screenshots/chekki-schools/04-teacher-login-ft-kt.png", subLabel: "Foreign Teacher vs. Korean Teacher Split" },
+      { label: "Director HQ Dashboard", url: "/screenshots/chekki-schools/06-director-hq-dashboard.png", subLabel: "Academy-Wide Overview" },
+      { label: "Student Roster", url: "/screenshots/chekki-schools/07-director-students-tab-clean.png", subLabel: "Director: Students Tab" },
+      { label: "Teacher Invites", url: "/screenshots/chekki-schools/08-director-invite-modal.png", subLabel: "Director: Staff Onboarding" },
+      { label: "Class Assignment", url: "/screenshots/chekki-schools/09-director-teacher-assignment.png", subLabel: "Director: Teacher ↔ Class Mapping" },
+      { label: "Billing", url: "/screenshots/chekki-schools/10-director-billing.png", subLabel: "Director: Subscription & Seats" },
+      { label: "Class Scanner Log", url: "/screenshots/chekki-schools/11-ft-class-scanner-log.png", subLabel: "Foreign Teacher: Answer-Key Calibration" },
+      { label: "Weekly Insights", url: "/screenshots/chekki-schools/12-ft-weekly-insights.png", subLabel: "Foreign Teacher: Class-Wide Mistake Patterns" },
+      { label: "Worksheet Scanner", url: "/screenshots/chekki-schools/13-ft-worksheet-scanner.png", subLabel: "Foreign Teacher: Camera Grading" },
+      { label: "KakaoTalk Script Generator", url: "/screenshots/chekki-schools/14-kt-kakaotalk-script.png", subLabel: "Korean Teacher: Parent Messaging" },
+      { label: "Class Overview Roster", url: "/screenshots/chekki-schools/15-kt-class-overview-roster.png", subLabel: "Korean Teacher: Cross-Class View" },
+      { label: "Weekly Report Generator", url: "/screenshots/chekki-schools/16-kt-weekly-report-generator.png", subLabel: "Korean Teacher: Bilingual Progress Reports" }
     ],
     stats: [
-      { label: "Data Quality Rate", value: "100%" },
-      { label: "Process Overdue Rate", value: "0%" },
-      { label: "Manual Assembly", value: "Fully Automated" }
+      { label: "Grading Time Saved", value: "~80%" },
+      { label: "Per Teacher, Per Week", value: "10–15 hrs" },
+      { label: "Role-Scoped Dashboards", value: "3" }
     ],
     problem: [
-      "Staff lose instructions time typing redundant reports across scattered files manually.",
-      "Roster references frequently break when classes transform or students re-assign.",
-      "Sending files containing sensitive feedback over unsecured emails creates compliance concerns."
+      "Directors, foreign teachers, and Korean teachers do different jobs on the same roster, but a single shared UI forces all three to wade through screens meant for someone else's role.",
+      "Grading happens against a teacher's own answer key, not a model's best guess — without pre-seeded curriculum, class-wide mistake aggregation has nothing to aggregate against.",
+      "Korean teachers write bilingual parent updates by hand every week, translating a foreign teacher's classroom notes into KakaoTalk messages parents actually read."
     ],
     solution: [
-      "Interfaces customer intake forms directly with relational tables in Airtable.",
-      "Leverages webhook actions in Make.com to trigger translation and formatting scripts.",
-      "Presents feedback records securely on a dashboard using row-level permissions."
+      "Three role-scoped surfaces — director HQ, foreign-teacher cockpit, Korean-teacher console — sharing one Firestore data model instead of one screen trying to serve all three.",
+      "Foreign teachers pre-seed curriculum and calibrate answer keys before class, so a worksheet scan grades against a verified key instead of the model's own reading of the page.",
+      "Korean teachers get a generator that turns a foreign teacher's class log into a bilingual KakaoTalk-ready script, closing the loop from classroom to parent without a manual rewrite."
     ],
-    stack: ["Fillout Forms", "Airtable Relational DB", "Make.com Nodes", "Softr Portal", "Google Gemini API"],
+    stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "Role-scoped React hooks"],
     architecture: {
       lifecycle: [
-        "InTake: Teachers enter review logs and scores directly via Fillout templates.",
-        "Storage: File inputs write directly to database tables, adhering to strict validation checks.",
-        "Refinement: Webhooks dispatch records to a module that structures the feedback and translations.",
-        "Sync: The compiled report is published securely, mapping specifically to authorized student accounts."
+        "Director: invites staff, assigns teachers to classes, manages billing — the account-level layer the other two roles operate inside.",
+        "Foreign teacher: pre-seeds curriculum, calibrates the answer key, scans worksheets, reviews class-wide mistake patterns in weekly insights.",
+        "Korean teacher: sees the cross-class roster, and turns a foreign teacher's observations into a bilingual weekly report and a KakaoTalk-ready script for parents.",
+        "All three roles read and write the same underlying student and class records — no separate portal per role, just separate views."
       ],
       guardrails: [
-        "Relational Safeguards: Retains historical student notes even through roster adjustments.",
-        "Immediate Tokens: Generates custom magic links securely upon user account registration.",
-        "View Boundaries: Restricts student view access on the row level."
+        "Role guards on every route: a director's billing view and a teacher's grading queue are unreachable from the wrong login.",
+        "Firestore security rules scope every read to the requesting teacher's assigned classes, not the whole academy.",
+        "Answer-key grading stays anchored to what the teacher verified, not a fresh model read, so a scan can't silently drift from what was taught."
       ]
     },
     promptEngineering: {
       logic: `<instructions>
-  Compile teacher intakes into a concise bilingual progress summary.
-  Never expose internal school terms or specific clinical scores to the final parent output.
+  Turn a foreign teacher's class-wide mistake log into a bilingual weekly parent update.
+  Keep the Korean register polite and warm (honorifics); keep the English plain.
+  Never surface internal grading codes or raw rubric scores to the parent-facing text.
 </instructions>`,
       schema: `{
   type: "OBJECT",
   properties: {
-    bilingualSummary: { type: "STRING" },
-    actionableConsultTips: { type: "ARRAY", items: { type: "STRING" } }
+    summaryKo: { type: "STRING" },
+    summaryEn: { type: "STRING" },
+    kakaoScript: { type: "STRING" }
   },
-  required: ["bilingualSummary", "actionableConsultTips"]
+  required: ["summaryKo", "summaryEn", "kakaoScript"]
 }`,
       guardrails: [
-        "Format Locking: Imposes XML structure blocks to guard core directives against user-input bypasses.",
-        "Empathetic Tone: Instructs models to translate dry scores table items into warm parent-facing tips.",
-        "Formatting Standards: Disallows custom markdown wrappers to prevent parsing crashes."
+        "Structured output only: the KakaoTalk script is generated from the same schema as the report, so the two never drift out of sync.",
+        "Grading calls are separate from messaging calls — a scan never re-derives a score inside the parent-message prompt.",
+        "Every generated message is a draft a Korean teacher reviews before sending, never an auto-send."
       ]
     },
     impact: {
       value: [
-        "Replaced high-maintenance headless node scripts with robust webhook handlers on Make.com, reducing operational support tickets to absolute zero.",
-        "Architected a rate-buffered queue pipeline that absorbs burst form entry spikes cleanly, preventing model API timeouts or duplicate webhook dispatches.",
-        "Deployed row-level authorization boundaries on Softr endpoints, eliminating cross-parent data leakage risks while serving translated PDFs dynamically."
+        "The 4,678-line single-file teacher page this used to be got split into useDirectorState / useFTState / useKTState — role-scoped hooks that only load what that role's screen needs.",
+        "Answer-key calibration and worksheet scanning happen in the same cockpit, so a foreign teacher never leaves the app to reconcile a grade.",
+        "The KakaoTalk script generator removed the last manual-translation step between a foreign teacher's notes and a parent's phone."
       ],
       security: [
-        "Verifies permissions before loading individual student sheets.",
-        "Sanitizes input data fields prior to server transmission.",
-        "Secures access keys inside serverless configurations."
+        "Firestore rules deny cross-class reads by default; a teacher's query is scoped server-side, not just hidden in the UI.",
+        "Director-only routes (billing, invites, staff assignment) check role on every request, not just on initial page load.",
+        "Two internal security-audit sweeps closed the gaps a role-scoped rebuild opens up before either shipped."
       ]
     },
     behindTheArchitecture: {
-      problem: "Teachers and assistants lose hours copying and proofreading logs to email progress reports manually.",
-      vision: "A pipeline that transforms one form submission into translated progress details logged straight to a secure portal.",
-      rationale: "Paired Airtable's robust data tables with Make.com sequential workflows to eradicate manual transcription errors."
+      problem: "One shared teacher page trying to serve directors, foreign teachers, and Korean teachers had grown to 4,678 lines and every role saw every other role's UI.",
+      vision: "Split by role first, share data model underneath — three cockpits that each load fast because they only carry their own role's state.",
+      rationale: "Firestore's per-document security rules made role scoping enforceable at the data layer, not just the component layer, so a UI bug can't leak another role's records."
     },
     technicalHurdles: [
       {
-        title: "Asynchronous Integration Speed Gaps",
-        incident: "In initial implementations, automation queries ocasisionally failed because dependendent records were not synchronized on time.",
-        diagnosis: "Make webhooks triggered instantly upon record creation before linked metadata updates in Airtable was complete.",
-        resolution: "Created an intentional delayed-fetch routine, placing a slight hold before query execution to verify data consistency before AI processing."
+        title: "Splitting a 4,678-line monolith without a regression",
+        incident: "TeacherPage.tsx had grown into one file handling director, foreign-teacher, and Korean-teacher state together, making any change risky to test.",
+        diagnosis: "State for all three roles lived in one component tree, so a change meant to affect only the director view could silently touch teacher-facing behavior.",
+        resolution: "Extracted useDirectorState, useFTState, and useKTState as independent hooks, each owning only its role's data, verified against the existing behavior before cutover."
       },
       {
-        title: "Relational Context Gaps on Compilation",
-        incident: "Data translation engines occasionally output abstract database indices instead of student names.",
-        diagnosis: "The database aggregation module stripped string headers, passing raw numbers to downstream engines.",
-        resolution: "Configured an aggregator bundle that appends key text parameters explicitly alongside target records, preserving references."
+        title: "Keeping the KakaoTalk script and the parent report in sync",
+        incident: "An earlier version generated the bilingual report and the messaging script from two separate prompts, and they occasionally disagreed on the same week's summary.",
+        diagnosis: "Two independent generations of the same underlying facts will drift, especially across languages.",
+        resolution: "Moved both outputs into one structured schema response, so the KakaoTalk script is derived from the same generation as the report instead of a second call."
       }
     ]
   },
@@ -1833,97 +1840,104 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     ]
   },
 
-  "consultation-pipeline": {
-    title: "Automated Report Generator & Pipeline",
-    tagline: "상담 신청서 수집 즉시 데이터 구조에 정합하고 이중 언어 보고서를 추출해 전용 포털과 동기화하는 정보 전송 파이프라인입니다.",
-    liveUrl: "https://jason-portfolio.com/",
-    walkthroughVideo: "https://embed.app.guidde.com/playbooks/fXwhH7ayipdTFcXASDJx5K?mode=videoOnly",
+  "chekki-teacher": {
+    title: "Chekki Schools — 역할별 입학·학급 관리 CRM",
+    tagline: "Chekki 플랫폼의 교직원용 축입니다: 원장 HQ, 원어민 교사 채점 코크핏, 한국인 교사 학부모 소통 콘솔이 각자 역할에 맞게 분리되어 있으며, 학부모용 Chekki AI 앱과 동일한 채점 엔진을 공유합니다.",
+    liveUrl: "https://www.chekkiai.com/schools",
     screenshots: [
-      { label: "Airtable 데이터베이스", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.35.34_PM_susvx4.png", subLabel: "관계형 데이터 백엔드" },
-      { label: "FT Fillout 양식", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757946/Screenshot_2026-06-03_at_5.35.38_PM_wywtjr.png", subLabel: "설문 취합 및 평가 템플릿" },
-      { label: "성적 보고서 빌드 메커니즘", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757338/Screenshot_2026-06-06_at_11.10.34_PM_eij0wx.png", subLabel: "Make.com 자동 생성 시나리오" },
-      { label: "대화형 분석 전송 오퍼레이터", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757338/Screenshot_2026-06-06_at_11.13.31_PM_nkcfga.png", subLabel: "Make.com 상담 지원 워크플로우" },
-      { label: "원장 대시보드 오버뷰", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.34.00_PM_atnp3r.png", subLabel: "Softr 최고 관리자 어드민 포털" },
-      { label: "학부모 대시보드 (메인)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.32.00_PM_tnqzky.png", subLabel: "이중언어 맞춤 종합 도표" },
-      { label: "학부모 대시보드 (상세)", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780757340/Screenshot_2026-06-06_at_11.32.40_PM_frctym.png", subLabel: "정성 관찰 상세 리포트" }
+      { label: "Schools 랜딩", url: "/screenshots/chekki-schools/02-landing-schools.png", subLabel: "교직원용 진입 화면" },
+      { label: "역할별 로그인", url: "/screenshots/chekki-schools/04-teacher-login-ft-kt.png", subLabel: "원어민 교사 vs 한국인 교사 분기" },
+      { label: "원장 HQ 대시보드", url: "/screenshots/chekki-schools/06-director-hq-dashboard.png", subLabel: "학원 전체 현황" },
+      { label: "학생 명단", url: "/screenshots/chekki-schools/07-director-students-tab-clean.png", subLabel: "원장: 학생 탭" },
+      { label: "교사 초대", url: "/screenshots/chekki-schools/08-director-invite-modal.png", subLabel: "원장: 스태프 온보딩" },
+      { label: "반 배정", url: "/screenshots/chekki-schools/09-director-teacher-assignment.png", subLabel: "원장: 교사-반 매핑" },
+      { label: "결제 관리", url: "/screenshots/chekki-schools/10-director-billing.png", subLabel: "원장: 구독 및 좌석" },
+      { label: "채점 로그", url: "/screenshots/chekki-schools/11-ft-class-scanner-log.png", subLabel: "원어민 교사: 정답지 보정" },
+      { label: "주간 인사이트", url: "/screenshots/chekki-schools/12-ft-weekly-insights.png", subLabel: "원어민 교사: 학급 단위 오답 패턴" },
+      { label: "워크시트 스캐너", url: "/screenshots/chekki-schools/13-ft-worksheet-scanner.png", subLabel: "원어민 교사: 카메라 채점" },
+      { label: "카카오톡 스크립트 생성", url: "/screenshots/chekki-schools/14-kt-kakaotalk-script.png", subLabel: "한국인 교사: 학부모 메시징" },
+      { label: "학급 통합 명단", url: "/screenshots/chekki-schools/15-kt-class-overview-roster.png", subLabel: "한국인 교사: 전체 반 통합 뷰" },
+      { label: "주간 리포트 생성", url: "/screenshots/chekki-schools/16-kt-weekly-report-generator.png", subLabel: "한국인 교사: 이중언어 진도 리포트" }
     ],
     stats: [
-      { label: "데이터 정합도", value: "100%" },
-      { label: "수동 가공 단계", value: "완전 자동화" },
-      { label: "보고 취합 공수", value: "0분" }
+      { label: "채점 시간 절감", value: "약 80%" },
+      { label: "교사당 주간 절감", value: "10~15시간" },
+      { label: "역할별 대시보드", value: "3개" }
     ],
     problem: [
-      "정성적인 관찰 기록을 상담 종료 후 개별 엑셀 시트에 타이핑하고 옮겨 적으며 수일씩 야근을 유발하는 수동 공수 누적.",
-      "학급 리스트 및 원생 학적이 변모할 시, 산재된 파일 속 과거 이수 데이터 정합성을 관리해주기 힘든 꼬임 현상.",
-      "민감한 자녀 역량 평가가 보안 장치 없이 메신저나 일반 파일로 유출 공유되어 신용 우려를 촉발하는 환경."
+      "원장, 원어민 교사, 한국인 교사는 같은 학생 명단을 두고 서로 다른 일을 하지만, 화면이 하나로 통합돼 있으면 셋 다 자기 역할과 무관한 화면까지 헤쳐나가야 합니다.",
+      "채점은 모델의 추측이 아니라 교사 본인의 정답지를 기준으로 이뤄져야 하는데, 커리큘럼을 미리 등록해두지 않으면 학급 단위 오답 집계 자체가 성립하지 않습니다.",
+      "한국인 교사는 매주 원어민 교사의 수업 관찰 기록을 카카오톡 메시지로 손수 번역해 학부모에게 전달해야 했습니다."
     ],
     solution: [
-      "직관적인 구성의 Fillout 입력 양식을 실시간 Airtable 관계 시트 가교에 직결 수합 통합.",
-      "커밋 완료 즉석에서 Make.com 웹훅을 작동시켜 맞춤 설명서 빌드 구성 및 통역 서식 조립.",
-      "로그인 인증 해시 인자를 바탕으로, 권한이 확실한 부모 단말기에만 소속 자녀 정보를 타겟 노출."
+      "원장 HQ, 원어민 교사 코크핏, 한국인 교사 콘솔 — 하나의 Firestore 데이터 모델을 공유하는 세 개의 역할별 화면으로 분리했습니다.",
+      "원어민 교사가 수업 전 커리큘럼과 정답지를 미리 등록해두면, 워크시트 스캔이 모델의 자체 판독이 아니라 검증된 정답지를 기준으로 채점됩니다.",
+      "한국인 교사는 원어민 교사의 학급 기록을 이중언어 카카오톡 스크립트로 자동 변환하는 생성기를 사용해, 교실에서 학부모까지 이어지는 루프를 수작업 번역 없이 닫습니다."
     ],
-    stack: ["Fillout Forms", "Airtable Relational DB", "Make.com Nodes", "Softr Portal", "Google Gemini API"],
+    stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "역할별 React 훅"],
     architecture: {
       lifecycle: [
-        "기재: 강사가 면접 필드를 보고 체크 사항을 폼 창에 등록 제출합니다.",
-        "취합: 데이터는 Airtable 관계 컬렉션 구조로 실시간 기록되며 외래 키 바인딩을 통과합니다.",
-        "가공: Make 서버 라우터가 입력 문맥을 확인해 다국어 요약 및 부모 전달용 통용 리포트를 만듭니다.",
-        "매핑: 완성 명세는 Softr 타겟 사용자 계정 데이터와 인라인 매칭되어 포털 내에서 무결 표출됩니다."
+        "원장: 스태프 초대, 교사-반 배정, 결제 관리를 담당하며 나머지 두 역할이 그 위에서 동작하는 계정 레벨 레이어입니다.",
+        "원어민 교사: 커리큘럼 사전 등록, 정답지 보정, 워크시트 스캔, 주간 인사이트에서 학급 단위 오답 패턴을 검토합니다.",
+        "한국인 교사: 전체 반 통합 명단을 보고, 원어민 교사의 관찰 기록을 이중언어 주간 리포트와 카카오톡 스크립트로 변환합니다.",
+        "세 역할 모두 같은 학생·학급 레코드를 읽고 씁니다 — 역할별 별도 포털이 아니라 별도의 뷰입니다."
       ],
       guardrails: [
-        "데이터 보호: 반 정보가 도중에 변경되어도 기존 학적 이수 및 정밀 보고서 무결을 동기식 영구 지탱.",
-        " magic 링크 발송: 계정 기입 즉시 복조 마법 전송 주소를 대조 발행해 대기 피로 해소.",
-        "격리 조회 보증: 인증 쿠키 및 Row 세분화 필터 조건을 Softr 설정에 태워 임의 우회 방지."
+        "모든 라우트에 역할 가드를 적용: 원장의 결제 화면이나 교사의 채점 큐는 다른 계정으로 로그인하면 접근 자체가 불가능합니다.",
+        "Firestore 보안 규칙이 모든 읽기를 요청 교사가 배정된 반으로만 제한하며, 학원 전체 데이터에는 접근할 수 없습니다.",
+        "정답지 기반 채점은 항상 교사가 검증한 값을 기준으로 하며, 매번 새로 모델이 판독하지 않아 실제 수업 내용과 어긋나지 않습니다."
       ]
     },
     promptEngineering: {
       logic: `<instructions>
-  Compile teacher intakes into a concise bilingual progress summary.
-  Never expose internal school terms or specific clinical scores to the final parent output.
+  Turn a foreign teacher's class-wide mistake log into a bilingual weekly parent update.
+  Keep the Korean register polite and warm (honorifics); keep the English plain.
+  Never surface internal grading codes or raw rubric scores to the parent-facing text.
 </instructions>`,
       schema: `{
   type: "OBJECT",
   properties: {
-    bilingualSummary: { type: "STRING" },
-    actionableConsultTips: { type: "ARRAY", items: { type: "STRING" } }
+    summaryKo: { type: "STRING" },
+    summaryEn: { type: "STRING" },
+    kakaoScript: { type: "STRING" }
   },
-  required: ["bilingualSummary", "actionableConsultTips"]
+  required: ["summaryKo", "summaryEn", "kakaoScript"]
 }`,
       guardrails: [
-        "정형 고정 가이드: 유출을 차단하도록 내부 지목 단어가 부모 영역에 일절 노출되지 않게 정형 포장 수립.",
-        "온화 톤 적용 : 지엽적인 점수 대신 따뜻하고 동기 부여가 되는 발달 지침으로 단어 치환.",
-        "단방향 렌더: 파싱 불안 지점을 예방하기 위해 출력 란에서 별도의 복잡 부가 서식 사용 불가."
+        "구조화된 출력만 사용: 카카오톡 스크립트는 리포트와 동일한 스키마에서 생성되어 둘이 서로 어긋나지 않습니다.",
+        "채점 호출과 메시징 호출을 분리: 스캔이 학부모 메시지 프롬프트 안에서 점수를 다시 계산하는 일이 없습니다.",
+        "생성된 메시지는 모두 한국인 교사가 검토하는 초안이며, 자동 발송은 없습니다."
       ]
     },
     impact: {
       value: [
-        "유지 보수 비용이 많이 드는 헤드리스 스크립트 대신 Make.com의 정형 다중 웹훅 핸들러를 도입하여 인프라 지원 리스크를 최저 수준으로 조율.",
-        "단시간 다중 제출 데이터 유입 시에도 트래픽을 완충하여 안정적으로 번역을 정렬하는 Rate-buffered 큐 시스템을 세워 API 누락 차단.",
-        "Softr 단말의 개별 학적 권한 행 경계(Row-level authorization) 설정을 매핑하여, 다국어 리포트 렌더링 시 타인의 정보 훔쳐보기 취약성을 원천 금지."
+        "4,678줄짜리 단일 교사 페이지를 useDirectorState / useFTState / useKTState로 분리해, 각 역할 화면이 필요한 상태만 불러오도록 했습니다.",
+        "정답지 보정과 워크시트 스캔이 같은 코크핏 안에서 이뤄져, 원어민 교사가 채점을 확인하려고 앱을 벗어날 일이 없습니다.",
+        "카카오톡 스크립트 생성기가 원어민 교사 기록과 학부모 전달 사이 마지막 수작업 번역 단계를 없앴습니다."
       ],
       security: [
-        "학적 수지 부모의 고유 마법 암호화 사용자 세션 여부 조기 스크리닝.",
-        "인자 변수를 세니타이징하여 외부 시스템 명령어 인젝션 무력화.",
-        "데이터 취합 API 라우팅 키들을 가상 컨테이너 비밀 저장소에 은폐."
+        "Firestore 규칙이 기본적으로 반 간 교차 조회를 차단합니다 — UI에서만 숨기는 것이 아니라 서버 단에서 범위를 제한합니다.",
+        "원장 전용 라우트(결제, 초대, 스태프 배정)는 최초 페이지 로드뿐 아니라 매 요청마다 역할을 검증합니다.",
+        "역할별 재구축이 열어둘 수 있는 틈을 두 차례의 내부 보안 감사로 각각 배포 전에 막았습니다."
       ]
     },
     behindTheArchitecture: {
-      problem: "상담 종료 후 정리와 교재 검독을 수일에 걸쳐 개별 취합 및 전송하느라 겪던 피로와 사생활 노출에 따른 갈등.",
-      vision: "한 번의 폼 제출로 한/영 보고 양식을 조립하고 수신 전용 어드민 포털에 동적으로 전송 및 기록하는 통합 파이프라인.",
-      rationale: "데이터 영속성을 위해 Airtable 컬렉션을 설계하고, Make 연쇄 워크플로우를 결합하여 수동 행정 마찰 감소."
+      problem: "원장, 원어민 교사, 한국인 교사를 한 화면으로 서비스하던 교사 페이지가 4,678줄까지 불어났고, 모든 역할이 서로의 UI를 다 보게 되었습니다.",
+      vision: "역할별로 먼저 나누고 데이터 모델은 아래에서 공유한다 — 각자 자기 역할의 상태만 들고 있어 빠르게 로드되는 세 개의 코크핏.",
+      rationale: "Firestore의 문서 단위 보안 규칙 덕분에 역할 분리를 컴포넌트 레벨이 아니라 데이터 레벨에서 강제할 수 있어, UI 버그가 다른 역할의 레코드를 노출시킬 수 없습니다."
     },
     technicalHurdles: [
       {
-        title: "비동기 동기화 타이밍 갭 해소",
-        incident: "학생 상담 세션 기록 직후 Make.com 오토메이션이 일부 누락되거나 빈 데이터를 번역해 보내려 병목을 일으켰습니다.",
-        diagnosis: "폼(Fillout)을 통한 로드 생성 감지 시그널이 하위 개별 레코드 연동 정합보다 마이크로초 단위로 조기 트리거되어 빈 배열을 탐색함이 요인이었습니다.",
-        resolution: "delayed-fetch logic flow를 구축했습니다. 웹훅 수신 직후 의도적 일시정지 버퍼를 태워 데이터 영속 가교 합산이 완전히 끝날 시점에 AI를 통과시켰습니다."
+        title: "4,678줄 모놀리스를 회귀 없이 분리하기",
+        incident: "TeacherPage.tsx가 원장·원어민 교사·한국인 교사 상태를 한 파일에서 함께 처리하도록 불어나, 어떤 변경이든 테스트하기 위험한 상태였습니다.",
+        diagnosis: "세 역할의 상태가 하나의 컴포넌트 트리에 살고 있어, 원장 화면만 바꾸려던 변경이 교사 쪽 동작에도 조용히 영향을 줄 수 있었습니다.",
+        resolution: "useDirectorState, useFTState, useKTState를 각자 자기 역할의 데이터만 소유하는 독립 훅으로 분리하고, 전환 전 기존 동작과 대조 검증했습니다."
       },
       {
-        title: "어그리게이터 관계 텍스트 누설 복구",
-        incident: "수강 상담 포트폴리오를 다량 묶어서 요약 리포트를 출력하는 도중 학생 실명이 사라지고 rec9oCq 등으로만 출력되었습니다.",
-        diagnosis: "Airtable Aggregator 하부 모듈 노드가 관계 설정된 상위 Relational Raw lookup 필드 접근을 설계적으로 일시 투명 차단했기 때문이었습니다.",
-        resolution: "물리 텍스트 매핑 결속을 우회시키는 data smuggling bypass를 완성해 하나의 토큰 바디 내에 학생 실명을 강제 병합하여 AI에 안전히 인계하는 완치에 도달했습니다."
+        title: "카카오톡 스크립트와 학부모 리포트 동기화",
+        incident: "초기 버전은 이중언어 리포트와 메시징 스크립트를 서로 다른 두 프롬프트에서 생성했고, 가끔 같은 주의 요약 내용이 서로 어긋났습니다.",
+        diagnosis: "같은 사실을 두 번 독립적으로 생성하면, 특히 언어가 다를 때 내용이 어긋나기 쉽습니다.",
+        resolution: "두 출력을 하나의 구조화된 스키마 응답으로 합쳐, 카카오톡 스크립트가 별도 호출이 아니라 리포트와 같은 생성 결과에서 파생되도록 했습니다."
       }
     ]
   },

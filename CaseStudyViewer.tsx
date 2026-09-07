@@ -416,30 +416,30 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
         icon: "lock"
       }
     ],
-    'consultation-pipeline': [
+    'chekki-teacher': [
       {
-        title: lang === 'en' ? "Evaluation Form" : "학습 진단 양식",
-        subtitle: lang === 'en' ? "Fires instant validation events on commit" : "평가 보고 폼 제출 감지 및 트래픽 webhook 전달",
-        tech: "Fillout Assessment",
-        icon: "fileText"
+        title: lang === 'en' ? "Role-Scoped Hooks" : "역할별 React 훅",
+        subtitle: lang === 'en' ? "Director, foreign-teacher and Korean-teacher state kept independent" : "원장·원어민 교사·한국인 교사 상태를 서로 독립적으로 관리",
+        tech: "useDirectorState / useFTState / useKTState",
+        icon: "code"
       },
       {
-        title: lang === 'en' ? "Routing Middleware" : "경로 제어 노드",
-        subtitle: lang === 'en' ? "Deduplicates notes & buffers payload calls" : "이중 중복 제출 거부, 프롬프트 주입 방지 완충 연산",
-        tech: "Make.com Automation",
-        icon: "settings"
+        title: lang === 'en' ? "Answer-Key Grading" : "정답지 기반 채점",
+        subtitle: lang === 'en' ? "Scans grade against a teacher-verified key, not a fresh model read" : "매번 새로 판독하지 않고 교사가 검증한 정답지 기준으로 채점",
+        tech: "Gemini 2.5 Pro & Flash",
+        icon: "sparkles"
       },
       {
-        title: lang === 'en' ? "Relational Sheets" : "Airtable DB",
-        subtitle: lang === 'en' ? "Applies lookup hooks to track historical metrics" : "데이터 일관성과 무결성이 보증되는 중앙 장부 기록",
-        tech: "Airtable Relational Sheets",
+        title: lang === 'en' ? "Scoped Data Layer" : "역할 범위 데이터 레이어",
+        subtitle: lang === 'en' ? "Security rules restrict every read to a teacher's assigned classes" : "모든 읽기를 교사가 배정된 반으로 제한하는 보안 규칙",
+        tech: "Cloud Firestore",
         icon: "lock"
       },
       {
-        title: lang === 'en' ? "Softr Parent Portal" : "원 부모 성취 포털",
-        subtitle: lang === 'en' ? "Row-level isolated bilingual progress view" : "개인인별 완벽 격리 보호 및 translated 리포트 열람",
-        tech: "Softr Client Web App",
-        icon: "sparkles"
+        title: lang === 'en' ? "Bilingual Script Generator" : "이중언어 스크립트 생성기",
+        subtitle: lang === 'en' ? "One schema drives both the parent report and the KakaoTalk message" : "하나의 스키마가 학부모 리포트와 카카오톡 메시지를 함께 생성",
+        tech: "Vercel Functions",
+        icon: "fileText"
       }
     ],
     'lead-enrichment': [
@@ -1326,7 +1326,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             </div>
 
             {/* Sub-tab switcher to toggle between Interactive Screenshots and Walkthrough Video */}
-            {projectData.screenshots && projectData.screenshots.length > 0 && (projectData.walkthroughVideo !== undefined || projectId === 'consultation-pipeline') && (
+            {projectData.screenshots && projectData.screenshots.length > 0 && (projectData.walkthroughVideo !== undefined || projectId === 'chekki-teacher') && (
               <div className="flex rounded-xl p-1 border border-white/10 bg-black/40 text-[10px] font-bold uppercase tracking-wider overflow-hidden max-w-full self-start sm:self-auto shadow-2xl">
                 <button
                   type="button"

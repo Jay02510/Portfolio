@@ -38,11 +38,21 @@ const BUILD_UPDATES_DATA: BuildItem[] = [
     id: "chekki-production-consolidation-2026",
     date: "2026-09-01",
     type: "infra",
-    titleEn: "Chekki AI: Vercel 12-Function Consolidation & 4,678-Line Monolith Refactoring",
-    titleKo: "Chekki AI: Vercel 12개 함수 한도 통합 & 4,678줄 모놀리스 리팩토링 완결",
-    descEn: "Consolidated all AI routes into api/analyze.ts and billing into api/redeem.ts under Vercel limits; successfully refactored 4,678-line TeacherPage monolith into role-scoped hooks with zero regressions.",
-    descKo: "Vercel 12개 함수 한도 내에서 모든 AI 작업을 api/analyze.ts로, 결제를 api/redeem.ts로 통합하였으며, 4,678줄 규모의 교사용 모놀리스를 역할별 전용 훅으로 분리하여 리그레션 제로를 달성했습니다.",
+    titleEn: "Chekki AI: Vercel 12-Function Consolidation",
+    titleKo: "Chekki AI: Vercel 12개 함수 한도 통합",
+    descEn: "Consolidated all AI routes into api/analyze.ts and billing into api/redeem.ts to stay under Vercel's function-count limit, with zero regressions.",
+    descKo: "Vercel 함수 개수 한도 내에서 모든 AI 작업을 api/analyze.ts로, 결제를 api/redeem.ts로 통합하였으며, 리그레션 없이 완료했습니다.",
     relatedProjectId: "chekki"
+  },
+  {
+    id: "chekki-schools-teacherpage-refactor-2026",
+    date: "2026-09-01",
+    type: "infra",
+    titleEn: "Chekki Schools: 4,678-Line Monolith Split into Role-Scoped Hooks",
+    titleKo: "Chekki Schools: 4,678줄 모놀리스를 역할별 훅으로 분리",
+    descEn: "Refactored the single-file TeacherPage into useDirectorState / useFTState / useKTState — role-scoped hooks for director, foreign-teacher and Korean-teacher cockpits, with zero regressions.",
+    descKo: "단일 파일이던 TeacherPage를 원장·원어민 교사·한국인 교사 코크핏용 useDirectorState / useFTState / useKTState 역할별 훅으로 분리했으며, 리그레션 없이 완료했습니다.",
+    relatedProjectId: "chekki-teacher"
   },
   {
     id: "voice-ai-deterministic-scoring-release",
@@ -83,16 +93,6 @@ const BUILD_UPDATES_DATA: BuildItem[] = [
     descEn: "Upgraded the Chekki AI mobile worksheet parsing walkthrough to use an interactive Guidde Video Playbook, resolving potential cross-origin iframe security blocks elegantly across all browsers.",
     descKo: "Chekki AI 종이 시험지 인식 솔루션의 동영상 시연을 브라우저 보안 이슈 걱정 없는 최신 인터랙티브 Guidde 비디오 플레이메이커 가이드북으로 일괄 전환 탑재 완료했습니다.",
     relatedProjectId: "chekki"
-  },
-  {
-    id: "guidde-video-add",
-    date: "2026-06-12",
-    type: "feature",
-    titleEn: "Published Interactive Walkthrough Video",
-    titleKo: "상세 시연 비디오 가동",
-    descEn: "Integrated the 1-minute 4-second interactive walkthrough video for the 'Automated Report Generator & Pipeline' project, with cross-origin sandboxing protections for secure preview rendering.",
-    descKo: "Airtable-Make-Softr 연동 데이터 파이프라인의 1분 4초 분량 상세 작동 시연 영상을 softr 전용 포털과 연쇄 가동하도록 연결하였습니다. 보안 샌드박스를 구성해 끊김 없는 시청이 보장됩니다.",
-    relatedProjectId: "consultation-pipeline"
   },
   {
     id: "zero-memory-hardening",

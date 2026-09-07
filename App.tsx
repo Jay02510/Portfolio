@@ -277,6 +277,35 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
         { label: "App Store ↗", href: "https://apps.apple.com/us/app/chekkiai/id6759361725" },
         { label: "Google Play ↗", href: "https://play.google.com/store/apps/details?id=com.chekkiai.app&hl=en&pli=1" }
       ]
+    },
+    {
+      id: "chekki-teacher",
+      context: "Same platform, staff-facing · Chekki Schools",
+      status: "Beta",
+      image: "/screenshots/chekki-schools/06-director-hq-dashboard.png",
+      title: "Role-scoped CRM for academy directors and teachers",
+      problem: "Chekki AI is the parent-facing side of this platform; Chekki Schools is the staff-facing side, for the academy that Chekki AI's grading actually runs inside. A director, a foreign teacher, and a Korean teacher do different jobs on the same roster, so this ships as three role-scoped cockpits over one shared data model instead of one screen trying to serve all three.",
+      owned: [
+        "Role split across director HQ, foreign-teacher grading cockpit, and Korean-teacher parent-communication console",
+        "Answer-key pre-seeding and calibration so a worksheet scan grades against a verified key, not a fresh model read",
+        "Bilingual KakaoTalk script generator that turns a foreign teacher's class log into a parent-ready message",
+        "Firestore security rules scoping every read to a teacher's assigned classes, enforced server-side not just in the UI",
+        "Split a 4,678-line single-file teacher page into useDirectorState / useFTState / useKTState role-scoped hooks"
+      ],
+      decisions: [
+        {
+          choice: "Three role-scoped cockpits instead of one shared screen with conditional UI",
+          why: "A director, a foreign teacher, and a Korean teacher were all wading through each other's screens in the old single-page version.",
+          tradeoff: "Tradeoff: three surfaces to maintain and keep visually consistent instead of one."
+        },
+        {
+          choice: "One structured schema generating both the bilingual report and the KakaoTalk script",
+          why: "Two separate model calls for the same week's summary occasionally disagreed with each other.",
+          tradeoff: "Tradeoff: the script is only as good as the report it's derived from — no independent tuning per output."
+        }
+      ],
+      stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "Role-scoped React hooks"],
+      liveUrl: "https://www.chekkiai.com/schools"
     }
   ],
   ko: [
@@ -349,6 +378,35 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
         { label: "App Store ↗", href: "https://apps.apple.com/us/app/chekkiai/id6759361725" },
         { label: "Google Play ↗", href: "https://play.google.com/store/apps/details?id=com.chekkiai.app&hl=en&pli=1" }
       ]
+    },
+    {
+      id: "chekki-teacher",
+      context: "같은 플랫폼, 교직원용 · Chekki Schools",
+      status: "베타",
+      image: "/screenshots/chekki-schools/06-director-hq-dashboard.png",
+      title: "원장·교사를 위한 역할별 CRM",
+      problem: "Chekki AI가 이 플랫폼의 학부모용 축이라면, Chekki Schools는 Chekki AI의 채점이 실제로 돌아가는 학원의 교직원용 축입니다. 원장, 원어민 교사, 한국인 교사는 같은 학생 명단을 두고 서로 다른 일을 하기 때문에, 하나의 화면이 셋을 다 서비스하는 대신 하나의 데이터 모델을 공유하는 세 개의 역할별 코크핏으로 나눴습니다.",
+      owned: [
+        "원장 HQ, 원어민 교사 채점 코크핏, 한국인 교사 학부모 소통 콘솔로 역할 분리",
+        "정답지 사전 등록 및 보정으로, 워크시트 스캔이 매번 새로 판독하지 않고 검증된 정답지를 기준으로 채점",
+        "원어민 교사의 학급 기록을 학부모에게 바로 보낼 수 있는 메시지로 바꾸는 이중언어 카카오톡 스크립트 생성기",
+        "모든 읽기를 교사가 배정된 반으로 제한하는 Firestore 보안 규칙, UI가 아닌 서버 단에서 강제",
+        "4,678줄짜리 단일 교사 페이지를 useDirectorState / useFTState / useKTState 역할별 훅으로 분리"
+      ],
+      decisions: [
+        {
+          choice: "조건부 UI 하나 대신 역할별 코크핏 세 개로 분리",
+          why: "예전 단일 페이지 버전에서는 원장, 원어민 교사, 한국인 교사가 서로의 화면까지 다 헤쳐나가야 했습니다.",
+          tradeoff: "트레이드오프: 화면 하나 대신 세 개를 유지 보수하고 시각적으로 일관되게 관리해야 합니다."
+        },
+        {
+          choice: "이중언어 리포트와 카카오톡 스크립트를 하나의 구조화된 스키마에서 생성",
+          why: "같은 주 요약을 두 번 독립적으로 생성했을 때 서로 내용이 어긋나는 경우가 있었습니다.",
+          tradeoff: "트레이드오프: 스크립트 품질이 리포트에 종속되어, 출력별 독립 튜닝이 어렵습니다."
+        }
+      ],
+      stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "역할별 React 훅"],
+      liveUrl: "https://www.chekkiai.com/schools"
     }
   ]
 };
@@ -377,17 +435,6 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       stack: ["TypeScript solver", "Gemini 2.5 Pro", "React", "Vite"],
       liveUrl: "https://scheduling-app-five.vercel.app/",
       caseStudyId: "eduplanner"
-    },
-    {
-      id: "chekki-teacher",
-      domains: ["multimodal", "ops", "mobile"],
-      title: "Chekki Schools",
-      status: "Beta",
-      desc: "Teacher cockpit: curriculum pre-seeding, answer-key calibration, class-wide mistake aggregation before the lesson. Also carries the consultation pipeline: intake notes become bilingual progress reports in a parent portal.",
-      outcome: "About 80% of grading time saved, 10–15 hours a week per teacher",
-      stack: ["React 19", "Gemini 2.5 Pro", "Firestore"],
-      liveUrl: "https://www.chekkiai.com/schools",
-      caseStudyId: "consultation-pipeline"
     },
     {
       id: "benchmark",
@@ -444,17 +491,6 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       stack: ["TypeScript 솔버", "Gemini 2.5 Pro", "React", "Vite"],
       liveUrl: "https://scheduling-app-five.vercel.app/",
       caseStudyId: "eduplanner"
-    },
-    {
-      id: "chekki-teacher",
-      domains: ["multimodal", "ops", "mobile"],
-      title: "Chekki Schools",
-      status: "베타",
-      desc: "교사용 코크핏: 커리큘럼 사전 등록, 정답지 보정, 수업 전 학급 단위 오답 집계. 상담 파이프라인도 포함해 교사의 관찰 기록을 학부모 포털의 이중언어 리포트로 변환합니다.",
-      outcome: "채점 시간 약 80% 절감, 교사당 주 10~15시간",
-      stack: ["React 19", "Gemini 2.5 Pro", "Firestore"],
-      liveUrl: "https://www.chekkiai.com/schools",
-      caseStudyId: "consultation-pipeline"
     },
     {
       id: "benchmark",
@@ -583,7 +619,7 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      const validCaseIds = ['vodabi', 'chekki', 'bridgerecruit', 'eduplanner', 'consultation-pipeline', 'benchmark-explorer', 'white-label-hub', 'lead-enrichment'];
+      const validCaseIds = ['vodabi', 'chekki', 'bridgerecruit', 'eduplanner', 'chekki-teacher', 'benchmark-explorer', 'white-label-hub', 'lead-enrichment'];
       if (validCaseIds.includes(hash)) {
         setActiveCaseStudyId(hash);
       } else if (!hash || hash === 'work' || hash === 'more' || hash === 'log' || hash === 'contact' || hash === 'top') {
