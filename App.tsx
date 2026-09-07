@@ -3,7 +3,7 @@ import { CaseStudyViewer } from './CaseStudyViewer.tsx';
 import ResumeModal from './components/ResumeModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import { CompactProjectCard } from './components/CompactProjectCard.tsx';
-import { SunIcon, MoonIcon, SearchIcon, ExternalLinkIcon } from './components/Icons.tsx';
+import { SunIcon, MoonIcon, SearchIcon, ExternalLinkIcon, ChevronDownIcon } from './components/Icons.tsx';
 
 interface Decision {
   choice: string;
@@ -282,20 +282,20 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki-teacher",
       context: "Same platform, staff-facing · Chekki Schools",
       status: "Beta",
-      image: "/screenshots/chekki-schools/06-director-hq-dashboard.png",
+      image: "/screenshots/chekki-schools/02-landing-schools.png",
       title: "Role-scoped CRM for academy directors and teachers",
-      problem: "Chekki AI is the parent-facing side of this platform; Chekki Schools is the staff-facing side, for the academy that Chekki AI's grading actually runs inside. A director, a foreign teacher, and a Korean teacher do different jobs on the same roster, so this ships as three role-scoped cockpits over one shared data model instead of one screen trying to serve all three.",
+      problem: "Chekki AI is the app parents open; this is what the academy behind it runs on. A director managing the account, a foreign teacher grading homework, and a Korean teacher messaging parents were all stuck in the same single-page tool, each staring at menus meant for someone else's job.",
       owned: [
-        "Role split across director HQ, foreign-teacher grading cockpit, and Korean-teacher parent-communication console",
-        "Answer-key pre-seeding and calibration so a worksheet scan grades against a verified key, not a fresh model read",
+        "Director HQ, foreign-teacher grading cockpit, and Korean-teacher messaging console as three separate logins",
+        "Curriculum and answer-key pre-seeding, so grading checks a worksheet scan against what the teacher actually taught",
         "Bilingual KakaoTalk script generator that turns a foreign teacher's class log into a parent-ready message",
         "Firestore security rules scoping every read to a teacher's assigned classes, enforced server-side not just in the UI",
         "Split a 4,678-line single-file teacher page into useDirectorState / useFTState / useKTState role-scoped hooks"
       ],
       decisions: [
         {
-          choice: "Three role-scoped cockpits instead of one shared screen with conditional UI",
-          why: "A director, a foreign teacher, and a Korean teacher were all wading through each other's screens in the old single-page version.",
+          choice: "Separate logins per role instead of one page with conditional UI",
+          why: "The single-page version made a director's billing screen and a teacher's grading queue equally reachable from either login — nobody's menu matched their job.",
           tradeoff: "Tradeoff: three surfaces to maintain and keep visually consistent instead of one."
         },
         {
@@ -383,20 +383,20 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki-teacher",
       context: "같은 플랫폼, 교직원용 · Chekki Schools",
       status: "베타",
-      image: "/screenshots/chekki-schools/06-director-hq-dashboard.png",
+      image: "/screenshots/chekki-schools/02-landing-schools.png",
       title: "원장·교사를 위한 역할별 CRM",
-      problem: "Chekki AI가 이 플랫폼의 학부모용 축이라면, Chekki Schools는 Chekki AI의 채점이 실제로 돌아가는 학원의 교직원용 축입니다. 원장, 원어민 교사, 한국인 교사는 같은 학생 명단을 두고 서로 다른 일을 하기 때문에, 하나의 화면이 셋을 다 서비스하는 대신 하나의 데이터 모델을 공유하는 세 개의 역할별 코크핏으로 나눴습니다.",
+      problem: "Chekki AI가 학부모가 여는 앱이라면, 이건 그 뒤에 있는 학원이 돌아가는 도구입니다. 계정을 관리하는 원장, 숙제를 채점하는 원어민 교사, 학부모에게 메시지를 보내는 한국인 교사가 전부 같은 단일 페이지 도구에 갇혀, 서로 다른 사람의 업무용 메뉴를 마주하고 있었습니다.",
       owned: [
-        "원장 HQ, 원어민 교사 채점 코크핏, 한국인 교사 학부모 소통 콘솔로 역할 분리",
-        "정답지 사전 등록 및 보정으로, 워크시트 스캔이 매번 새로 판독하지 않고 검증된 정답지를 기준으로 채점",
+        "원장 HQ, 원어민 교사 채점 코크핏, 한국인 교사 메시징 콘솔을 세 개의 개별 로그인으로 분리",
+        "커리큘럼·정답지 사전 등록으로, 채점이 교사가 실제로 가르친 내용을 기준으로 워크시트 스캔을 대조",
         "원어민 교사의 학급 기록을 학부모에게 바로 보낼 수 있는 메시지로 바꾸는 이중언어 카카오톡 스크립트 생성기",
         "모든 읽기를 교사가 배정된 반으로 제한하는 Firestore 보안 규칙, UI가 아닌 서버 단에서 강제",
         "4,678줄짜리 단일 교사 페이지를 useDirectorState / useFTState / useKTState 역할별 훅으로 분리"
       ],
       decisions: [
         {
-          choice: "조건부 UI 하나 대신 역할별 코크핏 세 개로 분리",
-          why: "예전 단일 페이지 버전에서는 원장, 원어민 교사, 한국인 교사가 서로의 화면까지 다 헤쳐나가야 했습니다.",
+          choice: "조건부 UI 하나 대신 역할별 개별 로그인으로 분리",
+          why: "단일 페이지 버전에서는 원장의 결제 화면과 교사의 채점 큐가 어느 로그인으로 들어가든 똑같이 열려 있어, 누구의 메뉴도 자기 업무와 맞지 않았습니다.",
           tradeoff: "트레이드오프: 화면 하나 대신 세 개를 유지 보수하고 시각적으로 일관되게 관리해야 합니다."
         },
         {
@@ -592,6 +592,7 @@ export default function App() {
   const [isLogExpanded, setIsLogExpanded] = useState<boolean>(false);
   const [isResumeOpen, setIsResumeOpen] = useState<boolean>(false);
   const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(null);
+  const [expandedFeaturedId, setExpandedFeaturedId] = useState<string | null>(null);
 
   // Keep the CSS custom-property theme (index.html body.light rules) in sync with React state
   useEffect(() => {
@@ -897,40 +898,62 @@ export default function App() {
                         {project.problem}
                       </p>
 
-                      {/* WHAT I BUILT */}
-                      <div className={`mt-6 pt-5 border-t ${isDark ? 'border-white/10' : 'border-black/10'}`}>
+                      {/* DETAILS TOGGLE */}
+                      <button
+                        onClick={() => setExpandedFeaturedId(expandedFeaturedId === project.id ? null : project.id)}
+                        aria-expanded={expandedFeaturedId === project.id}
+                        className={`mt-6 pt-5 border-t w-full flex items-center justify-between gap-3 text-left ${
+                          isDark ? 'border-white/10' : 'border-black/10'
+                        }`}
+                      >
                         <h4 className={`text-xs font-bold tracking-widest uppercase ${
                           isDark ? 'text-[#788290]' : 'text-[#6b7280]'
                         }`}>
-                          {L.ownedLabel}
+                          {locale === 'en' ? "What I built & why" : "무엇을, 왜 만들었는지"}
                         </h4>
-                        <ul className="mt-3 space-y-2">
-                          {project.owned.map((item, idx) => (
-                            <li key={idx} className="text-xs md:text-[13.5px] leading-relaxed flex items-start gap-2.5">
-                              <span className="text-accent-gold shrink-0">—</span>
-                              <span className={isDark ? 'text-[#faf9f6]' : 'text-[#14171d]'}>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                        <ChevronDownIcon className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ${
+                          expandedFeaturedId === project.id ? 'rotate-180 text-accent-gold' : (isDark ? 'text-[#788290]' : 'text-[#6b7280]')
+                        }`} />
+                      </button>
 
-                      {/* DECISIONS & TRADEOFFS */}
-                      <div className={`mt-6 pt-5 border-t ${isDark ? 'border-white/10' : 'border-black/10'}`}>
-                        <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                          isDark ? 'text-[#788290]' : 'text-[#6b7280]'
-                        }`}>
-                          {L.decisionsLabel}
-                        </h4>
-                        <div className="mt-3 space-y-3.5">
-                          {project.decisions.map((d, idx) => (
-                            <div key={idx} className="text-xs md:text-[13px] leading-relaxed">
-                              <div className="font-semibold text-accent-gold">{d.choice}</div>
-                              <div className={`mt-0.5 ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>{d.why}</div>
-                              <div className={`mt-0.5 italic ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>{d.tradeoff}</div>
+                      {expandedFeaturedId === project.id && (
+                        <div className="animate-in fade-in slide-in-from-top-1 duration-200">
+                          {/* WHAT I BUILT */}
+                          <div className="mt-4">
+                            <h4 className={`text-xs font-bold tracking-widest uppercase ${
+                              isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+                            }`}>
+                              {L.ownedLabel}
+                            </h4>
+                            <ul className="mt-3 space-y-2">
+                              {project.owned.map((item, idx) => (
+                                <li key={idx} className="text-xs md:text-[13.5px] leading-relaxed flex items-start gap-2.5">
+                                  <span className="text-accent-gold shrink-0">—</span>
+                                  <span className={isDark ? 'text-[#faf9f6]' : 'text-[#14171d]'}>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          {/* DECISIONS & TRADEOFFS */}
+                          <div className={`mt-6 pt-5 border-t ${isDark ? 'border-white/10' : 'border-black/10'}`}>
+                            <h4 className={`text-xs font-bold tracking-widest uppercase ${
+                              isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+                            }`}>
+                              {L.decisionsLabel}
+                            </h4>
+                            <div className="mt-3 space-y-3.5">
+                              {project.decisions.map((d, idx) => (
+                                <div key={idx} className="text-xs md:text-[13px] leading-relaxed">
+                                  <div className="font-semibold text-accent-gold">{d.choice}</div>
+                                  <div className={`mt-0.5 ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>{d.why}</div>
+                                  <div className={`mt-0.5 italic ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>{d.tradeoff}</div>
+                                </div>
+                              ))}
                             </div>
-                          ))}
+                          </div>
                         </div>
-                      </div>
+                      )}
 
                       {/* STACK TAGS */}
                       <div className="mt-5 flex flex-wrap gap-1.5">

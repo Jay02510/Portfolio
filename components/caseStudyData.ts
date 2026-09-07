@@ -668,7 +668,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
       "Korean teachers write bilingual parent updates by hand every week, translating a foreign teacher's classroom notes into KakaoTalk messages parents actually read."
     ],
     solution: [
-      "Three role-scoped surfaces — director HQ, foreign-teacher cockpit, Korean-teacher console — sharing one Firestore data model instead of one screen trying to serve all three.",
+      "Split the account into three surfaces — director HQ, foreign-teacher cockpit, Korean-teacher console — reading and writing the same Firestore records under different logins.",
       "Foreign teachers pre-seed curriculum and calibrate answer keys before class, so a worksheet scan grades against a verified key instead of the model's own reading of the page.",
       "Korean teachers get a generator that turns a foreign teacher's class log into a bilingual KakaoTalk-ready script, closing the loop from classroom to parent without a manual rewrite."
     ],
@@ -683,7 +683,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
       guardrails: [
         "Role guards on every route: a director's billing view and a teacher's grading queue are unreachable from the wrong login.",
         "Firestore security rules scope every read to the requesting teacher's assigned classes, not the whole academy.",
-        "Answer-key grading stays anchored to what the teacher verified, not a fresh model read, so a scan can't silently drift from what was taught."
+        "Grading always cross-checks the teacher's verified answer key first, so a scan can't silently drift from what was actually taught in class."
       ]
     },
     promptEngineering: {
@@ -1870,7 +1870,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
       "한국인 교사는 매주 원어민 교사의 수업 관찰 기록을 카카오톡 메시지로 손수 번역해 학부모에게 전달해야 했습니다."
     ],
     solution: [
-      "원장 HQ, 원어민 교사 코크핏, 한국인 교사 콘솔 — 하나의 Firestore 데이터 모델을 공유하는 세 개의 역할별 화면으로 분리했습니다.",
+      "계정을 원장 HQ, 원어민 교사 코크핏, 한국인 교사 콘솔 세 개의 화면으로 나누되, 로그인만 다를 뿐 같은 Firestore 레코드를 읽고 씁니다.",
       "원어민 교사가 수업 전 커리큘럼과 정답지를 미리 등록해두면, 워크시트 스캔이 모델의 자체 판독이 아니라 검증된 정답지를 기준으로 채점됩니다.",
       "한국인 교사는 원어민 교사의 학급 기록을 이중언어 카카오톡 스크립트로 자동 변환하는 생성기를 사용해, 교실에서 학부모까지 이어지는 루프를 수작업 번역 없이 닫습니다."
     ],
@@ -1885,7 +1885,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
       guardrails: [
         "모든 라우트에 역할 가드를 적용: 원장의 결제 화면이나 교사의 채점 큐는 다른 계정으로 로그인하면 접근 자체가 불가능합니다.",
         "Firestore 보안 규칙이 모든 읽기를 요청 교사가 배정된 반으로만 제한하며, 학원 전체 데이터에는 접근할 수 없습니다.",
-        "정답지 기반 채점은 항상 교사가 검증한 값을 기준으로 하며, 매번 새로 모델이 판독하지 않아 실제 수업 내용과 어긋나지 않습니다."
+        "채점은 항상 교사가 검증한 정답지를 먼저 대조하므로, 스캔이 실제 수업 내용과 조용히 어긋나는 일이 없습니다."
       ]
     },
     promptEngineering: {
