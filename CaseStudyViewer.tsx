@@ -442,6 +442,32 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
         icon: "fileText"
       }
     ],
+    'hagwon-readiness': [
+      {
+        title: lang === 'en' ? "6-Pillar Scoring Engine" : "6영역 채점 엔진",
+        subtitle: lang === 'en' ? "Weighted answers into a 0-84 score, band, and weakest pillar" : "답변에 가중치를 부여해 0~84점, 등급, 최약점 영역을 산출",
+        tech: "TypeScript Client-Side Scorer",
+        icon: "code"
+      },
+      {
+        title: lang === 'en' ? "Report + Lead Email" : "리포트 및 리드 이메일",
+        subtitle: lang === 'en' ? "Bilingual HTML report to the submitter, alert to sales" : "제출자에게 이중언어 HTML 리포트, 세일즈팀에 리드 알림 발송",
+        tech: "Resend",
+        icon: "fileText"
+      },
+      {
+        title: lang === 'en' ? "Persistent Permalink" : "영구 결과 링크",
+        subtitle: lang === 'en' ? "Report snapshot stored so a result survives without localStorage" : "리포트 스냅샷을 저장해 localStorage 없이도 결과가 유지",
+        tech: "Cloud Firestore",
+        icon: "lock"
+      },
+      {
+        title: lang === 'en' ? "Attribution + Admin View" : "유입 추적 및 관리자 화면",
+        subtitle: lang === 'en' ? "GA4 lead events, Basic-Auth dashboard of score distribution" : "GA4 리드 이벤트, Basic Auth 점수 분포 대시보드",
+        tech: "GA4 / Vercel Middleware",
+        icon: "sparkles"
+      }
+    ],
     'lead-enrichment': [
       {
         title: lang === 'en' ? "Interactive Map UI" : "Geographic Map 대시보드",

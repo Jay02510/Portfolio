@@ -414,6 +414,17 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
 const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
   en: [
     {
+      id: "hagwon-readiness",
+      domains: ["ops"],
+      title: "Hagwon AI Readiness Index",
+      status: "Live · Lead Gen",
+      desc: "Bilingual 6-pillar self-assessment quiz that scores a hagwon's AI readiness, emails a personalized report, and feeds Chekki's sales funnel — plus a Basic-Auth admin dashboard and GA4 attribution to see which channel actually converts.",
+      outcome: "Automated lead capture + report delivery, zero manual follow-up needed to see a score",
+      stack: ["Next.js 14", "TypeScript", "Firebase Admin / Firestore", "Resend", "GA4", "Vercel Middleware"],
+      liveUrl: "https://ai-readiness.chekkiai.com",
+      caseStudyId: "hagwon-readiness"
+    },
+    {
       id: "bridgerecruit",
       domains: ["ops", "automation"],
       title: "BridgeRecruit",
@@ -469,6 +480,17 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
     }
   ],
   ko: [
+    {
+      id: "hagwon-readiness",
+      domains: ["ops"],
+      title: "학원 AI 준비도 지표",
+      status: "라이브 · 리드 확보",
+      desc: "학원의 AI 준비도를 6개 영역으로 진단하는 이중언어(한/영) 자가진단 퀴즈. 결과 리포트를 이메일로 발송하며 Chekki 세일즈 퍼널로 리드를 연결하고, Basic Auth 관리자 대시보드와 GA4 유입 추적으로 어떤 채널이 실제로 전환되는지 보여줍니다.",
+      outcome: "리드 수집과 리포트 발송 자동화, 점수 확인까지 수동 후속 조치 불필요",
+      stack: ["Next.js 14", "TypeScript", "Firebase Admin / Firestore", "Resend", "GA4", "Vercel Middleware"],
+      liveUrl: "https://ai-readiness.chekkiai.com",
+      caseStudyId: "hagwon-readiness"
+    },
     {
       id: "bridgerecruit",
       domains: ["ops", "automation"],
@@ -620,7 +642,7 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      const validCaseIds = ['vodabi', 'chekki', 'bridgerecruit', 'eduplanner', 'chekki-teacher', 'benchmark-explorer', 'white-label-hub', 'lead-enrichment'];
+      const validCaseIds = ['vodabi', 'chekki', 'bridgerecruit', 'eduplanner', 'chekki-teacher', 'benchmark-explorer', 'white-label-hub', 'lead-enrichment', 'hagwon-readiness'];
       if (validCaseIds.includes(hash)) {
         setActiveCaseStudyId(hash);
       } else if (!hash || hash === 'work' || hash === 'more' || hash === 'log' || hash === 'contact' || hash === 'top') {

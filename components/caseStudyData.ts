@@ -1,6 +1,111 @@
 import { CaseStudyType } from '../types.ts';
 
 export const studyDataEn: Record<string, CaseStudyType> = {
+  "hagwon-readiness": {
+    title: "Hagwon AI Readiness Index — Bilingual Lead-Gen Assessment",
+    tagline: "A 6-pillar, EN/KO self-assessment that scores a hagwon director's AI readiness out of 84, emails a personalized report, and routes the result into Chekki's B2B sales funnel — with GA4 attribution and a password-gated admin view behind it.",
+    liveUrl: "https://ai-readiness.chekkiai.com",
+    stats: [
+      { label: "Assessment Scope", value: "6 Pillars / 84-pt Scale" },
+      { label: "Languages", value: "EN / KO Bilingual" },
+      { label: "Lead Delivery", value: "Auto Email + Firestore Permalink" }
+    ],
+    problem: [
+      "Chekki Schools' sales motion depended on a director already knowing they had an AI gap — most had no way to see it themselves before a sales call.",
+      "A lead-gen quiz with no server-side scoring or persistence would lose every result the moment a visitor closed the tab, and give the sales team nothing to follow up on.",
+      "Traffic driven at the quiz (social, blog, cold outreach) had no way to prove which channel actually produced a completed assessment versus a bounce."
+    ],
+    solution: [
+      "Built a weighted scoring engine across 6 pillars (0–84 scale) with band cutoffs and a personalized weakest-pillar callout, run client-side against a static question bank.",
+      "On submit, persisted the full rendered report snapshot to Firestore and emailed both the submitter (bilingual HTML report) and an internal notify address (lead alert) via Resend — sliding-window rate-limited per IP to block abuse.",
+      "Gave every report a permanent permalink (/results/[id]) that reads the stored snapshot back, so a director's result survives without depending on their browser's localStorage.",
+      "Wired GA4 site-wide and fired a generate_lead event with score/band on successful submit, so UTM-tagged campaign links show up as attributable conversions, not just pageviews.",
+      "Added a Basic-Auth-gated /admin route (Vercel middleware, password-only check) showing score distribution, band counts, and weakest-pillar frequency across all submissions — no separate login system to build."
+    ],
+    stack: ["Next.js 14 App Router", "TypeScript", "Tailwind CSS", "Firebase Admin / Firestore", "Resend", "Google Analytics 4", "Vercel Middleware"],
+    decisions: [
+      {
+        decision: "HTTP Basic Auth via middleware over a full login system",
+        alternativeConsidered: "Building a session-based admin login (cookie + password form + auth check on every route)",
+        why: "One person needs to see submission stats occasionally — the browser's native Basic Auth prompt does the whole job in ~15 lines of middleware, no session storage or login UI to build or secure.",
+        tradeOffAccepted: "No per-user accounts, no audit log of who viewed the dashboard, one shared password for anyone who has it."
+      },
+      {
+        decision: "Client-side scoring against a static question bank over a scored server API",
+        alternativeConsidered: "Sending each answer to a /api/score endpoint and computing the result server-side",
+        why: "The scoring logic isn't a secret worth protecting behind a server round-trip, and computing it client-side means instant feedback on the results page with zero added latency.",
+        tradeOffAccepted: "A determined visitor could inspect the client bundle to reverse-engineer scoring weights — acceptable, since gaming your own diagnostic score has no payoff."
+      }
+    ],
+    architecture: {
+      lifecycle: [
+        "Quiz: lib/questions.ts defines the 6-pillar question bank; lib/scoring.ts weights answers into a 0–84 score, a band, and a weakest pillar.",
+        "Submit: POST /api/submit validates the email, rate-limits by IP (5/hr sliding window), writes the full report snapshot to Firestore's readiness_submissions, and fires two Resend emails.",
+        "Permalink: /results/[id] reads that same Firestore doc back, rendering the identical report without recomputing anything from the visitor's answers.",
+        "Admin: /admin (Basic Auth via middleware.ts) reads every submission and recomputes the same distribution stats scripts/analyze-submissions.mjs already produced from the CLI, just live and in-browser."
+      ],
+      guardrails: [
+        "Sliding-window in-memory rate limiter (5 submissions/hour/IP) blocks scripted abuse of the free-text feedback and email fields.",
+        "User-submitted name/hagwon/feedback strings are HTML-escaped before being interpolated into the report email, closing the injection path a raw template string would leave open.",
+        "/admin is unreachable without ADMIN_PASSWORD set — the route 503s rather than silently serving submissions data if the env var is missing.",
+        "Firestore writes only happen when FIREBASE_SERVICE_ACCOUNT is present, so local/dev runs degrade to email-only instead of crashing."
+      ]
+    },
+    promptEngineering: {
+      logic: `// No LLM in the request path — deterministic scoring only.
+function scoreAssessment(answers) {
+  // each pillar's raw score is a weighted sum of its question answers
+  // weakest pillar = lowest (raw / maxRaw) ratio, not lowest raw score,
+  // so a 2-question pillar isn't unfairly favored over a 6-question one
+}`,
+      schema: `type PillarResult = {
+  name: string; raw: number; maxRaw: number;
+  isStrong: boolean; blurb: string | null; nextStep: string | null;
+};`,
+      guardrails: [
+        "Personalized next-step copy is looked up per answered question (nextStepByQuestion), not just per pillar, after a bug let two different weakest-pillar answers surface the same generic recommendation.",
+        "EN/KO copy pairs are fixed at the same commit as any scoring change, so a quote and its recommendation can't drift out of sync between languages (real fixes: q12 and q17 overrides).",
+        "The weakest pillar is excluded from the full pillar breakdown table in the report, so the same score never gets shown to the reader twice under two different framings."
+      ]
+    },
+    impact: {
+      value: [
+        "Directors get a scored, emailed report in the time it takes to answer ~15 questions — no sales call required before they see where they stand.",
+        "Every submission is a warm lead with a bilingual report, a stored Firestore record, and GA4 attribution — three things a static quiz with no backend would have had none of.",
+        "The admin dashboard reuses the exact same aggregate logic as the CLI analysis script, so there's one source of truth for what a submission looks like instead of two implementations drifting apart."
+      ],
+      security: [
+        "HTML-escaping on every user-submitted field going into an email template, closing an injection path that would otherwise let a submitted name or feedback string forge links or markup in an email that looks like it's from Chekki.",
+        "Basic Auth admin gate fails closed: no ADMIN_PASSWORD env var means a 503, not an open dashboard.",
+        "Per-IP sliding-window rate limiting on the only public write endpoint (/api/submit)."
+      ]
+    },
+    behindTheArchitecture: {
+      problem: "A static quiz with no backend can't produce a lead, can't survive a closed tab, and can't tell you which marketing channel is actually working.",
+      vision: "Make the assessment itself the top of the sales funnel: score it, email it, persist it, and attribute it — without building a second app to do that.",
+      rationale: "Reused the exact Firebase Admin credential and Firestore project already backing chekki-ai's sales tooling, so this quiz writes into the same data plane instead of standing up its own."
+    },
+    technicalHurdles: [
+      {
+        title: "Same weakest-pillar bug in two different question sets",
+        incident: "The teaching pillar's quoted answer and its recommendation could mismatch — the report would quote one weak answer but recommend fixing a different one. Fixed once for question 17, then found again on question 12.",
+        diagnosis: "The recommendation lookup was keyed by pillar, not by the specific question the visitor's weakest answer came from — any pillar spanning two distinct problems could point the recommendation at the wrong one.",
+        resolution: "Added per-question overrides keyed by the actual question ID, and audited every multi-question pillar for the same shape of mismatch instead of only patching the one that got reported."
+      },
+      {
+        title: "Report emails silently collapsing in Gmail",
+        incident: "The full pillar breakdown table rendered fine everywhere except Gmail, where large chunks of the report just disappeared behind a '...' toggle.",
+        diagnosis: "Gmail's clipping heuristic auto-collapses what it treats as 'quoted content' when it detects a table nested a third level deep inside another table cell.",
+        resolution: "Flattened the pillar rows to single-level markup instead of a table-in-a-cell, keeping the same visual layout without tripping Gmail's nesting-depth check."
+      },
+      {
+        title: "GA4 and admin code shipped locally, never reached the deploy",
+        incident: "After wiring up GA4 and the admin dashboard, Realtime showed 0 users and /admin was unreachable — Vercel's redeploy button was just rebuilding the last pushed commit, which predated the changes.",
+        diagnosis: "The changes existed only in the local working tree; nothing had actually been committed or pushed to main yet.",
+        resolution: "Committed and pushed the changes to trigger a real deploy off the new commit, instead of continuing to redeploy stale code."
+      }
+    ]
+  },
   vodabi: {
     title: "VODABI — AI Outbound Sales Call Evaluation Platform",
     tagline: "Enterprise voice-AI platform replacing manual phone screens for outbound sales candidates with live realtime WebRTC voice roleplay, deterministic rubric scoring, and a grounded AI coaching assistant (VOISOR).",
@@ -1203,6 +1308,111 @@ responseSchema: {
 };
 
 export const studyDataKo: Record<string, CaseStudyType> = {
+  "hagwon-readiness": {
+    title: "학원 AI 준비도 지표 — 이중언어 리드 확보 진단",
+    tagline: "학원 원장의 AI 준비도를 84점 만점, 6개 영역으로 진단하는 한/영 이중언어 자가진단. 결과를 개인화 리포트로 이메일 발송하고 Chekki의 B2B 세일즈 퍼널로 연결하며, GA4 유입 추적과 비밀번호 보호 관리자 화면을 갖췄습니다.",
+    liveUrl: "https://ai-readiness.chekkiai.com",
+    stats: [
+      { label: "진단 범위", value: "6개 영역 / 84점 척도" },
+      { label: "지원 언어", value: "한/영 이중언어" },
+      { label: "리드 전달", value: "자동 이메일 + Firestore 영구 링크" }
+    ],
+    problem: [
+      "Chekki Schools의 세일즈 방식은 원장이 스스로 AI 격차를 인지하고 있어야 했지만, 대부분은 세일즈 통화 전에 이를 확인할 방법이 없었습니다.",
+      "서버 측 채점과 저장 기능이 없는 리드 확보용 퀴즈는 방문자가 탭을 닫는 순간 결과가 사라지고, 세일즈팀에 후속 조치할 근거를 전혀 남기지 못합니다.",
+      "퀴즈로 유입된 트래픽(소셜, 블로그, 콜드 아웃리치)은 어떤 채널이 실제로 완료된 진단을 만들어냈는지, 단순 이탈과 구분해 증명할 방법이 없었습니다."
+    ],
+    solution: [
+      "6개 영역(0~84점 척도)에 가중치를 둔 채점 엔진을 구축, 등급 구간과 개인화된 최약점 영역 코멘트를 정적 문항 뱅크 기준으로 클라이언트 측에서 산출.",
+      "제출 시 전체 리포트 스냅샷을 Firestore에 저장하고, 제출자(이중언어 HTML 리포트)와 내부 알림 주소(리드 알림) 양쪽에 Resend로 이메일 발송 — IP당 슬라이딩 윈도우 방식으로 남용 차단.",
+      "모든 리포트에 영구 링크(/results/[id])를 부여해 저장된 스냅샷을 다시 읽어오도록 하여, 원장의 결과가 브라우저 localStorage에 의존하지 않고 유지되도록 함.",
+      "GA4를 전체 사이트에 연동하고 제출 성공 시 점수/등급을 담은 generate_lead 이벤트를 발생시켜, UTM 태그가 붙은 캠페인 링크가 단순 페이지뷰가 아닌 귀속 가능한 전환으로 집계.",
+      "Basic Auth로 보호된 /admin 라우트(Vercel 미들웨어, 비밀번호 확인만)를 추가해 전체 제출 건의 점수 분포, 등급별 건수, 최약점 영역 빈도를 확인 — 별도 로그인 시스템 구축 없이."
+    ],
+    stack: ["Next.js 14 App Router", "TypeScript", "Tailwind CSS", "Firebase Admin / Firestore", "Resend", "Google Analytics 4", "Vercel Middleware"],
+    decisions: [
+      {
+        decision: "전체 로그인 시스템 대신 미들웨어 기반 HTTP Basic Auth",
+        alternativeConsidered: "세션 기반 관리자 로그인 구축(쿠키 + 비밀번호 폼 + 모든 라우트에 인증 확인)",
+        why: "제출 통계를 가끔 확인하는 사람은 한 명뿐 — 브라우저 네이티브 Basic Auth 프롬프트가 약 15줄의 미들웨어로 같은 일을 처리하며, 세션 저장이나 로그인 UI를 구축·보안할 필요가 없음.",
+        tradeOffAccepted: "개별 사용자 계정 없음, 대시보드 열람자에 대한 감사 로그 없음, 비밀번호를 아는 사람이면 누구나 공유 접근."
+      },
+      {
+        decision: "채점 서버 API 대신 정적 문항 뱅크 기준 클라이언트 측 채점",
+        alternativeConsidered: "각 답변을 /api/score 엔드포인트로 전송해 서버 측에서 결과 계산",
+        why: "채점 로직은 서버 왕복으로 보호할 만큼의 비밀이 아니며, 클라이언트 측 계산은 결과 페이지에서 지연 없이 즉시 피드백을 제공.",
+        tradeOffAccepted: "의도가 있는 방문자는 클라이언트 번들을 분석해 채점 가중치를 역추적할 수 있음 — 자가 진단 점수를 조작해도 얻는 이득이 없으므로 수용 가능."
+      }
+    ],
+    architecture: {
+      lifecycle: [
+        "퀴즈: lib/questions.ts가 6개 영역 문항 뱅크를 정의하고, lib/scoring.ts가 답변에 가중치를 부여해 0~84점, 등급, 최약점 영역을 산출.",
+        "제출: POST /api/submit이 이메일을 검증하고, IP 기준 요청 제한(시간당 5건, 슬라이딩 윈도우)을 적용하며, 전체 리포트 스냅샷을 Firestore의 readiness_submissions에 기록하고 Resend 이메일 2건을 발송.",
+        "영구 링크: /results/[id]가 동일한 Firestore 문서를 다시 읽어와 방문자의 답변을 재계산하지 않고 동일한 리포트를 렌더링.",
+        "관리자: /admin(middleware.ts를 통한 Basic Auth)이 모든 제출 건을 읽어와 scripts/analyze-submissions.mjs가 CLI에서 산출하던 동일한 분포 통계를 브라우저에서 실시간으로 재계산."
+      ],
+      guardrails: [
+        "메모리 기반 슬라이딩 윈도우 요청 제한(IP당 시간당 5건)으로 자유 서술 피드백·이메일 필드에 대한 스크립트 남용을 차단.",
+        "사용자가 제출한 이름/학원명/피드백 문자열은 리포트 이메일에 삽입되기 전 HTML 이스케이프 처리하여, 원시 템플릿 문자열이 열어둘 인젝션 경로를 차단.",
+        "ADMIN_PASSWORD가 설정되지 않으면 /admin에 접근할 수 없음 — 환경 변수가 없으면 라우트가 조용히 제출 데이터를 서빙하는 대신 503 처리.",
+        "FIREBASE_SERVICE_ACCOUNT가 있을 때만 Firestore 쓰기가 발생하도록 하여, 로컬/개발 환경에서는 크래시 대신 이메일 발송만 동작하도록 저하."
+      ]
+    },
+    promptEngineering: {
+      logic: `// 요청 경로에 LLM 없음 — 결정론적 채점만 사용.
+function scoreAssessment(answers) {
+  // 각 영역의 원점수는 해당 영역 문항 답변의 가중합
+  // 최약점 영역 = 원점수가 아니라 (원점수 / 최대원점수) 비율이 가장 낮은 영역
+  // 문항이 2개뿐인 영역이 6개인 영역보다 부당하게 유리해지지 않도록 함
+}`,
+      schema: `type PillarResult = {
+  name: string; raw: number; maxRaw: number;
+  isStrong: boolean; blurb: string | null; nextStep: string | null;
+};`,
+      guardrails: [
+        "서로 다른 두 최약점 답변이 동일한 일반 추천을 보여주던 버그 이후, 개인화된 다음 단계 문구를 영역 단위가 아닌 답변한 문항 단위(nextStepByQuestion)로 조회.",
+        "채점 로직이 바뀌는 커밋과 동시에 한/영 문구 쌍을 함께 고정하여, 인용문과 추천 문구가 언어 간에 어긋나지 않도록 함(실제 수정 사례: q12, q17 오버라이드).",
+        "리포트의 전체 영역별 표에서 최약점 영역은 제외하여, 동일한 점수가 두 가지 다른 틀로 두 번 보여지지 않도록 함."
+      ]
+    },
+    impact: {
+      value: [
+        "원장은 약 15개 문항에 답하는 시간 안에 채점되고 이메일로 발송된 리포트를 받음 — 자신의 위치를 확인하기 위해 세일즈 통화가 필요 없음.",
+        "모든 제출은 이중언어 리포트, 저장된 Firestore 기록, GA4 귀속 데이터를 갖춘 유효 리드 — 백엔드 없는 정적 퀴즈였다면 셋 다 존재하지 않았을 것.",
+        "관리자 대시보드는 CLI 분석 스크립트와 완전히 동일한 집계 로직을 재사용하여, 제출 데이터의 정의가 두 구현으로 어긋나지 않고 단일한 기준으로 유지."
+      ],
+      security: [
+        "사용자가 제출한 모든 필드를 이메일 템플릿에 삽입하기 전 HTML 이스케이프 처리하여, 제출된 이름이나 피드백 문자열이 Chekki에서 온 것처럼 보이는 이메일에 링크나 마크업을 위조하는 경로를 차단.",
+        "Basic Auth 관리자 게이트는 실패 시 폐쇄형으로 동작: ADMIN_PASSWORD 환경 변수가 없으면 503, 열려있는 대시보드가 아님.",
+        "유일한 공개 쓰기 엔드포인트(/api/submit)에 IP당 슬라이딩 윈도우 요청 제한 적용."
+      ]
+    },
+    behindTheArchitecture: {
+      problem: "백엔드 없는 정적 퀴즈는 리드를 만들 수 없고, 탭을 닫으면 살아남지 못하며, 어떤 마케팅 채널이 실제로 효과가 있는지 알 수 없습니다.",
+      vision: "진단 자체를 세일즈 퍼널의 최상단으로 만든다: 채점하고, 이메일로 보내고, 저장하고, 귀속을 추적한다 — 이를 위한 별도 앱을 만들지 않고.",
+      rationale: "chekki-ai의 세일즈 도구가 이미 사용하는 Firebase Admin 인증과 Firestore 프로젝트를 그대로 재사용하여, 이 퀴즈가 별도의 데이터 계층을 세우는 대신 동일한 데이터 평면에 기록."
+    },
+    technicalHurdles: [
+      {
+        title: "서로 다른 두 문항 세트에서 동일한 최약점 버그 재발",
+        incident: "교육 영역의 인용된 답변과 추천 문구가 서로 어긋날 수 있었음 — 리포트가 한 약점 답변을 인용하면서 다른 답변을 고치라고 추천. 17번 문항에서 한 번 고쳤는데, 12번 문항에서 다시 발견.",
+        diagnosis: "추천 문구 조회가 영역 단위로 키가 잡혀 있었고, 방문자의 최약점 답변이 실제로 나온 특정 문항 단위가 아니었음 — 두 가지 다른 문제를 아우르는 영역이면 추천이 엉뚱한 쪽을 가리킬 수 있었음.",
+        resolution: "실제 문항 ID로 키를 잡은 문항별 오버라이드를 추가하고, 보고된 것만 패치하는 대신 여러 문항을 아우르는 모든 영역을 같은 형태의 불일치가 있는지 전수 점검."
+      },
+      {
+        title: "리포트 이메일이 Gmail에서 조용히 접히던 문제",
+        incident: "전체 영역별 표가 Gmail을 제외한 모든 곳에서 정상 렌더링됐지만, Gmail에서는 리포트의 상당 부분이 '...' 토글 뒤로 사라짐.",
+        diagnosis: "Gmail의 클리핑 로직은 표가 다른 표 셀 안에 3단계 이상 중첩된 것을 감지하면 이를 '인용된 콘텐츠'로 판단해 자동으로 접음.",
+        resolution: "표 안에 표를 중첩하는 대신 영역별 행을 단일 계층 마크업으로 평탄화하여, Gmail의 중첩 깊이 검사에 걸리지 않으면서 동일한 시각적 레이아웃을 유지."
+      },
+      {
+        title: "GA4와 관리자 코드가 로컬에만 존재하고 배포에 반영되지 않음",
+        incident: "GA4와 관리자 대시보드를 연동한 뒤 Realtime에 사용자가 0명으로 표시되고 /admin에 접근할 수 없었음 — Vercel의 재배포 버튼이 변경 이전의 마지막 푸시된 커밋만 다시 빌드하고 있었음.",
+        diagnosis: "변경 사항이 로컬 워킹 트리에만 존재했고, 아직 main에 커밋되거나 푸시되지 않은 상태였음.",
+        resolution: "변경 사항을 커밋하고 푸시해 새 커밋 기준으로 실제 배포를 트리거 — 오래된 코드를 계속 재배포하는 대신."
+      }
+    ]
+  },
   vodabi: {
     title: "VODABI — AI 아웃바운드 세일즈 통화 평가 플랫폼",
     tagline: "실시간 WebRTC 음성 롤플레이와 결정론적 루브릭 채점, 그리고 데이터 기반 AI 코칭 어시스턴트(VOISOR)를 통해 텔레마케팅 영업 1차 전화 면접을 자동화하는 엔터프라이즈 음성 AI 플랫폼.",

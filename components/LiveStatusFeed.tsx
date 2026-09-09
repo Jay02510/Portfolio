@@ -15,6 +15,16 @@ interface BuildItem {
 
 const BUILD_UPDATES_DATA: BuildItem[] = [
   {
+    id: "hagwon-readiness-launch-2026",
+    date: "2026-09-09",
+    type: "feature",
+    titleEn: "Hagwon AI Readiness Index: Bilingual Lead-Gen Quiz Shipped",
+    titleKo: "학원 AI 준비도 지표: 이중언어 리드 확보 퀴즈 배포",
+    descEn: "Shipped a live 6-pillar bilingual self-assessment feeding Chekki's B2B sales funnel: weighted scoring engine, automated bilingual report emails via Resend, Firestore-backed permalinks, GA4 lead attribution, and a Basic-Auth admin dashboard.",
+    descKo: "Chekki의 B2B 세일즈 퍼널로 연결되는 6영역 이중언어 자가진단을 라이브로 배포했습니다. 가중치 채점 엔진, Resend를 통한 자동 이중언어 리포트 이메일, Firestore 기반 영구 링크, GA4 리드 유입 추적, Basic Auth 관리자 대시보드로 구성됩니다.",
+    relatedProjectId: "hagwon-readiness"
+  },
+  {
     id: "bridgerecruit-launch-2026",
     date: "2026-09-06",
     type: "feature",
