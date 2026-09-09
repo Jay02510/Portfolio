@@ -25,6 +25,16 @@ const BUILD_UPDATES_DATA: BuildItem[] = [
     relatedProjectId: "hagwon-readiness"
   },
   {
+    id: "chekki-schools-flagship-launch-2026",
+    date: "2026-09-07",
+    type: "feature",
+    titleEn: "Chekki Schools Given Its Own Flagship Section",
+    titleKo: "Chekki Schools 별도 플래그십 섹션 신설",
+    descEn: "Split the staff-facing Chekki Schools product out of the Chekki AI side-project grid into its own featured card and case study, with a dedicated screenshot gallery and mascot-logo hero.",
+    descKo: "교직원용 Chekki Schools 제품을 Chekki AI 사이드 프로젝트 목록에서 분리해 별도의 플래그십 카드와 케이스 스터디로 신설하고, 전용 스크린샷 갤러리와 마스코트 로고 히어로 이미지를 적용했습니다.",
+    relatedProjectId: "chekki-teacher"
+  },
+  {
     id: "bridgerecruit-launch-2026",
     date: "2026-09-06",
     type: "feature",

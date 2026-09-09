@@ -5,6 +5,11 @@ export const studyDataEn: Record<string, CaseStudyType> = {
     title: "Hagwon AI Readiness Index — Bilingual Lead-Gen Assessment",
     tagline: "A 6-pillar, EN/KO self-assessment that scores a hagwon director's AI readiness out of 84, emails a personalized report, and routes the result into Chekki's B2B sales funnel — with GA4 attribution and a password-gated admin view behind it.",
     liveUrl: "https://ai-readiness.chekkiai.com",
+    screenshots: [
+      { label: "Quiz Landing", url: "/screenshots/hagwon-readiness/01-landing.png", subLabel: "Bilingual Entry Point" },
+      { label: "Assessment Questions", url: "/screenshots/hagwon-readiness/02-questions.png", subLabel: "6-Pillar Question Flow" },
+      { label: "Emailed Report", url: "/screenshots/hagwon-readiness/03-email-report.png", subLabel: "Auto-Generated Personalized Report" }
+    ],
     stats: [
       { label: "Assessment Scope", value: "6 Pillars / 84-pt Scale" },
       { label: "Languages", value: "EN / KO Bilingual" },
@@ -1312,6 +1317,11 @@ export const studyDataKo: Record<string, CaseStudyType> = {
     title: "학원 AI 준비도 지표 — 이중언어 리드 확보 진단",
     tagline: "학원 원장의 AI 준비도를 84점 만점, 6개 영역으로 진단하는 한/영 이중언어 자가진단. 결과를 개인화 리포트로 이메일 발송하고 Chekki의 B2B 세일즈 퍼널로 연결하며, GA4 유입 추적과 비밀번호 보호 관리자 화면을 갖췄습니다.",
     liveUrl: "https://ai-readiness.chekkiai.com",
+    screenshots: [
+      { label: "퀴즈 랜딩", url: "/screenshots/hagwon-readiness/01-landing.png", subLabel: "이중언어 진입 화면" },
+      { label: "진단 문항", url: "/screenshots/hagwon-readiness/02-questions.png", subLabel: "6개 영역 문항 흐름" },
+      { label: "이메일 리포트", url: "/screenshots/hagwon-readiness/03-email-report.png", subLabel: "자동 생성 개인화 리포트" }
+    ],
     stats: [
       { label: "진단 범위", value: "6개 영역 / 84점 척도" },
       { label: "지원 언어", value: "한/영 이중언어" },
