@@ -565,6 +565,30 @@ const FILTERS = {
 
 const LOG: LogEntry[] = [
   {
+    date: "2026-09-09",
+    type: "feature",
+    titleEn: "Hagwon AI Readiness Index: bilingual lead-gen quiz shipped",
+    titleKo: "학원 AI 준비도 지표: 이중언어 리드 확보 퀴즈 배포",
+    descEn: "Shipped a live 6-pillar bilingual self-assessment feeding Chekki's B2B sales funnel: weighted scoring engine, automated bilingual report emails via Resend, Firestore-backed permalinks, GA4 lead attribution, and a Basic-Auth admin dashboard.",
+    descKo: "Chekki의 B2B 세일즈 퍼널로 연결되는 6영역 이중언어 자가진단을 라이브로 배포했습니다. 가중치 채점 엔진, Resend를 통한 자동 이중언어 리포트 이메일, Firestore 기반 영구 링크, GA4 리드 유입 추적, Basic Auth 관리자 대시보드로 구성됩니다."
+  },
+  {
+    date: "2026-09-07",
+    type: "feature",
+    titleEn: "Chekki Schools given its own flagship section",
+    titleKo: "Chekki Schools 별도 플래그십 섹션 신설",
+    descEn: "Split the staff-facing Chekki Schools product out of the Chekki AI side-project grid into its own featured card and case study, with a dedicated screenshot gallery and mascot-logo hero.",
+    descKo: "교직원용 Chekki Schools 제품을 Chekki AI 사이드 프로젝트 목록에서 분리해 별도의 플래그십 카드와 케이스 스터디로 신설하고, 전용 스크린샷 갤러리와 마스코트 로고 히어로 이미지를 적용했습니다."
+  },
+  {
+    date: "2026-09-06",
+    type: "feature",
+    titleEn: "BridgeRecruit: inbox-native admissions CRM shipped",
+    titleKo: "BridgeRecruit: 인박스 네이티브 입학처 CRM 배포",
+    descEn: "Shipped a solo-built CRM for international school admissions: an Outlook add-in that logs email touchpoints in one click, backed by a Next.js territory & pipeline dashboard, 2 OAuth flows, and 19 scoped API routes.",
+    descKo: "국제학교 입학 담당자를 위한 아웃룩 인박스 네이티브 CRM을 단독 구축해 배포했습니다. 원클릭 접점 기록 애드인, Next.js 지역 관리·파이프라인 대시보드, 2개 OAuth 플로우, 19개 스코프 API 라우트로 구성됩니다."
+  },
+  {
     date: "2026-09-01",
     type: "feature",
     titleEn: "VodaBi: voice-AI screening and 11-rubric evaluator shipped",
