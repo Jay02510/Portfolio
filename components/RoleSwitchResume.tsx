@@ -101,13 +101,6 @@ export const RESUME_DATA = {
           }
         },
         {
-          tag: { en: "Reliability Fixes vs. Prior System", ko: "기존 시스템 대비 신뢰성 개선" },
-          text: {
-            en: "Diagnosed and resolved key gaps in the original platform — no backup database, no coaching/reasoning layer, no voice-selection option, and background noise being misread as speech — adding backup databases, a native coaching layer, a voice picker, and improved audio handling.",
-            ko: "백업 데이터베이스 부재, 코칭/추론 레이어 부재, 음성 선택 옵션 부재, 배경 소음의 음성 오인식 등 기존 플랫폼의 핵심 결함을 진단 및 해결 — DB 자동 백업, 네이티브 코칭 레이어, 음성 피커, 오디오 핸들링 개선 구현."
-          }
-        },
-        {
           tag: { en: "Admin Console & Scenario System", ko: "어드민 콘솔 & 시나리오 시스템" },
           text: {
             en: "Built a full backoffice for non-engineers to create interview personas, scenario types, and scoring tiers without touching code — currently supports 8 scenarios across 3 difficulty tiers, extensible by non-technical staff.",
@@ -115,24 +108,24 @@ export const RESUME_DATA = {
           }
         },
         {
-          tag: { en: "Bilingual Accessibility", ko: "이중언어 접근성" },
+          tag: { en: "Production Incident: DNS Authority", ko: "프로덕션 인시던트: DNS 권한 진단" },
           text: {
-            en: "Added full Korean and English language accessibility (not present in the original system) as a non-native Korean speaker.",
-            ko: "비원어민 한국어 구사자로서 기존 시스템에 부재했던 한국어 및 영어 전체 다국어 접근성을 완벽 구현."
+            en: "Root-caused a failing transactional-email rollout to a silent DNS-authority mismatch — the panel accepted new records, but a different provider had already become the domain's real nameserver. Diagnosed via direct authoritative-nameserver queries rather than accepting a propagation-delay explanation, then restored delivery at the real host.",
+            ko: "거래성 이메일 발송 실패를 근본 원인까지 추적 — DNS 관리 패널은 레코드 저장이 정상 처리된 것처럼 보였으나, 실제로는 다른 제공업체가 이미 해당 도메인의 네임서버 권한을 가지고 있어 반영되지 않는 상태였습니다. 전파 지연으로 단정하지 않고 권한 네임서버에 직접 조회해 원인을 규명한 뒤, 실제 DNS 호스트에 레코드를 재적용하여 이메일 발송을 복구했습니다."
           }
         },
         {
           tag: { en: "Security Hardening", ko: "보안 하드닝" },
           text: {
-            en: "Ran two independent security passes on a system handling candidate PII — field-level encryption at rest, JWT/token hardening, CORS lockdown, DTO validation, role-freshness checks, auth race condition fixes — ahead of any incident, not as cleanup.",
-            ko: "후보자 PII를 다루는 시스템에 대해 2회에 걸친 독립 보안 감사 완결 — 저장 시 AES-256-GCM 필드 레벨 암호화, JWT/토큰 하드닝, CORS 엄격 제한, DTO 검증, 권한 신선도 검사, 인증 레이스 컨디션 해결을 인시던트 발생 전 선제 조치."
+            en: "Ran two independent security-audit passes on a system handling candidate PII — field-level encryption at rest, JWT/token hardening, CORS lockdown, DTO validation, role-freshness checks, auth race condition fixes — closing 9 vulnerabilities total, plus a static regression test that scans every controller for the same bug class going forward.",
+            ko: "후보자 PII를 다루는 시스템에 대해 2회에 걸친 독립 보안 감사 완결 — 저장 시 AES-256-GCM 필드 레벨 암호화, JWT/토큰 하드닝, CORS 엄격 제한, DTO 검증, 권한 신선도 검사, 인증 레이스 컨디션 해결로 총 9건의 취약점을 해결했으며, 동일 유형의 버그를 상시 탐지하는 정적 회귀 테스트를 추가했습니다."
           }
         },
         {
-          tag: { en: "Infrastructure", ko: "인프라 & 배포" },
+          tag: { en: "Dual-Architecture Deployment", ko: "이중 아키텍처 배포" },
           text: {
-            en: "Containerized full-stack (Docker/Compose), Caddy reverse proxy with automatic HTTPS, healthchecks, resource limits, loopback-only DB ports, log retention caps, DB backup script. Own the full deploy cycle: build → registry push → SSH → rollout → health verify on AWS EC2.",
-            ko: "풀스택 컨테이너화(Docker/Compose), Caddy 자동 HTTPS 역방향 프록시, 헬스체크, 리소스 제한, 루프백 전용 DB 포트, 로그 보존 한도, DB 백업 스크립트 구축. AWS EC2 상에서 빌드 → 레지스트리 푸시 → SSH → 롤아웃 → 헬스 검증의 전체 배포 사이클 전담 소유."
+            en: "Provisioned an independent arm64 (AWS Graviton) staging environment alongside the amd64 production host, extending CI/CD with a cross-compiled multi-platform Docker build so one pipeline deploys correctly to two processor architectures, gated on separate branches with independent secrets and resource limits.",
+            ko: "amd64 프로덕션 호스트와 별도로 독립된 arm64(AWS Graviton) 스테이징 환경을 구축 — 크로스 컴파일 멀티플랫폼 Docker 빌드로 CI/CD를 확장하여 하나의 파이프라인으로 서로 다른 두 프로세서 아키텍처에 정상 배포되도록 구성했으며, 별도 브랜치·시크릿·리소스 제한으로 분리 운영했습니다."
           }
         },
         {
@@ -198,10 +191,10 @@ export const RESUME_DATA = {
           }
         },
         {
-          tag: { en: "Infrastructure Constraint", ko: "인프라 제약 극복" },
+          tag: { en: "Security & Data Integrity Audits", ko: "보안 & 데이터 무결성 감사" },
           text: {
-            en: "Engineered around Vercel Hobby's 12-function ceiling by consolidating nearly every AI task and four redundant endpoints into shared serverless functions — without breaking already-shipped native mobile builds, via URL-preserving rewrites in vercel.json.",
-            ko: "거의 모든 AI 작업과 4개의 중복 엔드포인트를 공유 서버리스 함수로 통합하여 Vercel Hobby의 12개 함수 한도를 극복 — vercel.json URL 리라이트를 통해 기배포된 네이티브 모바일 앱의 호환성을 100% 유지."
+            en: "Ran two full security-audit sweeps across sign-in, redemption, and data routes, closing 7+ authorization vulnerabilities plus a login user-enumeration bug; separately diagnosed and fixed a systemic Firestore rules bug (a get()-inside-list-query pattern) that silently broke class and roster reads for directors and teachers.",
+            ko: "로그인, 상환, 데이터 라우트 전반에 걸쳐 2회의 전체 보안 감사를 진행하여 7건 이상의 권한 취약점과 로그인 사용자 열거(enumeration) 버그를 해결했습니다. 별도로 get() 호출이 list 쿼리 내부에 포함되는 패턴으로 인해 원장 및 교사의 학급·명단 조회가 조용히 실패하던 구조적 Firestore 규칙 버그를 진단 및 수정했습니다."
           }
         },
         {
