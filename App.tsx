@@ -565,6 +565,14 @@ const FILTERS = {
 
 const LOG: LogEntry[] = [
   {
+    date: "2026-09-19",
+    type: "feature",
+    titleEn: "B2B lead-enrichment CRM: compliant bilingual outreach drafting shipped",
+    titleKo: "B2B 리드 인리치먼트 CRM: 규정 준수 이중언어 아웃리치 초안 작성 배포",
+    descEn: "Ported an external cold-outbound copywriting skill's rules directly into the in-app Gemini prompt (required personalization_hook, dual A/B subject lines), closing a manual CSV-export detour, and added a deterministic server-side function that appends Korea's legally required (광고) prefix and opt-out so compliance can't drift with a prompt edit.",
+    descKo: "외부 콜드 아웃바운드 카피라이팅 스킬의 규칙(필수 personalization_hook, A/B 제목 2종)을 인앱 Gemini 프롬프트에 직접 이식해 수동 CSV 내보내기 과정을 없앴고, 한국 정보통신망법상 필수인 (광고) 접두사와 수신거부 문구를 붙이는 결정론적 서버 함수를 추가해 프롬프트 변경에도 규정 준수가 흔들리지 않도록 했습니다."
+  },
+  {
     date: "2026-09-09",
     type: "feature",
     titleEn: "Hagwon AI Readiness Index: bilingual lead-gen quiz shipped",
