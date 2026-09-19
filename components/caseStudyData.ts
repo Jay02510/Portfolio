@@ -851,126 +851,137 @@ function scoreAssessment(answers) {
   },
 
   "lead-enrichment": {
-    title: "B2B Lead Enrichment",
-    tagline: "A full-stack CRM prospecting utility parsing regional directory details to structure custom outreach proposals.",
-    liveUrl: "https://jason-portfolio.com/",
+    title: "B2B Lead Enrichment CRM",
+    tagline: "Naver Local Search → Gemini structured enrichment → Firebase-backed CRM for Chekki Schools academy outreach, with compliant bilingual email drafting built in.",
+    liveUrl: "",
     screenshots: [
-      { label: "Dashboard", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.17.21_PM_wsyzzu.png" },
-      { label: "Dashboard Search", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.29_PM_btxolx.png" },
-      { label: "Outreach", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.39_PM_nesi9y.png" }
+      { label: "Search & Bulk Sweep", url: "/screenshots/lead-enrichment/01-search-and-bulk-sweep.png", subLabel: "Naver Local Search plus a district × keyword combo generator for unattended batch runs" },
+      { label: "Lead Card & Email Draft", url: "/screenshots/lead-enrichment/02-lead-card-and-email-draft.png", subLabel: "Enriched profile with a bilingual, A/B subject-line email draft (fictional academy shown to protect real client data)" }
     ],
     stats: [
-      { label: "Prospects Identified", value: "180+" },
-      { label: "Outreach Personalization", value: "High-accuracy" },
-      { label: "Lead Duplication Rate", value: "0% Duplicates" }
+      { label: "Compliance Coverage", value: "100% of drafts carry the (광고) label + opt-out" },
+      { label: "Personalization", value: "Verifiable hook required on every draft" },
+      { label: "Outreach Dispatch", value: "1-Click Gmail Deep Link" }
     ],
     problem: [
-      "Extracted map data entries contain nested HTML blocks and disorganized metadata.",
-      "Drafting relevant, polite, and personalized business inquiries manually is slow.",
-      "Re-sending outreach proposals duplicate files to identical prospects when lists are kept in silo."
+      "Naver Local Search returns unstructured directory listings with no institution-type classification, fit scoring, or stable dedupe key across repeated searches.",
+      "Early Gemini-drafted outreach emails read generic enough that every batch got exported to CSV and re-drafted in a separate Claude session running a cold-outbound copywriting skill — a manual detour repeated for every send.",
+      "Korea's 정보통신망법 (Act on Promotion of Information and Communications Network Utilization), Article 50, requires every commercial email to carry an (광고) subject prefix, sender contact, and opt-out — easy to miss if left to model discretion per send."
     ],
     solution: [
-      "Builds middle-tier API routes to normalize and clean raw location listings on the fly.",
-      "Applies prompt structures to generate custom email texts tailored to targets' backgrounds.",
-      "Integrates database lookups to screen and isolate duplicate entries in real-time."
+      "Gemini structured output (responseSchema) classifies institution type, scores outreach priority, and derives a stable naver_id dedupe key, so the Database tab never re-enriches the same lead twice.",
+      "Ported the external skill's copywriting rules — a required personalization_hook field, spam-trigger-word bans on subject lines, dual A/B subject variants — directly into the in-app system prompt, closing the external-session workflow entirely.",
+      "A deterministic server-side applyEmailCompliance() function appends the (광고) prefix, sender contact, and opt-out line after Gemini returns a draft, so legal compliance can't drift with a prompt edit or model swap."
     ],
     stack: [
-      "Vite & TypeScript",
+      "React 19 & TypeScript",
+      "Vite",
       "Tailwind CSS",
-      "React-Leaflet & Leaflet.js",
-      "Framer Motion",
-      "Custom Express API",
-      "esbuild",
-      "Naver Search API",
-      "Google GenAI SDK"
+      "Express (local dev) / Vercel Functions (prod)",
+      "Firebase / Firestore",
+      "Google GenAI SDK (Gemini)",
+      "Naver Local Search API"
     ],
     coreLoop: [
-      { step: "01. Regional Query", role: "Growth Lead", detail: "Enters district targeting criteria (e.g., Gangnam Hagwons, Bundang ESL Centers) into the geo-search input." },
-      { step: "02. Secure Server Proxy", role: "Express Gateway", detail: "Routes queries through Node.js proxy to shield Naver API secret keys and prevent CORS browser blocks." },
-      { step: "03. Spatial Coordinate Projection", role: "Leaflet Engine", detail: "Transforms proprietary Korean TM128 coordinate sets into standard WGS84 GPS pins on interactive map." },
-      { step: "04. Deduplication & CRM Match", role: "Firestore Layer", detail: "Screens scraped candidate academies against pre-existing CRM database to prevent double-outreach." },
-      { step: "05. Personalized Draft Generation", role: "Gemini 2.5 Flash", detail: "Synthesizes localized, peer-to-peer business Korean (존댓말) outreach letters tailored to academy size." },
-      { step: "06. 1-Click Mailto Deep Link", role: "Outbound Rep", detail: "Launches pre-composed, formatted Gmail draft with 1-click execution for frictionless sales dispatch." }
+      { step: "01. District / Keyword Query", role: "Growth Lead", detail: "Enters a district + institution-type query, or a Bulk Sweep list (e.g. 강남구 영어학원, 분당구 유치원), into Search Naver Maps." },
+      { step: "02. Secure Server Proxy", role: "Express / Vercel Route", detail: "Routes the query through a server-side handler so Naver's client ID and secret never reach the browser." },
+      { step: "03. Gemini Structured Enrichment", role: "Gemini (responseSchema)", detail: "Classifies institution type, scores outreach_priority, derives a personalization_hook, and returns a stable naver_id dedupe key." },
+      { step: "04. Firestore Save & Dedupe", role: "Firestore", detail: "Checks the naver_id against existing Database-tab records before writing, so Bulk Sweep skips anything already saved." },
+      { step: "05. Bilingual Email Draft", role: "Gemini (2nd call)", detail: "Drafts a Korean/English email opened on the lead's personalization_hook, returning two A/B subject-line angles." },
+      { step: "06. Compliance Footer + 1-Click Send", role: "Outbound Rep", detail: "applyEmailCompliance() appends the (광고) prefix and opt-out, then the draft opens as a pre-filled Gmail deep link for a human read-and-send." }
     ],
     decisions: [
       {
-        decision: "Server-Side In-Memory Cache Proxy over Direct Browser Search API Calls",
-        alternativeConsidered: "Querying Naver Search API directly from candidate browser with client-side keys",
-        why: "Direct browser queries exposed paid API secret keys in Network tabs and quickly burned rate quotas. Express proxy masked credentials and cached 95% of duplicate geographic queries.",
-        tradeOffAccepted: "Required hosting an active Express backend service alongside the static front-end."
+        decision: "Legally-required compliance text applied as a fixed server-side footer, not left to the model",
+        alternativeConsidered: "Relying on the system prompt's instructions alone to include the (광고) prefix and opt-out on every draft",
+        why: "A prompt-only compliance requirement can silently drop after a prompt edit or model swap. Korea's 정보통신망법 Article 50 penalties make that too risky to leave to inference — a deterministic function guarantees it every time.",
+        tradeOffAccepted: "Every draft carries the same fixed footer text regardless of context — no per-lead customization of the legal boilerplate."
       },
       {
-        decision: "1-Click Native Gmail Deep Links over Headless Background SMTP Mass Mailer",
-        alternativeConsidered: "Automated batch email sending via Nodemailer / SendGrid background workers",
-        why: "Mass unverified cold emails had high spam bounce rates and domain reputation risks. 1-click client-side Gmail deep links allowed human reps to perform a 2-second sanity check before sending.",
-        tradeOffAccepted: "Requires manual click per lead rather than fully unattended bulk blasting."
+        decision: "Absorb the external cold-outbound skill's copywriting rules into the in-app prompt instead of keeping a separate AI session in the workflow",
+        alternativeConsidered: "Keep exporting enriched leads to CSV and drafting copy in a separate Claude session with marketing skills loaded",
+        why: "The external session's actual value was its copywriting rules — forced personalization, subject-line spam-word avoidance, a consistently named offer — not a separate tool. Porting the rules closed the quality gap without adding a workflow step.",
+        tradeOffAccepted: "The in-app prompt is now longer and needs the same care external skill files get whenever copy strategy changes."
       },
       {
-        decision: "Web Worker Coordinate Transformation over Main-Thread UI Projections",
-        alternativeConsidered: "Executing TM128 to WGS84 mathematical transforms synchronously on the React UI render thread",
-        why: "Synchronous transforms for 100+ map pins caused 500ms frame drops and jerky map panning on mobile. Offloading transformations ensured 60fps buttery smooth map exploration.",
-        tradeOffAccepted: "Slight async messaging overhead between Worker and React state."
+        decision: "1-Click Gmail deep links over background SMTP send",
+        alternativeConsidered: "Automated batch sending via a transactional email API",
+        why: "Unverified bulk cold email risks domain reputation. A human rep doing a 2-second read before send catches anything the model got wrong, at the cost of one click per lead.",
+        tradeOffAccepted: "Outreach doesn't scale to fully unattended batch sends — each lead needs a manual click."
       }
     ],
     architecture: {
       lifecycle: [
-        "Proxying: Outbound maps queries route through internal backend servers to shield API keys.",
-        "Gathering: The system compiles maps directory details, automatically bypassing static listing limits.",
-        "Mapping: TM128 coordinate points translate to WGS84 GPS values in browser viewports.",
-        "Refinement: Leads dispatch to client-selected endpoints, generating pre-composed mailto links."
+        "Ingestion: A district/keyword query, or a Bulk Sweep list, hits the Naver Local Search proxy route.",
+        "Processing: Gemini structured output classifies, scores, and derives a personalization_hook and dedupe key per lead; a second Gemini call drafts the bilingual email against that lead.",
+        "Storage: Enriched leads persist in Firestore, checked against naver_id on save to prevent duplicate outreach.",
+        "Distribution: applyEmailCompliance() appends the legally-required footer, then the draft opens as a pre-filled Gmail deep link."
       ],
       guardrails: [
-        "Credential Protection: Routes all Naver and Gemini requests via server middleware.",
-        "Clean Sorting: Formats raw HTML tags and line breaks during raw JSON parsing.",
-        "Verification: Checks webhook settings and caches configurations securely."
+        "API Shielding: Naver and Gemini keys live only in server-side routes (server.ts / api/*.ts) — never reach the client bundle.",
+        "Dedupe on Save: naver_id is checked against existing Firestore records before a lead is written, blocking duplicate outreach to the same institution.",
+        "Compliance Footer: (광고) prefix, sender contact, and opt-out are appended by fixed server code and verified by a standalone smoke test, not requested from the model."
       ]
     },
     promptEngineering: {
-      logic: `<instructions>
-  Draft a polite, localized B2B outreach email in business Korean (존댓말).
-  Synthesize founder's background: 10-year teaching tenure. Present a peer-to-peer delivery style.
-</instructions>`,
-      schema: `responseMimeType: "application/json",
-responseSchema: {
+      logic: `### PERSONALIZATION HOOK
+- Sentence 1 of BOTH bodies must use personalization_hook's exact fact —
+  never invent a hook or fall back on a generic institution-type description.
+- If personalization_hook is missing (pre-existing lead records), fall back
+  to agent_notes, then district, then institution_type, in that order —
+  still never a bare "a hagwon in [district]" description.
+
+### SUBJECT LINE
+- Return two variants (A and B), each a different angle.
+- Never use spam-trigger words in the subject line ("무료"/"Free", "!!!",
+  ALL CAPS) — fine inside the body, banned in the subject.`,
+      schema: `responseSchema: {
   type: Type.OBJECT,
   properties: {
-    Academy_Name: { type: Type.STRING },
-    Website_URL: { type: Type.STRING },
-    Email_Address: { type: Type.STRING, nullable: true },
-    Target_Demographic: { type: Type.ARRAY, items: { type: Type.STRING } },
-    Business_Type: { type: Type.STRING, enum: ["Franchise", "Independent"] },
-    Academy_Size: { type: Type.STRING, enum: ["Established", "Growing"] }
-  }
+    subject_line_kr: { type: Type.STRING },
+    subject_line_en: { type: Type.STRING },
+    subject_combined: { type: Type.STRING },
+    subject_line_kr_b: { type: Type.STRING, description: "variant B (different angle from A)" },
+    subject_line_en_b: { type: Type.STRING },
+    subject_combined_b: { type: Type.STRING },
+    body_korean: { type: Type.STRING },
+    body_english: { type: Type.STRING },
+    cta_primary: { type: Type.STRING },
+    personalisation_note: { type: Type.STRING }
+  },
+  required: ["subject_line_kr", "subject_line_en", "subject_combined",
+             "subject_line_kr_b", "subject_line_en_b", "subject_combined_b",
+             "body_korean", "body_english", "cta_primary"]
 }`,
       guardrails: [
-        "Strict JSON Targets: Restricts output formats to match database schema requirements precisely.",
-        "Coordinate Accuracy: Employs explicit mapping structures to clean raw position metadata.",
-        "Validation Prompts: Reviews placeholder values and alert parameters before client exports."
+        "Required Personalization: personalization_hook is a required enrichment-schema field — sentence 1 of every draft must reference it, with a district/institution-type fallback only for pre-existing records.",
+        "Subject-Line Negative Rule: 무료/Free, exclamation strings, and ALL CAPS are explicitly banned from subject lines only — the same language is fine inside the body.",
+        "Fixed Compliance Footer: legal opt-out and sender contact text is appended after generation, not requested from the model."
       ]
     },
     impact: {
       value: [
-        "Built a memory-efficient caching layer inside the custom Express routing proxy, successfully bypassing 95% of heavy Naver/Maps API usage quotas.",
-        "Decoupled raw TM128 math coordinate projections from main thread React frames, eliminating screen stuttering or mobile device freezes during complex geographic queries.",
-        "Sealed all API keys and request envelopes inside protected Node.js process states, ensuring 100% security against user-agent credential scraping."
+        "Eliminated the manual CSV-export → external-Claude-session → re-import workflow — copywriting quality now lives entirely in the in-app prompt.",
+        "Closed a legal-compliance gap proactively: extended the (광고) prefix to the new B-variant subject line before it ever shipped to a real send.",
+        "Every new lead enrichment now carries a required, verifiable personalization_hook instead of a generic institution-type description."
       ],
       security: [
-        "Keeps sensitive API keys in Node.js environments out of client source code.",
-        "Filters user search strings to block query injection efforts.",
-        "Stores transient setup parameters locally inside verified user state cache."
+        "Naver and Gemini API keys never leave server-side code (Express locally, Vercel Functions in prod).",
+        "Firestore dedupe on naver_id prevents the same institution from being enriched or contacted twice.",
+        "Compliance footer text is fixed server-side, not requested from the model, so it can't drift with a prompt edit."
       ]
     },
     behindTheArchitecture: {
-      problem: "Scraping regional maps manually produces disorganized files that take extensive time to clean and convert into outreach logs.",
-      vision: "A B2B utility that parses, structures, and maps regional directory records, automatically outputting personalized mail proposals.",
-      rationale: "Used Express routes to resolve CORS constraints and combined precise Gemini structures with Leaflet to map target prospects cleanly."
+      problem: "Sales discovery for Chekki's academy outreach was three disconnected manual steps: scrape a directory, hand-clean it, then draft copy well enough to send — with the best copy coming from a completely separate AI session.",
+      vision: "One in-app pipeline that goes from a district query to a compliant, personalized, ready-to-send bilingual draft, matching the copywriting quality the team was previously getting by hand from an external tool.",
+      rationale: "Gemini's structured output (responseSchema) was the natural fit for both enrichment and drafting, since the app's types already model a lead and a draft as strict JSON — porting the external skill's prompt rules in-house avoided standing up a second AI tool or workflow."
     },
     technicalHurdles: [
       {
-        title: "Crawler Detection and Metadata Overlap",
-        incident: "Scraping regional directories occasionally resulted in temporary IP locks or empty, un-formatted text outputs.",
-        diagnosis: "Static scraper headers triggered firewall rules, while mismatched CSS templates polluted values.",
-        resolution: "Switched to custom Axios headers with User-Agent rotations, and added defensive parsing routines to catch errors safely."
+        title: "The Copy-Quality Gap Was a Missing Prompt Rule, Not a Missing Feature",
+        incident: "The team kept exporting enriched leads to CSV and re-drafting emails in a separate Claude session running a cold-outbound copywriting skill, even though the in-app Gemini drafting pipeline already worked end-to-end.",
+        diagnosis: "The gap wasn't a missing capability — the external session had specific copywriting rules loaded (forced personalization, subject-line spam-word avoidance, a consistently named offer, subject A/B variants) that the in-app system prompt didn't encode, so its drafts read templated by comparison.",
+        resolution: "Ported the rules directly into the prompt file: added a required personalization_hook field to the enrichment schema, banned spam-trigger words from subject lines only, added a second A/B subject variant to the schema with a UI toggle, and renamed the diagnostic offer to match its existing CTA URL. Extended applyEmailCompliance() to cover the new B-variant subject line so the legally-required (광고) prefix couldn't be missed on either variant."
       }
     ]
   },
@@ -2163,126 +2174,138 @@ function scoreAssessment(answers) {
   },
 
   "lead-enrichment": {
-    title: "B2B Lead Enrichment (자동 파트너 발굴 CRM)",
-    tagline: "지역 지도를 기반으로 연락처 정보를 파싱 및 정밀 정화하고, 대표자 경력에 기반한 제안 메일 링크를 구성해 줍니다.",
-    liveUrl: "https://jason-portfolio.com/",
+    title: "B2B 리드 인리치먼트 CRM",
+    tagline: "네이버 지역 검색 → Gemini 구조화 인리치먼트 → Firebase 기반 CRM으로, Chekki Schools 학원 영업을 위한 컴플라이언스 준수 이중언어 이메일 초안까지 앱 내부에서 완결합니다.",
+    liveUrl: "",
     screenshots: [
-      { label: "Dashboard", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.17.21_PM_wsyzzu.png" },
-      { label: "Dashboard Search", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.29_PM_btxolx.png" },
-      { label: "Outreach", url: "https://res.cloudinary.com/dec04iaht/image/upload/q_auto/f_auto/v1780481957/Screenshot_2026-06-03_at_7.18.39_PM_nesi9y.png" }
+      { label: "검색 및 벌크 스윕", url: "/screenshots/lead-enrichment/01-search-and-bulk-sweep.png", subLabel: "네이버 지역 검색과 지역구 × 키워드 조합 생성기로 무인 배치 실행 지원" },
+      { label: "리드 카드 및 이메일 초안", url: "/screenshots/lead-enrichment/02-lead-card-and-email-draft.png", subLabel: "개인화 리포트와 A/B 제목 변형이 포함된 이중언어 이메일 초안 (실제 고객 정보 보호를 위해 가상 학원명 사용)" }
     ],
     stats: [
-      { label: "식별 및 보정 타겟", value: "180개소 이상" },
-      { label: "중복 제안 발송율", value: "0% 제거 완료" },
-      { label: "아웃리치 작성", value: "자동 맞춤화" }
+      { label: "컴플라이언스 적용률", value: "초안 100%에 (광고) 표기 + 수신거부 포함" },
+      { label: "개인화 검증", value: "모든 초안에 검증 가능한 hook 필수" },
+      { label: "발송 방식", value: "1클릭 Gmail 딥링크" }
     ],
     problem: [
-      "네이버 지도 등 로컬 주소 지도의 데이터 원본에 쓸모없는 마크업 노이즈나 부정적 가상 상호 속성이 유입되어 전처리 난망.",
-      "여러 기관을 대상으로 일일이 연수 이력이나 백그라운드를 검색해 비즈니스 영업 협조 메일을 직접 수기로 수정 작성하는 시간 비효율.",
-      "기 수취 업체나 동일 지점에 제휴 메일이 반복 발적되어 기업 신용 이미지 훼손 및 피고 제의 충돌 위협."
+      "네이버 지역 검색은 업종 분류, 적합도 스코어, 반복 검색 간 안정적인 중복 제거 키 없이 비정형 디렉터리 목록만 반환합니다.",
+      "초기 Gemini 초안은 문구가 충분히 구체적이지 않아, 매 배치마다 CSV로 내보내 콜드 아웃바운드 카피라이팅 스킬을 탑재한 별도 Claude 세션에서 다시 작성해야 했습니다 — 발송마다 반복되는 수작업 우회로였습니다.",
+      "한국 정보통신망법 제50조는 모든 상업용 이메일에 (광고) 제목 표기, 발신자 연락처, 수신거부 방법을 요구합니다 — 매 발송마다 모델의 판단에만 맡기면 누락되기 쉬운 부분입니다."
     ],
     solution: [
-      "Express 기반의 서버 미들웨어를 두어 Naver 원본 주소 데이터를 깔끔하게 파싱 가공하고 동기식 중복 제거 완성.",
-      "설립자 업적(예: 10년 강의 기조)에 딱 맞추어 극도의 존댓말 비즈니스 정중 문체를 자동 작성해내는 프롬포트 기법 바인딩.",
-      "제목과 본문 정제가 완료되어 이메일 앱만 편하게 띄워 보내는 mailto 딥링크 전송 도구 기여."
+      "Gemini 구조화 출력(responseSchema)이 업종을 분류하고 outreach_priority를 산정하며 안정적인 naver_id 중복 제거 키를 도출해, Database 탭에서 동일 리드가 두 번 인리치먼트되지 않도록 합니다.",
+      "외부 스킬의 카피라이팅 규칙 — 필수 personalization_hook 필드, 제목의 스팸 유발 단어 금지, A/B 제목 두 개 변형 — 을 앱 내부 시스템 프롬프트에 그대로 이식해 외부 세션 워크플로우를 완전히 없앴습니다.",
+      "결정론적 서버 측 함수 applyEmailCompliance()가 Gemini 초안 생성 이후 (광고) 표기, 발신자 연락처, 수신거부 문구를 덧붙여, 프롬프트 수정이나 모델 교체와 무관하게 법적 준수가 흔들리지 않도록 했습니다."
     ],
     stack: [
-      "Vite & TypeScript",
+      "React 19 & TypeScript",
+      "Vite",
       "Tailwind CSS",
-      "React-Leaflet & Leaflet.js",
-      "Framer Motion",
-      "Custom Express API",
-      "esbuild",
-      "Naver Search API",
-      "Google GenAI SDK"
+      "Express(로컬) / Vercel Functions(운영)",
+      "Firebase / Firestore",
+      "Google GenAI SDK (Gemini)",
+      "네이버 지역 검색 API"
     ],
     coreLoop: [
-      { step: "01. 지역 타겟 쿼리 입력", role: "그로스 리드", detail: "강남권 학원가, 분당 영어유치원 등 타겟 상권 및 업종 키워드를 검색창에 입력합니다." },
-      { step: "02. 보안 백엔드 프록시 경유", role: "Express 게이트웨이", detail: "Node.js 프록시를 통해 네이버 로컬 API 시크릿 키 노출을 차단하고 브라우저 CORS 제약을 우회합니다." },
-      { step: "03. 공간 좌표 변환 및 지도 투영", role: "Leaflet 엔진", detail: "국내 카텍 TM128 좌표계를 표준 WGS84 GPS 좌표로 변환하여 인터랙티브 지도 위에 정밀 핀으로 렌더링합니다." },
-      { step: "04. 실시간 중복 필터링 및 CRM 매칭", role: "Firestore 레이어", detail: "기존 등록된 잠재 고객 DB와 대조하여 중복된 영업 제안 발송 리스크를 0%로 사전 차단합니다." },
-      { step: "05. 맞춤형 B2B 제안서 문안 생성", role: "Gemini 2.5 Flash", detail: "학원 규모 및 타겟 연령대에 맞춰 10년 교육 경력 기반의 정중한 비즈니스 한국어(존댓말) 제안서를 합성합니다." },
-      { step: "06. 1클릭 Gmail 딥링크 전송", role: "아웃바운드 영업 담당자", detail: "수동 복사-붙여넣기 없이 사전 작성된 완성형 이메일 초안을 즉시 팝업하여 2초 검토 후 발송합니다." }
+      { step: "01. 지역구 · 키워드 쿼리", role: "그로스 리드", detail: "지역구 + 업종 쿼리, 혹은 벌크 스윕 목록(예: 강남구 영어학원, 분당구 유치원)을 Search Naver Maps에 입력합니다." },
+      { step: "02. 보안 서버 프록시", role: "Express / Vercel 라우트", detail: "쿼리를 서버 측 핸들러로 라우팅해 네이버 클라이언트 ID와 시크릿이 브라우저에 노출되지 않도록 합니다." },
+      { step: "03. Gemini 구조화 인리치먼트", role: "Gemini (responseSchema)", detail: "업종을 분류하고 outreach_priority를 산정하며 personalization_hook을 도출, 안정적인 naver_id 중복 제거 키를 반환합니다." },
+      { step: "04. Firestore 저장 및 중복 제거", role: "Firestore", detail: "기존 Database 탭 레코드와 naver_id를 대조한 뒤 저장하여, 벌크 스윕이 이미 저장된 리드는 건너뜁니다." },
+      { step: "05. 이중언어 이메일 초안", role: "Gemini (2차 호출)", detail: "리드의 personalization_hook을 시작 문장으로 삼아 한/영 이메일을 작성하고, 서로 다른 두 개의 A/B 제목 문구를 반환합니다." },
+      { step: "06. 컴플라이언스 표기 + 1클릭 발송", role: "아웃바운드 담당자", detail: "applyEmailCompliance()가 (광고) 표기와 수신거부 문구를 덧붙인 뒤, 담당자가 검토 후 발송할 수 있도록 미리 작성된 Gmail 딥링크로 초안이 열립니다." }
     ],
     decisions: [
       {
-        decision: "클라이언트 직접 호출 대신 Express 인메모리 캐시 프록시 채택",
-        alternativeConsidered: "브라우저에서 직접 네이버 검색 API를 호출하고 클라이언트 환경변수에 키 보관",
-        why: "브라우저 개발자 도구의 Network 탭을 통해 유료 API 시크릿 키가 노출되고 할당량이 남용되는 위험을 방어하고 중복 지역 검색을 95% 캐싱 처리했습니다.",
-        tradeOffAccepted: "정적 프론트엔드 외에 상시 Node.js 백엔드 서버 인프라 운영 필요."
+        decision: "법적으로 요구되는 컴플라이언스 문구를 모델이 아닌 고정된 서버 측 후처리 함수로 적용",
+        alternativeConsidered: "시스템 프롬프트 지시문만으로 모든 초안에 (광고) 표기와 수신거부를 포함시키기",
+        why: "프롬프트에만 의존하면 프롬프트 수정이나 모델 교체 시 조용히 누락될 수 있습니다. 정보통신망법 제50조 위반 시의 제재를 감안하면 추론에만 맡기기엔 위험이 너무 큽니다 — 결정론적 함수라면 매번 보장됩니다.",
+        tradeOffAccepted: "모든 초안이 맥락과 무관하게 동일한 고정 문구의 법적 보일러플레이트를 갖게 됩니다."
       },
       {
-        decision: "무인 대량 SMTP 발송 대신 1클릭 네이티브 Gmail 딥링크 채택",
-        alternativeConsidered: "Nodemailer 또는 SendGrid를 통한 백그라운드 무차별 대량 콜드메일 발송",
-        why: "미검증 대량 콜드메일은 스팸 분류율이 높고 도메인 신뢰도를 훼손합니다. 1클릭 딥링크를 통해 담당자가 2초 만에 최종 문맥을 확인하고 발송하도록 설계했습니다.",
-        tradeOffAccepted: "완전 자동 배치 발송 대신 담당자의 리드별 1회 확인 클릭 필요."
+        decision: "외부 콜드 아웃바운드 스킬의 카피라이팅 규칙을 별도 AI 세션 대신 앱 내부 프롬프트에 흡수",
+        alternativeConsidered: "계속 CSV로 리드를 내보내고 마케팅 스킬이 탑재된 별도 Claude 세션에서 카피를 작성",
+        why: "외부 세션의 실질적 가치는 별도의 도구가 아니라 카피라이팅 규칙(강제 개인화, 제목의 스팸 단어 회피, 일관된 오퍼 명칭)에 있었습니다. 규칙을 이식하는 것으로 워크플로우 단계를 늘리지 않고 품질 격차를 해소했습니다.",
+        tradeOffAccepted: "앱 내부 프롬프트가 길어졌고, 카피 전략이 바뀔 때마다 외부 스킬 파일과 동일한 관리가 필요합니다."
       },
       {
-        decision: "UI 렌더 스레드 대신 웹 워커(Web Worker) 기반 좌표 변환 채택",
-        alternativeConsidered: "리액트 메인 UI 스레드에서 TM128 -> WGS84 좌표 삼각함수 연산을 동기식으로 실행",
-        why: "100개 이상의 지도 마커를 동시 렌더링할 때 발생하는 500ms 프레임 드랍을 해소하고 부드러운 60fps 지도 패닝 경험을 달성했습니다.",
-        tradeOffAccepted: "워커 스레드와 리액트 상태 간의 비동기 메시지 통신 관리 필요."
+        decision: "백그라운드 SMTP 발송 대신 1클릭 Gmail 딥링크",
+        alternativeConsidered: "트랜잭션 이메일 API를 통한 자동 배치 발송",
+        why: "미검증 대량 콜드메일은 도메인 신뢰도를 훼손할 위험이 있습니다. 발송 전 담당자가 2초간 검토하면 모델이 놓친 부분을 잡아낼 수 있으며, 대가는 리드당 클릭 한 번뿐입니다.",
+        tradeOffAccepted: "완전 무인 배치 발송으로 확장되지 않으며, 리드마다 수동 클릭이 필요합니다."
       }
     ],
     behindTheArchitecture: {
-      problem: "공간 지도를 눈으로 정리하고, 발송 초안을 클립보드로 매번 옮겨가며 하루의 기획 효율을 지체시키던 B2B 수작업 병목.",
-      vision: "상권 반경을 가독하여 정보를 파싱해 저장하는 한편, 파트너 특색에 맞게 가치제안 본문을 브라우저 링크로 완성하는 CRM 조력 도구.",
-      rationale: "백엔드 Node 프록시로 CORS나 데이터 단락 분석 병목을 제거하고, 제미나이 데이터 마스킹을 활용해 Firestore 정보 연동 구현."
+      problem: "Chekki 학원 영업을 위한 세일즈 디스커버리는 디렉터리 스크래핑, 수작업 정제, 그리고 발송 가능한 수준의 카피 작성이라는 세 단계로 분리되어 있었고, 가장 좋은 카피는 완전히 별도의 AI 세션에서 나왔습니다.",
+      vision: "지역구 쿼리 한 번으로 컴플라이언스를 준수하고 개인화된, 바로 발송 가능한 이중언어 초안까지 이어지는 하나의 앱 내부 파이프라인 — 이전에 외부 도구에서 수작업으로 얻던 것과 동일한 카피 품질을 목표로 합니다.",
+      rationale: "앱의 타입 체계가 이미 리드와 초안을 엄격한 JSON으로 모델링하고 있어 Gemini 구조화 출력(responseSchema)이 인리치먼트와 초안 작성 모두에 자연스럽게 맞았고, 외부 스킬의 프롬프트 규칙을 내재화함으로써 두 번째 AI 도구나 워크플로우를 별도로 두지 않을 수 있었습니다."
     },
     architecture: {
       lifecycle: [
-        "매핑: 지역 좌표 입력에 의한 Naver Local Search 결과를 중위 backend route에서 낚아채 정제 가공합니다.",
-        "소탕: HTML 복잡 마크업 태그 노이즈(예: 상호 속 b 태그 등)들을 사전에 정규식으로 청소해 CRM에 로드합니다.",
-        "대조: Firestore에 수록된 네이버 고유 식별 Key 대조를 통해 동일 거래처 신규 가동 방지 플래그를 심습니다.",
-        "전환: 1-click mailto 링크 생성 루프로 이식하여 담당자 메일 앱 호출 즉시 custom 본문을 즉시 출력합니다."
+        "수집: 지역구/키워드 쿼리 또는 벌크 스윕 목록이 네이버 지역 검색 프록시 라우트에 도달합니다.",
+        "처리: Gemini 구조화 출력이 리드별로 분류·스코어링·personalization_hook·중복 제거 키를 도출하고, 두 번째 Gemini 호출이 해당 리드에 맞춘 이중언어 이메일을 작성합니다.",
+        "저장: 인리치먼트된 리드는 Firestore에 저장되며, 저장 시 naver_id를 대조해 중복 발송을 방지합니다.",
+        "배포: applyEmailCompliance()가 법적으로 요구되는 문구를 덧붙인 뒤, 초안이 미리 작성된 Gmail 딥링크로 열립니다."
       ],
       guardrails: [
-        "비밀 정보 격리: 타사의 소스 검독이나 브라우저 단에서 중요 상등 Key 및 패러미터 탈취를 전면 회피하도록 백엔드 프록시화 수립.",
-        "구문 파싱 제어: 지역 빈 공백 괄호가 엉키거나 주소 레이블이 깎이는 모수치를 정제하는 특화 정규식 적용.",
-        "인증 보증: Webhook 및 연동 경로 설정이 불안정할 시 UI 얼럿을 표기하고 설정을 로컬에 안전 격리 보관."
+        "API 차폐: 네이버와 Gemini 키는 서버 측 라우트(server.ts / api/*.ts)에만 존재하며 클라이언트 번들에 노출되지 않습니다.",
+        "저장 시 중복 제거: 리드 저장 전 기존 Firestore 레코드와 naver_id를 대조해 동일 기관에 대한 중복 발송을 차단합니다.",
+        "컴플라이언스 표기: (광고) 표기, 발신자 연락처, 수신거부 문구는 고정된 서버 코드가 덧붙이며 별도 스모크 테스트로 검증합니다 — 모델에 요청하지 않습니다."
       ]
     },
     promptEngineering: {
-      logic: `<instructions>
-  Draft a polite, localized B2B outreach email in business Korean (존댓말).
-  Synthesize founder's background: 10-year teaching tenure. Present a peer-to-peer delivery style.
-</instructions>`,
-      schema: `responseMimeType: "application/json",
-responseSchema: {
+      logic: `### PERSONALIZATION HOOK
+- 두 본문(한/영) 모두 첫 문장은 반드시 personalization_hook의 구체적 사실을
+  사용해야 합니다 — hook을 임의로 지어내거나 일반적인 업종 설명으로
+  대체할 수 없습니다.
+- personalization_hook이 없는 기존 레코드의 경우, agent_notes → district
+  → institution_type 순으로 대체하되, "강남구의 한 학원" 같은 특징 없는
+  설명은 여전히 금지됩니다.
+
+### SUBJECT LINE
+- A, B 두 가지 변형을 반환하며 서로 다른 각도여야 합니다.
+- 제목에는 스팸 유발 단어("무료"/"Free", "!!!", 전체 대문자)를 사용할 수
+  없습니다 — 본문에서는 허용됩니다.`,
+      schema: `responseSchema: {
   type: Type.OBJECT,
   properties: {
-    Academy_Name: { type: Type.STRING },
-    Website_URL: { type: Type.STRING },
-    Email_Address: { type: Type.STRING, nullable: true },
-    Target_Demographic: { type: Type.ARRAY, items: { type: Type.STRING } },
-    Business_Type: { type: Type.STRING, enum: ["Franchise", "Independent"] },
-    Academy_Size: { type: Type.STRING, enum: ["Established", "Growing"] }
-  }
+    subject_line_kr: { type: Type.STRING },
+    subject_line_en: { type: Type.STRING },
+    subject_combined: { type: Type.STRING },
+    subject_line_kr_b: { type: Type.STRING, description: "variant B (different angle from A)" },
+    subject_line_en_b: { type: Type.STRING },
+    subject_combined_b: { type: Type.STRING },
+    body_korean: { type: Type.STRING },
+    body_english: { type: Type.STRING },
+    cta_primary: { type: Type.STRING },
+    personalisation_note: { type: Type.STRING }
+  },
+  required: ["subject_line_kr", "subject_line_en", "subject_combined",
+             "subject_line_kr_b", "subject_line_en_b", "subject_combined_b",
+             "body_korean", "body_english", "cta_primary"]
 }`,
       guardrails: [
-        "JSON 강제 일람: LLM 페이로드를 목적지 정형 CRM 스키마 설계 단에 매칭해 데이터 오가공 누망 원천 제하.",
-        "좌표계 산출 매칭: TM128 좌표계 원물 데이터를 표준 WGS84 GPS로 촘촘히 렌더링하고 브라우저 맵에 안착.",
-        "안전 체크업: 테스트용 dummy URL 감지 시 전송 정지 메시지를 얹음으로써 실제 도출 과정 시의 실수 고속 방지."
+        "필수 개인화: personalization_hook은 인리치먼트 스키마의 필수 필드이며, 모든 초안의 첫 문장이 이를 참조해야 하고 기존 레코드에 한해서만 지역구/업종 대체를 허용합니다.",
+        "제목 금지 규칙: 무료/Free, 느낌표 남용, 전체 대문자는 제목에서만 명시적으로 금지되며 본문에서는 허용됩니다.",
+        "고정 컴플라이언스 표기: 법적 수신거부 및 발신자 연락처 문구는 생성 이후 덧붙여지며 모델에 요청하지 않습니다."
       ]
     },
     impact: {
       value: [
-        "자체 구축한 Express 프록시 라우트에 초경량 로컬 캐싱 레이어를 세워 고비용 Naver Maps API 쿼리 사용량을 정적으로 95% 단축.",
-        "TM128 평면 투영 좌표계를 WGS84 GPS로 변환하는 복잡한 수학 연산을 메인 스레드와 분리 처리하여, 모바일 기기에서의 화면 버벅임 및 프리징 현상을 완전 소거.",
-        "외부 지도 검색 및 AI 발송에 필요한 비밀 토큰 일체를 Node.js 백엔드 세션 내부로 응집 격리해 클라이언트 측 웹 크롤링 위협에 100% 안전 보장."
+        "CSV 내보내기 → 외부 Claude 세션 → 재반입이라는 수작업 워크플로우를 없앴습니다 — 카피 품질은 이제 앱 내부 프롬프트에 전부 담겨 있습니다.",
+        "실제 발송에 반영되기 전에 새로운 B 변형 제목에도 (광고) 표기를 선제적으로 적용해 컴플라이언스 공백을 사전에 해소했습니다.",
+        "새로 인리치먼트되는 모든 리드는 일반적인 업종 설명 대신 검증 가능한 personalization_hook을 필수로 갖게 되었습니다."
       ],
       security: [
-        "구글 및 네이버 중요 접속 토큰을 Node.js 프록시로 도려내어 유출 공격에 무공해 설계 보증.",
-        "사용자 인풋에 결쳐진 문자열 유효성 검사를 세워 악성 마이그레이션 override 무력화.",
-        "동작 세팅값의 불순 변조 방지를 위하려 사용자 단말 환경 내부 cache(localStorage) 영속 보존."
+        "네이버와 Gemini API 키는 서버 측 코드(로컬 Express, 운영 환경 Vercel Functions)를 벗어나지 않습니다.",
+        "naver_id 기준 Firestore 중복 제거로 동일 기관이 두 번 인리치먼트되거나 접촉되는 것을 방지합니다.",
+        "컴플라이언스 표기 문구는 서버 측에 고정되어 있어 모델에 요청하지 않으며, 프롬프트 수정에 영향받지 않습니다."
       ]
     },
     technicalHurdles: [
       {
-        title: "네이버 크롤링 소프트락 무력화",
-        incident: "수집 도중 Naver 지도 맵 통신 횟수 및 트래픽 유입에 따른 접근 필터락에 직면하는 상황이 터졌습니다.",
-        diagnosis: "반복적인 단순 User-Agent 신호가 지도 탐색 세이프가드에 걸린 것이 요인으로 진단되었습니다.",
-        resolution: "Axios 통신 시 임의 헤더 로테이터 기법을 구축하고, 비정상 원천 마크업 태그를 깎는 수집 복정 정규식을 통해 수집 중단을 전천후 영구 완치했습니다."
+        title: "카피 품질 격차의 원인은 누락된 기능이 아니라 누락된 프롬프트 규칙",
+        incident: "앱 내부 Gemini 초안 생성 파이프라인이 이미 처음부터 끝까지 작동하고 있었음에도, 팀은 계속 인리치먼트된 리드를 CSV로 내보내 콜드 아웃바운드 카피라이팅 스킬이 탑재된 별도 Claude 세션에서 이메일을 다시 작성했습니다.",
+        diagnosis: "이는 기능 누락이 아니었습니다 — 외부 세션에는 강제 개인화, 제목의 스팸 단어 회피, 일관된 오퍼 명칭, 제목 A/B 변형 같은 구체적인 카피라이팅 규칙이 탑재되어 있었고, 앱 내부 시스템 프롬프트에는 이 규칙들이 없어 상대적으로 초안이 템플릿처럼 읽혔습니다.",
+        resolution: "규칙을 프롬프트 파일에 직접 이식했습니다: 인리치먼트 스키마에 필수 personalization_hook 필드 추가, 제목에서만 스팸 유발 단어 금지, 스키마에 두 번째 A/B 제목 변형과 UI 토글 추가, 기존 CTA URL과 일치하도록 진단 오퍼 명칭 통일. applyEmailCompliance()를 새 B 변형 제목까지 커버하도록 확장해, 두 변형 어느 쪽에서도 법적으로 필수인 (광고) 표기가 누락되지 않도록 했습니다."
       }
     ]
   },

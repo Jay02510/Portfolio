@@ -111,10 +111,40 @@ Parents needed instant, zero-setup camera grading that provides clear Korean pho
 * **Decision**: Architected a hybrid model — fast client-side TypeScript validation catches 100% of hard time/room clashes locally, while Gemini Pro focuses on heuristic teacher workload balancing.
 * **Outcome**: **40 hours reduced to <10 minutes** with guaranteed 0-conflict scheduling.
 
-### B2B Lead Enrichment CRM
-* **Problem**: Academy sales discovery required tedious scraping, raw HTML cleanup, and manual bilingual email drafting.
-* **Decision**: Engineered a Node/Express proxy mapping regional Naver directory records through structured Gemini models to generate 1-click personalized Gmail deep links for human rep verification.
-* **Outcome**: Boosted outbound sales outreach response rates by 4x.
+---
+
+<a id="b2b-crm-case-study"></a>
+## 5B. B2B LEAD ENRICHMENT CRM: NAVER → GEMINI → COMPLIANT BILINGUAL OUTREACH
+
+### A. Problem
+Sourcing hagwon (academy) leads for Chekki's B2B sales motion meant three disconnected manual steps:
+* **Raw Directory Noise**: Naver Local Search returns unstructured HTML-flavored listings with no institution-type classification, no fit scoring, and no dedupe key across repeated searches.
+* **Copy Quality Bottleneck**: Early Gemini-drafted outreach emails were generic enough that the team routed every lead through a *separate* Claude session running a cold-outbound copywriting skill before sending — a manual export/re-import step for every batch.
+* **Legal Exposure**: Korea's 정보통신망법 (Act on Promotion of Information and Communications Network Utilization) Article 50 requires every commercial email to carry an `(광고)` subject prefix, sender contact info, and a working opt-out — easy to miss if left to model discretion per-send.
+
+### B. Discovery & User Insights
+1. **The external-skill workflow was a copy-quality gap, not a tooling gap.** The team wasn't exporting to a separate Claude session for lack of an in-app generator — the in-app drafts already worked — it was because that external session had cold-outbound and grand-slam-offer copywriting skills loaded that the in-app prompt didn't encode. The fix was porting the *rules*, not building a new pipeline.
+2. **Generic personalization reads as generic.** Sentence-1 openers that described an institution by type and district ("a hagwon in Gangnam") tested as templated. Openers anchored to one verifiable fact (an Instagram handle, a review count, a franchise signal) didn't.
+3. **Spam-trigger words live in the subject line, not the body.** "무료" ("free") and exclamation-heavy subjects suppressed open rates even though the same language performed fine inside the email body.
+
+### C. Product Decisions & Technical Architecture
+1. **Required `personalization_hook` Field on the Enrichment Schema**:
+   * *Decision*: Added a required Gemini structured-output field capturing one specific, verifiable fact per institution, with an explicit negative rule against generic institution-type descriptions.
+   * *Outcome*: Forces the email-drafting prompt's opening sentence to reference something concrete instead of inventing or defaulting to a generic hook. Pre-existing lead records enriched before this field existed fall back through an in-prompt hierarchy (agent notes → district → institution type) rather than requiring a re-enrichment migration.
+2. **Fixed Compliance Footer Applied Post-Generation, Not Left to the Model**:
+   * *Decision*: The `(광고)` subject prefix, sender contact line, and opt-out instruction are appended by a deterministic server-side function (`applyEmailCompliance`) after Gemini returns its draft, covering every subject-line variant the schema produces.
+   * *Outcome*: Legal compliance can't drift with prompt changes or model updates — verified by a standalone smoke test asserting the compliance strings survive regardless of what the model returns.
+3. **Dual Subject-Line Variants with a UI Toggle**:
+   * *Decision*: The schema returns two distinct subject-line angles (A/B) per lead instead of one; a small pill toggle in the email draft card lets the sender pick before copying or opening in Gmail.
+   * *Outcome*: Cheap A/B testing at send time with no added generation cost — one Gemini call already returns both.
+4. **1-Click Gmail Deep Links over Background SMTP**:
+   * *Decision*: Drafts open as pre-filled Gmail compose windows rather than sending through a backend mailer.
+   * *Outcome*: A human sales rep does a 2-second quality check before every send, protecting domain reputation from bulk-send spam flags — consistent with the same tradeoff made on Chekki's other outreach surfaces.
+
+### D. Measurable Outcomes
+* Eliminated the manual CSV-export → external-Claude-session → re-import workflow entirely; copywriting quality now lives in the app's own prompt.
+* Closed a legal-compliance gap proactively (extended the `(광고)` prefix to the new B-variant subject line before it shipped, not after an audit caught it).
+* Subject-line spam-trigger words removed from every generated draft; personalization forced to a verifiable fact on 100% of new enrichments.
 
 ---
 
