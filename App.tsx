@@ -213,29 +213,29 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       context: "Work project · VodaBi",
       status: "Built, rolling out",
       title: "Voice-AI sales training and evaluation platform",
-      problem: "Sales staff and candidates were assessed on manual phone calls: high admin load, slow turnaround, and scores that changed depending on who listened. The platform replaces the call with a realtime AI persona roleplay, scores it against a rubric, and lets staff keep practising while managers track progress.",
+      problem: "Sales teams need a consistent way to practise and assess calls. The platform runs realistic AI roleplay calls, scores them against a rubric, and gives managers a view of team progress.",
       owned: [
         "Candidate and staff flows: magic-link tests, self-practice, assigned training, and the post-call report",
         "Realtime voice pipeline: direct browser-to-model WebRTC, ephemeral tokens, push-to-talk and server-side VAD",
         "Post-call evaluation service: two-step grading (score, then explain), BANTCQ evidence, speech-pacing telemetry",
         "Multi-tenant backoffice with a custom roles guard, plus the VOISOR coaching assistant",
         "Staff growth and manager dashboards: scores by scenario, competency growth, badges, team completion rates",
-        "Three security passes, Sentry error reporting, and the AWS EC2 deploy"
+        "Sentry error reporting and the AWS EC2 deploy"
       ],
       decisions: [
         {
           choice: "Direct WebRTC instead of relaying audio through our server",
-          why: "Relaying added a round trip to every turn, which makes a roleplay feel broken.",
+          why: "Keeping the server out of the audio path makes each turn feel like a real call.",
           tradeoff: "Tradeoff: ephemeral token issuance and client-side session handling to build and secure."
         },
         {
           choice: "Score first, then write feedback from the fixed scores",
-          why: "One call producing scores and feedback together let the feedback contradict the score.",
+          why: "Writing feedback from fixed scores keeps the coaching consistent with the number.",
           tradeoff: "Tradeoff: two sequential calls add a few seconds before the report appears."
         },
         {
           choice: "Stateless magic links instead of candidate accounts",
-          why: "Signup was the largest drop-off point before the call ever started.",
+          why: "Candidates can start a scored call straight from a link, without signing up.",
           tradeoff: "Tradeoff: link expiry, rotation on re-invite, and no persistent candidate history."
         }
       ],
@@ -327,29 +327,29 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       context: "업무 프로젝트 · VodaBi",
       status: "구축 완료, 도입 진행",
       title: "음성 AI 세일즈 훈련 및 평가 플랫폼",
-      problem: "영업 직원과 지원자 평가가 수동 전화 통화로 진행되면서 행정 부담이 크고 처리 속도가 느리며, 듣는 사람에 따라 평가가 달라졌습니다. 이 플랫폼은 통화를 실시간 AI 페르소나 롤플레이로 대체해 루브릭으로 채점하고, 직원은 계속 연습하며 매니저는 진행 상황을 확인합니다.",
+      problem: "영업팀에는 통화를 일관되게 연습하고 평가할 방법이 필요합니다. 이 플랫폼은 실제 같은 AI 롤플레이 통화를 루브릭으로 채점하고, 매니저에게 팀 진행 상황을 보여줍니다.",
       owned: [
         "지원자·직원 플로우: 매직링크 테스트, 자율 연습, 필수훈련 배정, 통화 후 리포트",
         "실시간 음성 파이프라인: 브라우저-모델 Direct WebRTC, 임시 토큰, Push-to-Talk 및 서버 VAD",
         "통화 후 평가 서비스: 2단계 채점(채점 후 설명), BANTCQ 근거, 발화 속도 텔레메트리",
         "커스텀 RolesGuard 기반 멀티테넌트 백오피스 및 VOISOR 코칭 어시스턴트",
         "직원 성장·매니저 대시보드: 시나리오별 점수, 역량 성장, 배지, 팀 완료율",
-        "3차례 보안 점검, Sentry 에러 리포팅, AWS EC2 배포"
+        "Sentry 에러 리포팅과 AWS EC2 배포"
       ],
       decisions: [
         {
           choice: "서버 릴레이 대신 Direct WebRTC 선택",
-          why: "릴레이는 매 턴마다 왕복 지연을 추가해 롤플레이가 끊기는 느낌을 줍니다.",
+          why: "서버를 오디오 경로에서 빼면 매 턴이 실제 통화처럼 느껴집니다.",
           tradeoff: "트레이드오프: 임시 토큰 발급과 클라이언트 세션 처리를 직접 구축하고 보호해야 합니다."
         },
         {
           choice: "먼저 채점하고, 확정된 점수로 피드백 작성",
-          why: "한 번의 호출로 점수와 피드백을 함께 만들면 피드백이 점수와 어긋날 수 있었습니다.",
+          why: "확정된 점수로 피드백을 쓰면 코칭이 점수와 일치합니다.",
           tradeoff: "트레이드오프: 순차 호출 두 번으로 리포트 표시까지 몇 초가 더 걸립니다."
         },
         {
           choice: "지원자 계정 대신 무상태 매직링크",
-          why: "통화 시작 전 가장 큰 이탈 지점이 회원가입이었습니다.",
+          why: "지원자는 가입 없이 링크에서 바로 채점 통화를 시작합니다.",
           tradeoff: "트레이드오프: 링크 만료와 재초대 시 로테이션 관리가 필요하고, 지원자 이력은 남지 않습니다."
         }
       ],
@@ -608,11 +608,11 @@ const LOG: LogEntry[] = [
   },
   {
     date: "2026-09-18",
-    type: "security",
-    titleEn: "VodaBi: two-step grading and a third security pass",
-    titleKo: "VodaBi: 2단계 채점과 세 번째 보안 점검",
-    descEn: "Split one 16-field grading call into a scoring call and a feedback call written from the fixed scores, with strict JSON schemas. Closed a prompt-injection path into grading, missing role guards on rubric endpoints, and a same-company report IDOR.",
-    descKo: "16개 필드를 한 번에 만들던 채점 호출을 채점 호출과, 확정된 점수로 작성하는 피드백 호출로 나누고 엄격한 JSON 스키마를 적용했습니다. 채점 프롬프트 인젝션 경로, 루브릭 엔드포인트의 역할 가드 누락, 같은 회사 내 리포트 IDOR를 차단했습니다."
+    type: "feature",
+    titleEn: "VodaBi: two-step grading",
+    titleKo: "VodaBi: 2단계 채점",
+    descEn: "Grading now runs as a scoring call and a feedback call written from the fixed scores, both with strict JSON schemas.",
+    descKo: "채점을 점수 호출과, 확정된 점수로 피드백을 쓰는 호출로 나누고 두 호출 모두 엄격한 JSON 스키마를 적용했습니다."
   },
   {
     date: "2026-10-07",
@@ -667,8 +667,8 @@ const LOG: LogEntry[] = [
     type: "feature",
     titleEn: "VodaBi: voice-AI screening and 11-rubric evaluator shipped",
     titleKo: "VodaBi: 음성 AI 스크리닝 및 11개 루브릭 평가 엔진 배포",
-    descEn: "Direct WebRTC voice roleplay (<200ms latency), post-call GPT-4o evaluation with BANTCQ evidence, the VOISOR coaching assistant, multi-tenant RBAC, and a pre-production audit of five vulnerabilities.",
-    descKo: "Direct WebRTC 음성 롤플레이(<200ms 지연), BANTCQ 근거를 포함한 통화 후 GPT-4o 평가, VOISOR 코칭 어시스턴트, 멀티테넌트 RBAC, 사전 프로덕션 5개 취약점 감사."
+    descEn: "Direct WebRTC voice roleplay (<200ms latency), post-call GPT-4o evaluation with BANTCQ evidence, the VOISOR coaching assistant, and multi-tenant role-based access.",
+    descKo: "Direct WebRTC 음성 롤플레이(<200ms 지연), BANTCQ 근거를 포함한 통화 후 GPT-4o 평가, VOISOR 코칭 어시스턴트, 멀티테넌트 역할 기반 접근."
   },
   {
     date: "2026-09-01",
