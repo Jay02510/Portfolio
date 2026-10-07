@@ -333,26 +333,27 @@ function scoreAssessment(answers) {
     stats: [
       { label: "Role Architecture", value: "4 Distinct Roles", detail: "Parent, Foreign Teacher, Korean Staff, Director" },
       { label: "Scan-to-Result Target", value: "<5s Latency", detail: "Ground-Truth Answer Key OCR Ingestion" },
-      { label: "Product Rigor", value: "19 Logged Decisions", detail: "Documented Trade-Offs & PRD/Scope Trio" }
+      { label: "Product Rigor", value: "24 Logged Decisions", detail: "Documented Trade-Offs & PRD/Scope Trio" }
     ],
     problem: [
-      "Parent-Child Home Study Friction: Non-fluent Korean parents struggle to understand or verify English homework, resulting in household frustration and guessing what answers should be.",
+      "Parent-Child Home Study Friction: Korean parents who aren't fluent in English struggle to check English homework, so homework time turns into guessing.",
       "Disconnected Feedback Loop: Student homework errors made at home vanish into backpacks without reaching the classroom, leaving foreign teachers unaware of systemic weak spots.",
-      "Bilingual Administrative Overhead: Foreign teachers and Korean staff spend 10-15 hours weekly drafting, translating, and aligning parent progress notes across language barriers."
+      "Bilingual Administrative Overhead: Foreign teachers and Korean staff spend hours every week drafting, translating, and aligning parent progress notes across a language barrier."
     ],
     solution: [
       "Grounded Multimodal Grading Pipeline: Worksheet grading runs against teacher-uploaded, OCR'd answer keys in Firestore rather than model guesswork, so corrections match what the teacher taught.",
-      "Turn-Based Voice Extraction (Scoped to Infra Limits): Built record → structured-JSON extract → explicit-confirm voice logging instead of complex speech-to-speech, respecting Vercel serverless connection constraints and tuning temperature to 0.15.",
+      "Voice-First Class Log: One recording fills the class summary and notes on named students, applied straight into the form with one-step Undo. Turn-based rather than live speech-to-speech, which Vercel serverless functions can't hold open.",
       "Vercel 12-Function Ceiling Consolidation: Consolidated all AI grading, voice-fill, and Q&A tasks into api/analyze.ts and collapsed 4 redemption functions into api/redeem.ts with backward-compatible vercel.json rewrites.",
-      "Human-in-the-Loop Trust Gate: Enforced Korean teacher report review via a strict structural state machine (pending_review → edited_by_kt → copied_sent), blocking foreign teacher self-approval.",
-      "Two Full Security-Audit Sweeps: Identified and closed 7+ auth vulnerabilities across sign-in, redemption, and data routes, plus fixed login user enumeration.",
+      "Human Review Before Parents: Only the Korean teacher can approve a class log, enforced in Firestore rules rather than the UI, so a foreign teacher can't self-approve.",
+      "Three Security Audits: Closed 7+ authorization gaps and a login user-enumeration bug, then a final pre-pilot pass on school and admin access. Firestore rules tests now run on the emulator in CI.",
       "Systemic Firestore Rules Remediation: Diagnosed and fixed a get()-inside-list-query bug that silently broke class and roster reads for directors and teachers.",
       "Director Dashboard IA Overhaul: Merged Roster and Database views, promoted Teacher Assignment, added class picker, notification bell, and hardened invite retry logic.",
-      "Korean Teacher Review Queue: Built bulk-approve (restricted to reports with zero flagged exceptions), offline localStorage queue with retry, and KakaoTalk Web Share sheet integration.",
+      "Class-Level Korean Teacher Review: Teachers said the one-card-per-student queue was clunky on phones, so the Korean teacher now reviews a whole class-day on one screen and approves once. Each family gets the class summary plus only their child's note in the app; KakaoTalk copies are optional.",
+      "Native-Speaker Voice Rules: Korean readers said report drafts sounded machine-written, repeating the same stock praise. Shared voice rules now steer every report prompt toward specific, plain observations.",
       "Cross-Platform Mobile Shipping: Shipped iOS & Android from one React codebase using Capacitor, Universal Links / App Links, Apple/Google/Kakao auth, and RevenueCat subscription billing.",
       "Monolith Refactor: Split a 4,678-line multi-role TeacherPage.tsx into role-scoped hooks (useDirectorState, useFTState, useKTState) and modular shell components across 6 incremental phases with zero regressions.",
       "Document Consolidation & Scope Discipline: Consolidated 9 overlapping product documents into one canonical PRD/Scope/Decisions record, cutting 5 tangential features.",
-      "Growth & Marketing Infra: Added PWA install support for schools portal, real GA4 funnel events, and geo/local SEO with JSON-LD and hreflang tags."
+      "Growth & Marketing Infra: PWA install for the schools portal, GA4 funnel events, and per-language prerendered landing pages with JSON-LD and hreflang tags."
     ],
     stack: [
       "React 19",
@@ -377,10 +378,16 @@ function scoreAssessment(answers) {
       { step: "02. Parent Scans at Home", role: "Parent / Student", detail: "Mobile camera captures worksheet; Gemini vision processes image against responseSchema with <5s latency target." },
       { step: "03. Instant Bilingual Result", role: "Parent App", detail: "Renders visual overlays on original image with correct answers, Korean explanation, and phonetics guidance." },
       { step: "04. Mistakes Aggregate", role: "Telemetry Backend", detail: "Errors aggregate across class rosters into a 'what's the class struggling with' pre-lesson cohort view." },
-      { step: "05. Teacher Acts & Logs Class", role: "Foreign Teacher", detail: "Addresses cohort gaps in class and logs notes via turn-based voice-fill (record → extract → confirm)." },
-      { step: "06. KT Reviews & Dispatches", role: "Korean Staff / Director", detail: "AI drafts Korean parent update; human staff reviews, edits, and dispatches via structural state machine." }
+      { step: "05. Teacher Acts & Logs Class", role: "Foreign Teacher", detail: "Addresses class-wide gaps, then logs the lesson with one voice recording that fills the class summary and student notes." },
+      { step: "06. KT Reviews Once per Class", role: "Korean Teacher", detail: "AI drafts the Korean report; the Korean teacher edits and approves the whole class-day once, and each family sees its own report in the app." }
     ],
     decisions: [
+      {
+        decision: "Decision 024: Korean Teacher Reviews Once per Class; Parents Read Their Own Report",
+        alternativeConsidered: "One review card per student, each sent through KakaoTalk separately",
+        why: "Teachers said the review side was clunky on a phone: a class of 12 meant 12 cards, 10 of them the same class summary. Two bugs sat underneath: parents had no read access to class logs, so their report section was always empty, and each approval saved one child's note as the class-wide summary.",
+        tradeOffAccepted: "Reports approved before the change have no parent-facing copy, and a student in two classes gets two reports."
+      },
       {
         decision: "Decision 014: Turn-Based Voice-Fill over Continuous Speech-to-Speech",
         alternativeConsidered: "Real-time speech-to-speech conversational voice agent for teachers",
@@ -412,13 +419,14 @@ function scoreAssessment(answers) {
         "Home Scan & Matching: Parent captures physical page; Gemini 2.5 Flash matches against curriculum key with SHA256 image caching.",
         "Bilingual Overlay Render: Client renders structured problem boxes, phonetic pronunciation guides, and Korean teaching scripts directly over worksheet image.",
         "Mistake Aggregation: Errors sync to Firestore without storing raw student PII, populating teacher pre-lesson telemetry cockpit.",
-        "Human-in-the-Loop Update: Foreign teacher voice-fills observation note; AI translates to Korean honorifics; Korean teacher confirms dispatch."
+        "Human-in-the-Loop Update: Foreign teacher records the lesson by voice; AI drafts a Korean report with correct honorifics; the Korean teacher approves once per class before families see it."
       ],
       guardrails: [
         "Vercel 12-Function Ceiling Architecture: Consolidated all AI endpoints into api/analyze.ts and redemption routes into api/redeem.ts with URL rewrites.",
         "Ground-Truth Anchoring: AI evaluates strictly against teacher-uploaded answer keys instead of guessing the answer itself.",
-        "Structural State Machine: Enforces pending_review → edited_by_kt → copied_sent; no AI draft reaches parents without staff confirmation.",
-        "Firestore Multi-Tenant Security Rules: Read/write permissions strictly scoped to verified school and class IDs with Admin SDK server guards."
+        "Korean-Teacher Approval Gate: Firestore rules let only the Korean teacher approve a class log; no AI draft reaches parents without that approval.",
+        "Firestore Multi-Tenant Security Rules: Read/write permissions strictly scoped to verified school and class IDs with Admin SDK server guards.",
+        "Data Retention: Worksheet images are discarded after grading; cached analysis expires after 30 days and is never cached for enrolled students."
       ]
     },
     promptEngineering: {
@@ -429,7 +437,7 @@ function scoreAssessment(answers) {
 <input_constraints>
   <target_language>Bilingual English / Korean</target_language>
   <phonetic_phrasing>Natural phonetic pronunciation keys for parents</phonetic_phrasing>
-  <zero_hallucination_blank_filter>If handwriting is undetected, enforce empty student response strings and labels all questions as correct to avoid false error highlights.</zero_hallucination_blank_filter>
+  <blank_sheet_filter>If handwriting is undetected, enforce empty student response strings and labels all questions as correct to avoid false error highlights.</blank_sheet_filter>
 </input_constraints>`,
       schema: `{
   "type": "OBJECT",
@@ -452,21 +460,21 @@ function scoreAssessment(answers) {
 }`,
       guardrails: [
         "Structured JSON Schema Control: Strictly enforces type checking on legibility and student answers, eliminating raw parser breaks.",
-        "Zero-Hallucination Blank Filtering: If handwriting is undetected, forces empty student response strings and labels questions correct to avoid false error highlights.",
+        "Blank-Sheet Filtering: If handwriting is undetected, forces empty student response strings and labels questions correct to avoid false error highlights.",
         "Variable Isolation: Wraps outer parameters in strict XML boundary markers to resist target payload prompt injections."
       ]
     },
     impact: {
       value: [
         "Connected 4 roles (Parent, FT, KT, Director) into a unified closed loop where home mistakes inform classroom instruction.",
-        "Est. 80% reduction in grading/reporting admin time (10-15h/week/teacher) — retest pending Chekki Schools launch.",
-        "Operating live beta pilot with 100+ active users.",
-        "Maintained 19 logged architectural/product trade-offs with rigorous scope discipline."
+        "Aims to cut teachers' weekly grading and reporting work; to be measured in the Chekki Schools pilot rather than estimated.",
+        "Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a two-school pilot.",
+        "Maintained 24 logged architectural/product trade-offs with rigorous scope discipline."
       ],
       security: [
         "Firestore security rules strictly scoped to verified school/class IDs with server-only Admin SDK privileged mutations.",
         "Upstash Redis rate-limiting on API endpoints and RevenueCat subscription entitlements validation.",
-        "Full CI/CD quality gate: Vitest test suite, ESLint, and Sentry monitoring across frontend and Vercel Node runtime."
+        "Full CI/CD quality gate: Vitest test suite, ESLint, Firestore rules tests on the emulator, and Sentry monitoring across frontend and Vercel Node runtime."
       ]
     },
     technicalHurdles: [
@@ -764,8 +772,8 @@ function scoreAssessment(answers) {
   },
 
   "chekki-teacher": {
-    title: "Chekki Schools — Role-Scoped Admissions & Classroom CRM",
-    tagline: "The staff-facing side of the Chekki platform: a director HQ, a foreign-teacher grading cockpit, and a Korean-teacher parent-communication console, each scoped to its own role, on top of the same worksheet-grading engine that powers the Chekki AI parent app.",
+    title: "Chekki Schools — Role-Scoped Academy CRM",
+    tagline: "The staff-facing side of the Chekki platform, now in final testing: separate views for directors, foreign teachers and Korean teachers, on top of the same worksheet-grading engine that powers the Chekki AI parent app.",
     liveUrl: "https://www.chekkiai.com/schools",
     screenshots: [
       { label: "Schools Landing", url: "/screenshots/chekki-schools/02-landing-schools.png", subLabel: "Staff-Facing Entry Point" },
@@ -783,9 +791,9 @@ function scoreAssessment(answers) {
       { label: "Weekly Report Generator", url: "/screenshots/chekki-schools/16-kt-weekly-report-generator.png", subLabel: "Korean Teacher: Bilingual Progress Reports" }
     ],
     stats: [
-      { label: "Grading Time Saved", value: "~80%" },
-      { label: "Per Teacher, Per Week", value: "10–15 hrs" },
-      { label: "Role-Scoped Dashboards", value: "3" }
+      { label: "Status", value: "Final testing" },
+      { label: "Role-Scoped Dashboards", value: "3" },
+      { label: "Korean-Teacher Review", value: "1 per class-day" }
     ],
     problem: [
       "Directors, foreign teachers, and Korean teachers do different jobs on the same roster, but a single shared UI forces all three to wade through screens meant for someone else's role.",
@@ -793,16 +801,17 @@ function scoreAssessment(answers) {
       "Korean teachers write bilingual parent updates by hand every week, translating a foreign teacher's classroom notes into KakaoTalk messages parents actually read."
     ],
     solution: [
-      "Split the account into three surfaces — director HQ, foreign-teacher cockpit, Korean-teacher console — reading and writing the same Firestore records under different logins.",
+      "Split the account into separate views for directors, foreign teachers and Korean teachers, reading and writing the same Firestore records under different logins.",
       "Foreign teachers pre-seed curriculum and calibrate answer keys before class, so a worksheet scan grades against a verified key instead of the model's own reading of the page.",
-      "Korean teachers get a generator that turns a foreign teacher's class log into a bilingual KakaoTalk-ready script, closing the loop from classroom to parent without a manual rewrite."
+      "Foreign teachers record one voice note per class; it fills the class summary and student notes, and the Korean teacher reviews the whole class-day once before each family receives its own report.",
+      "After native Korean readers said the drafts sounded machine-written, shared voice rules steer every report prompt toward specific, plain observations."
     ],
     stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "Role-scoped React hooks"],
     architecture: {
       lifecycle: [
         "Director: invites staff, assigns teachers to classes, manages billing — the account-level layer the other two roles operate inside.",
-        "Foreign teacher: pre-seeds curriculum, calibrates the answer key, scans worksheets, reviews class-wide mistake patterns in weekly insights.",
-        "Korean teacher: sees the cross-class roster, and turns a foreign teacher's observations into a bilingual weekly report and a KakaoTalk-ready script for parents.",
+        "Foreign teacher: pre-seeds curriculum, calibrates the answer key, scans worksheets, sees the week's most-missed words, and logs each lesson by voice.",
+        "Korean teacher: reviews each class-day on one screen, edits the summary and student notes, and approves once; families see their own report in the app, and KakaoTalk copies are optional.",
         "All three roles read and write the same underlying student and class records — no separate portal per role, just separate views."
       ],
       guardrails: [
@@ -835,18 +844,18 @@ function scoreAssessment(answers) {
     impact: {
       value: [
         "The 4,678-line single-file teacher page this used to be got split into useDirectorState / useFTState / useKTState — role-scoped hooks that only load what that role's screen needs.",
-        "Answer-key calibration and worksheet scanning happen in the same cockpit, so a foreign teacher never leaves the app to reconcile a grade.",
-        "The KakaoTalk script generator removed the last manual-translation step between a foreign teacher's notes and a parent's phone."
+        "Answer-key calibration and worksheet scanning happen on the same screen, so a foreign teacher never leaves the app to reconcile a grade.",
+        "Voice logging and class-level review removed the manual translation step and the per-student approval queue between a foreign teacher's notes and a parent's phone."
       ],
       security: [
         "Firestore rules deny cross-class reads by default; a teacher's query is scoped server-side, not just hidden in the UI.",
         "Director-only routes (billing, invites, staff assignment) check role on every request, not just on initial page load.",
-        "Two internal security-audit sweeps closed the gaps a role-scoped rebuild opens up before either shipped."
+        "Three internal security audits, the last one before the pilot, with Firestore rules tests running on the emulator in CI."
       ]
     },
     behindTheArchitecture: {
       problem: "One shared teacher page trying to serve directors, foreign teachers, and Korean teachers had grown to 4,678 lines and every role saw every other role's UI.",
-      vision: "Split by role first, share data model underneath — three cockpits that each load fast because they only carry their own role's state.",
+      vision: "Split by role first, share data model underneath — three views that each load fast because they only carry their own role's state.",
       rationale: "Firestore's per-document security rules made role scoping enforceable at the data layer, not just the component layer, so a UI bug can't leak another role's records."
     },
     technicalHurdles: [
@@ -861,6 +870,12 @@ function scoreAssessment(answers) {
         incident: "An earlier version generated the bilingual report and the messaging script from two separate prompts, and they occasionally disagreed on the same week's summary.",
         diagnosis: "Two independent generations of the same underlying facts will drift, especially across languages.",
         resolution: "Moved both outputs into one structured schema response, so the KakaoTalk script is derived from the same generation as the report instead of a second call."
+      },
+      {
+        title: "Parent reports that never showed up",
+        incident: "The parent app's class-report section was always empty, and each approval saved one child's note as the class-wide summary.",
+        diagnosis: "Firestore rules gave parents no read access to class logs, and approval wrote a student's personal report into the shared log, so opening access would have shown one child's note to every family.",
+        resolution: "Approval now writes one parent report per student, holding the class summary plus only that child's note, readable only by that child's parent."
       }
     ]
   },
@@ -1671,26 +1686,27 @@ function scoreAssessment(answers) {
     stats: [
       { label: "역할 아키텍처", value: "4개 독립 역할", detail: "학부모, 원어민 교사, 한국인 교사, 학원장" },
       { label: "스캔 응답 타겟", value: "<5초 레이턴시", detail: "교사 정답지 OCR 기반 Ground-Truth 채점" },
-      { label: "프로덕트 엄밀성", value: "19개 기록된 결정", detail: "문서화된 트레이드오프 & PRD/Scope/Decisions 삼총사" }
+      { label: "프로덕트 엄밀성", value: "24개 기록된 결정", detail: "문서화된 트레이드오프 & PRD/Scope/Decisions 삼총사" }
     ],
     problem: [
       "가정 내 숙제 지도 마찰: 비원어민 학부모가 자녀의 영어 숙제 의도와 발음을 이해하지 못해 겪는 심리적 부담 및 비효율.",
       "단절된 피드백 루프: 가정에서 발생하는 오답과 취약점이 교실로 전달되지 못하고 가방 속에 묻혀, 원어민 교사가 맞춤 피드백을 주기 어려움.",
-      "과중한 이중언어 행정 부담: 원어민 교사의 영어 메모를 한국인 교사가 번역하고 정제하여 학부모에게 전달하는 데 매주 10~15시간 소모."
+      "과중한 이중언어 행정 부담: 원어민 교사의 영어 메모를 한국인 교사가 번역하고 정제하여 학부모에게 전달하는 데 매주 여러 시간 소모."
     ],
     solution: [
       "정답지 기반 멀티모달 채점 파이프라인: 교사가 업로드한 OCR 정답지를 Firestore에 등록하여, AI의 임의 추측이 아닌 실제 정답 기준으로 채점하여 교사가 가르친 내용과 일치하도록 함.",
-      "인프라 한계에 맞춘 턴 기반 음성 추출: Vercel 서버리스의 지속 연결 한계를 감안하여 복잡한 음성 대화 대신 녹음 → 정형 JSON 추출 → 명시적 확정 흐름을 구현하고 온도(0.15)를 최적화.",
-      "Vercel 12개 함수 한도 통합: 모든 AI 채점, 음성 추출, Q&A 작업을 api/analyze.ts로 통합하고 4개 구독 환급 함수를 api/redeem.ts로 합쳐 배포된 네이티브 앱의 중단 없는 하위 호환성 보장.",
-      "구조적 Human-in-the-Loop 신뢰 게이트: 한국인 교사의 알림장 검토 상태 머신(pending_review → edited_by_kt → copied_sent)을 강제하여 원어민 교사의 자체 승인을 구조적으로 차단.",
-      "2회에 걸친 공개 API 라우트 보안 감사: 가입, 환급, 데이터 경로 전반에서 7개 이상의 인증 취약점을 발견 및 패치하고 로그인 사용자 열거 공격을 차단.",
+      "음성 우선 수업 기록: 녹음 한 번으로 수업 요약과 학생별 메모를 채우고, 확인 카드 없이 바로 폼에 반영하며 한 단계 되돌리기를 제공. Vercel 서버리스는 실시간 음성 연결을 유지할 수 없어 턴 기반으로 설계.",
+      "Vercel 12개 함수 한도 통합: 모든 AI 채점, 음성 추출, Q&A 작업을 api/analyze.ts로 통합하고 4개 구독 코드 사용 함수를 api/redeem.ts로 합쳐 배포된 네이티브 앱의 중단 없는 하위 호환성 보장.",
+      "학부모 전달 전 사람 검토: 수업 기록 승인은 한국인 교사만 할 수 있도록 UI가 아닌 Firestore 규칙에서 강제해, 원어민 교사의 자체 승인을 차단.",
+      "3회 보안 감사: 7건 이상의 권한 취약점과 로그인 사용자 열거 버그를 해결하고, 파일럿 전 마지막 점검에서 학교·관리자 접근을 강화. Firestore 규칙 테스트를 에뮬레이터로 CI에서 실행.",
       "시스템적 Firestore 규칙 쿼리 버그 해결: 원장 및 교사의 명렬표/학급 조회를 조용히 실패시키던 list 쿼리 내 get() 안티패턴을 진단하고 완벽 패치.",
       "원장 대시보드 정보 구조(IA) 개편: 명렬표/데이터베이스 뷰를 통합하고, 교사 배정 기능을 승격하며, 학급 선택기 및 알림 벨을 추가.",
-      "한국인 교사 검토 큐: 플래그 없는 리포트 일괄 승인, localStorage 기반 오프라인 대기열, 카카오톡 웹 공유 시트 연동 구축.",
+      "반 단위 한국인 교사 검토: 학생별 카드 방식이 휴대폰에서 번거롭다는 교사 피드백에 따라, 한 반의 하루를 한 화면에서 검토하고 한 번에 승인. 각 가정은 반 요약과 자기 아이의 메모만 앱에서 받고, 카카오톡 문구는 선택 사항.",
+      "원어민 문체 규칙: 리포트 초안이 같은 칭찬을 반복해 기계가 쓴 글 같다는 한국어 원어민 독자의 지적에 따라, 모든 리포트 프롬프트에 구체적이고 담백한 관찰을 쓰도록 공통 문체 규칙 적용.",
       "크로스 플랫폼 모바일 출시: Capacitor, Universal Links / App Links, Apple/Google/Kakao 인증, RevenueCat 구독 결제를 결합하여 단일 React 코드베이스로 iOS/Android 동시 출시.",
       "4,678줄 모놀리스 컴포넌트 리팩토링: 거대한 TeacherPage.tsx를 6단계에 걸쳐 역할별 전용 훅(useDirectorState, useFTState, useKTState)과 모듈형 셸로 분리하여 리그레션 제로 달성.",
       "9개 분산 문서 단일화 & 스코프 절제: 상충하던 기획 문서를 1개의 정통 PRD/Scope/Decisions 기록으로 단일화하고 가짜 커뮤니티 등 5개 군더더기 기능 제거.",
-      "그로스 및 마케팅 인프라: 스쿨 포털 PWA 설치 지원, GA4 퍼널 이벤트 및 JSON-LD/hreflang 기반 로컬 SEO 탑재."
+      "그로스 및 마케팅 인프라: 스쿨 포털 PWA 설치, GA4 퍼널 이벤트, 언어별 프리렌더링 랜딩 페이지와 JSON-LD/hreflang."
     ],
     stack: [
       "React 19",
@@ -1711,14 +1727,20 @@ function scoreAssessment(answers) {
       "Sentry (웹 + Node 모니터링)"
     ],
     coreLoop: [
-      { step: "01. 교사 정답지 등록", role: "원어민 교사", detail: "주간 워크시트를 OCR하여 반별 Firestore 커리큘럼 문서로 저장; 채점은 실제 정답에 100% 기반합니다." },
+      { step: "01. 교사 정답지 등록", role: "원어민 교사", detail: "주간 워크시트를 OCR하여 반별 Firestore 커리큘럼 문서로 저장; 채점은 교사가 등록한 정답을 기준으로 합니다." },
       { step: "02. 가정 내 모바일 스캔", role: "학부모 / 학생", detail: "스마트폰 카메라로 워크시트를 촬영; Gemini 비전이 5초 미만 목표 레이턴시로 이미지를 정형 분석합니다." },
       { step: "03. 즉각적 이중언어 결과", role: "학부모 앱", detail: "정답, 한국어 지도 스크립트, 파닉스 가이드를 원본 이미지 위 정밀 시각 오버레이로 렌더링합니다." },
       { step: "04. 오답 텔레메트리 자동 집계", role: "백엔드 엔진", detail: "개별 스캔의 오답이 반 전체 명렬표에 집계되어 '우리 반이 가장 어려워하는 개념' 사전 뷰를 구성합니다." },
-      { step: "05. 수업 피드백 & 음성 로깅", role: "원어민 교사", detail: "수업 중 취약점을 지도하고 턴 기반 음성 입력(녹음 → 추출 → 확정)으로 관찰 노트를 기록합니다." },
-      { step: "06. 한국인 교사 검토 & 발송", role: "한국인 교사 / 원장", detail: "AI가 생성한 한국어 알림장 초안을 한국인 교사가 확인·수정한 뒤 학부모에게 최종 전달합니다." }
+      { step: "05. 수업 피드백 & 음성 로깅", role: "원어민 교사", detail: "수업 중 취약점을 지도하고, 녹음 한 번으로 수업 요약과 학생 메모를 기록합니다." },
+      { step: "06. 반 단위 한국인 교사 검토", role: "한국인 교사", detail: "AI가 작성한 한국어 리포트를 한국인 교사가 반의 하루 단위로 한 번에 수정·승인하고, 각 가정은 자기 리포트를 앱에서 확인합니다." }
     ],
     decisions: [
+      {
+        decision: "Decision 024: 한국인 교사는 반 단위로 한 번 검토하고, 학부모는 자기 아이의 리포트만 확인",
+        alternativeConsidered: "학생마다 검토 카드를 만들고 카카오톡으로 하나씩 전송",
+        why: "휴대폰에서 검토가 번거롭다는 교사 피드백이 있었습니다. 12명 반이면 카드 12장, 그중 10장은 같은 반 요약이었습니다. 그 아래 두 가지 버그도 있었습니다. 학부모에게 수업 기록 읽기 권한이 없어 리포트 화면이 항상 비어 있었고, 승인할 때마다 한 아이의 메모가 반 전체 요약으로 저장됐습니다.",
+        tradeOffAccepted: "변경 이전에 승인된 리포트는 학부모용 사본이 없고, 두 반에 속한 학생은 리포트를 두 개 받습니다."
+      },
       {
         decision: "Decision 014: 연속 음성 대화 대신 턴 기반 음성 추출(Voice-Fill) 채택",
         alternativeConsidered: "교사용 실시간 음성-대-음성 대화형 어시스턴트 구축",
@@ -1750,13 +1772,14 @@ function scoreAssessment(answers) {
         "가정 내 스캔 & 매칭: 학부모가 학습지를 촬영하면 Gemini 2.5 Flash가 SHA256 이미지 캐시를 활용해 정답지와 대조 채점합니다.",
         "이중언어 오버레이 렌더링: 클라이언트가 문제 영역 박스, 한글 발음 기호, 지도 대본을 학습지 원본 위에 직접 시각화합니다.",
         "오답 집계: 원생 개인정보 없이 오답 패턴만 Firestore에 동기화하여 교사 사전 텔레메트리 콕핏을 구성합니다.",
-        "Human-in-the-Loop 알림장: 원어민 교사가 음성으로 관찰 노트를 남기면 AI가 한국어 존댓말로 변환하고 한국인 교사가 최종 검토 발송합니다."
+        "Human-in-the-Loop 리포트: 원어민 교사가 음성으로 수업을 기록하면 AI가 한국어 존댓말 리포트 초안을 만들고, 한국인 교사가 반 단위로 한 번 승인한 뒤 가정에 전달됩니다."
       ],
       guardrails: [
-        "Vercel 12개 함수 한도 아키텍처: 모든 AI 작업을 api/analyze.ts로, 구독 환급을 api/redeem.ts로 통합하고 URL 리라이트 적용.",
+        "Vercel 12개 함수 한도 아키텍처: 모든 AI 작업을 api/analyze.ts로, 구독 코드 사용을 api/redeem.ts로 통합하고 URL 리라이트 적용.",
         "정답지 앵커링: 모델의 추측 채점을 배제하고 교사 등록 정답지를 기준으로만 채점.",
-        "구조적 상태 머신: pending_review → edited_by_kt → copied_sent 강제로 교직원 검토 없는 AI 초안 발송을 방지.",
-        "Firestore 멀티 테넌트 보안 규칙: 인증된 학교 및 학급 ID로 읽기/쓰기 권한을 엄격히 제한하고 Admin SDK로 서버 검증 수행."
+        "한국인 교사 승인 게이트: Firestore 규칙상 한국인 교사만 수업 기록을 승인할 수 있어, 승인 없는 AI 초안은 학부모에게 가지 않습니다.",
+        "Firestore 멀티 테넌트 보안 규칙: 인증된 학교 및 학급 ID로 읽기/쓰기 권한을 엄격히 제한하고 Admin SDK로 서버 검증 수행.",
+        "데이터 보관: 숙제 이미지는 채점 후 폐기하고, 분석 캐시는 30일 후 만료되며 등록 학생의 결과는 캐시하지 않습니다."
       ]
     },
     promptEngineering: {
@@ -1767,7 +1790,7 @@ function scoreAssessment(answers) {
 <input_constraints>
   <target_language>Bilingual English / Korean</target_language>
   <phonetic_phrasing>Natural phonetic pronunciation keys for parents</phonetic_phrasing>
-  <zero_hallucination_blank_filter>If handwriting is undetected, enforce empty student response strings and labels all questions as correct to avoid false error highlights.</zero_hallucination_blank_filter>
+  <blank_sheet_filter>If handwriting is undetected, enforce empty student response strings and labels all questions as correct to avoid false error highlights.</blank_sheet_filter>
 </input_constraints>`,
       schema: `{
   "type": "OBJECT",
@@ -1797,22 +1820,22 @@ function scoreAssessment(answers) {
     impact: {
       value: [
         "4개 역할(학부모, 원어민 교사, 한국인 교사, 원장)을 하나의 루프로 연결하여 가정 내 실수가 교실 수업 개선으로 이어지도록 구현.",
-        "채점·리포팅 행정 시간 약 80% 절감 추정 (교사당 주 10~15시간) — Chekki Schools 출시 후 재검증 예정.",
-        "100+ 활성 사용자 대상 라이브 베타 파일럿 운영 중.",
-        "19개 아키텍처/프로덕트 의사결정 로그와 엄격한 스코프 관리 체계 유지."
+        "교사의 주간 채점·리포팅 업무를 줄이는 것이 목표이며, 추정치가 아닌 Chekki Schools 파일럿에서 측정할 예정.",
+        "Chekki AI는 App Store와 Google Play에 출시되어 있고, Chekki Schools는 2개 학교 파일럿을 앞두고 최종 테스트 중.",
+        "24개 아키텍처/프로덕트 의사결정 로그와 엄격한 스코프 관리 체계 유지."
       ],
       security: [
         "인증된 학교/학급 ID로 스코프된 Firestore 보안 규칙과 서버 전용 Admin SDK 권한 격리.",
         "Upstash Redis 기반 API 속도 제한 및 RevenueCat 인앱 구독 권한 실시간 검증.",
-        "Vitest 테스트 스위트, ESLint, 프론트/서버 전반 Sentry 모니터링을 결합한 완벽한 CI/CD 품질 게이트."
+        "Vitest 테스트 스위트, ESLint, 에뮬레이터 기반 Firestore 규칙 테스트, 프론트/서버 전반 Sentry 모니터링을 결합한 CI/CD 품질 게이트."
       ]
     },
     technicalHurdles: [
       {
         title: "Vercel Hobby 플랜 12개 서버리스 함수 한도 극복",
-        incident: "다역할 엔드포인트(채점, 음성 추출, Q&A, 4개 구독 환급 라우트) 추가 시 Vercel의 12개 함수 한도를 초과하여 배포 실패 위기 발생.",
+        incident: "다역할 엔드포인트(채점, 음성 추출, Q&A, 4개 구독 코드 사용 라우트) 추가 시 Vercel의 12개 함수 한도를 초과하여 배포 실패 위기 발생.",
         diagnosis: "개별 기능마다 독립 함수 파일을 생성하는 방식은 서버리스 티어 한계상 유지 불가능했음.",
-        resolution: "모든 AI 작업을 api/analyze.ts 멀티플렉서로 통합하고 환급 흐름을 api/redeem.ts로 합친 후 vercel.json 리라이트를 적용하여 이미 배포된 네이티브 모바일 앱의 중단 없이 이전."
+        resolution: "모든 AI 작업을 api/analyze.ts 멀티플렉서로 통합하고 구독 코드 사용 흐름을 api/redeem.ts로 합친 후 vercel.json 리라이트를 적용하여 이미 배포된 네이티브 모바일 앱의 중단 없이 이전."
       },
       {
         title: "4,678줄 규모의 다역할 모놀리스 컴포넌트 리그레션 해결",
@@ -2102,8 +2125,8 @@ function scoreAssessment(answers) {
   },
 
   "chekki-teacher": {
-    title: "Chekki Schools — 역할별 입학·학급 관리 CRM",
-    tagline: "Chekki 플랫폼의 교직원용 축입니다: 원장 HQ, 원어민 교사 채점 코크핏, 한국인 교사 학부모 소통 콘솔이 각자 역할에 맞게 분리되어 있으며, 학부모용 Chekki AI 앱과 동일한 채점 엔진을 공유합니다.",
+    title: "Chekki Schools — 역할별 학원 관리 CRM",
+    tagline: "Chekki 플랫폼의 교직원용 축으로, 현재 최종 테스트 중입니다. 원장, 원어민 교사, 한국인 교사 화면이 역할별로 분리되어 있으며, 학부모용 Chekki AI 앱과 동일한 채점 엔진을 공유합니다.",
     liveUrl: "https://www.chekkiai.com/schools",
     screenshots: [
       { label: "Schools 랜딩", url: "/screenshots/chekki-schools/02-landing-schools.png", subLabel: "교직원용 진입 화면" },
@@ -2121,9 +2144,9 @@ function scoreAssessment(answers) {
       { label: "주간 리포트 생성", url: "/screenshots/chekki-schools/16-kt-weekly-report-generator.png", subLabel: "한국인 교사: 이중언어 진도 리포트" }
     ],
     stats: [
-      { label: "채점 시간 절감", value: "약 80%" },
-      { label: "교사당 주간 절감", value: "10~15시간" },
-      { label: "역할별 대시보드", value: "3개" }
+      { label: "상태", value: "최종 테스트 중" },
+      { label: "역할별 대시보드", value: "3개" },
+      { label: "한국인 교사 검토", value: "반·날짜당 1회" }
     ],
     problem: [
       "원장, 원어민 교사, 한국인 교사는 같은 학생 명단을 두고 서로 다른 일을 하지만, 화면이 하나로 통합돼 있으면 셋 다 자기 역할과 무관한 화면까지 헤쳐나가야 합니다.",
@@ -2131,16 +2154,17 @@ function scoreAssessment(answers) {
       "한국인 교사는 매주 원어민 교사의 수업 관찰 기록을 카카오톡 메시지로 손수 번역해 학부모에게 전달해야 했습니다."
     ],
     solution: [
-      "계정을 원장 HQ, 원어민 교사 코크핏, 한국인 교사 콘솔 세 개의 화면으로 나누되, 로그인만 다를 뿐 같은 Firestore 레코드를 읽고 씁니다.",
+      "계정을 원장, 원어민 교사, 한국인 교사 화면으로 나누되, 로그인만 다를 뿐 같은 Firestore 레코드를 읽고 씁니다.",
       "원어민 교사가 수업 전 커리큘럼과 정답지를 미리 등록해두면, 워크시트 스캔이 모델의 자체 판독이 아니라 검증된 정답지를 기준으로 채점됩니다.",
-      "한국인 교사는 원어민 교사의 학급 기록을 이중언어 카카오톡 스크립트로 자동 변환하는 생성기를 사용해, 교실에서 학부모까지 이어지는 루프를 수작업 번역 없이 닫습니다."
+      "원어민 교사가 수업마다 음성 메모 하나를 남기면 수업 요약과 학생 메모가 채워지고, 한국인 교사가 반의 하루를 한 번에 검토한 뒤 각 가정이 자기 리포트를 받습니다.",
+      "한국어 원어민 독자들이 초안이 기계가 쓴 글 같다고 지적한 뒤, 모든 리포트 프롬프트에 구체적이고 담백한 관찰을 쓰도록 공통 문체 규칙을 적용했습니다."
     ],
     stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "역할별 React 훅"],
     architecture: {
       lifecycle: [
         "원장: 스태프 초대, 교사-반 배정, 결제 관리를 담당하며 나머지 두 역할이 그 위에서 동작하는 계정 레벨 레이어입니다.",
-        "원어민 교사: 커리큘럼 사전 등록, 정답지 보정, 워크시트 스캔, 주간 인사이트에서 학급 단위 오답 패턴을 검토합니다.",
-        "한국인 교사: 전체 반 통합 명단을 보고, 원어민 교사의 관찰 기록을 이중언어 주간 리포트와 카카오톡 스크립트로 변환합니다.",
+        "원어민 교사: 커리큘럼 사전 등록, 정답지 보정, 워크시트 스캔, 이번 주 가장 많이 틀린 단어 확인, 음성으로 수업 기록.",
+        "한국인 교사: 반의 하루를 한 화면에서 검토하고 요약과 학생 메모를 수정해 한 번에 승인합니다. 가정은 앱에서 자기 리포트를 보고, 카카오톡 문구는 선택 사항입니다.",
         "세 역할 모두 같은 학생·학급 레코드를 읽고 씁니다 — 역할별 별도 포털이 아니라 별도의 뷰입니다."
       ],
       guardrails: [
@@ -2173,18 +2197,18 @@ function scoreAssessment(answers) {
     impact: {
       value: [
         "4,678줄짜리 단일 교사 페이지를 useDirectorState / useFTState / useKTState로 분리해, 각 역할 화면이 필요한 상태만 불러오도록 했습니다.",
-        "정답지 보정과 워크시트 스캔이 같은 코크핏 안에서 이뤄져, 원어민 교사가 채점을 확인하려고 앱을 벗어날 일이 없습니다.",
-        "카카오톡 스크립트 생성기가 원어민 교사 기록과 학부모 전달 사이 마지막 수작업 번역 단계를 없앴습니다."
+        "정답지 보정과 워크시트 스캔이 같은 화면에서 이뤄져, 원어민 교사가 채점을 확인하려고 앱을 벗어날 일이 없습니다.",
+        "음성 기록과 반 단위 검토로 원어민 교사 기록과 학부모 전달 사이의 수작업 번역과 학생별 승인 대기열을 없앴습니다."
       ],
       security: [
         "Firestore 규칙이 기본적으로 반 간 교차 조회를 차단합니다 — UI에서만 숨기는 것이 아니라 서버 단에서 범위를 제한합니다.",
         "원장 전용 라우트(결제, 초대, 스태프 배정)는 최초 페이지 로드뿐 아니라 매 요청마다 역할을 검증합니다.",
-        "역할별 재구축이 열어둘 수 있는 틈을 두 차례의 내부 보안 감사로 각각 배포 전에 막았습니다."
+        "파일럿 전 마지막 점검을 포함해 세 차례 내부 보안 감사를 진행했고, Firestore 규칙 테스트를 에뮬레이터로 CI에서 실행합니다."
       ]
     },
     behindTheArchitecture: {
       problem: "원장, 원어민 교사, 한국인 교사를 한 화면으로 서비스하던 교사 페이지가 4,678줄까지 불어났고, 모든 역할이 서로의 UI를 다 보게 되었습니다.",
-      vision: "역할별로 먼저 나누고 데이터 모델은 아래에서 공유한다 — 각자 자기 역할의 상태만 들고 있어 빠르게 로드되는 세 개의 코크핏.",
+      vision: "역할별로 먼저 나누고 데이터 모델은 아래에서 공유한다 — 각자 자기 역할의 상태만 들고 있어 빠르게 로드되는 세 개의 화면.",
       rationale: "Firestore의 문서 단위 보안 규칙 덕분에 역할 분리를 컴포넌트 레벨이 아니라 데이터 레벨에서 강제할 수 있어, UI 버그가 다른 역할의 레코드를 노출시킬 수 없습니다."
     },
     technicalHurdles: [
@@ -2199,6 +2223,12 @@ function scoreAssessment(answers) {
         incident: "초기 버전은 이중언어 리포트와 메시징 스크립트를 서로 다른 두 프롬프트에서 생성했고, 가끔 같은 주의 요약 내용이 서로 어긋났습니다.",
         diagnosis: "같은 사실을 두 번 독립적으로 생성하면, 특히 언어가 다를 때 내용이 어긋나기 쉽습니다.",
         resolution: "두 출력을 하나의 구조화된 스키마 응답으로 합쳐, 카카오톡 스크립트가 별도 호출이 아니라 리포트와 같은 생성 결과에서 파생되도록 했습니다."
+      },
+      {
+        title: "보이지 않던 학부모 리포트",
+        incident: "학부모 앱의 수업 리포트 영역이 항상 비어 있었고, 승인할 때마다 한 아이의 메모가 반 전체 요약으로 저장됐습니다.",
+        diagnosis: "Firestore 규칙상 학부모에게 수업 기록 읽기 권한이 없었고, 승인 시 학생 개인 리포트가 공유 기록에 저장되어 권한을 열면 한 아이의 메모가 모든 가정에 보일 상황이었습니다.",
+        resolution: "승인 시 학생마다 반 요약과 그 아이의 메모만 담은 학부모 리포트를 따로 만들고, 해당 아이의 학부모만 읽을 수 있게 했습니다."
       }
     ]
   },

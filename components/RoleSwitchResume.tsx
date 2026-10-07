@@ -158,8 +158,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "Core Loop", ko: "핵심 루프" },
           text: {
-            en: "Designed a parent → teacher → director loop: parents scan homework and get bilingual grading in under 20 seconds, and mistakes roll up to a class view for the teacher.",
-            ko: "학부모 → 교사 → 원장 루프 설계: 학부모가 숙제를 스캔하면 20초 안에 이중언어 채점을 받고, 오답은 교사의 학급 뷰로 모입니다."
+            en: "Designed a parent → teacher → director loop: parents scan homework and get bilingual grading in seconds, and mistakes roll up to a class view for the teacher.",
+            ko: "학부모 → 교사 → 원장 루프 설계: 학부모가 숙제를 스캔하면 몇 초 만에 이중언어 채점을 받고, 오답은 교사의 학급 뷰로 모입니다."
           }
         },
         {
@@ -193,8 +193,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "Product Decisions", ko: "프로덕트 의사결정" },
           text: {
-            en: "Kept a 19-entry decision log, including cutting five scope-creep features and a feed filled with placeholder posts.",
-            ko: "19건의 의사결정 로그 관리: 불필요한 기능 5개와 임시 게시물로 채워진 피드 삭제 포함."
+            en: "Kept a 24-entry decision log, including cutting five scope-creep features and a feed filled with placeholder posts.",
+            ko: "24건의 의사결정 로그 관리: 불필요한 기능 5개와 임시 게시물로 채워진 피드 삭제 포함."
           }
         },
         {

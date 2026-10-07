@@ -16,7 +16,7 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 | Product | Category & Role | Status | Key Focus / Lead Metric | Architectural Core |
 | :--- | :--- | :--- | :--- | :--- |
 | **[VodaBi Voice AI](./CASE_STUDY.md#vodabi-case-study)** | Enterprise B2B SaaS (VodaBi) | 🟢 **Featured Case Study** | **Score-then-Explain Grading** | Direct WebRTC voice roleplay, two-step GPT-4o grading, staff training & manager dashboards, AES-256-GCM encryption. |
-| **[Chekki Teacher](./CASE_STUDY.md#chekki-teacher-case-study)** | EdTech Operations & Cockpit | 🟡 **Final Testing** | **Answer-Key Grounded Grading** | Curriculum pre-seeding, ground-truth answer key calibration, and cohort mistake aggregation telemetry. |
+| **[Chekki Schools](./CASE_STUDY.md#chekki-teacher-case-study)** | EdTech Academy Operations | 🟡 **Final Testing** | **Answer-Key Grounded Grading** | Curriculum pre-seeding, ground-truth answer key calibration, and cohort mistake aggregation telemetry. |
 | **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech Closed-Loop Ecosystem | 🟢 **Live Shipped App** | **App Store & Google Play** | Ground-truth homework camera OCR, bilingual parent explanations, class mistake aggregator, and integrated teacher update pipeline. |
 | **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40h → 10min (0 Conflicts)** | Hybrid constraint architecture: Fast client-side TypeScript clash validation + Gemini heuristic optimization. |
 | **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Longitudinal Assessment Portal | 🟢 **Live Shipped App** | **Longitudinal Mastery** | Multi-axis Recharts & D3 radar charts mapping raw assessment points to CEFR/Cambridge YLE trajectories. |
@@ -60,11 +60,11 @@ Outbound sales telemarketing candidates were screened through manual 1st-round p
 ---
 
 <a id="chekki-teacher-case-study"></a>
-## 3. CHEKKI TEACHER: CURRICULUM PRE-SEEDING & MISTAKE AGGREGATOR
+## 3. CHEKKI SCHOOLS: CURRICULUM PRE-SEEDING, CLASS LOGS & KOREAN-TEACHER REVIEW
 
 ### A. Problem
 Foreign English teachers in Korean academies face intense administrative friction:
-* Spending 10+ hours weekly grading physical worksheets and manually logging mistakes into disparate spreadsheets.
+* Spending hours every week grading physical worksheets and logging mistakes in separate spreadsheets.
 * Entering classrooms blind without knowing which concepts students struggled with during homework.
 * Drafting repetitive daily student progress updates and struggling across language barriers.
 
@@ -73,13 +73,14 @@ Foreign English teachers in Korean academies face intense administrative frictio
 * Parents wanted rapid feedback written in respectful Korean honorifics (`존댓말`), not machine-translated English jargon.
 
 ### C. Product Decisions
-1. **Curriculum Pre-seeding**: Teachers upload or snap a textbook answer key once per unit, establishing a ground-truth OCR anchor that eliminates grading hallucinations.
-2. **Cohort Mistake Telemetry**: Aggregated error clusters across student rosters are surfaced directly in the teacher's lesson cockpit before class starts.
-3. **1-Click Bilingual Report Generator**: Converts English teacher observation tags into culturally natural Korean honorific updates for parents.
+1. **Curriculum Pre-seeding**: Teachers upload or snap a textbook answer key once per unit, establishing a ground-truth OCR anchor so grading matches what was taught.
+2. **Cohort Mistake Telemetry**: The week's most-missed words across the class are shown to the teacher before class starts.
+3. **Voice-First Class Log**: One recording fills the class summary and notes on named students; the AI drafts a Korean report with correct honorifics.
+4. **Korean-Teacher Review per Class**: The Korean teacher reviews a whole class-day on one screen and approves once; each family sees the class summary plus only their child's note. Enforced in Firestore rules, so a foreign teacher can't self-approve.
+5. **Native-Speaker Voice Rules**: After Korean readers said drafts sounded machine-written, shared voice rules steer every report prompt toward specific, plain observations.
 
 ### D. Status
-* In final testing ahead of an academy pilot; no grading-time figures measured yet.
-* Delivered proactive classroom interventions targeted at verified homework error clusters.
+* In final testing ahead of a two-school pilot; no grading-time figures measured yet.
 
 ---
 
@@ -87,18 +88,18 @@ Foreign English teachers in Korean academies face intense administrative frictio
 ## 4. CLOSED-LOOP EDTECH ECOSYSTEM: CHEKKI AI
 
 ### A. Problem
-Non-fluent Korean parents struggle to verify and explain English homework, creating household frustration, while teachers have zero visibility into home errors.
+Korean parents who aren't fluent in English struggle to check English homework, and teachers never see the mistakes made at home.
 
 ### B. Discovery
-Parents needed instant, zero-setup camera grading that provides clear Korean phonetic explanations and pronunciation keys without storing student identity data.
+Parents needed fast, zero-setup camera grading with clear Korean explanations and pronunciation keys, without storing images of their child's work.
 
 ### C. Product Decisions
-* **Dual-Model Parsing**: Lightweight Gemini 2.5 Flash for <200ms layout mapping + Gemini 2.5 Pro (20k token thinking budget) for deep handwritten evaluation.
+* **Tiered Models**: Gemini 2.5 Flash by default; Gemini 2.5 Pro with a capped thinking budget for Pro-plan deep checks.
 * **Direct Roster & Parent Binding**: Replaced open 6-digit class codes with secure roster pairing to prevent PII leakage.
-* **Monetization & Tier Enforcements**: Built RevenueCat webhook integrations with tiered usage gates (5 free scans/day vs. unlimited Pro).
+* **Monetization & Tier Enforcements**: Built RevenueCat webhook integrations with tiered usage gates (a few free scans a day vs. Pro).
 
 ### D. Status
-* Live on the App Store and Google Play.
+* Live on the App Store and Google Play. Worksheet images are discarded after grading; cached analysis expires after 30 days.
 
 ---
 

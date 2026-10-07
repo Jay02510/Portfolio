@@ -132,12 +132,12 @@ const FACTS = {
   en: [
     { value: "Full-stack engineer", label: "Backend, frontend, voice pipeline, and deploys at VodaBi; product and engineering on the independent products." },
     { value: "6 products shipped", label: "Independently built and released across admissions, academies, teachers, and parents." },
-    { value: "23 decisions logged", label: "Architecture and product calls written down with the alternative and the tradeoff accepted." }
+    { value: "24 decisions logged", label: "Architecture and product calls written down with the alternative and the tradeoff accepted." }
   ],
   ko: [
     { value: "풀스택 엔지니어", label: "VodaBi에서는 백엔드, 프론트엔드, 음성 파이프라인, 배포를 맡고, 독립 제품은 기획과 개발을 모두 맡았습니다." },
     { value: "제품 6개 출시", label: "입학처, 실제 학원, 교사, 학부모를 대상으로 직접 만들어 배포했습니다." },
-    { value: "의사결정 23건 기록", label: "검토한 대안과 감수한 트레이드오프까지 함께 남긴 아키텍처·제품 판단 기록." }
+    { value: "의사결정 24건 기록", label: "검토한 대안과 감수한 트레이드오프까지 함께 남긴 아키텍처·제품 판단 기록." }
   ]
 };
 
@@ -146,7 +146,7 @@ const ROLE_COLS = {
     {
       head: "Product",
       items: [
-        "PRD authorship and a 23-entry decision log",
+        "PRD authorship and a 24-entry decision log",
         "LLM-judge pipelines that score first and explain second",
         "Tiered model routing: light model for drafting, reasoning model for conflict resolution",
         "Pricing and trial windows aligned to the customer's planning cycle",
@@ -177,7 +177,7 @@ const ROLE_COLS = {
     {
       head: "프로덕트",
       items: [
-        "PRD 작성 및 23건의 의사결정 로그",
+        "PRD 작성 및 24건의 의사결정 로그",
         "채점 후 설명하는 LLM 평가 파이프라인",
         "모델 계층 분리: 초안은 경량 모델, 충돌 해결은 추론 모델",
         "고객의 운영 주기에 맞춘 가격 정책과 체험 기간 설계",
@@ -263,8 +263,8 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
           tradeoff: "Tradeoff: a teacher has to pre-seed the curriculum before a class can be graded."
         },
         {
-          choice: "Tiered model routing: light model for drafts, reasoning model for hard cases",
-          why: "It keeps the free tier viable and reserves cost for the work that needs it.",
+          choice: "Tiered models: Gemini Flash by default, Gemini Pro with reasoning for Pro-plan deep checks",
+          why: "It keeps the free tier viable and reserves cost for the users paying for it.",
           tradeoff: "Tradeoff: two prompt paths to maintain and evaluate instead of one."
         },
         {
@@ -377,8 +377,8 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
           tradeoff: "트레이드오프: 채점 전에 교사가 커리큘럼을 사전 등록해야 합니다."
         },
         {
-          choice: "모델 계층 분리: 초안은 경량, 어려운 건은 추론 모델",
-          why: "무료 등급을 유지하면서 비용은 필요한 작업에만 씁니다.",
+          choice: "모델 계층 분리: 기본은 Gemini Flash, Pro 요금제의 정밀 검사는 추론 기능을 켠 Gemini Pro",
+          why: "무료 등급을 유지하면서 비용은 유료 사용자에게만 씁니다.",
           tradeoff: "트레이드오프: 프롬프트 경로가 둘로 늘어나 유지·평가 부담이 커집니다."
         },
         {

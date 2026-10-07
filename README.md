@@ -7,11 +7,11 @@
 
 ## 🎯 Lead Quantified Product Impact
 
-> ### ⚡ **80% Admin Workload Reduction** & **40 Hours → <10 Minutes** Automated Operations across 6 Shipped AI Applications.
+> ### ⚡ **40 Hours → <10 Minutes** school timetabling, and 6 AI products shipped independently.
 
 * 🎙️ **Sub-200ms Voice-AI Engine**: Built WebRTC voice simulation and evaluation engine replacing manual phone screens at VodaBi.
 * ⏱️ **40h → <10m Timetable Generator**: Engineered combinatorial school scheduling engine (`EduPlanner Pro`) with "Draft & Weave" LLM constraint resolution.
-* 🗣️ **1,200+ Bilingual Family Interactions**: Shipped `Chekki AI`, an instant mobile worksheet scanner overlay cutting homework prep from 30m to <5s.
+* 🗣️ **Answer-Key Grounded Homework Grading**: Shipped `Chekki AI`, a camera worksheet scanner that grades against the teacher's own answer key, live on the App Store and Google Play.
 * 🛡️ **Zero API Key Exposure & Injection Defense**: Server-side API proxy architecture with Helmet CSP, express-rate-limit, and XML prompt-variable isolation.
 
 ---
@@ -22,7 +22,7 @@
 | :--- | :--- | :--- | :--- | :--- |
 | **[VodaBi Voice AI](./CASE_STUDY.md#vodabi-case-study)** | Full-Stack B2B SaaS | 🟢 **Featured Case Study** | **Sub-200ms WebRTC voice simulation** with NestJS, server-side VAD, gpt-4o 11-point rubric judge & BANTCQ sales telemetry. | [Deep-Dive Case Study ↗](./CASE_STUDY.md#vodabi-case-study) |
 | **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40h → <10m timetable generator** with recursive "Draft & Weave" LLM constraint resolution. | [Launch Live App ↗](https://scheduling-app-five.vercel.app/) |
-| **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech OCR & Scanner | 🟢 **Live Shipped App** | **Instant mobile camera worksheet scanner** delivering bilingual learning guides under zero-memory privacy bounds. | [Launch Live App ↗](https://chekki-ai.vercel.app/) |
+| **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech OCR & Scanner | 🟢 **Live Shipped App** | **Instant mobile camera worksheet scanner** delivering bilingual learning guides; worksheet images are discarded after grading. | [Launch Live App ↗](https://chekki-ai.vercel.app/) |
 | **[Automated Report Generator](./CASE_STUDY.md#report-generator-pipeline)** | Relational Pipeline | 🟢 **Production Pipeline** | **15+ hours/week saved** using Airtable + Make.com + Fillout + Softr client portals for automated student reports. | [Pipeline Writeup ↗](./CASE_STUDY.md#report-generator-pipeline) |
 | **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Assessment Portal | 🟢 **Live Shipped App** | **Visual skill-mapping portal** converting raw scores into CEFR/Cambridge YLE mastery trajectories. | [Launch Live App ↗](https://education-benchmark-system.vercel.app/) |
 | **[B2B Lead Enrichment CRM](./CASE_STUDY.md#b2b-crm-case-study)** | Sales Automation | 🟢 **Production CRM** | **4x response rate boost** parsing regional directories, cleaning HTML, and synthesizing 1-click Gmail outreach links. | [CRM Case Study ↗](./CASE_STUDY.md#b2b-crm-case-study) |
