@@ -3,7 +3,7 @@
 
 > **Author**: Jason Benjamin — Full-Stack Engineer, VodaBi  
 > **Company**: VodaBi (Enterprise B2B SaaS)  
-> **Build Window**: Jul 29, 2026 – present (211 commits as of Oct 7, 2026)  
+> **Build Window**: Jul 29, 2026 – present  
 > **Confidentiality Notice**: Proprietary enterprise client names and private commercial datasets have been sanitized to respect non-disclosure agreements (NDAs). Architectural implementations, system diagrams, and product decisions reflect original work at VodaBi.  
 > **Core Focus**: Replacing uncalibrated vibes-based LLM grading with deterministic rubric lookups, securing candidate PII, and architecting real-time WebRTC voice screening.
 

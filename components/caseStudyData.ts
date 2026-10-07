@@ -121,7 +121,7 @@ function scoreAssessment(answers) {
       { label: "Admin & Scenario Management Backoffice", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "Multi-Tenant RBAC Backoffice: Tiers, Rubrics, Scripts, Queues & Internal Test Assignment" }
     ],
     stats: [
-      { label: "Engineering Scope", value: "211 Commits", detail: "Solo build, 0 to production" },
+      { label: "Time to Production", value: "~3 Weeks", detail: "Solo build" },
       { label: "Voice Pipeline", value: "Direct WebRTC", detail: "Browser ↔ OpenAI Realtime (Sub-200ms Latency)" },
       { label: "Evaluation Consistency", value: "Score, then explain", detail: "Scores are fixed first; feedback is written from them" }
     ],
@@ -267,7 +267,7 @@ function scoreAssessment(answers) {
     },
     impact: {
       value: [
-        "Rebuilt solo in about 3 weeks, then extended to 211 commits: realtime voice, two-step grading, staff training and manager dashboards, deployed on AWS EC2.",
+        "Revamped solo in about 3 weeks, then extended with realtime voice, two-step grading, staff training and manager dashboards, deployed on AWS EC2.",
         "Eliminated live voice latency bottlenecks by migrating to direct browser-to-OpenAI WebRTC connections (sub-200ms).",
         "Replaced a single opaque score with rubric-itemized GPT-4o evaluations, scored first and explained second.",
         "Added Sentry error reporting and cut the first page download from 716KB to 260KB by lazy-loading each app area.",
@@ -1459,7 +1459,7 @@ function scoreAssessment(answers) {
       { label: "Admin & Scenario Management Backoffice", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "멀티테넌트 RBAC 백오피스: 난이도 티어, 루브릭, 시나리오, 온보딩 큐 & 사내 공식 테스트 배정" }
     ],
     stats: [
-      { label: "엔지니어링 범위", value: "211개 커밋", detail: "1인 개발, 0에서 프로덕션까지" },
+      { label: "프로덕션까지", value: "약 3주", detail: "1인 개발" },
       { label: "음성 파이프라인", value: "Direct WebRTC", detail: "브라우저 ↔ OpenAI Realtime (200ms 미만 지연)" },
       { label: "평가 일관성", value: "채점 후 설명", detail: "점수를 먼저 확정하고, 피드백은 그 점수를 바탕으로 작성" }
     ],
@@ -1605,7 +1605,7 @@ function scoreAssessment(answers) {
     },
     impact: {
       value: [
-        "약 3주 만에 1인 재구축 후 211개 커밋까지 확장: 실시간 음성, 2단계 채점, 직원 훈련 및 매니저 대시보드, AWS EC2 배포.",
+        "약 3주 만에 1인 개편 후 확장: 실시간 음성, 2단계 채점, 직원 훈련 및 매니저 대시보드, AWS EC2 배포.",
         "Direct WebRTC 전환으로 실시간 음성 대화 지연 병목을 완전히 제거(200ms 미만).",
         "불투명한 단일 점수를 루브릭 항목별 GPT-4o 평가로 대체하고, 채점 후 설명하는 구조로 정리.",
         "Sentry 에러 리포팅 도입, 앱 영역별 지연 로딩으로 첫 다운로드를 716KB에서 260KB로 축소.",

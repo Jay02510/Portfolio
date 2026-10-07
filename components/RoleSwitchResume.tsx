@@ -24,8 +24,8 @@ export const RESUME_DATA = {
     }
   },
   profile: {
-    en: "Full-stack engineer on a production voice-AI sales training platform at VodaBi: realtime WebRTC voice, a two-step LLM grading pipeline, staff and manager dashboards, security hardening and deployment. Independently built and launched six AI products for Korean education, with a 23-entry product decision log.\n\nWrites PRDs, runs customer discovery and defends architecture tradeoffs in writing. Owns the path from problem to production. Cuts features that don't close a real user gap, and writes down why. Builds bilingual (EN/KR) products across consumer mobile, B2B SaaS and enterprise AI.",
-    ko: "VodaBi의 프로덕션 음성 AI 세일즈 훈련 플랫폼에서 실시간 WebRTC 음성, 2단계 LLM 채점 파이프라인, 직원·매니저 대시보드, 보안 하드닝과 배포를 맡고 있는 풀스택 엔지니어입니다. 또한 한국 교육 시장을 위한 6개 AI 프로덕트를 독립 구축·출시하였으며 23개의 문서화된 프로덕트 의사결정 로그를 보유하고 있습니다.\n\nPRD 작성, 고객 디스커버리 수행, 아키텍처 트레이드오프 문서화 및 방어를 주도하며 문제 정의부터 프로덕션 배포까지 전 과정을 직접 책임집니다. 실제 사용자 문제를 해결하지 않는 불필요한 기능은 과감히 배제하고 그 이유를 문서화합니다. B2C 모바일, B2B SaaS, 엔터프라이즈 AI 맥락 전반에서 검증된 한/영 이중언어 제품 개발 역량을 갖추고 있습니다."
+    en: "Full-stack engineer at VodaBi, building a production voice-AI sales training platform: realtime WebRTC voice, LLM grading, dashboards and deployment. Independently built and launched six AI products for Korean education.\n\nWrites PRDs, runs customer discovery and owns the path from problem to production, in English and Korean.",
+    ko: "VodaBi에서 프로덕션 음성 AI 영업 훈련 플랫폼을 만드는 풀스택 엔지니어입니다. 실시간 WebRTC 음성, LLM 채점, 대시보드, 배포를 맡고 있습니다. 한국 교육 시장을 위한 AI 제품 6개를 직접 만들어 출시했습니다.\n\nPRD 작성과 고객 인터뷰부터 프로덕션 배포까지 한국어와 영어로 직접 이끕니다."
   },
   skills: {
     aiVoice: {
@@ -63,8 +63,8 @@ export const RESUME_DATA = {
   experience: {
     vodabi: {
       title: {
-        en: "Full-Stack Engineer (Full-Time)",
-        ko: "풀스택 엔지니어 (정규직)"
+        en: "Full-Stack Engineer",
+        ko: "풀스택 엔지니어"
       },
       company: {
         en: "VodaBi",
@@ -75,71 +75,64 @@ export const RESUME_DATA = {
         ko: "2026년 7월 – 현재"
       },
       sub: {
-        en: "Voice-AI sales training & testing platform (speech-to-speech) · Production-deployed · 211 commits",
-        ko: "음성 AI 영업 훈련 & 테스트 플랫폼 (Speech-to-Speech) · 프로덕션 배포 · 211개 커밋"
+        en: "Voice-AI sales training and testing platform · In production",
+        ko: "음성 AI 영업 훈련 및 테스트 플랫폼 · 프로덕션 운영 중"
       },
       bullets: [
         {
           tag: { en: "Voice Pipeline", ko: "음성 파이프라인" },
           text: {
-            en: "Migrated live voice roleplay from a server-relayed model to a direct browser-to-OpenAI WebRTC connection (OpenAI Realtime API, ephemeral tokens), removing the backend from the live audio path entirely — a ~200ms latency reduction per conversation turn.",
-            ko: "실시간 음성 롤플레이를 서버 중계형에서 브라우저-OpenAI 간 직접 WebRTC 연결(OpenAI Realtime API, 임시 토큰)로 전환하여 백엔드를 실시간 오디오 경로에서 완전히 배제 — 매 대화 턴당 ~200ms 지연 감소 달성."
+            en: "Moved live voice roleplay to a direct browser-to-OpenAI WebRTC connection (Realtime API, ephemeral tokens), cutting ~200ms of latency per turn.",
+            ko: "실시간 음성 롤플레이를 브라우저-OpenAI 직접 WebRTC 연결(Realtime API, 임시 토큰)로 전환해 턴당 약 200ms 지연을 줄임."
           }
         },
         {
-          tag: { en: "Solo Platform Rebuild", ko: "솔로 플랫폼 재구축" },
+          tag: { en: "Platform Revamp", ko: "플랫폼 개선" },
           text: {
-            en: "Originally scoped to build a coaching/reasoning layer on top of an existing production voice-testing system; when that system was found to be poorly architected, independently redesigned and rebuilt the entire platform from scratch — without access to the original source code — including the coaching layer, and shipped to production in ~3 weeks.",
-            ko: "기존 프로덕션 음성 테스트 시스템 위에 코칭/추론 레이어를 구축하는 것으로 시작했으나, 기존 아키텍처의 한계를 파악한 후 원본 소스코드 접근 없이 코칭 레이어를 포함한 전체 플랫폼을 바닥부터 독립적으로 재설계 및 재구축하여 약 3주 만에 프로덕션 배포 완료."
+            en: "Improved and revamped the existing voice-testing platform, added a coaching layer, and shipped it to production in about 3 weeks.",
+            ko: "기존 음성 테스트 플랫폼을 개선·개편하고 코칭 레이어를 더해 약 3주 만에 프로덕션에 배포."
           }
         },
         {
           tag: { en: "Two-Step LLM Grading", ko: "2단계 LLM 채점" },
           text: {
-            en: "Built a post-call grading pipeline against admin-configurable rubrics, then split its single 16-field GPT-4o call into a scoring call and a feedback call written from the fixed scores, so feedback can't contradict the number. Strict JSON schemas, a set temperature, and basic checks (did they speak, did they answer) computed in code.",
-            ko: "어드민 설정 루브릭 기반 통화 후 채점 파이프라인을 구축하고, 16개 필드를 한 번에 만들던 GPT-4o 호출을 채점 호출과 확정 점수로 작성하는 피드백 호출로 분리해 피드백이 점수와 어긋나지 않도록 함. 엄격한 JSON 스키마, 고정 temperature, 발화·응답 여부 같은 기본 점검은 코드로 계산."
+            en: "Split rubric grading into a scoring call and a feedback call written from the fixed scores, so feedback never contradicts the number.",
+            ko: "루브릭 채점을 점수 호출과, 확정된 점수를 바탕으로 쓰는 피드백 호출로 나눠 피드백이 점수와 어긋나지 않도록 함."
           }
         },
         {
-          tag: { en: "Admin Console & Scenario System", ko: "어드민 콘솔 & 시나리오 시스템" },
+          tag: { en: "Admin Console", ko: "어드민 콘솔" },
           text: {
-            en: "Built a full backoffice for non-engineers to create interview personas, scenario types, and scoring tiers without touching code — currently supports 8 scenarios across 3 difficulty tiers, extensible by non-technical staff.",
-            ko: "비엔지니어가 코드 수정 없이 면접 페르소나, 시나리오 유형, 채점 티어를 직접 생성·관리하는 풀 백오피스 구축 — 현재 3단계 난이도에 걸쳐 8개 시나리오 지원 및 비개발 인력의 자체 확장 가능."
+            en: "Built a backoffice where non-engineers create personas, scenarios and scoring tiers without code.",
+            ko: "비개발자가 코드 없이 페르소나, 시나리오, 채점 티어를 만드는 백오피스 구축."
           }
         },
         {
-          tag: { en: "Production Incident: DNS Authority", ko: "프로덕션 인시던트: DNS 권한 진단" },
+          tag: { en: "Security", ko: "보안" },
           text: {
-            en: "Root-caused a failing transactional-email rollout to a silent DNS-authority mismatch — the panel accepted new records, but a different provider had already become the domain's real nameserver. Diagnosed via direct authoritative-nameserver queries rather than accepting a propagation-delay explanation, then restored delivery at the real host.",
-            ko: "거래성 이메일 발송 실패를 근본 원인까지 추적 — DNS 관리 패널은 레코드 저장이 정상 처리된 것처럼 보였으나, 실제로는 다른 제공업체가 이미 해당 도메인의 네임서버 권한을 가지고 있어 반영되지 않는 상태였습니다. 전파 지연으로 단정하지 않고 권한 네임서버에 직접 조회해 원인을 규명한 뒤, 실제 DNS 호스트에 레코드를 재적용하여 이메일 발송을 복구했습니다."
+            en: "Ran three security audits on a system handling candidate PII: field-level encryption, token hardening, role checks, and a regression test across every controller.",
+            ko: "후보자 개인정보를 다루는 시스템에 3회 보안 감사 수행: 필드 단위 암호화, 토큰 강화, 권한 검사, 전체 컨트롤러 회귀 테스트."
           }
         },
         {
-          tag: { en: "Security Hardening", ko: "보안 하드닝" },
+          tag: { en: "Deployment", ko: "배포" },
           text: {
-            en: "Ran three security-audit passes on a system handling candidate PII — field-level encryption at rest, JWT/token hardening, CORS lockdown, DTO validation, role-freshness checks, auth race condition fixes. The first two closed 9 vulnerabilities; the third closed a prompt-injection path into grading, missing role guards on rubric endpoints, and a same-company report IDOR. A static regression test scans every controller for the same bug class.",
-            ko: "후보자 PII를 다루는 시스템에 대해 3회 보안 감사 수행 — 저장 시 AES-256-GCM 필드 레벨 암호화, JWT/토큰 하드닝, CORS 엄격 제한, DTO 검증, 권한 신선도 검사, 인증 레이스 컨디션 해결. 1·2차에서 9건, 3차에서 채점 프롬프트 인젝션 경로, 루브릭 엔드포인트 역할 가드 누락, 같은 회사 내 리포트 IDOR를 해결했고, 동일 유형 버그를 탐지하는 정적 회귀 테스트를 추가했습니다."
+            en: "Set up an arm64 staging environment beside amd64 production, with one CI/CD pipeline building for both.",
+            ko: "amd64 프로덕션과 별도로 arm64 스테이징 환경을 구축하고, 하나의 CI/CD 파이프라인으로 두 환경 모두 빌드."
           }
         },
         {
-          tag: { en: "Dual-Architecture Deployment", ko: "이중 아키텍처 배포" },
+          tag: { en: "Frontend", ko: "프런트엔드" },
           text: {
-            en: "Provisioned an independent arm64 (AWS Graviton) staging environment alongside the amd64 production host, extending CI/CD with a cross-compiled multi-platform Docker build so one pipeline deploys correctly to two processor architectures, gated on separate branches with independent secrets and resource limits.",
-            ko: "amd64 프로덕션 호스트와 별도로 독립된 arm64(AWS Graviton) 스테이징 환경을 구축 — 크로스 컴파일 멀티플랫폼 Docker 빌드로 CI/CD를 확장하여 하나의 파이프라인으로 서로 다른 두 프로세서 아키텍처에 정상 배포되도록 구성했으며, 별도 브랜치·시크릿·리소스 제한으로 분리 운영했습니다."
+            en: "Rebuilt the frontend from a designer's Figma spec: live roleplay, gamified reports, staff training screens and a manager dashboard.",
+            ko: "디자이너의 Figma 스펙으로 프런트엔드 재구축: 실시간 롤플레이, 게이미피케이션 리포트, 직원 훈련 화면, 매니저 대시보드."
           }
         },
         {
-          tag: { en: "Business Traction", ko: "비즈니스 트랙션 & 엔터프라이즈 도입" },
+          tag: { en: "Traction", ko: "도입" },
           text: {
-            en: "The rebuilt platform is going into use with two enterprise clients for employee sales-skills testing.",
-            ko: "재구축된 플랫폼은 직원 영업 역량 테스트 용도로 두 곳의 기업 고객사에서 사용을 시작합니다."
-          }
-        },
-        {
-          tag: { en: "UX Rebuild", ko: "UX 재설계" },
-          text: {
-            en: "Integrated a UI/UX designer's Figma spec, replacing the entire frontend UI/UX — countdown, live progress, gamified report with XP/badges/ranking, then the staff training screens (assigned training, competency growth) and the manager company dashboard. Root-caused a silent data-loss bug (mic permission requested after the countdown, not before) by tracing backend logs rather than guessing from symptoms.",
-            ko: "UI/UX 디자이너의 Figma 스펙을 반영하여 프론트엔드 전체 UI/UX 재구축 — 카운트다운, 실시간 프로그레스, 게이미피케이션 리포트(XP/배지/랭킹), 이후 직원 훈련 화면(필수훈련, 역량 성장)과 매니저 회사 현황 대시보드까지 구현. 백엔드 로그 추적을 통해 마이크 권한이 카운트다운 후 요청되어 발생하던 무음 데이터 유실 버그의 근본 원인을 해결."
+            en: "Going into use with two enterprise clients for employee sales-skills testing.",
+            ko: "두 곳의 기업 고객사에서 직원 영업 역량 테스트 용도로 사용을 시작합니다."
           }
         }
       ]
@@ -158,64 +151,64 @@ export const RESUME_DATA = {
         ko: "2024년 1월 – 현재"
       },
       sub: {
-        en: "AI homework grading and teacher/parent report loop for Korean English academies · Web · iOS · Android",
-        ko: "한국 어학원을 위한 AI 숙제 채점 및 교사/학부모 피드백 루프 · Web · iOS · Android"
+        en: "AI homework grading and parent reports for Korean English academies · Web · iOS · Android",
+        ko: "한국 영어학원을 위한 AI 숙제 채점과 학부모 리포트 · Web · iOS · Android"
       },
       bullets: [
         {
           tag: { en: "Core Loop", ko: "핵심 루프" },
           text: {
-            en: "Designed a closed parent → teacher → director pipeline: a parent scans homework against a teacher-uploaded answer key (OCR'd into Firestore, not AI-guessed), gets instant bilingual grading in under 20 seconds, mistakes aggregate to a class-level gap view, and the teacher logs the day — with a KT human-confirmation step before any AI-drafted content reaches a parent.",
-            ko: "학부모 → 교사 → 원장으로 이어지는 폐쇄 파이프라인 설계: 교사가 사전 등록한 정답지(Firestore OCR 저장, AI 임의 추측 배제)와 대조해 20초 미만 즉각 이중언어 채점 제공, 오답 패턴을 학급 단위 취약점 뷰로 집계, 한국인 교사의 사전 검토(KT 확인) 후 학부모에게 최종 전달."
+            en: "Designed a parent → teacher → director loop: parents scan homework and get bilingual grading in under 20 seconds, and mistakes roll up to a class view for the teacher.",
+            ko: "학부모 → 교사 → 원장 루프 설계: 학부모가 숙제를 스캔하면 20초 안에 이중언어 채점을 받고, 오답은 교사의 학급 뷰로 모입니다."
           }
         },
         {
           tag: { en: "Grounded Grading", ko: "정답지 기반 채점" },
           text: {
-            en: "Built a multimodal grading pipeline (Gemini 2.5 Flash/Pro vision) that grounds every correction in the class's actual teacher-uploaded answer key rather than model inference, so corrections match what was taught — the core differentiator versus generic homework-scanning apps. Structured JSON output via constrained responseSchema; safety-threshold tuned prompts.",
-            ko: "일반 숙제 스캔 앱과 차별화되는 핵심으로, 모델 추론이 아닌 실제 학급 정답지에 모든 채점을 앵커링하여 수업 내용과 일치시키는 멀티모달 채점 파이프라인(Gemini 2.5 Flash/Pro 비전) 구축. 제약된 responseSchema 기반 구조화 JSON 출력 및 안전 임계값 튜닝 프롬프트 적용."
+            en: "Built Gemini vision grading that checks every answer against the teacher's uploaded answer key instead of the model's own guess.",
+            ko: "모델의 추측이 아니라 교사가 올린 정답지와 모든 답을 대조하는 Gemini 비전 채점 구축."
           }
         },
         {
           tag: { en: "Chekki Schools (in final testing)", ko: "Chekki Schools (최종 테스트 중)" },
           text: {
-            en: "Extended the product into a two-sided school system running two concurrent loops — (1) foreign teachers submit typed/voice class updates auto-translated to Korean and routed to Korean teachers for parents, eliminating manual translation and page-lookup work; (2) teachers pre-review homework/answer keys, and any parent-side grading mistakes are automatically routed back to the teacher's dashboard for pre-class review. Targeting a pilot with at least two schools once final testing is complete.",
-            ko: "2개의 동시 루프를 실행하는 양방향 학교 시스템으로 확장 — (1) 원어민 교사가 입력한 텍스트/음성 수업 업데이트가 한국어로 자동 번역되어 한국인 교사를 거쳐 학부모에게 전달(수기 번역 및 교재 대조 작업 제거); (2) 교사가 숙제/정답지를 사전 검토하고, 학부모 측 채점 오류는 수업 전 교사 대시보드로 자동 회수되어 사전 확인. 최종 테스트 완료 후 최소 2개 학교 파일럿 도입 목표."
-          }
-        },
-        {
-          tag: { en: "Product Decisions", ko: "프로덕트 의사결정" },
-          text: {
-            en: "Maintained a 19-entry architecture/product decision log — including rejecting a unified FT chatbot after mapping actual user friction, cutting five scope-creep features in a stabilization pass, and removing a community feed that contained fabricated placeholder posts (flagged as an honesty problem, not just clutter).",
-            ko: "19개의 아키텍처/제품 의사결정 로그 관리 — 실제 사용자 마찰 매핑 후 원어민 교사용 통합 챗봇 기각, 안정화 패스에서 5개 잉여 기능 정리, 가짜 게시물이 포함된 커뮤니티 피드 제거(단순 군더더기가 아닌 데이터 정직성 이슈로 식별)."
-          }
-        },
-        {
-          tag: { en: "Security & Data Integrity Audits", ko: "보안 & 데이터 무결성 감사" },
-          text: {
-            en: "Ran three security-audit passes across sign-in, invite redemption and data routes. The first two closed 7+ authorization vulnerabilities and a login user-enumeration bug; the third, before the pilot, closed school-takeover paths (a parent could make themselves director of their child's academy) and added Firestore rules tests to CI. Separately fixed a systemic rules bug (get() inside a list query) that silently broke class and roster reads.",
-            ko: "로그인, 초대 코드 사용, 데이터 라우트 전반에 걸쳐 3회의 보안 감사를 진행했습니다. 처음 두 번에 7건 이상의 권한 취약점과 로그인 사용자 열거(enumeration) 버그를 해결했고, 파일럿 전 세 번째 점검에서 학교 탈취 경로(학부모가 자녀 학원의 원장이 될 수 있던 문제)를 막고 Firestore 규칙 테스트를 CI에 추가했습니다. 별도로 list 쿼리 안의 get() 호출 때문에 학급·명단 조회가 조용히 실패하던 규칙 버그를 수정했습니다."
+            en: "Foreign teachers record one voice note per class; it becomes a Korean parent report that a Korean teacher reviews before families receive it. Two-school pilot planned.",
+            ko: "원어민 교사가 수업마다 음성 메모 하나를 남기면 한국어 학부모 리포트가 되고, 한국인 교사가 검토한 뒤 가정에 전달됩니다. 2개 학교 파일럿 예정."
           }
         },
         {
           tag: { en: "AI Output Evaluation", ko: "AI 출력 평가" },
           text: {
-            en: "Native Korean readers said AI-drafted parent reports sounded machine-written, with the same stock praise in every one. Wrote shared voice rules into all three report prompts so drafts make specific, plain observations instead.",
-            ko: "한국어 원어민 독자들이 AI가 작성한 학부모 리포트가 매번 같은 칭찬을 반복해 기계가 쓴 글처럼 읽힌다고 지적했습니다. 세 개의 리포트 프롬프트 모두에 공통 문체 규칙을 넣어, 구체적이고 담백한 관찰을 쓰도록 바꿨습니다."
+            en: "Rewrote the report prompts after native Korean readers said the drafts sounded machine-written.",
+            ko: "한국어 원어민 독자들이 초안이 기계가 쓴 글 같다고 지적한 뒤 리포트 프롬프트를 다시 작성."
           }
         },
         {
-          tag: { en: "Refactor & CI", ko: "리팩토링 & CI 파이프라인" },
+          tag: { en: "Security", ko: "보안" },
           text: {
-            en: "Split a 4,678-line multi-role monolith (TeacherPage.tsx) into role-scoped hooks and shells across six shipped phases with zero functional regressions. Introduced the codebase's first CI pipeline (typecheck/test/lint/build on every PR) and Vitest suite.",
-            ko: "4,678줄 규모의 다역할 모놀리스(TeacherPage.tsx)를 6단계에 걸쳐 역할별 훅과 셸 컴포넌트로 기능 오류 없이 무결점 분리. 코드베이스 최초의 CI 파이프라인(모든 PR 대상 타입체크/테스트/린트/빌드) 및 Vitest 테스트 스위트 도입."
+            en: "Ran three security audits, closed 7+ authorization gaps, and added Firestore rules tests to CI.",
+            ko: "3회 보안 감사로 7건 이상의 권한 취약점을 해결하고 Firestore 규칙 테스트를 CI에 추가."
+          }
+        },
+        {
+          tag: { en: "Product Decisions", ko: "프로덕트 의사결정" },
+          text: {
+            en: "Kept a 19-entry decision log, including cutting five scope-creep features and a feed filled with placeholder posts.",
+            ko: "19건의 의사결정 로그 관리: 불필요한 기능 5개와 임시 게시물로 채워진 피드 삭제 포함."
+          }
+        },
+        {
+          tag: { en: "Refactor & CI", ko: "리팩토링 & CI" },
+          text: {
+            en: "Split a 4,678-line page into role-scoped modules with no regressions, and added the first CI pipeline and test suite.",
+            ko: "4,678줄 페이지를 역할별 모듈로 회귀 없이 분리하고, 첫 CI 파이프라인과 테스트 스위트 도입."
           }
         },
         {
           tag: { en: "Cross-Platform", ko: "크로스 플랫폼" },
           text: {
-            en: "Shipped to web, iOS, and Android from one codebase (React 19 + Capacitor) with full Korean/English parity as a hard non-functional requirement, native subscription billing (RevenueCat + Apple Server API), and multi-provider auth (Apple, Google, Kakao).",
-            ko: "단일 코드베이스(React 19 + Capacitor)로 웹, iOS, 안드로이드 동시 출시 — 한/영 완전 동등성을 필수 비기능 요구사항으로 준수, 네이티브 구독 결제(RevenueCat + Apple Server API) 및 다중 간편 인증(애플, 구글, 카카오) 연동."
+            en: "Shipped web, iOS and Android from one codebase (React 19 + Capacitor) with Korean/English parity, subscriptions, and Apple, Google and Kakao sign-in.",
+            ko: "하나의 코드베이스(React 19 + Capacitor)로 웹·iOS·안드로이드 출시: 한/영 동등 지원, 구독 결제, 애플·구글·카카오 로그인."
           }
         }
       ]
@@ -234,29 +227,29 @@ export const RESUME_DATA = {
         ko: "2023년 2월 – 2026년 2월"
       },
       sub: {
-        en: "Private English academy · Kindergarten through Elementary · Senior educator, curriculum designer, and AI content producer",
-        ko: "프라이빗 어학원 · 유치부 및 초등부 · 수석 강사, 커리큘럼 디자이너 및 AI 콘텐츠 기획"
+        en: "Private English academy · Kindergarten and elementary",
+        ko: "영어학원 · 유치부 및 초등부"
       },
       bullets: [
         {
-          tag: { en: "Commercial Curriculum Series", ko: "상용 교재 시리즈 개발" },
+          tag: { en: "Commercial Curriculum Series", ko: "상용 교재 시리즈" },
           text: {
-            en: "Designed and produced a 20-volume commercial English curriculum series using AI tools and Canva — from content architecture and lesson sequencing to print-ready layout — used across all classes from age 5 through elementary after-class students (~200 students), now commercially sold through the institution and in active daily classroom use.",
-            ko: "AI 도구와 Canva를 활용해 20권 분량의 상용 영어 교재 시리즈 기획 및 제작 — 콘텐츠 아키텍처, 레슨 시퀀싱부터 인쇄용 레이아웃까지 완성하여 5세부터 초등부 방과후(~200명 학생) 전체 학급에 적용, 학원을 통해 상용 판매 및 매일 실제 수업에 사용."
+            en: "Designed a 20-volume English curriculum series with AI tools and Canva, used by ~200 students from age 5 through elementary and sold commercially.",
+            ko: "AI 도구와 Canva로 20권 분량 영어 교재 시리즈 제작. 5세부터 초등부까지 약 200명이 사용하며 상용 판매 중."
           }
         },
         {
-          tag: { en: "Diagnostic Benchmark System", ko: "진단 벤치마크 평가 시스템" },
+          tag: { en: "Diagnostic Benchmark System", ko: "진단 벤치마크 평가" },
           text: {
-            en: "Built a school-wide diagnostic benchmark assessment system, piloted on his own class, enabling data-driven identification of learning gaps and targeted intervention — the direct product precedent for Chekki's Benchmark AI.",
-            ko: "100명 이상의 학생을 대상으로 데이터 기반 학습 결손 식별 및 맞춤형 지도를 가능케 하는 원내 진단 벤치마크 평가 시스템 구축(담당 학급 대상 선제 파일럿) — Chekki의 Benchmark AI 제품의 직접적 모태."
+            en: "Built a school-wide diagnostic benchmark to find learning gaps and target intervention; the basis for Chekki's Benchmark AI.",
+            ko: "학습 결손을 찾고 맞춤 지도를 돕는 원내 진단 벤치마크 구축. Chekki Benchmark AI의 기반."
           }
         },
         {
-          tag: { en: "Bilingual Operations", ko: "이중언어 학부모 소통 & 운영" },
+          tag: { en: "Bilingual Operations", ko: "이중언어 소통 & 운영" },
           text: {
-            en: "Managed bilingual parent communication (EN/KR), progress reporting, and homeroom operations — the real-world context informing every parent-facing UX decision in Chekki products.",
-            ko: "한/영 이중언어 학부모 상담, 성취도 리포팅, 담임 학급 운영 총괄 — Chekki 제품군의 모든 학부모 대상 UX 의사결정을 뒷받침하는 현장 도메인 맥락 확립."
+            en: "Ran bilingual parent communication, progress reports and homeroom operations.",
+            ko: "한/영 학부모 소통, 성취도 리포트, 담임 학급 운영 담당."
           }
         }
       ]
@@ -280,10 +273,10 @@ export const RESUME_DATA = {
       },
       bullets: [
         {
-          tag: { en: "Immersive Instruction", ko: "몰입형 교육 & 도메인 전문성" },
+          tag: { en: "Immersive Instruction", ko: "몰입형 교육" },
           text: {
-            en: "Four years of full-immersion EFL instruction — building the Korean market domain expertise and bilingual communication instincts behind every later product decision.",
-            ko: "4년간의 전일제 몰입형 영어 교육 전담 — 이후 모든 제품 의사결정을 뒷받침하는 한국 교육 시장 도메인 전문성과 이중언어 소통 감각 구축."
+            en: "Four years of full-immersion EFL teaching at one of Seoul's largest English kindergartens.",
+            ko: "서울 최대 규모 영어 유치부 중 한 곳에서 4년간 몰입형 영어 교육."
           }
         }
       ]
