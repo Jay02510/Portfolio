@@ -56,12 +56,12 @@ const COPY = {
     localeSwitch: "한국어",
     resumeBtn: "Résumé",
     heroTitle: "AI product manager and engineer. Voice-AI, LLM evaluation, and the operations work around them.",
-    heroBody: "At VodaBi I own the product spec, the real-time voice AI, and the scoring rubric end to end. I've also independently built and shipped 8 products — including Chekki AI, live on the App Store and Play Store — used by Korean academies, teachers, and international schools.",
+    heroBody: "At VodaBi I'm a full-time full-stack engineer and own the product spec, the real-time voice AI, and the scoring rubric end to end. I've also independently built and shipped 8 products — including Chekki AI, live on the App Store and Play Store — used by Korean academies, teachers, and international schools.",
     ctaWork: "See the work",
     ctaResume: "Interactive résumé",
     caseLabel: "Case study ↗",
     nowLabel: "Now",
-    nowBody: "The VodaBi screening platform is built and going into use with IBK and FastFive.",
+    nowBody: "The VodaBi screening platform is built and going into use with two enterprise clients.",
     roleTitle: "How I work",
     workTitle: "Selected work",
     workNote: "Two products in depth: the problem, what I built, and the calls I made along the way.",
@@ -95,12 +95,12 @@ const COPY = {
     localeSwitch: "English",
     resumeBtn: "이력서",
     heroTitle: "AI 프로덕트 매니저 겸 엔지니어. 음성 AI, LLM 평가, 그리고 그 주변의 운영 문제.",
-    heroBody: "VodaBi에서 제품 정의, 실시간 음성 AI, 채점 루브릭까지 전 과정을 직접 담당합니다. 개인적으로도 App Store와 Play Store에 출시한 Chekki AI를 포함해 제품 8개를 직접 만들어 출시했고, 한국 학원과 교사, 국제학교에서 실제로 쓰이고 있습니다.",
+    heroBody: "VodaBi에서 정규직 풀스택 엔지니어로 일하며 제품 정의, 실시간 음성 AI, 채점 루브릭까지 전 과정을 직접 담당합니다. 개인적으로도 App Store와 Play Store에 출시한 Chekki AI를 포함해 제품 8개를 직접 만들어 출시했고, 한국 학원과 교사, 국제학교에서 실제로 쓰이고 있습니다.",
     ctaWork: "프로젝트 보기",
     ctaResume: "인터랙티브 이력서",
     caseLabel: "케이스 스터디 ↗",
     nowLabel: "현재",
-    nowBody: "VodaBi 스크리닝 플랫폼 구축을 마쳤고, IBK와 패스트파이브에서 사용을 시작합니다.",
+    nowBody: "VodaBi 스크리닝 플랫폼 구축을 마쳤고, 두 곳의 기업 고객사에서 사용을 시작합니다.",
     roleTitle: "일하는 방식",
     workTitle: "주요 프로젝트",
     workNote: "두 제품을 깊게 다룹니다. 문제, 직접 만든 부분, 그 과정에서 내린 판단.",
@@ -166,7 +166,7 @@ const ROLE_COLS = {
     {
       head: "Claim discipline",
       items: [
-        "VodaBi is built and rolling out with IBK and FastFive; there are no production metrics yet and I do not quote any",
+        "VodaBi is built and rolling out with two enterprise clients; there are no production metrics yet and I do not quote any",
         "Client identifiers stay sanitized under NDA",
         "Outcomes below are tagged measured, estimated, or target — never blended",
         "Where a number is an estimate, the method is in the case study"
@@ -197,7 +197,7 @@ const ROLE_COLS = {
     {
       head: "주장의 범위",
       items: [
-        "VodaBi는 구축을 마치고 IBK·패스트파이브에서 사용을 시작합니다. 아직 프로덕션 지표가 없어 어떤 수치도 인용하지 않습니다",
+        "VodaBi는 구축을 마치고 두 곳의 기업 고객사에서 사용을 시작합니다. 아직 프로덕션 지표가 없어 어떤 수치도 인용하지 않습니다",
         "고객사 식별 정보는 NDA에 따라 익명화합니다",
         "아래 성과는 실측·추정·목표로 구분해 표기하며 섞지 않습니다",
         "추정치의 산출 방법은 케이스 스터디에 적었습니다"
@@ -252,7 +252,8 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
         "Grading anchored to teacher-verified answer keys rather than the model's own reading of the page",
         "Bilingual explanation layer: Korean honorifics, pronunciation and phonics guidance for parents",
         "Mobile build via Capacitor, Firestore data model with atomic transactions, serverless API routes",
-        "Zero-retention handling of student worksheet images, and the COPPA and GDPR alignment around it"
+        "Parent app redesigned for a tired parent with a child beside them: praise first, then one mistake at a time",
+        "Worksheet images discarded after grading, analysis deleted after 30 days, aligned with COPPA and GDPR"
       ],
       decisions: [
         {
@@ -281,15 +282,16 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
     {
       id: "chekki-teacher",
       context: "Same platform, staff-facing · Chekki Schools",
-      status: "Beta",
+      status: "Final testing",
       image: "/screenshots/chekki-schools/mascot-logo.png",
       title: "Role-scoped CRM for academy directors and teachers",
-      problem: "Chekki AI is the app parents open; this is what the academy behind it runs on. A director managing the account, a foreign teacher grading homework, and a Korean teacher messaging parents were all stuck in the same single-page tool, each staring at menus meant for someone else's job.",
+      problem: "Chekki AI is the app parents open; this is what the academy behind it runs on. A director managing the account, a foreign teacher grading homework, and a Korean teacher messaging parents were all stuck in the same single-page tool, each looking at menus meant for someone else's job.",
       owned: [
-        "Director HQ, foreign-teacher grading cockpit, and Korean-teacher messaging console as three separate logins",
+        "Separate logins for directors, foreign teachers and Korean teachers, each showing only the tools for that job",
         "Curriculum and answer-key pre-seeding, so grading checks a worksheet scan against what the teacher actually taught",
-        "Bilingual KakaoTalk script generator that turns a foreign teacher's class log into a parent-ready message",
-        "Firestore security rules scoping every read to a teacher's assigned classes, enforced server-side not just in the UI",
+        "Voice-first class log: one recording from the foreign teacher fills in the class summary and notes on named students",
+        "Korean-teacher review before anything reaches a parent, then a bilingual report per family and optional KakaoTalk copies",
+        "Firestore security rules scoping every read to a teacher's own classes, tested on the emulator in CI",
         "Split a 4,678-line single-file teacher page into useDirectorState / useFTState / useKTState role-scoped hooks"
       ],
       decisions: [
@@ -302,6 +304,16 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
           choice: "One structured schema generating both the bilingual report and the KakaoTalk script",
           why: "Two separate model calls for the same week's summary occasionally disagreed with each other.",
           tradeoff: "Tradeoff: the script is only as good as the report it's derived from — no independent tuning per output."
+        },
+        {
+          choice: "Review one class-day at a time, not one card per student",
+          why: "A card per student turned every class into a queue of near-identical approvals for the Korean teacher.",
+          tradeoff: "Tradeoff: every student note is edited on one long screen instead of one at a time."
+        },
+        {
+          choice: "Shared voice rules in every report prompt, after native Korean readers flagged the drafts",
+          why: "Readers said the reports sounded machine-written: the same stock praise (매우, 훌륭한, 적극적으로) in every one.",
+          tradeoff: "Tradeoff: plainer, more specific reports with less praise, and one rule set to keep in sync across three prompts."
         }
       ],
       stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "Role-scoped React hooks"],
@@ -353,7 +365,8 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
         "모델의 자체 판독이 아니라 교사가 검증한 정답지를 기준으로 하는 채점 구조",
         "이중언어 해설 레이어: 한국어 존댓말, 발음 및 파닉스 가이드",
         "Capacitor 모바일 빌드, 원자적 트랜잭션 기반 Firestore 데이터 모델, 서버리스 API",
-        "학생 숙제 이미지 무저장 처리 및 COPPA·GDPR 대응"
+        "아이 옆에서 지친 학부모가 보는 화면으로 재설계: 칭찬 먼저, 오답은 하나씩",
+        "숙제 이미지는 채점 후 폐기, 분석 결과는 30일 후 삭제, COPPA·GDPR 대응"
       ],
       decisions: [
         {
@@ -382,15 +395,16 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
     {
       id: "chekki-teacher",
       context: "같은 플랫폼, 교직원용 · Chekki Schools",
-      status: "베타",
+      status: "최종 테스트 중",
       image: "/screenshots/chekki-schools/mascot-logo.png",
       title: "원장·교사를 위한 역할별 CRM",
       problem: "Chekki AI가 학부모가 여는 앱이라면, 이건 그 뒤에 있는 학원이 돌아가는 도구입니다. 계정을 관리하는 원장, 숙제를 채점하는 원어민 교사, 학부모에게 메시지를 보내는 한국인 교사가 전부 같은 단일 페이지 도구에 갇혀, 서로 다른 사람의 업무용 메뉴를 마주하고 있었습니다.",
       owned: [
-        "원장 HQ, 원어민 교사 채점 코크핏, 한국인 교사 메시징 콘솔을 세 개의 개별 로그인으로 분리",
+        "원장, 원어민 교사, 한국인 교사의 로그인을 분리해 각자 자기 업무 도구만 보이도록 구성",
         "커리큘럼·정답지 사전 등록으로, 채점이 교사가 실제로 가르친 내용을 기준으로 워크시트 스캔을 대조",
-        "원어민 교사의 학급 기록을 학부모에게 바로 보낼 수 있는 메시지로 바꾸는 이중언어 카카오톡 스크립트 생성기",
-        "모든 읽기를 교사가 배정된 반으로 제한하는 Firestore 보안 규칙, UI가 아닌 서버 단에서 강제",
+        "음성 우선 수업 기록: 원어민 교사의 녹음 한 번으로 수업 요약과 학생별 메모를 함께 채움",
+        "학부모에게 가기 전 한국인 교사가 검토하고, 가정별 이중언어 리포트와 선택형 카카오톡 문구로 전달",
+        "모든 읽기를 교사 본인의 반으로 제한하는 Firestore 보안 규칙, 에뮬레이터 테스트로 CI에서 검증",
         "4,678줄짜리 단일 교사 페이지를 useDirectorState / useFTState / useKTState 역할별 훅으로 분리"
       ],
       decisions: [
@@ -403,6 +417,16 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
           choice: "이중언어 리포트와 카카오톡 스크립트를 하나의 구조화된 스키마에서 생성",
           why: "같은 주 요약을 두 번 독립적으로 생성했을 때 서로 내용이 어긋나는 경우가 있었습니다.",
           tradeoff: "트레이드오프: 스크립트 품질이 리포트에 종속되어, 출력별 독립 튜닝이 어렵습니다."
+        },
+        {
+          choice: "학생별 카드 대신 반·날짜 단위로 한 번에 검토",
+          why: "학생마다 카드를 두니 수업 하나가 한국인 교사에게 거의 똑같은 승인 대기열이 되었습니다.",
+          tradeoff: "트레이드오프: 학생 메모를 하나씩이 아니라 긴 화면 하나에서 편집해야 합니다."
+        },
+        {
+          choice: "한국어 원어민 독자의 지적 후, 모든 리포트 프롬프트에 공통 문체 규칙 적용",
+          why: "리포트가 기계가 쓴 글처럼 읽힌다는 피드백이 있었습니다. 매번 같은 칭찬(매우, 훌륭한, 적극적으로)이 반복됐습니다.",
+          tradeoff: "트레이드오프: 칭찬은 줄고 더 담백하고 구체적인 리포트가 되며, 세 프롬프트에 걸친 규칙을 함께 관리해야 합니다."
         }
       ],
       stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "역할별 React 훅"],
@@ -565,6 +589,22 @@ const FILTERS = {
 
 const LOG: LogEntry[] = [
   {
+    date: "2026-10-07",
+    type: "security",
+    titleEn: "Chekki Schools: third security pass before the pilot",
+    titleKo: "Chekki Schools: 파일럿 전 세 번째 보안 점검",
+    descEn: "Closed paths that let a self-signup set its own role or school, or let a parent become director of their child's academy. Invites are now director-only, removed teachers lose their sessions, and Firestore rules tests run on the emulator in CI. Also removed landing-page claims the product couldn't back up.",
+    descKo: "자가 가입으로 역할이나 학교를 직접 지정하거나, 학부모가 자녀 학원의 원장이 될 수 있던 경로를 막았습니다. 초대는 원장만 다루고, 제외된 교사는 세션이 해제되며, Firestore 규칙 테스트를 에뮬레이터로 CI에서 실행합니다. 랜딩 페이지에서 제품이 뒷받침하지 못하는 문구도 삭제했습니다."
+  },
+  {
+    date: "2026-10-03",
+    type: "feature",
+    titleEn: "Chekki Schools: voice-first class log and class-level review",
+    titleKo: "Chekki Schools: 음성 우선 수업 기록과 반 단위 검토",
+    descEn: "One recording now fills the class log and student notes. The Korean teacher reviews a whole class-day on one screen, and each family gets the class summary plus only their child's note. Report prompts were rewritten after native Korean readers said the drafts sounded machine-written.",
+    descKo: "녹음 한 번으로 수업 기록과 학생 메모를 채웁니다. 한국인 교사는 한 반의 하루를 한 화면에서 검토하고, 각 가정은 반 요약과 자기 아이의 메모만 받습니다. 한국어 원어민 독자가 초안이 기계가 쓴 글 같다고 지적한 뒤 리포트 프롬프트를 다시 썼습니다."
+  },
+  {
     date: "2026-09-19",
     type: "feature",
     titleEn: "B2B lead-enrichment CRM: compliant bilingual outreach drafting shipped",
@@ -631,10 +671,10 @@ const LOG: LogEntry[] = [
   {
     date: "2026-05-29",
     type: "security",
-    titleEn: "Zero-retention handling for student worksheets",
-    titleKo: "학생 숙제 이미지 무저장 처리",
-    descEn: "Gateway-level pipeline that discards worksheet images the moment evaluation finishes, so no student record is persisted.",
-    descKo: "평가가 끝나는 즉시 숙제 이미지를 폐기하는 게이트웨이 파이프라인으로, 학생 기록을 저장하지 않습니다."
+    titleEn: "Worksheet images discarded after grading",
+    titleKo: "채점 후 숙제 이미지 폐기",
+    descEn: "Gateway-level pipeline that discards worksheet images the moment evaluation finishes, so no image of a child's work is stored.",
+    descKo: "평가가 끝나는 즉시 숙제 이미지를 폐기하는 게이트웨이 파이프라인으로, 아이의 숙제 이미지를 저장하지 않습니다."
   }
 ];
 

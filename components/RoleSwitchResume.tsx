@@ -24,8 +24,8 @@ export const RESUME_DATA = {
     }
   },
   profile: {
-    en: "Sole engineer and product owner who shipped a production voice-AI interview/coaching platform from zero — realtime WebRTC voice pipeline, deterministic LLM evaluation engine, admin console, security hardening, and full deployment — in under four weeks. Also built and launched six AI products for Korean education markets independently, with a documented 19-entry product decision log across both portfolios.\n\nWrites PRDs, runs customer discovery, makes and defends architecture trade-offs in writing, and owns the full path from problem to production. Known for rejecting features that don't close a real user gap — and documenting why. Bilingual EN/KR product experience across consumer mobile, B2B SaaS, and enterprise AI contexts.",
-    ko: "실시간 WebRTC 음성 파이프라인, 결정론적 LLM 평가 엔진, 어드민 콘솔, 보안 하드닝 및 전체 배포까지 프로덕션 음성 AI 인터뷰/코칭 플랫폼을 4주 만에 0에서 1인으로 구축·배포한 엔지니어 겸 프로덕트 오너입니다. 또한 한국 교육 시장을 위한 6개 AI 프로덕트를 독립 구축·출시하였으며 두 포트폴리오 전반에 걸쳐 19개의 문서화된 프로덕트 의사결정 로그를 보유하고 있습니다.\n\nPRD 작성, 고객 디스커버리 수행, 아키텍처 트레이드오프 문서화 및 방어를 주도하며 문제 정의부터 프로덕션 배포까지 전 과정을 직접 책임집니다. 실제 사용자 문제를 해결하지 않는 불필요한 기능은 과감히 배제하고 그 이유를 문서화합니다. B2C 모바일, B2B SaaS, 엔터프라이즈 AI 맥락 전반에서 검증된 한/영 이중언어 제품 개발 역량을 갖추고 있습니다."
+    en: "Product owner and sole engineer behind a production voice-AI coaching platform, built from zero in under four weeks: realtime WebRTC voice, a deterministic LLM evaluation engine, an admin console, security hardening and deployment. Independently built and launched six AI products for Korean education, with a 23-entry product decision log.\n\nWrites PRDs, runs customer discovery and defends architecture tradeoffs in writing. Owns the path from problem to production. Cuts features that don't close a real user gap, and writes down why. Builds bilingual (EN/KR) products across consumer mobile, B2B SaaS and enterprise AI.",
+    ko: "실시간 WebRTC 음성 파이프라인, 결정론적 LLM 평가 엔진, 어드민 콘솔, 보안 하드닝 및 전체 배포까지 프로덕션 음성 AI 인터뷰/코칭 플랫폼을 4주 만에 0에서 1인으로 구축·배포한 엔지니어 겸 프로덕트 오너입니다. 또한 한국 교육 시장을 위한 6개 AI 프로덕트를 독립 구축·출시하였으며 23개의 문서화된 프로덕트 의사결정 로그를 보유하고 있습니다.\n\nPRD 작성, 고객 디스커버리 수행, 아키텍처 트레이드오프 문서화 및 방어를 주도하며 문제 정의부터 프로덕션 배포까지 전 과정을 직접 책임집니다. 실제 사용자 문제를 해결하지 않는 불필요한 기능은 과감히 배제하고 그 이유를 문서화합니다. B2C 모바일, B2B SaaS, 엔터프라이즈 AI 맥락 전반에서 검증된 한/영 이중언어 제품 개발 역량을 갖추고 있습니다."
   },
   skills: {
     aiVoice: {
@@ -63,8 +63,8 @@ export const RESUME_DATA = {
   experience: {
     vodabi: {
       title: {
-        en: "AI Product Manager & Engineer",
-        ko: "AI 프로덕트 매니저 & 엔지니어"
+        en: "Full-Stack Engineer (Full-Time)",
+        ko: "풀스택 엔지니어 (정규직)"
       },
       company: {
         en: "VodaBi",
@@ -96,8 +96,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "Deterministic LLM Evaluation Engine", ko: "결정론적 LLM 평가 엔진" },
           text: {
-            en: "Built a post-call scoring pipeline (transcript → GPT-4o → structured per-criterion scores) graded against admin-configurable rubrics — fully grounded in uploaded rubrics rather than open-ended inference, resulting in 100% deterministic scoring with zero AI hallucinations.",
-            ko: "통화 후 트랜스크립트를 어드민 설정 루브릭에 맞춰 GPT-4o로 심사하여 기준별 구조화 점수를 산출하는 사후 채점 파이프라인 구축 — 개방형 추론 대신 업로드된 루브릭에 완전히 앵커링하여 AI 환각 없는 100% 결정론적 채점 결과 산출."
+            en: "Built a post-call scoring pipeline (transcript → GPT-4o → structured per-criterion scores) graded against admin-configurable rubrics — scores map to the uploaded rubric through fixed lookups rather than open-ended inference, so the same call gets the same score.",
+            ko: "통화 후 트랜스크립트를 어드민 설정 루브릭에 맞춰 GPT-4o로 심사하여 기준별 구조화 점수를 산출하는 사후 채점 파이프라인 구축 — 개방형 추론 대신 업로드된 루브릭의 고정 조회로 점수를 매겨, 같은 통화에는 같은 점수가 나오도록 함."
           }
         },
         {
@@ -131,8 +131,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "Business Traction", ko: "비즈니스 트랙션 & 엔터프라이즈 도입" },
           text: {
-            en: "Rebuilt platform is now in active pilot discussions with two major Korean financial institutions evaluating it for employee sales-skills testing.",
-            ko: "재구축된 플랫폼은 현재 직원 영업 역량 테스트 도입을 검토 중인 한국의 2대 주요 금융기관과 활발한 파일럿 논의를 진행 중."
+            en: "The rebuilt platform is going into use with two enterprise clients for employee sales-skills testing.",
+            ko: "재구축된 플랫폼은 직원 영업 역량 테스트 용도로 두 곳의 기업 고객사에서 사용을 시작합니다."
           }
         },
         {
@@ -172,8 +172,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "Grounded Grading", ko: "정답지 기반 채점" },
           text: {
-            en: "Built a multimodal grading pipeline (Gemini 2.5 Flash/Pro vision) that grounds every correction in the class's actual teacher-uploaded answer key rather than model inference, preventing hallucinated grading — the core differentiator versus generic homework-scanning apps. Structured JSON output via constrained responseSchema; safety-threshold tuned prompts.",
-            ko: "일반 숙제 스캔 앱과 차별화되는 핵심으로, 모델 추론이 아닌 실제 학급 정답지에 모든 채점을 앵커링하여 환각 채점을 원천 차단하는 멀티모달 채점 파이프라인(Gemini 2.5 Flash/Pro 비전) 구축. 제약된 responseSchema 기반 구조화 JSON 출력 및 안전 임계값 튜닝 프롬프트 적용."
+            en: "Built a multimodal grading pipeline (Gemini 2.5 Flash/Pro vision) that grounds every correction in the class's actual teacher-uploaded answer key rather than model inference, so corrections match what was taught — the core differentiator versus generic homework-scanning apps. Structured JSON output via constrained responseSchema; safety-threshold tuned prompts.",
+            ko: "일반 숙제 스캔 앱과 차별화되는 핵심으로, 모델 추론이 아닌 실제 학급 정답지에 모든 채점을 앵커링하여 수업 내용과 일치시키는 멀티모달 채점 파이프라인(Gemini 2.5 Flash/Pro 비전) 구축. 제약된 responseSchema 기반 구조화 JSON 출력 및 안전 임계값 튜닝 프롬프트 적용."
           }
         },
         {
@@ -193,8 +193,15 @@ export const RESUME_DATA = {
         {
           tag: { en: "Security & Data Integrity Audits", ko: "보안 & 데이터 무결성 감사" },
           text: {
-            en: "Ran two full security-audit sweeps across sign-in, redemption, and data routes, closing 7+ authorization vulnerabilities plus a login user-enumeration bug; separately diagnosed and fixed a systemic Firestore rules bug (a get()-inside-list-query pattern) that silently broke class and roster reads for directors and teachers.",
-            ko: "로그인, 상환, 데이터 라우트 전반에 걸쳐 2회의 전체 보안 감사를 진행하여 7건 이상의 권한 취약점과 로그인 사용자 열거(enumeration) 버그를 해결했습니다. 별도로 get() 호출이 list 쿼리 내부에 포함되는 패턴으로 인해 원장 및 교사의 학급·명단 조회가 조용히 실패하던 구조적 Firestore 규칙 버그를 진단 및 수정했습니다."
+            en: "Ran three security-audit passes across sign-in, invite redemption and data routes. The first two closed 7+ authorization vulnerabilities and a login user-enumeration bug; the third, before the pilot, closed school-takeover paths (a parent could make themselves director of their child's academy) and added Firestore rules tests to CI. Separately fixed a systemic rules bug (get() inside a list query) that silently broke class and roster reads.",
+            ko: "로그인, 초대 코드 사용, 데이터 라우트 전반에 걸쳐 3회의 보안 감사를 진행했습니다. 처음 두 번에 7건 이상의 권한 취약점과 로그인 사용자 열거(enumeration) 버그를 해결했고, 파일럿 전 세 번째 점검에서 학교 탈취 경로(학부모가 자녀 학원의 원장이 될 수 있던 문제)를 막고 Firestore 규칙 테스트를 CI에 추가했습니다. 별도로 list 쿼리 안의 get() 호출 때문에 학급·명단 조회가 조용히 실패하던 규칙 버그를 수정했습니다."
+          }
+        },
+        {
+          tag: { en: "AI Output Evaluation", ko: "AI 출력 평가" },
+          text: {
+            en: "Native Korean readers said AI-drafted parent reports sounded machine-written, with the same stock praise in every one. Wrote shared voice rules into all three report prompts so drafts make specific, plain observations instead.",
+            ko: "한국어 원어민 독자들이 AI가 작성한 학부모 리포트가 매번 같은 칭찬을 반복해 기계가 쓴 글처럼 읽힌다고 지적했습니다. 세 개의 리포트 프롬프트 모두에 공통 문체 규칙을 넣어, 구체적이고 담백한 관찰을 쓰도록 바꿨습니다."
           }
         },
         {

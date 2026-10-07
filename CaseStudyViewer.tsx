@@ -294,8 +294,8 @@ const stackExplains: Record<string, { en: string; ko: string }> = {
     ko: "아웃룩 읽기 창에서 이메일 도메인 매칭과 원클릭 접점 수집을 수행하는 Office.js 클라이언트 런타임."
   },
   "OpenAI Structured Outputs": {
-    en: "Deterministic JSON schema model inference generating executive partnership briefings without hallucinations.",
-    ko: "환각 없이 경영진용 파트너십 브리핑을 정확한 JSON 스키마로 산출하는 OpenAI 구조화 출력."
+    en: "Deterministic JSON schema model inference generating executive partnership briefings grounded in a fixed JSON schema.",
+    ko: "고정된 스키마에 근거해 경영진용 파트너십 브리핑을 정확한 JSON 스키마로 산출하는 OpenAI 구조화 출력."
   },
   "Vercel": {
     en: "Global edge deployment platform providing automated CI/CD and secure serverless route execution.",

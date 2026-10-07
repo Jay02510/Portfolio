@@ -123,7 +123,7 @@ function scoreAssessment(answers) {
     stats: [
       { label: "Engineering Scope", value: "39 Shipped Commits", detail: "85 Backend Modules, 1 Person 0→Prod" },
       { label: "Voice Pipeline", value: "Direct WebRTC", detail: "Browser ↔ OpenAI Realtime (Sub-200ms Latency)" },
-      { label: "Evaluation Integrity", value: "100% Deterministic", detail: "11 Rubric Codes (0% Math Hallucination)" }
+      { label: "Evaluation Integrity", value: "100% Deterministic", detail: "11 rubric codes, scored by fixed lookup" }
     ],
     problem: [
       "Confidentiality Notice: Enterprise client data and specific company names have been sanitized under non-disclosure agreements (NDAs). Architectural implementations, security audits, and engineering workflows reflect original production work.",
@@ -199,7 +199,7 @@ function scoreAssessment(answers) {
     behindTheArchitecture: {
       problem: "Manual 1st-round phone screening creates severe scheduling bottlenecks, recruiter fatigue, and subjective scoring across high-volume sales candidate funnels.",
       vision: "Build a production-grade voice interview platform that runs realistic candidate-AI roleplays over WebRTC and delivers recruiter-trusted, rubric-graded evaluations.",
-      rationale: "Selected direct WebRTC for zero-latency voice streaming, decoupled from an asynchronous GPT-4o evaluation engine that guarantees 100% deterministic rubric compliance and zero math hallucinations."
+      rationale: "Selected direct WebRTC for zero-latency voice streaming, decoupled from an asynchronous GPT-4o evaluation engine that scores through fixed rubric lookups, so the same transcript gets the same score."
     },
     architecture: {
       lifecycle: [
@@ -326,7 +326,7 @@ function scoreAssessment(answers) {
       "Bilingual Administrative Overhead: Foreign teachers and Korean staff spend 10-15 hours weekly drafting, translating, and aligning parent progress notes across language barriers."
     ],
     solution: [
-      "Grounded Multimodal Grading Pipeline: Worksheet grading runs against teacher-uploaded, OCR'd answer keys in Firestore rather than model guesswork, eliminating hallucinated corrections.",
+      "Grounded Multimodal Grading Pipeline: Worksheet grading runs against teacher-uploaded, OCR'd answer keys in Firestore rather than model guesswork, so corrections match what the teacher taught.",
       "Turn-Based Voice Extraction (Scoped to Infra Limits): Built record → structured-JSON extract → explicit-confirm voice logging instead of complex speech-to-speech, respecting Vercel serverless connection constraints and tuning temperature to 0.15.",
       "Vercel 12-Function Ceiling Consolidation: Consolidated all AI grading, voice-fill, and Q&A tasks into api/analyze.ts and collapsed 4 redemption functions into api/redeem.ts with backward-compatible vercel.json rewrites.",
       "Human-in-the-Loop Trust Gate: Enforced Korean teacher report review via a strict structural state machine (pending_review → edited_by_kt → copied_sent), blocking foreign teacher self-approval.",
@@ -401,7 +401,7 @@ function scoreAssessment(answers) {
       ],
       guardrails: [
         "Vercel 12-Function Ceiling Architecture: Consolidated all AI endpoints into api/analyze.ts and redemption routes into api/redeem.ts with URL rewrites.",
-        "Ground-Truth Anchoring: AI evaluates strictly against teacher-uploaded answer keys, eliminating zero-shot hallucination.",
+        "Ground-Truth Anchoring: AI evaluates strictly against teacher-uploaded answer keys instead of guessing the answer itself.",
         "Structural State Machine: Enforces pending_review → edited_by_kt → copied_sent; no AI draft reaches parents without staff confirmation.",
         "Firestore Multi-Tenant Security Rules: Read/write permissions strictly scoped to verified school and class IDs with Admin SDK server guards."
       ]
@@ -1446,7 +1446,7 @@ function scoreAssessment(answers) {
     stats: [
       { label: "엔지니어링 범위", value: "39개 커밋 배포", detail: "85개 백엔드 모듈, 1인 0→프로덕션 완성" },
       { label: "음성 파이프라인", value: "Direct WebRTC", detail: "브라우저 ↔ OpenAI Realtime (200ms 미만 지연)" },
-      { label: "평가 무결성", value: "100% 결정론적", detail: "11개 루브릭 코드 (환각 점수 0%)" }
+      { label: "평가 무결성", value: "100% 결정론적", detail: "11개 루브릭 코드, 고정 조회 방식 채점" }
     ],
     problem: [
       "기밀 유지(NDA) 안내: 비밀유지계약 준수를 위해 특정 기업명 및 고객사 식별 정보는 모두 익명화 및 일반화되었습니다. 아키텍처 및 PM 의사결정은 실제 프로덕션 수행 내용을 반영합니다.",
@@ -1649,7 +1649,7 @@ function scoreAssessment(answers) {
       "과중한 이중언어 행정 부담: 원어민 교사의 영어 메모를 한국인 교사가 번역하고 정제하여 학부모에게 전달하는 데 매주 10~15시간 소모."
     ],
     solution: [
-      "정답지 기반 멀티모달 채점 파이프라인: 교사가 업로드한 OCR 정답지를 Firestore에 등록하여, AI의 임의 추측이 아닌 실제 정답 기준으로 채점하여 환각을 원천 차단.",
+      "정답지 기반 멀티모달 채점 파이프라인: 교사가 업로드한 OCR 정답지를 Firestore에 등록하여, AI의 임의 추측이 아닌 실제 정답 기준으로 채점하여 교사가 가르친 내용과 일치하도록 함.",
       "인프라 한계에 맞춘 턴 기반 음성 추출: Vercel 서버리스의 지속 연결 한계를 감안하여 복잡한 음성 대화 대신 녹음 → 정형 JSON 추출 → 명시적 확정 흐름을 구현하고 온도(0.15)를 최적화.",
       "Vercel 12개 함수 한도 통합: 모든 AI 채점, 음성 추출, Q&A 작업을 api/analyze.ts로 통합하고 4개 구독 환급 함수를 api/redeem.ts로 합쳐 배포된 네이티브 앱의 중단 없는 하위 호환성 보장.",
       "구조적 Human-in-the-Loop 신뢰 게이트: 한국인 교사의 알림장 검토 상태 머신(pending_review → edited_by_kt → copied_sent)을 강제하여 원어민 교사의 자체 승인을 구조적으로 차단.",
@@ -1724,7 +1724,7 @@ function scoreAssessment(answers) {
       ],
       guardrails: [
         "Vercel 12개 함수 한도 아키텍처: 모든 AI 작업을 api/analyze.ts로, 구독 환급을 api/redeem.ts로 통합하고 URL 리라이트 적용.",
-        "정답지 앵커링: 모델의 추측 채점을 배제하고 교사 등록 정답지를 기준으로만 채점하여 환각을 차단.",
+        "정답지 앵커링: 모델의 추측 채점을 배제하고 교사 등록 정답지를 기준으로만 채점.",
         "구조적 상태 머신: pending_review → edited_by_kt → copied_sent 강제로 교직원 검토 없는 AI 초안 발송을 방지.",
         "Firestore 멀티 테넌트 보안 규칙: 인증된 학교 및 학급 ID로 읽기/쓰기 권한을 엄격히 제한하고 Admin SDK로 서버 검증 수행."
       ]

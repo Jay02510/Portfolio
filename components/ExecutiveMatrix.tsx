@@ -77,13 +77,13 @@ const SYSTEMS_DATA: SystemItem[] = [
     badgeEn: "Enterprise Case Study",
     badgeKo: "기업 케이스 스터디",
     domain: ['voice', 'ops'],
-    roleEn: "AI Product Manager (Enterprise Voice & LLM Judges)",
-    roleKo: "AI 프로덕트 매니저 (음성 AI & 채점 엔진)",
+    roleEn: "Full-Stack Engineer (Enterprise Voice & LLM Judges)",
+    roleKo: "풀스택 엔지니어 (음성 AI & 채점 엔진)",
     problemEn: "Replaced manual outbound telemarketing screening with real-time WebRTC AI persona roleplay and deterministic 11-rubric post-call evaluation.",
     problemKo: "수동 1차 아웃바운드 텔레마케팅 면접을 실시간 WebRTC AI 페르소나 롤플레이 및 11개 세부 루브릭 결정론적 채점으로 100% 자동화.",
     techStack: ["Direct WebRTC", "NestJS 11", "OpenAI Realtime", "GPT-4o Judge", "Prisma 7", "MariaDB", "AES-256-GCM", "Docker"],
-    highlightMetricEn: "11 Rubric Codes · 100% Deterministic (0% Score Hallucination)",
-    highlightMetricKo: "11개 세부 루브릭 코드 · 100% 결정론적 채점 (환각 0%)",
+    highlightMetricEn: "11 Rubric Codes · Deterministic Rubric Lookups",
+    highlightMetricKo: "11개 세부 루브릭 코드 · 결정론적 루브릭 조회",
     caseStudyId: "vodabi"
   },
   {
