@@ -56,7 +56,7 @@ const COPY = {
     localeSwitch: "한국어",
     resumeBtn: "Résumé",
     heroTitle: "AI product manager and engineer. Voice-AI, LLM evaluation, and the operations work around them.",
-    heroBody: "At VodaBi I'm a full-time full-stack engineer and own the product spec, the real-time voice AI, and the scoring rubric end to end. I've also independently built and shipped 8 products — including Chekki AI, live on the App Store and Play Store — used by Korean academies, teachers, and international schools.",
+    heroBody: "At VodaBi I'm a full-time full-stack engineer building the real-time voice AI, the grading pipeline, and the staff and manager dashboards. I've also independently built and shipped 6 products — including Chekki AI, live on the App Store and Play Store — used by Korean academies, teachers, and international schools.",
     ctaWork: "See the work",
     ctaResume: "Interactive résumé",
     caseLabel: "Case study ↗",
@@ -95,7 +95,7 @@ const COPY = {
     localeSwitch: "English",
     resumeBtn: "이력서",
     heroTitle: "AI 프로덕트 매니저 겸 엔지니어. 음성 AI, LLM 평가, 그리고 그 주변의 운영 문제.",
-    heroBody: "VodaBi에서 정규직 풀스택 엔지니어로 일하며 제품 정의, 실시간 음성 AI, 채점 루브릭까지 전 과정을 직접 담당합니다. 개인적으로도 App Store와 Play Store에 출시한 Chekki AI를 포함해 제품 8개를 직접 만들어 출시했고, 한국 학원과 교사, 국제학교에서 실제로 쓰이고 있습니다.",
+    heroBody: "VodaBi에서 정규직 풀스택 엔지니어로 일하며 실시간 음성 AI, 채점 파이프라인, 직원·매니저 대시보드를 개발합니다. 개인적으로도 App Store와 Play Store에 출시한 Chekki AI를 포함해 제품 6개를 직접 만들어 출시했고, 한국 학원과 교사, 국제학교에서 실제로 쓰이고 있습니다.",
     ctaWork: "프로젝트 보기",
     ctaResume: "인터랙티브 이력서",
     caseLabel: "케이스 스터디 ↗",
@@ -130,13 +130,13 @@ const COPY = {
 
 const FACTS = {
   en: [
-    { value: "PM + sole engineer", label: "Spec, rubric design, backend, deploy — one person, on VodaBi and on the independent products." },
-    { value: "8 products shipped", label: "Independently built and released across admissions, academies, teachers, and parents." },
+    { value: "Full-stack engineer", label: "Backend, frontend, voice pipeline, and deploys at VodaBi; product and engineering on the independent products." },
+    { value: "6 products shipped", label: "Independently built and released across admissions, academies, teachers, and parents." },
     { value: "23 decisions logged", label: "Architecture and product calls written down with the alternative and the tradeoff accepted." }
   ],
   ko: [
-    { value: "PM 겸 단독 엔지니어", label: "기획, 루브릭 설계, 백엔드, 배포까지 한 사람이 담당했습니다. VodaBi와 독립 제품 모두." },
-    { value: "제품 8개 출시", label: "입학처, 실제 학원, 교사, 학부모를 대상으로 직접 만들어 배포했습니다." },
+    { value: "풀스택 엔지니어", label: "VodaBi에서는 백엔드, 프론트엔드, 음성 파이프라인, 배포를 맡고, 독립 제품은 기획과 개발을 모두 맡았습니다." },
+    { value: "제품 6개 출시", label: "입학처, 실제 학원, 교사, 학부모를 대상으로 직접 만들어 배포했습니다." },
     { value: "의사결정 23건 기록", label: "검토한 대안과 감수한 트레이드오프까지 함께 남긴 아키텍처·제품 판단 기록." }
   ]
 };
@@ -147,7 +147,7 @@ const ROLE_COLS = {
       head: "Product",
       items: [
         "PRD authorship and a 23-entry decision log",
-        "Rubric and LLM-judge design (11 scoring codes, deterministic lookups)",
+        "LLM-judge pipelines that score first and explain second",
         "Tiered model routing: light model for drafting, reasoning model for conflict resolution",
         "Pricing and trial windows aligned to the customer's planning cycle",
         "Bilingual product and UX decisions, English and Korean"
@@ -178,7 +178,7 @@ const ROLE_COLS = {
       head: "프로덕트",
       items: [
         "PRD 작성 및 23건의 의사결정 로그",
-        "루브릭 및 LLM 채점 설계 (11개 채점 코드, 결정론적 조회)",
+        "채점 후 설명하는 LLM 평가 파이프라인",
         "모델 계층 분리: 초안은 경량 모델, 충돌 해결은 추론 모델",
         "고객의 운영 주기에 맞춘 가격 정책과 체험 기간 설계",
         "영어·한국어 이중언어 제품 및 UX 판단"
@@ -212,14 +212,15 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "vodabi",
       context: "Work project · VodaBi",
       status: "Built, rolling out",
-      title: "Outbound sales-call screening and evaluation platform",
-      problem: "Screening outbound telemarketing candidates ran on manual phone calls: high admin load, slow turnaround, and scores that changed depending on who listened. The platform replaces the call itself with a realtime AI persona roleplay, then scores the recording against a fixed rubric.",
+      title: "Voice-AI sales training and evaluation platform",
+      problem: "Sales staff and candidates were assessed on manual phone calls: high admin load, slow turnaround, and scores that changed depending on who listened. The platform replaces the call with a realtime AI persona roleplay, scores it against a rubric, and lets staff keep practising while managers track progress.",
       owned: [
-        "Product definition: candidate flow, rubric codes, what the report has to show a hiring manager",
+        "Candidate and staff flows: magic-link tests, self-practice, assigned training, and the post-call report",
         "Realtime voice pipeline: direct browser-to-model WebRTC, ephemeral tokens, push-to-talk and server-side VAD",
-        "Post-call evaluation service: 11 rubric codes, BANTCQ evidence extraction, speech-pacing telemetry",
+        "Post-call evaluation service: two-step grading (score, then explain), BANTCQ evidence, speech-pacing telemetry",
         "Multi-tenant backoffice with a custom roles guard, plus the VOISOR coaching assistant",
-        "Security pass and the AWS EC2 deploy, including a pre-production audit of five vulnerabilities"
+        "Staff growth and manager dashboards: scores by scenario, competency growth, badges, team completion rates",
+        "Three security passes, Sentry error reporting, and the AWS EC2 deploy"
       ],
       decisions: [
         {
@@ -228,9 +229,9 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
           tradeoff: "Tradeoff: ephemeral token issuance and client-side session handling to build and secure."
         },
         {
-          choice: "Deterministic rubric lookups instead of letting the model score freely",
-          why: "A hiring decision cannot rest on a score that moves between runs.",
-          tradeoff: "Tradeoff: less nuance per answer, and rubric changes need a deliberate rewrite."
+          choice: "Score first, then write feedback from the fixed scores",
+          why: "One call producing scores and feedback together let the feedback contradict the score.",
+          tradeoff: "Tradeoff: two sequential calls add a few seconds before the report appears."
         },
         {
           choice: "Stateless magic links instead of candidate accounts",
@@ -325,14 +326,15 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "vodabi",
       context: "업무 프로젝트 · VodaBi",
       status: "구축 완료, 도입 진행",
-      title: "아웃바운드 세일즈 통화 스크리닝 및 평가 플랫폼",
-      problem: "아웃바운드 텔레마케팅 지원자 1차 스크리닝이 수동 전화 통화로 진행되면서 행정 부담이 크고 처리 속도가 느리며, 듣는 사람에 따라 평가가 달라졌습니다. 이 플랫폼은 통화 자체를 실시간 AI 페르소나 롤플레이로 대체하고, 고정된 루브릭으로 채점합니다.",
+      title: "음성 AI 세일즈 훈련 및 평가 플랫폼",
+      problem: "영업 직원과 지원자 평가가 수동 전화 통화로 진행되면서 행정 부담이 크고 처리 속도가 느리며, 듣는 사람에 따라 평가가 달라졌습니다. 이 플랫폼은 통화를 실시간 AI 페르소나 롤플레이로 대체해 루브릭으로 채점하고, 직원은 계속 연습하며 매니저는 진행 상황을 확인합니다.",
       owned: [
-        "제품 정의: 지원자 플로우, 루브릭 코드, 리포트가 채용 담당자에게 보여야 할 정보",
+        "지원자·직원 플로우: 매직링크 테스트, 자율 연습, 필수훈련 배정, 통화 후 리포트",
         "실시간 음성 파이프라인: 브라우저-모델 Direct WebRTC, 임시 토큰, Push-to-Talk 및 서버 VAD",
-        "통화 후 평가 서비스: 11개 루브릭 코드, BANTCQ 근거 추출, 발화 속도 텔레메트리",
+        "통화 후 평가 서비스: 2단계 채점(채점 후 설명), BANTCQ 근거, 발화 속도 텔레메트리",
         "커스텀 RolesGuard 기반 멀티테넌트 백오피스 및 VOISOR 코칭 어시스턴트",
-        "보안 점검과 AWS EC2 배포, 사전 프로덕션 단계의 5개 취약점 감사 포함"
+        "직원 성장·매니저 대시보드: 시나리오별 점수, 역량 성장, 배지, 팀 완료율",
+        "3차례 보안 점검, Sentry 에러 리포팅, AWS EC2 배포"
       ],
       decisions: [
         {
@@ -341,9 +343,9 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
           tradeoff: "트레이드오프: 임시 토큰 발급과 클라이언트 세션 처리를 직접 구축하고 보호해야 합니다."
         },
         {
-          choice: "모델의 자유 채점 대신 결정론적 루브릭 조회",
-          why: "채용 판단이 실행할 때마다 달라지는 점수에 기댈 수는 없습니다.",
-          tradeoff: "트레이드오프: 답변별 미세한 해석은 줄고, 루브릭 변경은 의도적인 재작성이 필요합니다."
+          choice: "먼저 채점하고, 확정된 점수로 피드백 작성",
+          why: "한 번의 호출로 점수와 피드백을 함께 만들면 피드백이 점수와 어긋날 수 있었습니다.",
+          tradeoff: "트레이드오프: 순차 호출 두 번으로 리포트 표시까지 몇 초가 더 걸립니다."
         },
         {
           choice: "지원자 계정 대신 무상태 매직링크",
@@ -588,6 +590,30 @@ const FILTERS = {
 };
 
 const LOG: LogEntry[] = [
+  {
+    date: "2026-10-07",
+    type: "feature",
+    titleEn: "VodaBi: staff training and manager dashboards",
+    titleKo: "VodaBi: 직원 훈련 및 매니저 대시보드",
+    descEn: "Built the staff side (assigned required training, scores by scenario, competency growth, badges) and the manager company dashboard with team completion rates, implemented from the designer's Figma.",
+    descKo: "직원 화면(필수훈련 배정, 시나리오별 점수, 역량 성장, 배지)과 팀 완료율을 보여주는 매니저 회사 현황 대시보드를 디자이너의 Figma대로 구현했습니다."
+  },
+  {
+    date: "2026-10-01",
+    type: "infra",
+    titleEn: "VodaBi: Sentry and a lighter first load",
+    titleKo: "VodaBi: Sentry 도입 및 첫 로딩 경량화",
+    descEn: "Added Sentry error reporting to backend and frontend, lazy-loaded each app area so the first download dropped from 716KB to 260KB, and patched dependency advisories.",
+    descKo: "백엔드와 프론트엔드에 Sentry 에러 리포팅을 붙이고, 앱 영역별 지연 로딩으로 첫 다운로드를 716KB에서 260KB로 줄였으며, 의존성 보안 권고를 패치했습니다."
+  },
+  {
+    date: "2026-09-18",
+    type: "security",
+    titleEn: "VodaBi: two-step grading and a third security pass",
+    titleKo: "VodaBi: 2단계 채점과 세 번째 보안 점검",
+    descEn: "Split one 16-field grading call into a scoring call and a feedback call written from the fixed scores, with strict JSON schemas. Closed a prompt-injection path into grading, missing role guards on rubric endpoints, and a same-company report IDOR.",
+    descKo: "16개 필드를 한 번에 만들던 채점 호출을 채점 호출과, 확정된 점수로 작성하는 피드백 호출로 나누고 엄격한 JSON 스키마를 적용했습니다. 채점 프롬프트 인젝션 경로, 루브릭 엔드포인트의 역할 가드 누락, 같은 회사 내 리포트 IDOR를 차단했습니다."
+  },
   {
     date: "2026-10-07",
     type: "security",

@@ -70,7 +70,7 @@ interface SystemItem {
 const SYSTEMS_DATA: SystemItem[] = [
   {
     id: "vodabi",
-    name: "VODABI — AI Outbound Sales Call Screening",
+    name: "VODABI — AI Voice Sales Training & Evaluation",
     categoryEn: "Enterprise B2B SaaS",
     categoryKo: "엔터프라이즈 B2B SaaS",
     status: "enterprise",
@@ -79,11 +79,11 @@ const SYSTEMS_DATA: SystemItem[] = [
     domain: ['voice', 'ops'],
     roleEn: "Full-Stack Engineer (Enterprise Voice & LLM Judges)",
     roleKo: "풀스택 엔지니어 (음성 AI & 채점 엔진)",
-    problemEn: "Replaced manual outbound telemarketing screening with real-time WebRTC AI persona roleplay and deterministic 11-rubric post-call evaluation.",
-    problemKo: "수동 1차 아웃바운드 텔레마케팅 면접을 실시간 WebRTC AI 페르소나 롤플레이 및 11개 세부 루브릭 결정론적 채점으로 100% 자동화.",
+    problemEn: "Realtime WebRTC AI roleplay for sales staff and candidates, two-step rubric grading, and manager dashboards that track team training.",
+    problemKo: "영업 직원과 지원자를 위한 실시간 WebRTC AI 롤플레이, 2단계 루브릭 채점, 팀 훈련 현황을 보여주는 매니저 대시보드.",
     techStack: ["Direct WebRTC", "NestJS 11", "OpenAI Realtime", "GPT-4o Judge", "Prisma 7", "MariaDB", "AES-256-GCM", "Docker"],
-    highlightMetricEn: "11 Rubric Codes · Deterministic Rubric Lookups",
-    highlightMetricKo: "11개 세부 루브릭 코드 · 결정론적 루브릭 조회",
+    highlightMetricEn: "Score-then-Explain Grading · Staff Training Dashboards",
+    highlightMetricKo: "채점 후 설명하는 2단계 평가 · 직원 훈련 대시보드",
     caseStudyId: "vodabi"
   },
   {

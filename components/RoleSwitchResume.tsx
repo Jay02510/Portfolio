@@ -24,8 +24,8 @@ export const RESUME_DATA = {
     }
   },
   profile: {
-    en: "Product owner and sole engineer behind a production voice-AI coaching platform, built from zero in under four weeks: realtime WebRTC voice, a deterministic LLM evaluation engine, an admin console, security hardening and deployment. Independently built and launched six AI products for Korean education, with a 23-entry product decision log.\n\nWrites PRDs, runs customer discovery and defends architecture tradeoffs in writing. Owns the path from problem to production. Cuts features that don't close a real user gap, and writes down why. Builds bilingual (EN/KR) products across consumer mobile, B2B SaaS and enterprise AI.",
-    ko: "실시간 WebRTC 음성 파이프라인, 결정론적 LLM 평가 엔진, 어드민 콘솔, 보안 하드닝 및 전체 배포까지 프로덕션 음성 AI 인터뷰/코칭 플랫폼을 4주 만에 0에서 1인으로 구축·배포한 엔지니어 겸 프로덕트 오너입니다. 또한 한국 교육 시장을 위한 6개 AI 프로덕트를 독립 구축·출시하였으며 23개의 문서화된 프로덕트 의사결정 로그를 보유하고 있습니다.\n\nPRD 작성, 고객 디스커버리 수행, 아키텍처 트레이드오프 문서화 및 방어를 주도하며 문제 정의부터 프로덕션 배포까지 전 과정을 직접 책임집니다. 실제 사용자 문제를 해결하지 않는 불필요한 기능은 과감히 배제하고 그 이유를 문서화합니다. B2C 모바일, B2B SaaS, 엔터프라이즈 AI 맥락 전반에서 검증된 한/영 이중언어 제품 개발 역량을 갖추고 있습니다."
+    en: "Full-stack engineer on a production voice-AI sales training platform at VodaBi: realtime WebRTC voice, a two-step LLM grading pipeline, staff and manager dashboards, security hardening and deployment. Independently built and launched six AI products for Korean education, with a 23-entry product decision log.\n\nWrites PRDs, runs customer discovery and defends architecture tradeoffs in writing. Owns the path from problem to production. Cuts features that don't close a real user gap, and writes down why. Builds bilingual (EN/KR) products across consumer mobile, B2B SaaS and enterprise AI.",
+    ko: "VodaBi의 프로덕션 음성 AI 세일즈 훈련 플랫폼에서 실시간 WebRTC 음성, 2단계 LLM 채점 파이프라인, 직원·매니저 대시보드, 보안 하드닝과 배포를 맡고 있는 풀스택 엔지니어입니다. 또한 한국 교육 시장을 위한 6개 AI 프로덕트를 독립 구축·출시하였으며 23개의 문서화된 프로덕트 의사결정 로그를 보유하고 있습니다.\n\nPRD 작성, 고객 디스커버리 수행, 아키텍처 트레이드오프 문서화 및 방어를 주도하며 문제 정의부터 프로덕션 배포까지 전 과정을 직접 책임집니다. 실제 사용자 문제를 해결하지 않는 불필요한 기능은 과감히 배제하고 그 이유를 문서화합니다. B2C 모바일, B2B SaaS, 엔터프라이즈 AI 맥락 전반에서 검증된 한/영 이중언어 제품 개발 역량을 갖추고 있습니다."
   },
   skills: {
     aiVoice: {
@@ -75,8 +75,8 @@ export const RESUME_DATA = {
         ko: "2026년 7월 – 현재"
       },
       sub: {
-        en: "Voice-AI sales coaching & testing platform (speech-to-speech) · Solo build · Production-deployed · 39 commits · 85 backend modules",
-        ko: "음성 AI 영업 코칭 & 테스트 플랫폼 (Speech-to-Speech) · 1인 개발 · 프로덕션 배포 · 39개 커밋 · 85개 백엔드 모듈"
+        en: "Voice-AI sales training & testing platform (speech-to-speech) · Production-deployed · 211 commits",
+        ko: "음성 AI 영업 훈련 & 테스트 플랫폼 (Speech-to-Speech) · 프로덕션 배포 · 211개 커밋"
       },
       bullets: [
         {
@@ -94,10 +94,10 @@ export const RESUME_DATA = {
           }
         },
         {
-          tag: { en: "Deterministic LLM Evaluation Engine", ko: "결정론적 LLM 평가 엔진" },
+          tag: { en: "Two-Step LLM Grading", ko: "2단계 LLM 채점" },
           text: {
-            en: "Built a post-call scoring pipeline (transcript → GPT-4o → structured per-criterion scores) graded against admin-configurable rubrics — scores map to the uploaded rubric through fixed lookups rather than open-ended inference, so the same call gets the same score.",
-            ko: "통화 후 트랜스크립트를 어드민 설정 루브릭에 맞춰 GPT-4o로 심사하여 기준별 구조화 점수를 산출하는 사후 채점 파이프라인 구축 — 개방형 추론 대신 업로드된 루브릭의 고정 조회로 점수를 매겨, 같은 통화에는 같은 점수가 나오도록 함."
+            en: "Built a post-call grading pipeline against admin-configurable rubrics, then split its single 16-field GPT-4o call into a scoring call and a feedback call written from the fixed scores, so feedback can't contradict the number. Strict JSON schemas, a set temperature, and basic checks (did they speak, did they answer) computed in code.",
+            ko: "어드민 설정 루브릭 기반 통화 후 채점 파이프라인을 구축하고, 16개 필드를 한 번에 만들던 GPT-4o 호출을 채점 호출과 확정 점수로 작성하는 피드백 호출로 분리해 피드백이 점수와 어긋나지 않도록 함. 엄격한 JSON 스키마, 고정 temperature, 발화·응답 여부 같은 기본 점검은 코드로 계산."
           }
         },
         {
@@ -117,8 +117,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "Security Hardening", ko: "보안 하드닝" },
           text: {
-            en: "Ran two independent security-audit passes on a system handling candidate PII — field-level encryption at rest, JWT/token hardening, CORS lockdown, DTO validation, role-freshness checks, auth race condition fixes — closing 9 vulnerabilities total, plus a static regression test that scans every controller for the same bug class going forward.",
-            ko: "후보자 PII를 다루는 시스템에 대해 2회에 걸친 독립 보안 감사 완결 — 저장 시 AES-256-GCM 필드 레벨 암호화, JWT/토큰 하드닝, CORS 엄격 제한, DTO 검증, 권한 신선도 검사, 인증 레이스 컨디션 해결로 총 9건의 취약점을 해결했으며, 동일 유형의 버그를 상시 탐지하는 정적 회귀 테스트를 추가했습니다."
+            en: "Ran three security-audit passes on a system handling candidate PII — field-level encryption at rest, JWT/token hardening, CORS lockdown, DTO validation, role-freshness checks, auth race condition fixes. The first two closed 9 vulnerabilities; the third closed a prompt-injection path into grading, missing role guards on rubric endpoints, and a same-company report IDOR. A static regression test scans every controller for the same bug class.",
+            ko: "후보자 PII를 다루는 시스템에 대해 3회 보안 감사 수행 — 저장 시 AES-256-GCM 필드 레벨 암호화, JWT/토큰 하드닝, CORS 엄격 제한, DTO 검증, 권한 신선도 검사, 인증 레이스 컨디션 해결. 1·2차에서 9건, 3차에서 채점 프롬프트 인젝션 경로, 루브릭 엔드포인트 역할 가드 누락, 같은 회사 내 리포트 IDOR를 해결했고, 동일 유형 버그를 탐지하는 정적 회귀 테스트를 추가했습니다."
           }
         },
         {
@@ -138,8 +138,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "UX Rebuild", ko: "UX 재설계" },
           text: {
-            en: "Integrated a UI/UX designer's Figma spec, replacing the entire frontend UI/UX — countdown, live progress, gamified report with XP/badges/ranking. Root-caused a silent data-loss bug (mic permission requested after the countdown, not before) by tracing backend logs rather than guessing from symptoms.",
-            ko: "UI/UX 디자이너의 Figma 스펙을 반영하여 프론트엔드 전체 UI/UX 재구축 — 카운트다운, 실시간 프로그레스, 게이미피케이션 리포트(XP/배지/랭킹). 백엔드 로그 추적을 통해 마이크 권한이 카운트다운 후 요청되어 발생하던 무음 데이터 유실 버그의 근본 원인을 해결."
+            en: "Integrated a UI/UX designer's Figma spec, replacing the entire frontend UI/UX — countdown, live progress, gamified report with XP/badges/ranking, then the staff training screens (assigned training, competency growth) and the manager company dashboard. Root-caused a silent data-loss bug (mic permission requested after the countdown, not before) by tracing backend logs rather than guessing from symptoms.",
+            ko: "UI/UX 디자이너의 Figma 스펙을 반영하여 프론트엔드 전체 UI/UX 재구축 — 카운트다운, 실시간 프로그레스, 게이미피케이션 리포트(XP/배지/랭킹), 이후 직원 훈련 화면(필수훈련, 역량 성장)과 매니저 회사 현황 대시보드까지 구현. 백엔드 로그 추적을 통해 마이크 권한이 카운트다운 후 요청되어 발생하던 무음 데이터 유실 버그의 근본 원인을 해결."
           }
         }
       ]
