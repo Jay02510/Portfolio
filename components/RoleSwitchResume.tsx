@@ -280,6 +280,13 @@ export const RESUME_DATA = {
           }
         }
       ]
+    },
+    early: {
+      title: { en: "English Teacher", ko: "영어 강사" },
+      company: { en: "English academies (hagwons) · Korea", ko: "영어 학원 · 대한민국" },
+      period: { en: "2015 – 2019", ko: "2015년 – 2019년" },
+      sub: { en: "EFL instruction · Kindergarten and elementary", ko: "영어(EFL) 교육 · 유치부 및 초등부" },
+      bullets: [] as { tag: { en: string; ko: string }; text: { en: string; ko: string } }[]
     }
   },
   education: [
@@ -512,30 +519,31 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
             </ul>
           </div>
 
-          {/* 4. YBM PSA SEOCHO */}
-          <div className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
+          {/* 4–5. YBM PSA SEOCHO, earlier academies */}
+          {[data.experience.ybm, data.experience.early].map((job, i) => (
+          <div key={i} className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
             isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
           }`}>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-white/10">
               <div>
                 <h4 className="text-base font-bold text-accent-gold font-display">
-                  {data.experience.ybm.title[locale]}
+                  {job.title[locale]}
                 </h4>
                 <span className={`text-xs sm:text-sm font-semibold block ${isDark ? 'text-white/90' : 'text-alpine-950'}`}>
-                  {data.experience.ybm.company[locale]}
+                  {job.company[locale]}
                 </span>
               </div>
               <span className="text-xs font-mono opacity-60 shrink-0 text-accent-gold font-bold">
-                {data.experience.ybm.period[locale]}
+                {job.period[locale]}
               </span>
             </div>
 
             <p className={`text-xs font-medium italic ${isDark ? 'text-white/70' : 'text-neutral-600'}`}>
-              {data.experience.ybm.sub[locale]}
+              {job.sub[locale]}
             </p>
 
             <ul className="space-y-3 pt-1">
-              {data.experience.ybm.bullets.map((b, idx) => (
+              {job.bullets.map((b, idx) => (
                 <li key={idx} className="space-y-1">
                   <div className="text-xs font-bold text-accent-gold font-mono flex items-center gap-1.5">
                     <span>–</span> <span>{b.tag[locale]}:</span>
@@ -549,6 +557,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
               ))}
             </ul>
           </div>
+          ))}
 
         </div>
 
@@ -832,25 +841,27 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
           </ul>
         </div>
 
-        {/* YBM PSA SEOCHO */}
-        <div className="print-exp-block">
+        {/* YBM PSA SEOCHO, earlier academies */}
+        {[data.experience.ybm, data.experience.early].map((job, i) => (
+        <div key={i} className="print-exp-block">
           <div className="print-exp-header">
             <div>
-              <span className="print-title">{data.experience.ybm.title[locale]}</span>
+              <span className="print-title">{job.title[locale]}</span>
               <span style={{ color: '#1D4ED8', fontWeight: 700 }}> · </span>
-              <span className="print-company">{data.experience.ybm.company[locale]}</span>
+              <span className="print-company">{job.company[locale]}</span>
             </div>
-            <span className="print-dates">{data.experience.ybm.period[locale]}</span>
+            <span className="print-dates">{job.period[locale]}</span>
           </div>
-          <div className="print-subtitle">{data.experience.ybm.sub[locale]}</div>
-          <ul>
-            {data.experience.ybm.bullets.map((b, idx) => (
+          <div className="print-subtitle">{job.sub[locale]}</div>
+          {job.bullets.length > 0 && <ul>
+            {job.bullets.map((b, idx) => (
               <li key={idx}>
                 – <strong>{b.tag[locale]}:</strong> {b.text[locale]}
               </li>
             ))}
-          </ul>
+          </ul>}
         </div>
+        ))}
 
         {/* TECHNICAL SKILLS */}
         <h2>{labels.skills}</h2>

@@ -87,12 +87,31 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <button 
-              onClick={triggerPdfDownload}
+            <a
+              href={`/resume/Jason_Benjamin_Resume_${locale === 'en' ? 'KO' : 'EN'}.pdf`}
+              download
+              className={`hidden sm:inline-flex px-3 py-2 rounded-full border text-xs font-bold tracking-wider whitespace-nowrap transition-[background-color,transform] active:scale-95 ${
+                isDark ? 'border-white/15 hover:bg-white/10' : 'border-black/15 hover:bg-black/5'
+              }`}
+            >
+              {locale === 'en' ? "한국어 PDF" : "English PDF"}
+            </a>
+            <a
+              href={`/resume/Jason_Benjamin_Resume_${locale === 'en' ? 'EN' : 'KO'}.pdf`}
+              download
               className="px-3 py-2 sm:px-4 sm:py-2 bg-accent-gold hover:brightness-110 text-alpine-950 rounded-full text-xs font-bold uppercase tracking-wider transition-[filter,transform] active:scale-95 shadow-md flex items-center gap-1.5 whitespace-nowrap"
             >
-              <PrinterIcon className="w-3.5 h-3.5" />
-              <span>{locale === 'en' ? "Print / Save PDF" : "인쇄 / PDF 저장"}</span>
+              <FileTextIcon className="w-3.5 h-3.5" />
+              <span>{locale === 'en' ? "Download PDF" : "PDF 다운로드"}</span>
+            </a>
+            <button 
+              onClick={triggerPdfDownload}
+              aria-label={locale === 'en' ? "Print" : "인쇄"}
+              className={`hidden sm:flex w-11 h-11 rounded-full border items-center justify-center transition-[background-color,transform] active:scale-95 ${
+                isDark ? 'border-white/10 hover:bg-white/10' : 'border-black/10 hover:bg-black/10'
+              }`}
+            >
+              <PrinterIcon className="w-4 h-4" />
             </button>
             <button 
               onClick={onClose}
