@@ -1,6 +1,6 @@
-# Jason Benjamin — AI Product Manager & Software Builder
+# Jason Benjamin — AI Product Manager & Builder
 
-> **Enterprise B2B SaaS Experience at VodaBi & 6 Production AI Products Shipped Independently**  
+> **Product manager who builds: 10+ years in Korean classrooms, 6 AI products built solo, voice-AI platform engineering at VodaBi**  
 > *Bridging complex GenAI capabilities (WebRTC Voice AI, Tiered LLM Judges, OCR, Async Pipelines) with high-converting, human-centered product experiences.*
 
 ---

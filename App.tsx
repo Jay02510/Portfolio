@@ -36,6 +36,7 @@ interface ShippedProject {
   liveUrl?: string;
   contactUrl?: string;
   caseStudyId: string;
+  minor?: boolean;
 }
 
 interface LogEntry {
@@ -55,20 +56,23 @@ const COPY = {
     navContact: "Contact",
     localeSwitch: "한국어",
     resumeBtn: "Résumé",
-    heroTitle: "AI product manager and engineer. Voice-AI, LLM evaluation, and the operations work around them.",
-    heroBody: "At VodaBi I'm a full-stack engineer building the real-time voice AI, the grading pipeline, and the staff and manager dashboards. I've also independently built and shipped 6 products — including Chekki AI, live on the App Store and Play Store — used by Korean teachers and parents.",
+    heroTitle: "Product manager who builds AI products for Korean teachers and parents.",
+    heroBody: "From the first teacher interview to the App Store. 10+ years in Korean English academies and six AI products built solo. Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a pilot. At VodaBi I build the frontend, backend and database of a voice-AI sales training platform.",
     ctaWork: "See the work",
     ctaResume: "Interactive résumé",
     caseLabel: "Case study ↗",
     nowLabel: "Now",
     nowBody: "The VodaBi screening platform is built and going into use with two enterprise clients.",
+    nextLabel: "In progress, not shipped",
+    nextBody: "A RAG version of the lead-enrichment CRM, and a new textbook built on my 20-volume series that ties into Chekki.",
     roleTitle: "How I work",
     workTitle: "Selected work",
     workNote: "Two products in depth: the problem, what I built, and the calls I made along the way.",
     ownedLabel: "What I built",
     decisionsLabel: "Decisions and tradeoffs",
     moreTitle: "Side projects",
-    moreNote: "Six systems, designed and built solo.",
+    moreNote: "Designed and built solo.",
+    minorTitle: "Also built: in progress or internal",
     searchPlaceholder: "Search projects...",
     noResults: "Nothing matches that — probably means I haven't built it yet.",
     clearFilters: "Clear filters",
@@ -80,11 +84,11 @@ const COPY = {
     contactCta: "Email me",
     linkedinLabel: "LinkedIn ↗",
     lookingLabel: "Looking for",
-    lookingValue: "AI PM or AI engineer, 0→1 product teams",
+    lookingValue: "AI PM, product engineer, or hybrid roles on 0→1 teams",
     basedLabel: "Based in",
     basedValue: "South Korea, open to remote",
     langLabel: "Languages",
-    langValue: "English (native), Korean (working)",
+    langValue: "English (native), Korean (professional working, used daily at work)",
     footerNote: "Built and maintained by hand"
   },
   ko: {
@@ -94,20 +98,23 @@ const COPY = {
     navContact: "연락",
     localeSwitch: "English",
     resumeBtn: "이력서",
-    heroTitle: "AI 프로덕트 매니저 겸 엔지니어. 음성 AI, LLM 평가, 그리고 그 주변의 운영 문제.",
-    heroBody: "VodaBi에서 풀스택 엔지니어로 일하며 실시간 음성 AI, 채점 파이프라인, 직원·매니저 대시보드를 개발합니다. 개인적으로도 App Store와 Play Store에 출시한 Chekki AI를 포함해 제품 6개를 직접 만들어 출시했고, 한국 교사와 학부모가 실제로 쓰고 있습니다.",
+    heroTitle: "한국 교사와 학부모를 위한 AI 제품을 직접 만드는 프로덕트 매니저.",
+    heroBody: "첫 교사 인터뷰부터 앱 출시까지. 한국 영어 학원에서 10년 넘게 가르쳤고, AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 파일럿을 앞두고 최종 테스트 중입니다. VodaBi에서는 음성 AI 영업 훈련 플랫폼의 프론트엔드, 백엔드, 데이터베이스를 만듭니다.",
     ctaWork: "프로젝트 보기",
     ctaResume: "인터랙티브 이력서",
     caseLabel: "케이스 스터디 ↗",
     nowLabel: "현재",
     nowBody: "VodaBi 스크리닝 플랫폼 구축을 마쳤고, 두 곳의 기업 고객사에서 사용을 시작합니다.",
+    nextLabel: "진행 중 · 미출시",
+    nextBody: "리드 수집 CRM을 바탕으로 한 RAG 시스템, 그리고 20권 교재 시리즈를 바탕으로 Chekki와 연결되는 새 교재.",
     roleTitle: "일하는 방식",
     workTitle: "주요 프로젝트",
     workNote: "두 제품을 깊게 다룹니다. 문제, 직접 만든 부분, 그 과정에서 내린 판단.",
     ownedLabel: "직접 만든 부분",
     decisionsLabel: "판단과 트레이드오프",
     moreTitle: "사이드 프로젝트",
-    moreNote: "혼자 설계하고 만든 6개의 시스템.",
+    moreNote: "혼자 설계하고 만들었습니다.",
+    minorTitle: "그 외: 진행 중이거나 내부용",
     searchPlaceholder: "프로젝트 검색...",
     noResults: "조건에 맞는 프로젝트가 없습니다 — 아직 안 만들었을 가능성이 높습니다.",
     clearFilters: "필터 초기화",
@@ -119,24 +126,24 @@ const COPY = {
     contactCta: "메일 보내기",
     linkedinLabel: "LinkedIn ↗",
     lookingLabel: "찾는 자리",
-    lookingValue: "AI PM 또는 AI 엔지니어, 0→1 제품 팀",
+    lookingValue: "AI PM, 프로덕트 엔지니어, 또는 하이브리드 역할 (0→1 팀)",
     basedLabel: "거주지",
     basedValue: "대한민국, 원격 근무 가능",
     langLabel: "언어",
-    langValue: "영어(모국어), 한국어(업무 가능)",
+    langValue: "영어(모국어), 한국어(업무 수준, 매일 업무에 사용)",
     footerNote: "직접 만들고 관리합니다"
   }
 };
 
 const FACTS = {
   en: [
-    { value: "Full-stack engineer", label: "Backend, frontend, voice pipeline, and deploys at VodaBi; product and engineering on the independent products." },
-    { value: "6 products shipped", label: "Independently built and released across admissions, academies, teachers, and parents." },
+    { value: "10+ years in Korean classrooms", label: "English academies since 2015: curriculum lead, author of a 20-volume textbook series, homeroom teacher." },
+    { value: "6 products built solo", label: "From discovery to release. Chekki AI is on the App Store and Google Play; Chekki Schools is in final testing." },
     { value: "24 decisions logged", label: "Architecture and product calls written down with the alternative and the tradeoff accepted." }
   ],
   ko: [
-    { value: "풀스택 엔지니어", label: "VodaBi에서는 백엔드, 프론트엔드, 음성 파이프라인, 배포를 맡고, 독립 제품은 기획과 개발을 모두 맡았습니다." },
-    { value: "제품 6개 출시", label: "입학처, 실제 학원, 교사, 학부모를 대상으로 직접 만들어 배포했습니다." },
+    { value: "한국 교실 10년 이상", label: "2015년부터 영어 학원에서 커리큘럼 리드, 20권 교재 시리즈 집필, 담임을 맡았습니다." },
+    { value: "제품 6개 단독 개발", label: "발견부터 출시까지. Chekki AI는 App Store와 Google Play에 출시, Chekki Schools는 최종 테스트 중." },
     { value: "의사결정 24건 기록", label: "검토한 대안과 감수한 트레이드오프까지 함께 남긴 아키텍처·제품 판단 기록." }
   ]
 };
@@ -485,7 +492,7 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       caseStudyId: "benchmark-explorer"
     },
     {
-      id: "diary",
+      id: "diary", minor: true,
       domains: ["mobile", "multimodal"],
       title: "Learning Diary Hub",
       status: "WIP",
@@ -495,7 +502,7 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       caseStudyId: "white-label-hub"
     },
     {
-      id: "crm",
+      id: "crm", minor: true,
       domains: ["ops"],
       title: "B2B lead enrichment CRM",
       status: "Internal",
@@ -552,7 +559,7 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       caseStudyId: "benchmark-explorer"
     },
     {
-      id: "diary",
+      id: "diary", minor: true,
       domains: ["mobile", "multimodal"],
       title: "Learning Diary Hub",
       status: "진행 중",
@@ -562,7 +569,7 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       caseStudyId: "white-label-hub"
     },
     {
-      id: "crm",
+      id: "crm", minor: true,
       domains: ["ops"],
       title: "B2B 리드 인리치먼트 CRM",
       status: "사내",
@@ -945,6 +952,14 @@ export default function App() {
               }`}>
                 {L.nowBody}
               </p>
+              <div className={`mt-5 pt-4 border-t text-[11px] font-bold tracking-widest uppercase ${
+                isDark ? 'border-white/10 text-[#788290]' : 'border-black/10 text-[#6b7280]'
+              }`}>
+                {L.nextLabel}
+              </div>
+              <p className={`mt-2 text-[13px] leading-relaxed ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>
+                {L.nextBody}
+              </p>
             </aside>
           </div>
         </section>
@@ -1228,18 +1243,27 @@ export default function App() {
           </div>
 
           {filteredShipped.length > 0 ? (
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredShipped.map(p => (
-                <CompactProjectCard
-                  key={p.id}
-                  project={p}
-                  theme={theme}
-                  locale={locale}
-                  caseLabel={L.caseLabel}
-                  onOpenCaseStudy={setActiveCaseStudyId}
-                />
-              ))}
-            </div>
+            [filteredShipped.filter(p => !p.minor), filteredShipped.filter(p => p.minor)].map((group, gi) => group.length > 0 && (
+              <div key={gi}>
+                {gi === 1 && (
+                  <h3 className={`mt-12 text-sm font-bold tracking-wide ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>
+                    {L.minorTitle}
+                  </h3>
+                )}
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {group.map(p => (
+                    <CompactProjectCard
+                      key={p.id}
+                      project={p}
+                      theme={theme}
+                      locale={locale}
+                      caseLabel={L.caseLabel}
+                      onOpenCaseStudy={setActiveCaseStudyId}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))
           ) : (
             <div className={`mt-6 py-10 flex flex-col items-center gap-3 text-center border-t ${
               isDark ? 'border-white/10' : 'border-black/10'
