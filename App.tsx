@@ -591,6 +591,14 @@ const FILTERS = {
 
 const LOG: LogEntry[] = [
   {
+    date: "2026-10-12",
+    type: "feature",
+    titleEn: "VodaBi: AI stays in role on noisy calls",
+    titleKo: "VodaBi: 소음이 있어도 역할을 유지하는 AI",
+    descEn: "The AI customer now waits for a real greeting before replying, so a cough or background sound at the start of a call no longer pulls it out of role. On outbound calls it picks up first, like a real customer.",
+    descKo: "AI 고객이 실제 인사말을 들은 뒤에 응답하도록 바꿔, 통화 시작 시 기침이나 주변 소리로 역할에서 벗어나지 않습니다. 아웃바운드 통화에서는 실제 고객처럼 AI가 먼저 전화를 받습니다."
+  },
+  {
     date: "2026-10-07",
     type: "feature",
     titleEn: "VodaBi: staff training and manager dashboards",

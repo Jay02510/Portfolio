@@ -269,6 +269,12 @@ Call B — feedback
         incident: "Typing and room noise sometimes made the AI respond, using tokens.",
         diagnosis: "Voice detection sensitivity varied across headsets and rooms.",
         resolution: "Added push-to-talk turn control for clear turn boundaries."
+      },
+      {
+        title: "AI stepping out of role on noisy openings",
+        incident: "A cough at the start of a call sometimes made the AI answer as a generic assistant instead of the customer.",
+        diagnosis: "The AI replied to the noise before any real conversation had started, so it had nothing to anchor its role.",
+        resolution: "The AI now waits for a real greeting before its first reply, the call opens with a note on who speaks first, and on outbound calls the AI customer picks up first."
       }
     ]
   },
@@ -1582,6 +1588,12 @@ function scoreAssessment(answers) {
         incident: "타이핑이나 주변 소리에 AI가 반응해 토큰이 쓰임.",
         diagnosis: "음성 감지 민감도가 헤드셋과 환경마다 달랐음.",
         resolution: "Push-to-Talk 턴 제어로 발화 경계를 명확히 함."
+      },
+      {
+        title: "소음으로 시작된 통화에서 역할 이탈",
+        incident: "통화 시작 시 기침 소리가 나면 AI가 고객이 아닌 일반 어시스턴트처럼 응답하는 경우가 있었음.",
+        diagnosis: "실제 대화가 시작되기 전에 AI가 소음에 응답해, 역할을 잡을 맥락이 없었음.",
+        resolution: "실제 인사말이 들어온 뒤에 AI가 첫 응답을 하고, 통화 시작 시 누가 먼저 말하는지 알려주며, 아웃바운드에서는 AI 고객이 먼저 전화를 받음."
       }
     ]
   },
