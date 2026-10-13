@@ -52,8 +52,8 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
   };
 
   const headerTitle = locale === 'en'
-    ? "JASON BENJAMIN — AI Product Manager Resume"
-    : "제이슨 벤자민 — AI 프로덕트 매니저 이력서";
+    ? "JASON BENJAMIN — AI Product Engineer Resume"
+    : "제이슨 벤자민 — AI 프로덕트 엔지니어 이력서";
 
   const headerSubtitle = "jsn.benjamin@gmail.com · 010-5371-9266 · Seoul, Korea (Remote OK) · www.jason-portfolio.com";
 

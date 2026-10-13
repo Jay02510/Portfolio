@@ -10,8 +10,8 @@ export const RESUME_DATA = {
   header: {
     name: "JASON BENJAMIN",
     title: {
-      en: "AI Product Manager & Builder — EdTech · Voice AI · LLM Systems",
-      ko: "AI 프로덕트 매니저 & 빌더 — 에듀테크 · 음성 AI · LLM 시스템"
+      en: "AI Product Engineer — Full-stack · LLM applications · EdTech",
+      ko: "AI 프로덕트 엔지니어 — 풀스택 · LLM 애플리케이션 · 에듀테크"
     },
     contact: {
       email: "jsn.benjamin@gmail.com",
@@ -24,8 +24,8 @@ export const RESUME_DATA = {
     }
   },
   profile: {
-    en: "Product manager who builds: turns problems Korean teachers and parents describe into AI products, from the first interview to the App Store. 10+ years in Korean English academies and six AI products built solo; Chekki AI is live on the App Store and Google Play, and Chekki Schools is in final testing.\n\nAt VodaBi, builds the frontend, backend and database of a voice-AI sales training platform going into use with two enterprise clients. Works daily in English and Korean.",
-    ko: "직접 만드는 프로덕트 매니저입니다. 한국 교사와 학부모가 말하는 문제를 첫 인터뷰부터 앱 출시까지 AI 제품으로 만듭니다. 한국 영어 학원에서 10년 넘게 가르쳤고 AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 최종 테스트 중입니다.\n\nVodaBi에서는 두 곳의 기업 고객사에서 사용을 시작하는 음성 AI 영업 훈련 플랫폼의 프론트엔드, 백엔드, 데이터베이스를 만듭니다. 매일 한국어와 영어로 일합니다."
+    en: "AI product engineer: turns problems Korean teachers and parents describe into AI products, from the first interview to the App Store. 10+ years in Korean English academies and six AI products built solo; Chekki AI is live on the App Store and Google Play, and Chekki Schools is in final testing.\n\nAt VodaBi, builds the frontend, backend and database of a voice-AI sales training platform going into use with two enterprise clients. Works daily in English and Korean.",
+    ko: "AI 프로덕트 엔지니어입니다. 한국 교사와 학부모가 말하는 문제를 첫 인터뷰부터 앱 출시까지 AI 제품으로 만듭니다. 한국 영어 학원에서 10년 넘게 가르쳤고 AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 최종 테스트 중입니다.\n\nVodaBi에서는 두 곳의 기업 고객사에서 사용을 시작하는 음성 AI 영업 훈련 플랫폼의 프론트엔드, 백엔드, 데이터베이스를 만듭니다. 매일 한국어와 영어로 일합니다."
   },
   skills: {
     aiVoice: {
@@ -139,8 +139,8 @@ export const RESUME_DATA = {
     },
     chekki: {
       title: {
-        en: "Founder & AI Product Manager",
-        ko: "창업자 & AI 프로덕트 매니저"
+        en: "Founder & Product Engineer",
+        ko: "창업자 & 프로덕트 엔지니어"
       },
       company: {
         en: "Chekki EdTech Solutions",
