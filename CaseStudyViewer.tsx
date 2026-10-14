@@ -444,9 +444,9 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
     ],
     'hagwon-readiness': [
       {
-        title: lang === 'en' ? "6-Pillar Scoring Engine" : "6영역 채점 엔진",
-        subtitle: lang === 'en' ? "Weighted answers into a 0-84 score, band, and weakest pillar" : "답변에 가중치를 부여해 0~84점, 등급, 최약점 영역을 산출",
-        tech: "TypeScript Client-Side Scorer",
+        title: lang === 'en' ? "7-Pillar Scoring Engine" : "7영역 채점 엔진",
+        subtitle: lang === 'en' ? "Weighted answers into a 21-84 score, band, and weakest pillar" : "답변에 가중치를 부여해 21~84점, 등급, 최약점 영역을 산출",
+        tech: "Shared TS Builder (Browser + Server)",
         icon: "code"
       },
       {

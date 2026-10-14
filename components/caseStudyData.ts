@@ -3,15 +3,15 @@ import { CaseStudyType } from '../types.ts';
 export const studyDataEn: Record<string, CaseStudyType> = {
   "hagwon-readiness": {
     title: "Hagwon AI Readiness Index — Bilingual Lead-Gen Assessment",
-    tagline: "A 6-pillar, EN/KO self-assessment that scores a hagwon director's AI readiness out of 84, emails a personalized report, and routes the result into Chekki's B2B sales funnel — with GA4 attribution and a password-gated admin view behind it.",
+    tagline: "A 7-pillar, EN/KO self-assessment that scores a hagwon director's AI readiness out of 84, emails a personalized report, and routes the result into Chekki's B2B sales funnel — with GA4 attribution and a password-gated admin view behind it.",
     liveUrl: "https://ai-readiness.chekkiai.com",
     screenshots: [
       { label: "Quiz Landing", url: "/screenshots/hagwon-readiness/01-landing.png", subLabel: "Bilingual Entry Point" },
-      { label: "Assessment Questions", url: "/screenshots/hagwon-readiness/02-questions.png", subLabel: "6-Pillar Question Flow" },
+      { label: "Assessment Questions", url: "/screenshots/hagwon-readiness/02-questions.png", subLabel: "7-Pillar Question Flow" },
       { label: "Emailed Report", url: "/screenshots/hagwon-readiness/03-email-report.png", subLabel: "Auto-Generated Personalized Report" }
     ],
     stats: [
-      { label: "Assessment Scope", value: "6 Pillars / 84-pt Scale" },
+      { label: "Assessment Scope", value: "7 Pillars / 17 Questions" },
       { label: "Languages", value: "EN / KO Bilingual" },
       { label: "Lead Delivery", value: "Auto Email + Firestore Permalink" }
     ],
@@ -21,7 +21,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
       "Traffic driven at the quiz (social, blog, cold outreach) had no way to prove which channel actually produced a completed assessment versus a bounce."
     ],
     solution: [
-      "Built a weighted scoring engine across 6 pillars (0–84 scale) with band cutoffs and a personalized weakest-pillar callout, run client-side against a static question bank.",
+      "Built a weighted scoring engine across 7 pillars (21–84 scale) with band cutoffs and a personalized weakest-pillar callout. One pure report builder runs in the browser for instant results and again on the server, which rebuilds the report from the raw answers before anything is stored or emailed.",
       "On submit, persisted the full rendered report snapshot to Firestore and emailed both the submitter (bilingual HTML report) and an internal notify address (lead alert) via Resend — sliding-window rate-limited per IP to block abuse.",
       "Gave every report a permanent permalink (/results/[id]) that reads the stored snapshot back, so a director's result survives without depending on their browser's localStorage.",
       "Wired GA4 site-wide and fired a generate_lead event with score/band on successful submit, so UTM-tagged campaign links show up as attributable conversions, not just pageviews.",
@@ -36,20 +36,21 @@ export const studyDataEn: Record<string, CaseStudyType> = {
         tradeOffAccepted: "No per-user accounts, no audit log of who viewed the dashboard, one shared password for anyone who has it."
       },
       {
-        decision: "Client-side scoring against a static question bank over a scored server API",
-        alternativeConsidered: "Sending each answer to a /api/score endpoint and computing the result server-side",
-        why: "The scoring logic isn't a secret worth protecting behind a server round-trip, and computing it client-side means instant feedback on the results page with zero added latency.",
-        tradeOffAccepted: "A determined visitor could inspect the client bundle to reverse-engineer scoring weights — acceptable, since gaming your own diagnostic score has no payoff."
+        decision: "Rebuild the report on the server from raw answers, reversing an earlier client-scored design",
+        alternativeConsidered: "Keeping the original design: score in the browser and POST the finished report (score, band, recommendation copy) for the server to store and email",
+        why: "The original reasoning was that gaming your own score has no payoff. An audit found the real risk wasn't the score but the text: whatever a POST contained was emailed from a Chekki address to any recipient and published at a public permalink. Moving the same pure builder to the server means the API accepts only answers and contact details.",
+        tradeOffAccepted: "Scoring now runs twice (browser for instant feedback, server for the record), so lib/report.ts must stay free of browser-only code — guarded by a small assert-based check script."
       }
     ],
     architecture: {
       lifecycle: [
-        "Quiz: lib/questions.ts defines the 6-pillar question bank; lib/scoring.ts weights answers into a 0–84 score, a band, and a weakest pillar.",
-        "Submit: POST /api/submit validates the email, rate-limits by IP (5/hr sliding window), writes the full report snapshot to Firestore's readiness_submissions, and fires two Resend emails.",
+        "Quiz: lib/questions.ts defines the 7-pillar, 17-question bank; lib/scoring.ts weights answers into a 21–84 score, a band, and a weakest pillar; lib/report.ts turns that into the localized report.",
+        "Submit: POST /api/submit validates the email and that every question has an A–D answer, rate-limits by IP (5/hr sliding window), rebuilds the report server-side, writes it plus the raw answers to Firestore's readiness_submissions, and fires two Resend emails.",
         "Permalink: /results/[id] reads that same Firestore doc back, rendering the identical report without recomputing anything from the visitor's answers.",
-        "Admin: /admin (Basic Auth via middleware.ts) reads every submission and recomputes the same distribution stats scripts/analyze-submissions.mjs already produced from the CLI, just live and in-browser."
+        "Admin: /admin (Basic Auth via middleware.ts) reads every submission and groups it by stable band and pillar ids, so English and Korean submissions land in the same buckets."
       ],
       guardrails: [
+        "The API never accepts report text: it takes answers and contact details only, so a forged request can't put its own words into a Chekki-branded email or a public permalink.",
         "Sliding-window in-memory rate limiter (5 submissions/hour/IP) blocks scripted abuse of the free-text feedback and email fields.",
         "User-submitted name/hagwon/feedback strings are HTML-escaped before being interpolated into the report email, closing the injection path a raw template string would leave open.",
         "/admin is unreachable without ADMIN_PASSWORD set — the route 503s rather than silently serving submissions data if the env var is missing.",
@@ -61,7 +62,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
 function scoreAssessment(answers) {
   // each pillar's raw score is a weighted sum of its question answers
   // weakest pillar = lowest (raw / maxRaw) ratio, not lowest raw score,
-  // so a 2-question pillar isn't unfairly favored over a 6-question one
+  // so a 2-question pillar isn't unfairly favored over a 4-question one
 }`,
       schema: `type PillarResult = {
   name: string; raw: number; maxRaw: number;
@@ -75,14 +76,15 @@ function scoreAssessment(answers) {
     },
     impact: {
       value: [
-        "Directors get a scored, emailed report in the time it takes to answer ~15 questions — no sales call required before they see where they stand.",
+        "Directors get a scored, emailed report in the time it takes to answer 17 questions — no sales call required before they see where they stand.",
         "Every submission is a warm lead with a bilingual report, a stored Firestore record, and GA4 attribution — three things a static quiz with no backend would have had none of.",
-        "The admin dashboard reuses the exact same aggregate logic as the CLI analysis script, so there's one source of truth for what a submission looks like instead of two implementations drifting apart."
+        "The quiz now matches Chekki's current design system (warm cream and cocoa tokens, Pretendard, device-following light/dark), so directors arriving from chekkiai.com/schools don't jump into a different-looking product."
       ],
       security: [
         "HTML-escaping on every user-submitted field going into an email template, closing an injection path that would otherwise let a submitted name or feedback string forge links or markup in an email that looks like it's from Chekki.",
         "Basic Auth admin gate fails closed: no ADMIN_PASSWORD env var means a 503, not an open dashboard.",
-        "Per-IP sliding-window rate limiting on the only public write endpoint (/api/submit)."
+        "Per-IP sliding-window rate limiting on the only public write endpoint (/api/submit).",
+        "Report permalinks are marked noindex, so a director's name and scores are reachable by link but not by search."
       ]
     },
     behindTheArchitecture: {
@@ -107,7 +109,12 @@ function scoreAssessment(answers) {
         title: "GA4 and admin code shipped locally, never reached the deploy",
         incident: "After wiring up GA4 and the admin dashboard, Realtime showed 0 users and /admin was unreachable — Vercel's redeploy button was just rebuilding the last pushed commit, which predated the changes.",
         diagnosis: "The changes existed only in the local working tree; nothing had actually been committed or pushed to main yet.",
-        resolution: "Committed and pushed the changes to trigger a real deploy off the new commit, instead of continuing to redeploy stale code."
+        resolution: "Committed and pushed the changes to trigger a real deploy off the new commit, instead of continuing to redeploy stale code."      },
+      {
+        title: "Admin counted every band twice, once per language",
+        incident: "The admin dashboard showed \"Digitizing\" and \"디지털 전환 중\" as two separate bands, and Korean submissions got the wrong badge colour.",
+        diagnosis: "Submissions stored the band and weakest-pillar names in the visitor's language, and the dashboard grouped on those display strings.",
+        resolution: "Gave each band a stable id stored with every new submission and grouped on band and pillar ids. Older records are matched back by their English or Korean name, so no migration was needed."
       }
     ]
   },
@@ -1320,15 +1327,15 @@ Call B — feedback
 export const studyDataKo: Record<string, CaseStudyType> = {
   "hagwon-readiness": {
     title: "학원 AI 준비도 지표 — 이중언어 리드 확보 진단",
-    tagline: "학원 원장의 AI 준비도를 84점 만점, 6개 영역으로 진단하는 한/영 이중언어 자가진단. 결과를 개인화 리포트로 이메일 발송하고 Chekki의 B2B 세일즈 퍼널로 연결하며, GA4 유입 추적과 비밀번호 보호 관리자 화면을 갖췄습니다.",
+    tagline: "학원 원장의 AI 준비도를 84점 만점, 7개 영역으로 진단하는 한/영 이중언어 자가진단. 결과를 개인화 리포트로 이메일 발송하고 Chekki의 B2B 세일즈 퍼널로 연결하며, GA4 유입 추적과 비밀번호 보호 관리자 화면을 갖췄습니다.",
     liveUrl: "https://ai-readiness.chekkiai.com",
     screenshots: [
       { label: "퀴즈 랜딩", url: "/screenshots/hagwon-readiness/01-landing.png", subLabel: "이중언어 진입 화면" },
-      { label: "진단 문항", url: "/screenshots/hagwon-readiness/02-questions.png", subLabel: "6개 영역 문항 흐름" },
+      { label: "진단 문항", url: "/screenshots/hagwon-readiness/02-questions.png", subLabel: "7개 영역 문항 흐름" },
       { label: "이메일 리포트", url: "/screenshots/hagwon-readiness/03-email-report.png", subLabel: "자동 생성 개인화 리포트" }
     ],
     stats: [
-      { label: "진단 범위", value: "6개 영역 / 84점 척도" },
+      { label: "진단 범위", value: "7개 영역 / 17문항" },
       { label: "지원 언어", value: "한/영 이중언어" },
       { label: "리드 전달", value: "자동 이메일 + Firestore 영구 링크" }
     ],
@@ -1338,7 +1345,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
       "퀴즈로 유입된 트래픽(소셜, 블로그, 콜드 아웃리치)은 어떤 채널이 실제로 완료된 진단을 만들어냈는지, 단순 이탈과 구분해 증명할 방법이 없었습니다."
     ],
     solution: [
-      "6개 영역(0~84점 척도)에 가중치를 둔 채점 엔진을 구축, 등급 구간과 개인화된 최약점 영역 코멘트를 정적 문항 뱅크 기준으로 클라이언트 측에서 산출.",
+      "7개 영역(21~84점 척도)에 가중치를 둔 채점 엔진을 구축, 등급 구간과 개인화된 최약점 영역 코멘트를 산출. 하나의 순수 리포트 빌더가 브라우저에서 즉시 결과를 보여주고, 서버에서도 원본 답변으로 리포트를 다시 만든 뒤에만 저장·발송.",
       "제출 시 전체 리포트 스냅샷을 Firestore에 저장하고, 제출자(이중언어 HTML 리포트)와 내부 알림 주소(리드 알림) 양쪽에 Resend로 이메일 발송 — IP당 슬라이딩 윈도우 방식으로 남용 차단.",
       "모든 리포트에 영구 링크(/results/[id])를 부여해 저장된 스냅샷을 다시 읽어오도록 하여, 원장의 결과가 브라우저 localStorage에 의존하지 않고 유지되도록 함.",
       "GA4를 전체 사이트에 연동하고 제출 성공 시 점수/등급을 담은 generate_lead 이벤트를 발생시켜, UTM 태그가 붙은 캠페인 링크가 단순 페이지뷰가 아닌 귀속 가능한 전환으로 집계.",
@@ -1353,20 +1360,21 @@ export const studyDataKo: Record<string, CaseStudyType> = {
         tradeOffAccepted: "개별 사용자 계정 없음, 대시보드 열람자에 대한 감사 로그 없음, 비밀번호를 아는 사람이면 누구나 공유 접근."
       },
       {
-        decision: "채점 서버 API 대신 정적 문항 뱅크 기준 클라이언트 측 채점",
-        alternativeConsidered: "각 답변을 /api/score 엔드포인트로 전송해 서버 측에서 결과 계산",
-        why: "채점 로직은 서버 왕복으로 보호할 만큼의 비밀이 아니며, 클라이언트 측 계산은 결과 페이지에서 지연 없이 즉시 피드백을 제공.",
-        tradeOffAccepted: "의도가 있는 방문자는 클라이언트 번들을 분석해 채점 가중치를 역추적할 수 있음 — 자가 진단 점수를 조작해도 얻는 이득이 없으므로 수용 가능."
+        decision: "초기의 클라이언트 채점 설계를 뒤집고, 서버가 원본 답변으로 리포트를 재생성",
+        alternativeConsidered: "기존 설계 유지: 브라우저에서 채점하고 완성된 리포트(점수, 등급, 추천 문구)를 POST해 서버가 저장·발송",
+        why: "처음에는 자기 점수를 조작해도 이득이 없다고 판단했습니다. 하지만 감사 결과 진짜 위험은 점수가 아니라 문구였습니다. POST에 담긴 내용이 그대로 Chekki 주소로 아무에게나 발송되고 공개 영구 링크에 게시될 수 있었습니다. 같은 순수 빌더를 서버로 옮겨, API는 답변과 연락처만 받습니다.",
+        tradeOffAccepted: "채점이 두 번 실행됨(브라우저는 즉시 피드백, 서버는 기록용). 그래서 lib/report.ts에는 브라우저 전용 코드가 없어야 하며, 작은 assert 기반 점검 스크립트로 이를 지킴."
       }
     ],
     architecture: {
       lifecycle: [
-        "퀴즈: lib/questions.ts가 6개 영역 문항 뱅크를 정의하고, lib/scoring.ts가 답변에 가중치를 부여해 0~84점, 등급, 최약점 영역을 산출.",
-        "제출: POST /api/submit이 이메일을 검증하고, IP 기준 요청 제한(시간당 5건, 슬라이딩 윈도우)을 적용하며, 전체 리포트 스냅샷을 Firestore의 readiness_submissions에 기록하고 Resend 이메일 2건을 발송.",
+        "퀴즈: lib/questions.ts가 7개 영역 17문항 뱅크를 정의하고, lib/scoring.ts가 답변에 가중치를 부여해 21~84점, 등급, 최약점 영역을 산출하며, lib/report.ts가 이를 언어별 리포트로 변환.",
+        "제출: POST /api/submit이 이메일과 모든 문항의 A~D 답변을 검증하고, IP 기준 요청 제한(시간당 5건, 슬라이딩 윈도우)을 적용하며, 서버에서 리포트를 재생성해 원본 답변과 함께 Firestore의 readiness_submissions에 기록하고 Resend 이메일 2건을 발송.",
         "영구 링크: /results/[id]가 동일한 Firestore 문서를 다시 읽어와 방문자의 답변을 재계산하지 않고 동일한 리포트를 렌더링.",
-        "관리자: /admin(middleware.ts를 통한 Basic Auth)이 모든 제출 건을 읽어와 scripts/analyze-submissions.mjs가 CLI에서 산출하던 동일한 분포 통계를 브라우저에서 실시간으로 재계산."
+        "관리자: /admin(middleware.ts를 통한 Basic Auth)이 모든 제출 건을 읽어와 고정된 등급·영역 ID로 묶어, 영어와 한국어 제출이 같은 항목으로 집계."
       ],
       guardrails: [
+        "API는 리포트 문구를 받지 않음: 답변과 연락처만 받으므로, 위조된 요청이 Chekki 명의 이메일이나 공개 영구 링크에 임의의 문구를 넣을 수 없음.",
         "메모리 기반 슬라이딩 윈도우 요청 제한(IP당 시간당 5건)으로 자유 서술 피드백·이메일 필드에 대한 스크립트 남용을 차단.",
         "사용자가 제출한 이름/학원명/피드백 문자열은 리포트 이메일에 삽입되기 전 HTML 이스케이프 처리하여, 원시 템플릿 문자열이 열어둘 인젝션 경로를 차단.",
         "ADMIN_PASSWORD가 설정되지 않으면 /admin에 접근할 수 없음 — 환경 변수가 없으면 라우트가 조용히 제출 데이터를 서빙하는 대신 503 처리.",
@@ -1378,7 +1386,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
 function scoreAssessment(answers) {
   // 각 영역의 원점수는 해당 영역 문항 답변의 가중합
   // 최약점 영역 = 원점수가 아니라 (원점수 / 최대원점수) 비율이 가장 낮은 영역
-  // 문항이 2개뿐인 영역이 6개인 영역보다 부당하게 유리해지지 않도록 함
+  // 문항이 2개뿐인 영역이 4개인 영역보다 부당하게 유리해지지 않도록 함
 }`,
       schema: `type PillarResult = {
   name: string; raw: number; maxRaw: number;
@@ -1392,14 +1400,15 @@ function scoreAssessment(answers) {
     },
     impact: {
       value: [
-        "원장은 약 15개 문항에 답하는 시간 안에 채점되고 이메일로 발송된 리포트를 받음 — 자신의 위치를 확인하기 위해 세일즈 통화가 필요 없음.",
+        "원장은 17개 문항에 답하는 시간 안에 채점되고 이메일로 발송된 리포트를 받음 — 자신의 위치를 확인하기 위해 세일즈 통화가 필요 없음.",
         "모든 제출은 이중언어 리포트, 저장된 Firestore 기록, GA4 귀속 데이터를 갖춘 유효 리드 — 백엔드 없는 정적 퀴즈였다면 셋 다 존재하지 않았을 것.",
-        "관리자 대시보드는 CLI 분석 스크립트와 완전히 동일한 집계 로직을 재사용하여, 제출 데이터의 정의가 두 구현으로 어긋나지 않고 단일한 기준으로 유지."
+        "퀴즈가 Chekki의 현재 디자인 시스템(따뜻한 크림·코코아 토큰, Pretendard, 기기 설정을 따르는 라이트/다크)과 일치하여, chekkiai.com/schools에서 넘어온 원장이 전혀 다른 제품처럼 느끼지 않음."
       ],
       security: [
         "사용자가 제출한 모든 필드를 이메일 템플릿에 삽입하기 전 HTML 이스케이프 처리하여, 제출된 이름이나 피드백 문자열이 Chekki에서 온 것처럼 보이는 이메일에 링크나 마크업을 위조하는 경로를 차단.",
         "Basic Auth 관리자 게이트는 실패 시 폐쇄형으로 동작: ADMIN_PASSWORD 환경 변수가 없으면 503, 열려있는 대시보드가 아님.",
-        "유일한 공개 쓰기 엔드포인트(/api/submit)에 IP당 슬라이딩 윈도우 요청 제한 적용."
+        "유일한 공개 쓰기 엔드포인트(/api/submit)에 IP당 슬라이딩 윈도우 요청 제한 적용.",
+        "리포트 영구 링크는 noindex 처리하여, 원장의 이름과 점수는 링크로만 접근 가능하고 검색에는 노출되지 않음."
       ]
     },
     behindTheArchitecture: {
@@ -1424,7 +1433,12 @@ function scoreAssessment(answers) {
         title: "GA4와 관리자 코드가 로컬에만 존재하고 배포에 반영되지 않음",
         incident: "GA4와 관리자 대시보드를 연동한 뒤 Realtime에 사용자가 0명으로 표시되고 /admin에 접근할 수 없었음 — Vercel의 재배포 버튼이 변경 이전의 마지막 푸시된 커밋만 다시 빌드하고 있었음.",
         diagnosis: "변경 사항이 로컬 워킹 트리에만 존재했고, 아직 main에 커밋되거나 푸시되지 않은 상태였음.",
-        resolution: "변경 사항을 커밋하고 푸시해 새 커밋 기준으로 실제 배포를 트리거 — 오래된 코드를 계속 재배포하는 대신."
+        resolution: "변경 사항을 커밋하고 푸시해 새 커밋 기준으로 실제 배포를 트리거 — 오래된 코드를 계속 재배포하는 대신."      },
+      {
+        title: "관리자 화면이 등급을 언어별로 두 번 집계",
+        incident: "관리자 대시보드에 \"Digitizing\"과 \"디지털 전환 중\"이 서로 다른 등급으로 표시되고, 한국어 제출 건에는 잘못된 배지 색상이 적용됨.",
+        diagnosis: "제출 데이터가 등급과 최약점 영역 이름을 방문자의 언어로 저장했고, 대시보드는 이 표시용 문자열로 그룹화하고 있었음.",
+        resolution: "각 등급에 고정 ID를 부여해 새 제출 건마다 저장하고, 등급·영역 ID로 그룹화. 기존 기록은 영어 또는 한국어 이름으로 다시 매칭해 마이그레이션 없이 해결."
       }
     ]
   },

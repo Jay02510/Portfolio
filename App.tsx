@@ -451,7 +451,7 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       domains: ["ops"],
       title: "Hagwon AI Readiness Index",
       status: "Live · Lead Gen",
-      desc: "Bilingual 6-pillar self-assessment quiz that scores a hagwon's AI readiness, emails a personalized report, and feeds Chekki's sales funnel — plus a Basic-Auth admin dashboard and GA4 attribution to see which channel actually converts.",
+      desc: "Bilingual 7-pillar self-assessment quiz that scores a hagwon's AI readiness, emails a personalized report, and feeds Chekki's sales funnel — plus a Basic-Auth admin dashboard and GA4 attribution to see which channel actually converts.",
       outcome: "Automated lead capture + report delivery, zero manual follow-up needed to see a score",
       stack: ["Next.js 14", "TypeScript", "Firebase Admin / Firestore", "Resend", "GA4", "Vercel Middleware"],
       liveUrl: "https://ai-readiness.chekkiai.com",
@@ -518,7 +518,7 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       domains: ["ops"],
       title: "학원 AI 준비도 지표",
       status: "라이브 · 리드 확보",
-      desc: "학원의 AI 준비도를 6개 영역으로 진단하는 이중언어(한/영) 자가진단 퀴즈. 결과 리포트를 이메일로 발송하며 Chekki 세일즈 퍼널로 리드를 연결하고, Basic Auth 관리자 대시보드와 GA4 유입 추적으로 어떤 채널이 실제로 전환되는지 보여줍니다.",
+      desc: "학원의 AI 준비도를 7개 영역으로 진단하는 이중언어(한/영) 자가진단 퀴즈. 결과 리포트를 이메일로 발송하며 Chekki 세일즈 퍼널로 리드를 연결하고, Basic Auth 관리자 대시보드와 GA4 유입 추적으로 어떤 채널이 실제로 전환되는지 보여줍니다.",
       outcome: "리드 수집과 리포트 발송 자동화, 점수 확인까지 수동 후속 조치 불필요",
       stack: ["Next.js 14", "TypeScript", "Firebase Admin / Firestore", "Resend", "GA4", "Vercel Middleware"],
       liveUrl: "https://ai-readiness.chekkiai.com",
@@ -598,6 +598,14 @@ const FILTERS = {
 
 const LOG: LogEntry[] = [
   {
+    date: "2026-10-14",
+    type: "feature",
+    titleEn: "Hagwon AI Readiness Index: server-side reports and Chekki's new design",
+    titleKo: "학원 AI 준비도 지표: 서버 측 리포트 생성과 Chekki 새 디자인 적용",
+    descEn: "An audit found the submit API emailed and published whatever report text a request sent. The server now rebuilds the report from the raw answers. Admin stats group on stable ids instead of localized names, and the quiz moved to Chekki's warm design system with labeled form fields and light-mode contrast fixes.",
+    descKo: "감사 결과 제출 API가 요청에 담긴 리포트 문구를 그대로 이메일로 보내고 게시하고 있었습니다. 이제 서버가 원본 답변으로 리포트를 다시 만듭니다. 관리자 통계는 언어별 이름 대신 고정 ID로 묶고, 퀴즈는 Chekki의 따뜻한 디자인 시스템으로 옮기며 입력란 라벨과 라이트 모드 대비를 개선했습니다."
+  },
+  {
     date: "2026-10-12",
     type: "feature",
     titleEn: "VodaBi: AI stays in role on noisy calls",
@@ -658,8 +666,8 @@ const LOG: LogEntry[] = [
     type: "feature",
     titleEn: "Hagwon AI Readiness Index: bilingual lead-gen quiz shipped",
     titleKo: "학원 AI 준비도 지표: 이중언어 리드 확보 퀴즈 배포",
-    descEn: "Shipped a live 6-pillar bilingual self-assessment feeding Chekki's B2B sales funnel: weighted scoring engine, automated bilingual report emails via Resend, Firestore-backed permalinks, GA4 lead attribution, and a Basic-Auth admin dashboard.",
-    descKo: "Chekki의 B2B 세일즈 퍼널로 연결되는 6영역 이중언어 자가진단을 라이브로 배포했습니다. 가중치 채점 엔진, Resend를 통한 자동 이중언어 리포트 이메일, Firestore 기반 영구 링크, GA4 리드 유입 추적, Basic Auth 관리자 대시보드로 구성됩니다."
+    descEn: "Shipped a live 7-pillar bilingual self-assessment feeding Chekki's B2B sales funnel: weighted scoring engine, automated bilingual report emails via Resend, Firestore-backed permalinks, GA4 lead attribution, and a Basic-Auth admin dashboard.",
+    descKo: "Chekki의 B2B 세일즈 퍼널로 연결되는 7영역 이중언어 자가진단을 라이브로 배포했습니다. 가중치 채점 엔진, Resend를 통한 자동 이중언어 리포트 이메일, Firestore 기반 영구 링크, GA4 리드 유입 추적, Basic Auth 관리자 대시보드로 구성됩니다."
   },
   {
     date: "2026-09-07",
