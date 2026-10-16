@@ -2074,16 +2074,16 @@ function scoreAssessment(answers) {
     tagline: "Chekki 플랫폼의 교직원용 축으로, 현재 최종 테스트 중입니다. 원장, 원어민 교사, 한국인 교사 화면이 역할별로 분리되어 있으며, 학부모용 Chekki AI 앱과 동일한 채점 엔진을 공유합니다.",
     liveUrl: "https://www.chekkiai.com/schools",
     screenshots: [
-      { label: "Schools 랜딩", url: "/screenshots/chekki-schools/01-schools-landing.webp", subLabel: "교실 기록은 영어로, 리포트는 한국어로" },
-      { label: "원장 대시보드", url: "/screenshots/chekki-schools/02-director-dashboard.webp", subLabel: "반별 오늘의 리포트" },
-      { label: "학생", url: "/screenshots/chekki-schools/03-director-students.webp", subLabel: "원장: 학부모 초대 및 명단" },
-      { label: "반", url: "/screenshots/chekki-schools/04-director-classes.webp", subLabel: "원장: 반별 최근 14일 기록 현황" },
-      { label: "교사", url: "/screenshots/chekki-schools/05-director-teachers.webp", subLabel: "원장: 원어민·한국인 교사 초대" },
-      { label: "음성 수업 기록", url: "/screenshots/chekki-schools/06-ft-daily-log.webp", subLabel: "원어민 교사: 음성으로 채우기" },
-      { label: "기록 내역", url: "/screenshots/chekki-schools/07-ft-log-history.webp", subLabel: "원어민 교사: 학부모가 받은 내용 확인" },
-      { label: "반 현황", url: "/screenshots/chekki-schools/08-kt-class-overview.webp", subLabel: "한국인 교사: 명단 및 스캔 현황" },
-      { label: "반 단위 검토", url: "/screenshots/chekki-schools/09-kt-review.webp", subLabel: "한국인 교사: 한 번 검토, 모든 가정에 전달" },
-      { label: "학부모 반 리포트", url: "/screenshots/chekki-schools/10-parent-class-report.webp", subLabel: "학부모 앱: 반 요약과 자기 아이 메모" }
+      { label: "Schools 랜딩", url: "/screenshots/chekki-schools/01-schools-landing-ko.webp", subLabel: "교실 기록은 영어로, 리포트는 한국어로" },
+      { label: "원장 대시보드", url: "/screenshots/chekki-schools/02-director-dashboard-ko.webp", subLabel: "반별 오늘의 리포트" },
+      { label: "학생", url: "/screenshots/chekki-schools/03-director-students-ko.webp", subLabel: "원장: 학부모 초대 및 명단" },
+      { label: "반", url: "/screenshots/chekki-schools/04-director-classes-ko.webp", subLabel: "원장: 반별 최근 14일 기록 현황" },
+      { label: "교사", url: "/screenshots/chekki-schools/05-director-teachers-ko.webp", subLabel: "원장: 원어민·한국인 교사 초대" },
+      { label: "음성 수업 기록", url: "/screenshots/chekki-schools/06-ft-daily-log-ko.webp", subLabel: "원어민 교사: 음성으로 채우기" },
+      { label: "기록 내역", url: "/screenshots/chekki-schools/07-ft-log-history-ko.webp", subLabel: "원어민 교사: 학부모가 받은 내용 확인" },
+      { label: "반 현황", url: "/screenshots/chekki-schools/08-kt-class-overview-ko.webp", subLabel: "한국인 교사: 명단 및 스캔 현황" },
+      { label: "반 단위 검토", url: "/screenshots/chekki-schools/09-kt-review-ko.webp", subLabel: "한국인 교사: 한 번 검토, 모든 가정에 전달" },
+      { label: "학부모 반 리포트", url: "/screenshots/chekki-schools/10-parent-class-report-ko.webp", subLabel: "학부모 앱: 반 요약과 자기 아이 메모" }
     ],
     stats: [
       { label: "상태", value: "최종 테스트 중" },
