@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { CaseStudyViewer } from './CaseStudyViewer.tsx';
+import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import ResumeModal from './components/ResumeModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import { CompactProjectCard } from './components/CompactProjectCard.tsx';
 import { SunIcon, MoonIcon, SearchIcon, ExternalLinkIcon, ChevronDownIcon } from './components/Icons.tsx';
+
+// Case studies (viewer + ~2,600 lines of data) load only when one is opened.
+const CaseStudyViewer = lazy(() => import('./CaseStudyViewer.tsx').then(m => ({ default: m.CaseStudyViewer })));
 
 interface Decision {
   choice: string;
@@ -219,6 +221,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "vodabi",
       context: "Work project · VodaBi",
       status: "Built, rolling out",
+      image: "/screenshots/vodabi/architecture.svg",
       title: "Voice-AI sales training and evaluation platform",
       problem: "Sales teams need a consistent way to practise and assess calls. The platform runs realistic AI roleplay calls, scores them against a rubric, and gives managers a view of team progress.",
       owned: [
@@ -252,7 +255,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki",
       context: "Independent · Chekki AI",
       status: "Live · pilot",
-      image: "https://res.cloudinary.com/dginphpy4/image/upload/v1765770525/Chekki_Futuristic_Background_i8foqe.png",
+      image: "https://res.cloudinary.com/dginphpy4/image/upload/f_auto,q_auto,w_960/v1765770525/Chekki_Futuristic_Background_i8foqe.png",
       title: "Closed-loop homework grading for Korean ESL academies",
       problem: "Three problems that are usually treated separately: parents who cannot check English homework with their child, mistakes at home that never reach the next lesson, and teachers writing bilingual parent updates by hand. Chekki closes that loop with one camera scan graded against the teacher's own answer key.",
       owned: [
@@ -291,7 +294,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki-teacher",
       context: "Same platform, staff-facing · Chekki Schools",
       status: "Final testing",
-      image: "/screenshots/chekki-schools/mascot-logo.png",
+      image: "/screenshots/chekki-schools/mascot-logo.webp",
       title: "Role-scoped CRM for academy directors and teachers",
       problem: "Chekki AI is the app parents open; this is what the academy behind it runs on. A director managing the account, a foreign teacher grading homework, and a Korean teacher messaging parents were all stuck in the same single-page tool, each looking at menus meant for someone else's job.",
       owned: [
@@ -333,6 +336,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "vodabi",
       context: "업무 프로젝트 · VodaBi",
       status: "구축 완료, 도입 진행",
+      image: "/screenshots/vodabi/architecture.svg",
       title: "음성 AI 세일즈 훈련 및 평가 플랫폼",
       problem: "영업팀에는 통화를 일관되게 연습하고 평가할 방법이 필요합니다. 이 플랫폼은 실제 같은 AI 롤플레이 통화를 루브릭으로 채점하고, 매니저에게 팀 진행 상황을 보여줍니다.",
       owned: [
@@ -366,7 +370,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki",
       context: "독립 개발 · Chekki AI",
       status: "라이브 · 파일럿",
-      image: "https://res.cloudinary.com/dginphpy4/image/upload/v1765770525/Chekki_Futuristic_Background_i8foqe.png",
+      image: "https://res.cloudinary.com/dginphpy4/image/upload/f_auto,q_auto,w_960/v1765770525/Chekki_Futuristic_Background_i8foqe.png",
       title: "한국 영어학원을 위한 가정-교실 폐쇄 루프 숙제 채점",
       problem: "보통 따로 다뤄지는 세 가지 문제: 영어 숙제를 아이와 함께 확인하기 어려운 학부모, 다음 수업까지 전달되지 않는 가정 내 오답, 그리고 이중언어 알림장을 손으로 쓰는 교사. Chekki는 교사의 정답지를 기준으로 한 번의 카메라 스캔으로 이 루프를 닫습니다.",
       owned: [
@@ -405,7 +409,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki-teacher",
       context: "같은 플랫폼, 교직원용 · Chekki Schools",
       status: "최종 테스트 중",
-      image: "/screenshots/chekki-schools/mascot-logo.png",
+      image: "/screenshots/chekki-schools/mascot-logo.webp",
       title: "원장·교사를 위한 역할별 CRM",
       problem: "Chekki AI가 학부모가 여는 앱이라면, 이건 그 뒤에 있는 학원이 돌아가는 도구입니다. 계정을 관리하는 원장, 숙제를 채점하는 원어민 교사, 학부모에게 메시지를 보내는 한국인 교사가 전부 같은 단일 페이지 도구에 갇혀, 서로 다른 사람의 업무용 메뉴를 마주하고 있었습니다.",
       owned: [
@@ -1436,12 +1440,14 @@ export default function App() {
       />
 
       {activeCaseStudyId && (
-        <CaseStudyViewer
-          projectId={activeCaseStudyId}
-          onClose={closeCaseStudy}
-          theme={theme}
-          locale={locale}
-        />
+        <Suspense fallback={null}>
+          <CaseStudyViewer
+            projectId={activeCaseStudyId}
+            onClose={closeCaseStudy}
+            theme={theme}
+            locale={locale}
+          />
+        </Suspense>
       )}
     </div>
   );
