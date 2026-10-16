@@ -1,69 +1,47 @@
-# Jason Benjamin — AI Product Manager & Builder
+# Jason Benjamin — AI Product Engineer
 
-> **Product manager who builds: 10+ years in Korean classrooms, 6 AI products built solo, voice-AI platform engineering at VodaBi**  
-> *Bridging complex GenAI capabilities (WebRTC Voice AI, Tiered LLM Judges, OCR, Async Pipelines) with high-converting, human-centered product experiences.*
+Source for [jason-portfolio.com](https://www.jason-portfolio.com/).
 
----
+I build AI products for Korean English academies, taking them from the first teacher interview to the App Store. I have 10+ years in Korean classrooms and have built six AI products solo. At VodaBi I build the frontend, backend and database of a voice-AI sales training platform.
 
-## 🎯 Lead Quantified Product Impact
+## Selected work
 
-> ### ⚡ **40 Hours → <10 Minutes** school timetabling, and 6 AI products shipped independently.
+| Project | What it is | Status |
+| :--- | :--- | :--- |
+| **VodaBi** (work project) | Voice-AI sales training and evaluation platform: realtime roleplay calls over direct WebRTC, two-step rubric grading (score first, then explain), staff and manager dashboards. | Built, rolling out with two enterprise clients |
+| **[Chekki AI](https://chekki-ai.vercel.app/)** | Homework grading for Korean ESL academies. A camera scan is graded against the teacher's own answer key, with bilingual explanations for parents. [App Store](https://apps.apple.com/us/app/chekkiai/id6759361725) · [Google Play](https://play.google.com/store/apps/details?id=com.chekkiai.app) | Live |
+| **[Chekki Schools](https://www.chekkiai.com/schools)** | The staff side of Chekki: separate logins for directors, foreign teachers and Korean teachers, curriculum pre-seeding, voice-first class logs. | Final testing ahead of a pilot |
 
-* 🎙️ **Sub-200ms Voice-AI Engine**: Built WebRTC voice roleplay and rubric grading for sales training at VodaBi.
-* ⏱️ **40h → <10m Timetable Generator**: Engineered combinatorial school scheduling engine (`EduPlanner Pro`) with "Draft & Weave" LLM constraint resolution.
-* 🗣️ **Answer-Key Grounded Homework Grading**: Shipped `Chekki AI`, a camera worksheet scanner that grades against the teacher's own answer key, live on the App Store and Google Play.
-* 🛡️ **Zero API Key Exposure & Injection Defense**: Server-side API proxy architecture with Helmet CSP, express-rate-limit, and XML prompt-variable isolation.
+## Side projects
 
----
+| Project | What it is | Status |
+| :--- | :--- | :--- |
+| **[Hagwon AI Readiness Index](https://ai-readiness.chekkiai.com)** | Bilingual self-assessment quiz that emails a personalised report and feeds the Chekki sales funnel. | Live |
+| **[BridgeRecruit](https://bridgerecruit-demo.vercel.app/)** | Outlook add-in and pipeline dashboard for international school admissions. | Live demo |
+| **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | School timetabling: a TypeScript solver enforces hard constraints, and a reasoning model resolves the conflicts that remain. | Live MVP |
+| **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Turns raw assessment scores into CEFR and Cambridge YLE skill maps. | Live MVP |
+| Learning Diary Hub | Classroom photos and tags compiled into print-ready PDF portfolios. | In progress |
+| B2B lead-enrichment CRM | Finds and deduplicates regional academies and drafts personalised outreach. | Internal |
 
-## 🛠️ Production AI Product Portfolio (Shipped Status & Live Links)
+Each project has a full case study on the site: the problem, what I built, the decisions and tradeoffs, and the stack.
 
-| Product | Role & Category | Live Status | Impact & Core Highlights | Live Link / Demo |
-| :--- | :--- | :--- | :--- | :--- |
-| **[VodaBi Voice AI](./CASE_STUDY.md#vodabi-case-study)** | Full-Stack B2B SaaS | 🟢 **Featured Case Study** | **Sub-200ms WebRTC voice simulation** with NestJS, server-side VAD, two-step GPT-4o rubric grading & staff training dashboards. | [Deep-Dive Case Study ↗](./CASE_STUDY.md#vodabi-case-study) |
-| **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40h → <10m timetable generator** with recursive "Draft & Weave" LLM constraint resolution. | [Launch Live App ↗](https://scheduling-app-five.vercel.app/) |
-| **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech OCR & Scanner | 🟢 **Live Shipped App** | **Instant mobile camera worksheet scanner** delivering bilingual learning guides; worksheet images are discarded after grading. | [Launch Live App ↗](https://chekki-ai.vercel.app/) |
-| **[Automated Report Generator](./CASE_STUDY.md#report-generator-pipeline)** | Relational Pipeline | 🟢 **Production Pipeline** | **15+ hours/week saved** using Airtable + Make.com + Fillout + Softr client portals for automated student reports. | [Pipeline Writeup ↗](./CASE_STUDY.md#report-generator-pipeline) |
-| **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Assessment Portal | 🟢 **Live Shipped App** | **Visual skill-mapping portal** converting raw scores into CEFR/Cambridge YLE mastery trajectories. | [Launch Live App ↗](https://education-benchmark-system.vercel.app/) |
-| **[B2B Lead Enrichment CRM](./CASE_STUDY.md#b2b-crm-case-study)** | Sales Automation | 🟢 **Production CRM** | **4x response rate boost** parsing regional directories, cleaning HTML, and synthesizing 1-click Gmail outreach links. | [CRM Case Study ↗](./CASE_STUDY.md#b2b-crm-case-study) |
+## How claims are handled
 
----
+- VodaBi has no production metrics yet, so none are quoted.
+- Client identifiers are removed under NDA.
+- Outcomes are labelled as measured, estimated or target, and estimates come with their method.
 
-## 🛡️ Production Hardening & Reliability Maturity
+## This repo
 
-Unlike standard AI prototypes, this suite is engineered with strict production security and operational reliability:
+React 19 + Vite, Tailwind CSS compiled at build time, Pretendard font. `npm run build` pre-renders the page into `index.html` so crawlers and link previews can read it without JavaScript. Case studies are code-split and load when opened. A small Express API (`api/`) handles the feedback form through Resend.
 
-* 🔐 **Server-Side Key Isolation**: All Gemini and OpenAI Realtime API calls are proxied through Node.js `/api/*` routes. Raw secrets are never exposed to browser client JS.
-* 🔒 **Atomic Firestore Transactions**: Invite redemptions and seat-limit allocations are wrapped in `runTransaction()` blocks to prevent double-spend race conditions.
-* 🛡️ **CORS & Rate Limiting**: Protected with `express-rate-limit` (100 req/15min) and strict origin allowlists shielding endpoints from abuse.
-* 📊 **Sentry Telemetry Monitoring**: Integrated Sentry error tracking on client and server to catch runtime stack traces without logging user PII.
-* ♿ **Accessibility & UX Hardening**: Enforced 44px touch target minimums, keyboard traps, and accessible themed modals replacing native `alert()`/`confirm()` dialogs.
-* 🧪 **CI/CD & Unit Test Discipline**: GitHub Actions pipeline enforcing automated `tsc` typecheck, ESLint, and Vitest suite validating seat limits and CSV escaping logic.
+```bash
+npm install
+cp .env.example .env   # RESEND_API_KEY, only needed for the feedback form
+npm run dev            # http://localhost:3000
+npm run build
+```
 
----
+## Contact
 
-## 💡 Product Strategy & Tradeoffs ("The Why")
-
-* **Zero-Friction Magic Links**: Replaced mandatory account signups with stateless magic link authentication, reducing candidate screening drop-off by **70%**.
-* **Tiered Model Cost Routing**: Used lightweight `gemini-3-flash` ($0.00015/req) for free tiers and baseline drafting while reserving high-reasoning `gemini-3-pro` ($0.003/req) for complex conflict resolution and paid tiers (**>85% gross margins**).
-* **7-Day Trial Optimization**: Aligned trial windows with weekly school planning cycles, creating conversion urgency that increased paid transitions by **35%**.
-
----
-
-## 📖 Deep-Dive Documentation
-
-* 📄 **[CASE_STUDY.md](./CASE_STUDY.md)** — Comprehensive architectural case study detailing WebRTC voice pipelines, prompt engineering, monetization systems, and production hardening.
-* 🛡️ **[SYSTEM_AUDIT.md](./SYSTEM_AUDIT.md)** — Security audit covering CSP policies, key rotation, rate limiting, and fail-closed admin RBAC.
-
----
-
-## 🌐 Live Portfolio & Contact
-
-* 🌐 **Interactive Portfolio Web App**: [https://jason-portfolio.com/](https://jason-portfolio.com/)
-* 🚀 **EduPlanner Pro (Live App)**: [https://scheduling-app-five.vercel.app/](https://scheduling-app-five.vercel.app/)
-* 📱 **Chekki AI (Live App)**: [https://chekki-ai.vercel.app/](https://chekki-ai.vercel.app/)
-* 📊 **Benchmark Explorer (Live App)**: [https://education-benchmark-system.vercel.app/](https://education-benchmark-system.vercel.app/)
-* 📧 **Email Contact**: [jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com)
-
----
-*© Jason Benjamin. Built with a human-centered, production-first approach.*
+[jsn.benjamin@gmail.com](mailto:jsn.benjamin@gmail.com) · [LinkedIn](https://www.linkedin.com/in/jason-benjamin/)
