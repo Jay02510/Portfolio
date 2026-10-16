@@ -18,6 +18,7 @@ interface CompactProjectCardProps {
   theme?: 'light' | 'dark';
   locale?: 'en' | 'ko';
   caseLabel: string;
+  caseHref: string;
   onOpenCaseStudy: (id: string) => void;
 }
 
@@ -26,6 +27,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
   theme = 'dark',
   locale = 'en',
   caseLabel,
+  caseHref,
   onOpenCaseStudy
 }) => {
   const isDark = theme === 'dark';
@@ -33,23 +35,14 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
   return (
     <article
       onClick={() => onOpenCaseStudy(project.caseStudyId)}
-      tabIndex={0}
-      role="button"
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onOpenCaseStudy(project.caseStudyId);
-        }
-      }}
-      aria-label={`${project.title} — ${locale === 'ko' ? '케이스 스터디 열기' : 'Open case study'}`}
-      className={`rounded-2xl border flex flex-col h-full cursor-pointer group transition-[border-color,box-shadow,transform] duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-accent-gold outline-none p-6 ${
+      className={`rounded-2xl border flex flex-col h-full cursor-pointer group transition-[border-color,box-shadow,transform] duration-300 active:scale-95 p-6 ${
         isDark
           ? 'bg-[#15181e] border-white/10 hover:border-accent-gold/40 hover:shadow-xl shadow-black/40'
           : 'bg-white border-black/10 hover:border-accent-clay/40 hover:shadow-xl shadow-black/5'
       }`}
     >
       <div className={`text-[10.5px] font-bold tracking-widest uppercase ${
-        isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+        isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
       }`}>
         {project.status}
       </div>
@@ -86,16 +79,17 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
       <div className={`mt-5 pt-4 border-t flex items-center justify-between gap-3 ${
         isDark ? 'border-white/10' : 'border-black/10'
       }`}>
-        <button
-          type="button"
+        <a
+          href={caseHref}
           onClick={(e) => {
+            e.preventDefault();
             e.stopPropagation();
             onOpenCaseStudy(project.caseStudyId);
           }}
-          className="text-xs font-bold text-accent-gold hover:underline whitespace-nowrap"
+          className="min-h-[24px] inline-flex items-center text-xs font-bold text-accent-gold hover:underline whitespace-nowrap"
         >
           {caseLabel}
-        </button>
+        </a>
 
         <div className="flex items-center gap-3">
           {project.liveUrl && (
@@ -104,7 +98,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className={`text-xs font-semibold whitespace-nowrap hover:underline ${
+              className={`min-h-[24px] inline-flex items-center text-xs font-semibold whitespace-nowrap hover:underline ${
                 isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
               }`}
             >
@@ -115,7 +109,7 @@ export const CompactProjectCard: React.FC<CompactProjectCardProps> = ({
             <a
               href={project.contactUrl}
               onClick={(e) => e.stopPropagation()}
-              className="text-xs font-bold text-accent-gold hover:underline whitespace-nowrap"
+              className="min-h-[24px] inline-flex items-center text-xs font-bold text-accent-gold hover:underline whitespace-nowrap"
             >
               {locale === 'en' ? "Contact to try ↗" : "체험 문의 ↗"}
             </a>

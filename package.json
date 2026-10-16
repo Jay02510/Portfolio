@@ -11,6 +11,7 @@
     "start": "node dist/server.cjs"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.5.0",
     "cors": "^2.8.6",
     "express": "^4.22.1",
     "helmet": "^8.1.0",

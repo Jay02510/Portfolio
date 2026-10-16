@@ -3,6 +3,7 @@ import ResumeModal from './components/ResumeModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import { CompactProjectCard } from './components/CompactProjectCard.tsx';
 import { SunIcon, MoonIcon, SearchIcon, ExternalLinkIcon, ChevronDownIcon } from './components/Icons.tsx';
+import { track } from '@vercel/analytics';
 
 // Case studies (viewer + ~2,600 lines of data) load only when one is opened.
 const CaseStudyViewer = lazy(() => import('./CaseStudyViewer.tsx').then(m => ({ default: m.CaseStudyViewer })));
@@ -731,14 +732,29 @@ const LOG: LogEntry[] = [
   }
 ];
 
-export default function App() {
-  const [locale, setLocale] = useState<'en' | 'ko'>('en');
+type Locale = 'en' | 'ko';
+
+export const CASE_IDS = ['vodabi', 'chekki', 'chekki-teacher', 'hagwon-readiness', 'bridgerecruit', 'eduplanner', 'benchmark-explorer', 'white-label-hub', 'lead-enrichment'];
+
+// URL scheme: /, /ko, /case/<id>, /ko/case/<id>. Each one is pre-rendered at build time.
+export function parsePath(path: string): { locale: Locale; caseId: string | null } {
+  const locale: Locale = /^\/ko(\/|$)/.test(path) ? 'ko' : 'en';
+  const m = path.replace(/^\/ko/, '').match(/^\/case\/([\w-]+)\/?$/);
+  return { locale, caseId: m && CASE_IDS.includes(m[1]) ? m[1] : null };
+}
+
+export const pathFor = (locale: Locale, caseId: string | null) =>
+  `${locale === 'ko' ? '/ko' : ''}${caseId ? `/case/${caseId}` : ''}` || '/';
+
+export default function App({ initialPath }: { initialPath?: string }) {
+  const [initialRoute] = useState(() => parsePath(initialPath ?? (typeof window !== 'undefined' ? window.location.pathname : '/')));
+  const [locale, setLocale] = useState<Locale>(initialRoute.locale);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isLogExpanded, setIsLogExpanded] = useState<boolean>(false);
   const [isResumeOpen, setIsResumeOpen] = useState<boolean>(false);
-  const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(null);
+  const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(initialRoute.caseId);
   const [expandedFeaturedId, setExpandedFeaturedId] = useState<string | null>(null);
 
   // Keep the CSS custom-property theme (index.html body.light rules) in sync with React state
@@ -763,22 +779,35 @@ export default function App() {
     );
   }, []);
 
-  // Hash-based routing for direct case study links
+  // Back/forward between pages, plus old #<case-id> links from before path URLs existed
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
-      const validCaseIds = ['vodabi', 'chekki', 'bridgerecruit', 'eduplanner', 'chekki-teacher', 'benchmark-explorer', 'white-label-hub', 'lead-enrichment', 'hagwon-readiness'];
-      if (validCaseIds.includes(hash)) {
-        setActiveCaseStudyId(hash);
-      } else if (!hash || hash === 'work' || hash === 'more' || hash === 'log' || hash === 'contact' || hash === 'top') {
-        setActiveCaseStudyId(null);
-      }
+    const legacy = window.location.hash.replace('#', '');
+    if (CASE_IDS.includes(legacy)) {
+      history.replaceState(null, '', pathFor(parsePath(window.location.pathname).locale, legacy));
+      setActiveCaseStudyId(legacy);
+    }
+    const onPop = () => {
+      const r = parsePath(window.location.pathname);
+      setLocale(r.locale);
+      setActiveCaseStudyId(r.caseId);
     };
-
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
   }, []);
+
+  const [animateCase, setAnimateCase] = useState(false);
+  const openCaseStudy = useCallback((id: string) => {
+    setAnimateCase(true);
+    setActiveCaseStudyId(id);
+    history.pushState(null, '', pathFor(locale, id));
+    track('case_study_open', { id });
+  }, [locale]);
+
+  const switchLocale = () => {
+    const next: Locale = locale === 'en' ? 'ko' : 'en';
+    setLocale(next);
+    history.replaceState(null, '', pathFor(next, activeCaseStudyId));
+  };
 
   const L = COPY[locale];
 
@@ -797,8 +826,12 @@ export default function App() {
 
   const displayedLog = useMemo(() => isLogExpanded ? LOG : LOG.slice(0, 3), [isLogExpanded]);
 
+  const openResume = () => { setIsResumeOpen(true); track('resume_open'); };
   const closeResumeModal = useCallback(() => setIsResumeOpen(false), []);
-  const closeCaseStudy = useCallback(() => setActiveCaseStudyId(null), []);
+  const closeCaseStudy = useCallback(() => {
+    setActiveCaseStudyId(null);
+    history.pushState(null, '', pathFor(locale, null));
+  }, [locale]);
 
   const scrollToSection = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -862,7 +895,7 @@ export default function App() {
 
           <div className="flex items-center gap-2.5">
             <button
-              onClick={() => setLocale(l => l === 'en' ? 'ko' : 'en')}
+              onClick={switchLocale}
               className={`h-[34px] px-3 rounded-lg border text-xs font-semibold tracking-wider transition-[background-color,transform] active:scale-95 ${
                 isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
               }`}
@@ -879,7 +912,7 @@ export default function App() {
               {isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
             </button>
             <button
-              onClick={() => setIsResumeOpen(true)}
+              onClick={openResume}
               className={`h-[34px] px-4 rounded-lg font-bold text-xs tracking-wider transition-[background-color,transform] active:scale-95 shadow-sm ${
                 isDark ? 'bg-white text-[#14171d] hover:bg-white/90' : 'bg-[#14171d] text-white hover:bg-black/90'
               }`}
@@ -913,7 +946,7 @@ export default function App() {
                 {L.ctaWork}
               </a>
               <button
-                onClick={() => setIsResumeOpen(true)}
+                onClick={openResume}
                 className={`h-[46px] px-6 rounded-xl border text-[13px] font-bold tracking-wide active:scale-95 transition-[background-color,border-color,color,transform] duration-150 ${
                   isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
                 }`}
@@ -932,8 +965,9 @@ export default function App() {
               </a>
               <a
                 href="mailto:jsn.benjamin@gmail.com"
+                onClick={() => track('email_click')}
                 className={`h-[46px] px-5 rounded-xl border text-[13px] font-medium tracking-wide inline-flex items-center transition-colors ${
-                  isDark ? 'border-white/10 text-[#788290] hover:text-white' : 'border-black/10 text-[#6b7280] hover:text-black'
+                  isDark ? 'border-white/10 text-[#848e9c] hover:text-white' : 'border-black/10 text-[#6b7280] hover:text-black'
                 }`}
               >
                 jsn.benjamin@gmail.com
@@ -965,7 +999,7 @@ export default function App() {
                 {L.nowBody}
               </p>
               <div className={`mt-5 pt-4 border-t text-[11px] font-bold tracking-widest uppercase ${
-                isDark ? 'border-white/10 text-[#788290]' : 'border-black/10 text-[#6b7280]'
+                isDark ? 'border-white/10 text-[#848e9c]' : 'border-black/10 text-[#6b7280]'
               }`}>
                 {L.nextLabel}
               </div>
@@ -1001,7 +1035,7 @@ export default function App() {
               {L.workTitle}
             </h2>
             <p className={`text-xs md:text-[13.5px] max-w-[46ch] ${
-              isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+              isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
             }`}>
               {L.workNote}
             </p>
@@ -1034,7 +1068,7 @@ export default function App() {
                     <div>
                       <div className="flex items-center gap-3 flex-wrap">
                         <span className={`text-[11px] font-bold tracking-widest uppercase ${
-                          isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+                          isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
                         }`}>
                           {project.context}
                         </span>
@@ -1062,12 +1096,12 @@ export default function App() {
                         }`}
                       >
                         <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                          isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+                          isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
                         }`}>
                           {locale === 'en' ? "What I built & why" : "무엇을, 왜 만들었는지"}
                         </h4>
                         <ChevronDownIcon className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ${
-                          expandedFeaturedId === project.id ? 'rotate-180 text-accent-gold' : (isDark ? 'text-[#788290]' : 'text-[#6b7280]')
+                          expandedFeaturedId === project.id ? 'rotate-180 text-accent-gold' : (isDark ? 'text-[#848e9c]' : 'text-[#6b7280]')
                         }`} />
                       </button>
 
@@ -1076,7 +1110,7 @@ export default function App() {
                           {/* WHAT I BUILT */}
                           <div className="mt-4">
                             <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                              isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+                              isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
                             }`}>
                               {L.ownedLabel}
                             </h4>
@@ -1093,7 +1127,7 @@ export default function App() {
                           {/* DECISIONS & TRADEOFFS */}
                           <div className={`mt-6 pt-5 border-t ${isDark ? 'border-white/10' : 'border-black/10'}`}>
                             <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                              isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+                              isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
                             }`}>
                               {L.decisionsLabel}
                             </h4>
@@ -1102,7 +1136,7 @@ export default function App() {
                                 <div key={idx} className="text-xs md:text-[13px] leading-relaxed">
                                   <div className="font-semibold text-accent-gold">{d.choice}</div>
                                   <div className={`mt-0.5 ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>{d.why}</div>
-                                  <div className={`mt-0.5 italic ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>{d.tradeoff}</div>
+                                  <div className={`mt-0.5 italic ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{d.tradeoff}</div>
                                 </div>
                               ))}
                             </div>
@@ -1127,14 +1161,15 @@ export default function App() {
 
                     {/* ACTIONS */}
                     <div className={`mt-6 pt-5 border-t flex flex-wrap items-center gap-3 ${isDark ? 'border-white/10' : 'border-black/10'}`}>
-                      <button
-                        onClick={() => setActiveCaseStudyId(project.id)}
-                        className={`h-[40px] px-4 rounded-lg font-bold text-xs tracking-wider transition-[background-color,transform] active:scale-95 shadow-sm ${
+                      <a
+                        href={pathFor(locale, project.id)}
+                        onClick={(e) => { e.preventDefault(); openCaseStudy(project.id); }}
+                        className={`h-[40px] px-4 rounded-lg font-bold text-xs tracking-wider inline-flex items-center transition-[background-color,transform] active:scale-95 shadow-sm ${
                           isDark ? 'bg-white text-[#14171d] hover:bg-white/90' : 'bg-[#14171d] text-white hover:bg-black/90'
                         }`}
                       >
                         {locale === 'en' ? "Read the case study ↗" : "케이스 스터디 읽기 ↗"}
-                      </button>
+                      </a>
 
                       {project.liveUrl && (
                         <a
@@ -1207,7 +1242,7 @@ export default function App() {
                 {L.moreTitle}
               </h2>
               <p className={`mt-1 text-xs md:text-[13.5px] max-w-[58ch] ${
-                isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+                isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
               }`}>
                 {L.moreNote}
               </p>
@@ -1270,7 +1305,8 @@ export default function App() {
                       theme={theme}
                       locale={locale}
                       caseLabel={L.caseLabel}
-                      onOpenCaseStudy={setActiveCaseStudyId}
+                      caseHref={pathFor(locale, p.caseStudyId)}
+                      onOpenCaseStudy={openCaseStudy}
                     />
                   ))}
                 </div>
@@ -1280,7 +1316,7 @@ export default function App() {
             <div className={`mt-6 py-10 flex flex-col items-center gap-3 text-center border-t ${
               isDark ? 'border-white/10' : 'border-black/10'
             }`}>
-              <p className={`text-sm ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>
+              <p className={`text-sm ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>
                 {L.noResults}
               </p>
               <button
@@ -1317,7 +1353,7 @@ export default function App() {
                 key={idx}
                 className="py-4.5 grid grid-cols-1 sm:grid-cols-[110px_90px_1fr] gap-2 sm:gap-6 items-start"
               >
-                <span className={`text-xs font-mono shrink-0 ${isDark ? 'text-[#788290]' : 'text-[#6b7280]'}`}>
+                <span className={`text-xs font-mono shrink-0 ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>
                   {e.date}
                 </span>
                 <span className="text-[10.5px] font-bold tracking-widest uppercase text-accent-gold shrink-0">
@@ -1355,6 +1391,7 @@ export default function App() {
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <a
                   href="mailto:jsn.benjamin@gmail.com"
+                  onClick={() => track('email_click')}
                   className="h-[46px] px-6 rounded-xl bg-accent-gold text-[#14171d] text-xs font-bold tracking-wider inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform] shadow-sm"
                 >
                   {L.contactCta}
@@ -1370,7 +1407,7 @@ export default function App() {
                   {L.linkedinLabel}
                 </a>
                 <button
-                  onClick={() => setIsResumeOpen(true)}
+                  onClick={openResume}
                   className={`h-[46px] px-6 rounded-xl border text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
                     isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
                   }`}
@@ -1385,7 +1422,7 @@ export default function App() {
             }`}>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+                  isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
                 }`}>
                   {L.lookingLabel}
                 </dt>
@@ -1395,7 +1432,7 @@ export default function App() {
               </div>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+                  isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
                 }`}>
                   {L.basedLabel}
                 </dt>
@@ -1405,7 +1442,7 @@ export default function App() {
               </div>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#788290]' : 'text-[#6b7280]'
+                  isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
                 }`}>
                   {L.langLabel}
                 </dt>
@@ -1423,7 +1460,7 @@ export default function App() {
 
       {/* FOOTER */}
       <footer className={`border-t py-8 transition-colors ${
-        isDark ? 'border-white/10 text-[#788290]' : 'border-black/10 text-[#6b7280]'
+        isDark ? 'border-white/10 text-[#848e9c]' : 'border-black/10 text-[#6b7280]'
       }`}>
         <div className="max-w-[1180px] mx-auto px-6 md:px-10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium">
           <span>© Jason Benjamin</span>
@@ -1446,6 +1483,7 @@ export default function App() {
             onClose={closeCaseStudy}
             theme={theme}
             locale={locale}
+            animateIn={animateCase}
           />
         </Suspense>
       )}

@@ -9,6 +9,9 @@ interface CaseStudyViewerProps {
   theme?: 'light' | 'dark';
   locale?: 'en' | 'ko';
   backgroundScrollY?: number;
+  // false when the page loaded directly on this case study's URL: it is already
+  // in the pre-rendered HTML, so fading it in would flash the homepage first.
+  animateIn?: boolean;
 }
 
 const uiTranslation = {
@@ -672,7 +675,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
   onClose,
   theme = 'dark',
   locale = 'en',
-  backgroundScrollY
+  backgroundScrollY,
+  animateIn = true
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -688,7 +692,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
-  const [isEntered, setIsEntered] = useState(false);
+  const [isEntered, setIsEntered] = useState(!animateIn);
   const [isClosing, setIsClosing] = useState(false);
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -861,7 +865,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         <button
           onClick={handleClose}
           className={`flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-colors active:scale-95 whitespace-nowrap shrink-0 ${
-            theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'
+            theme === 'dark' ? 'text-white/60 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'
           }`}
         >
           {t.backToPortfolio}
@@ -989,7 +993,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 {stat.value}
               </div>
               <div className={`text-[10px] font-black uppercase tracking-widest ${
-                theme === 'dark' ? 'text-white/40' : 'text-alpine-950/40'
+                theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'
               }`}>
                 {stat.label}
               </div>
@@ -1023,7 +1027,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
                   : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
               }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isArchOpen ? 'text-accent-gold' : 'text-white/40'}`} />
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isArchOpen ? 'text-accent-gold' : 'text-white/60'}`} />
               </div>
             </button>
             
@@ -1098,7 +1102,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   ? 'rotate-180 bg-blue-500/15 border-blue-500/30' 
                   : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
               }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isCoreLoopOpen ? 'text-blue-400' : 'text-white/40'}`} />
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isCoreLoopOpen ? 'text-blue-400' : 'text-white/60'}`} />
               </div>
             </button>
 
@@ -1167,7 +1171,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   ? 'rotate-180 bg-purple-500/15 border-purple-500/30' 
                   : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
               }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isDecisionsOpen ? 'text-purple-400' : 'text-white/40'}`} />
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isDecisionsOpen ? 'text-purple-400' : 'text-white/60'}`} />
               </div>
             </button>
 
@@ -1198,7 +1202,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
 
                       {/* Alternative Considered */}
                       <div className="space-y-1 text-xs">
-                        <div className="flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-wider text-white/40">
+                        <div className="flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-wider text-white/60">
                           <span>↪</span>
                           <span>{t.alternativeLabel}</span>
                         </div>
@@ -1273,7 +1277,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   ? 'rotate-180 bg-red-500/15 border-red-500/30' 
                   : (theme === 'dark' ? 'border-red-500/10 hover:border-red-500/20' : 'border-red-500/10 hover:border-red-500/20')
               }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isHurdlesOpen ? 'text-red-500' : 'text-white/40'}`} />
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isHurdlesOpen ? 'text-red-500' : 'text-white/60'}`} />
               </div>
             </button>
             
@@ -1346,7 +1350,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4">
             <div className={`text-[10px] font-black uppercase tracking-[0.4em] ${
-              theme === 'dark' ? 'text-white/40' : 'text-alpine-950/40'
+              theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'
             }`}>
               {t.proofOfWorkTitle}
             </div>
@@ -1800,7 +1804,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
                   : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
               }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isBreakdownOpen ? 'text-accent-gold' : 'text-white/40'}`} />
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isBreakdownOpen ? 'text-accent-gold' : 'text-white/60'}`} />
               </div>
             </button>
 
@@ -1845,7 +1849,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   <div className="space-y-4">
                     <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold font-display">{t.systemScopeOverview}</span>
                     <p className={`text-xs md:text-sm font-normal leading-relaxed max-w-prose text-pretty ${
-                      theme === 'dark' ? 'text-white/40' : 'text-alpine-950/50'
+                      theme === 'dark' ? 'text-white/60' : 'text-alpine-950/50'
                     }`}>
                       {t.systemScopeBody}
                     </p>

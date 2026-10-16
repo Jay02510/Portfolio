@@ -33,7 +33,7 @@ Each project has a full case study on the site: the problem, what I built, the d
 
 ## This repo
 
-React 19 + Vite, Tailwind CSS compiled at build time, Pretendard font. `npm run build` pre-renders the page into `index.html` so crawlers and link previews can read it without JavaScript. Case studies are code-split and load when opened. A small Express API (`api/`) handles the feedback form through Resend.
+React 19 + Vite, Tailwind CSS compiled at build time, Pretendard font. `npm run build` pre-renders every URL (`/`, `/ko`, `/case/<id>`, `/ko/case/<id>`) with its own title, description and hreflang tags, and generates `sitemap.xml` and `llms.txt`, so crawlers, link previews and AI tools can read the site without JavaScript. `npx tsx scripts/check-routes.tsx` checks the URL parsing. Vercel Web Analytics records page views and a few events (case study opened, résumé opened, email clicked). A small Express API (`api/`) handles the feedback form through Resend.
 
 ```bash
 npm install

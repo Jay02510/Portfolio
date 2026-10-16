@@ -19,7 +19,7 @@ export default {
         },
         text: {
           sec: '#a3acb9',
-          tert: '#788290',
+          tert: '#848e9c',
         },
         accent: {
           gold: '#e2b87d',
