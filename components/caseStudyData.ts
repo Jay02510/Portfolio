@@ -292,16 +292,11 @@ Call B — feedback
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
     screenshots: [
-      { label: "Landing Page", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118476/Screenshot_2026-07-15_at_9.26.57_PM_ozpruh.png", subLabel: "B2B Educational Landing Page" },
-      { label: "Pain Points Solved", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118475/Screenshot_2026-07-15_at_9.27.31_PM_f5exol.png", subLabel: "Parental & Operational Pain Points" },
-      { label: "Onboarding", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/3_ub3ej3.png", subLabel: "Seamless Parent Welcome Flow" },
-      { label: "Homescreen", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/2_yobnjt.png", subLabel: "Active Learning Portal & Scanner" },
-      { label: "Teaching Guide", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/9_xyzk0q.png", subLabel: "Phonetics & Explanation Script" },
-      { label: "Answers Overlay", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/6_b6x7pg.png", subLabel: "Bilingual Solution Overlay" },
-      { label: "Answers Overlay #2", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/7_e9r6aa.png", subLabel: "Interactive Problem Breakdown" },
-      { label: "Answer Overlay #3", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/10_wmr2lw.png", subLabel: "Comprehensive Concept Walkthrough" },
-      { label: "Learning Dashboard", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/11_qvahas.png", subLabel: "Student Progress & Analytics" },
-      { label: "Interactive Flashcards", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118117/13_o2cun7.png", subLabel: "Bilingual Study & Practice Tools" }
+      { label: "Home", url: "/screenshots/chekki-app/ios-en-5.webp", subLabel: "Scan Homework, Practice Queue & Academy Steps" },
+      { label: "Graded Worksheet", url: "/screenshots/chekki-app/ios-en-2.webp", subLabel: "Answers Marked Right on the Page" },
+      { label: "What to Say", url: "/screenshots/chekki-app/ios-en-1.webp", subLabel: "Every Miss Explained in Korean for the Parent" },
+      { label: "Grading", url: "/screenshots/chekki-app/ios-en-4.webp", subLabel: "Reads Handwriting, Suggests Praise While You Wait" },
+      { label: "Teacher's Class Report", url: "/screenshots/chekki-app/ios-en-3.webp", subLabel: "Written and Sent by the Korean Teacher" }
     ],
     stats: [
       { label: "Role Architecture", value: "4 Distinct Roles", detail: "Parent, Foreign Teacher, Korean Staff, Director" },
@@ -1616,16 +1611,11 @@ function scoreAssessment(answers) {
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
     screenshots: [
-      { label: "랜딩 페이지", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118476/Screenshot_2026-07-15_at_9.26.57_PM_ozpruh.png", subLabel: "B2B 에듀테크 랜딩 홈" },
-      { label: "해결된 페인포인트", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118475/Screenshot_2026-07-15_at_9.27.31_PM_f5exol.png", subLabel: "학부모 및 학원 운영 페인포인트" },
-      { label: "온보딩", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/3_ub3ej3.png", subLabel: "학부모 친화형 온보딩 흐름" },
-      { label: "홈화면", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/2_yobnjt.png", subLabel: "카메라 스캔 및 학습 포털" },
-      { label: "티칭 가이드", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/9_xyzk0q.png", subLabel: "원어민 발음 및 설명 대본" },
-      { label: "해답 오버레이", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/6_b6x7pg.png", subLabel: "이중언어 정답 지도 오버레이" },
-      { label: "해답 오버레이 #2", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118119/7_e9r6aa.png", subLabel: "문제별 정밀 구조화 가이드" },
-      { label: "해답 오버레이 #3", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/10_wmr2lw.png", subLabel: "상세 교육 개념 설명 카드" },
-      { label: "학습 대시보드", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118118/11_qvahas.png", subLabel: "자녀 학습 진도 및 성과 분석" },
-      { label: "인터랙티브 플래시카드", url: "https://res.cloudinary.com/dginphpy4/image/upload/v1784118117/13_o2cun7.png", subLabel: "이중언어 어휘 및 말하기 카드" }
+      { label: "홈화면", url: "/screenshots/chekki-app/ios-ko-5.webp", subLabel: "숙제 스캔, 복습 카드, 학원 단계" },
+      { label: "채점 결과", url: "/screenshots/chekki-app/ios-ko-2.webp", subLabel: "페이지 위에 바로 표시되는 정답" },
+      { label: "아이에게 할 말", url: "/screenshots/chekki-app/ios-ko-1.webp", subLabel: "틀린 문제마다 한국어 설명" },
+      { label: "채점 중", url: "/screenshots/chekki-app/ios-ko-4.webp", subLabel: "손글씨 인식, 기다리는 동안 칭찬 한마디" },
+      { label: "선생님 수업 리포트", url: "/screenshots/chekki-app/ios-ko-3.webp", subLabel: "한국인 선생님이 작성해 보내는 리포트" }
     ],
     stats: [
       { label: "역할 아키텍처", value: "4개 독립 역할", detail: "학부모, 원어민 교사, 한국인 교사, 학원장" },
