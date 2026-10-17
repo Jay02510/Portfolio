@@ -292,10 +292,12 @@ Call B — feedback
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
     screenshots: [
+      { label: "Landing Page", url: "/screenshots/chekki-app/landing-hero-en.webp", subLabel: "Chekki Grades. You Praise." },
+      { label: "Pain Points Solved", url: "/screenshots/chekki-app/landing-pains-en.webp", subLabel: "Three Homework Problems Parents Name" },
       { label: "Home", url: "/screenshots/chekki-app/ios-en-5.webp", subLabel: "Scan Homework, Practice Queue & Academy Steps" },
       { label: "Graded Worksheet", url: "/screenshots/chekki-app/ios-en-2.webp", subLabel: "Answers Marked Right on the Page" },
       { label: "What to Say", url: "/screenshots/chekki-app/ios-en-1.webp", subLabel: "Every Miss Explained in Korean for the Parent" },
-      { label: "Grading", url: "/screenshots/chekki-app/ios-en-4.webp", subLabel: "Reads Handwriting, Suggests Praise While You Wait" },
+      { label: "Grading", url: "/screenshots/chekki-app/ios-en-4.webp", subLabel: "Reads Their Handwriting, Suggests Praise While You Wait" },
       { label: "Teacher's Class Report", url: "/screenshots/chekki-app/ios-en-3.webp", subLabel: "Written and Sent by the Korean Teacher" }
     ],
     stats: [
@@ -1611,6 +1613,8 @@ function scoreAssessment(answers) {
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "https://embed.app.guidde.com/playbooks/rZZfcxwam9qFtSqgh3rRGw?mode=videoOnly",
     screenshots: [
+      { label: "랜딩 페이지", url: "/screenshots/chekki-app/landing-hero-ko.webp", subLabel: "채점은 채키가, 칭찬은 엄마가" },
+      { label: "해결된 페인포인트", url: "/screenshots/chekki-app/landing-pains-ko.webp", subLabel: "학부모가 겪는 숙제 고민 세 가지" },
       { label: "홈화면", url: "/screenshots/chekki-app/ios-ko-5.webp", subLabel: "숙제 스캔, 복습 카드, 학원 단계" },
       { label: "채점 결과", url: "/screenshots/chekki-app/ios-ko-2.webp", subLabel: "페이지 위에 바로 표시되는 정답" },
       { label: "아이에게 할 말", url: "/screenshots/chekki-app/ios-ko-1.webp", subLabel: "틀린 문제마다 한국어 설명" },
