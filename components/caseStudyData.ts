@@ -1623,7 +1623,7 @@ function scoreAssessment(answers) {
       { label: "채점 중", url: "/screenshots/chekki-app/ios-ko-4.webp", subLabel: "손글씨 인식, 기다리는 동안 칭찬 한마디" },
       { label: "채점 결과", url: "/screenshots/chekki-app/store-ko-1.webp", subLabel: "페이지 위에 바로 표시되는 정답" },
       { label: "아이에게 할 말", url: "/screenshots/chekki-app/store-ko-2.webp", subLabel: "틀린 문제마다 한국어 설명" },
-      { label: "따라 말하기", url: "/screenshots/chekki-app/store-ko-3.webp", subLabel: "원어민 발음 듣고 따라 말하기" },
+      { label: "따라 말하기", url: "/screenshots/chekki-app/store-ko-3.webp", subLabel: "영어 발음 듣고 따라 말하기" },
       { label: "설명 듣기", url: "/screenshots/chekki-app/store-ko-4.webp", subLabel: "막히면 채키에게 물어보기" },
       { label: "복습 카드", url: "/screenshots/chekki-app/store-ko-5.webp", subLabel: "틀린 문제는 카드로 복습" },
       { label: "지난 채점", url: "/screenshots/chekki-app/store-ko-6.webp", subLabel: "지난 채점도 다시 보기" },
