@@ -295,10 +295,14 @@ Call B — feedback
       { label: "Landing Page", url: "/screenshots/chekki-app/landing-hero-en.webp", subLabel: "Chekki Grades. You Praise." },
       { label: "Pain Points Solved", url: "/screenshots/chekki-app/landing-pains-en.webp", subLabel: "Three Homework Problems Parents Name" },
       { label: "Home", url: "/screenshots/chekki-app/ios-en-5.webp", subLabel: "Scan Homework, Practice Queue & Academy Steps" },
-      { label: "Graded Worksheet", url: "/screenshots/chekki-app/ios-en-2.webp", subLabel: "Answers Marked Right on the Page" },
-      { label: "What to Say", url: "/screenshots/chekki-app/ios-en-1.webp", subLabel: "Every Miss Explained in Korean for the Parent" },
       { label: "Grading", url: "/screenshots/chekki-app/ios-en-4.webp", subLabel: "Reads Their Handwriting, Suggests Praise While You Wait" },
-      { label: "Teacher's Class Report", url: "/screenshots/chekki-app/ios-en-3.webp", subLabel: "Written and Sent by the Korean Teacher" }
+      { label: "Graded Worksheet", url: "/screenshots/chekki-app/store-en-1.webp", subLabel: "Answers Marked Right on the Page" },
+      { label: "What to Say", url: "/screenshots/chekki-app/store-en-2.webp", subLabel: "Every Miss Explained in Korean for the Parent" },
+      { label: "Say It", url: "/screenshots/chekki-app/store-en-3.webp", subLabel: "Hear the Answer, Then Say It Back" },
+      { label: "Explain", url: "/screenshots/chekki-app/store-en-4.webp", subLabel: "Ask Chekki About Any Question" },
+      { label: "Review Cards", url: "/screenshots/chekki-app/store-en-5.webp", subLabel: "Mistakes Come Back as Flashcards" },
+      { label: "Past Scans", url: "/screenshots/chekki-app/store-en-6.webp", subLabel: "Reopen Any Graded Page" },
+      { label: "Teacher's Class Report", url: "/screenshots/chekki-app/store-en-7.webp", subLabel: "Written and Sent by the Korean Teacher" }
     ],
     stats: [
       { label: "Role Architecture", value: "4 Distinct Roles", detail: "Parent, Foreign Teacher, Korean Staff, Director" },
@@ -1616,10 +1620,14 @@ function scoreAssessment(answers) {
       { label: "랜딩 페이지", url: "/screenshots/chekki-app/landing-hero-ko.webp", subLabel: "채점은 채키가, 칭찬은 엄마가" },
       { label: "해결된 페인포인트", url: "/screenshots/chekki-app/landing-pains-ko.webp", subLabel: "학부모가 겪는 숙제 고민 세 가지" },
       { label: "홈화면", url: "/screenshots/chekki-app/ios-ko-5.webp", subLabel: "숙제 스캔, 복습 카드, 학원 단계" },
-      { label: "채점 결과", url: "/screenshots/chekki-app/ios-ko-2.webp", subLabel: "페이지 위에 바로 표시되는 정답" },
-      { label: "아이에게 할 말", url: "/screenshots/chekki-app/ios-ko-1.webp", subLabel: "틀린 문제마다 한국어 설명" },
       { label: "채점 중", url: "/screenshots/chekki-app/ios-ko-4.webp", subLabel: "손글씨 인식, 기다리는 동안 칭찬 한마디" },
-      { label: "선생님 수업 리포트", url: "/screenshots/chekki-app/ios-ko-3.webp", subLabel: "한국인 선생님이 작성해 보내는 리포트" }
+      { label: "채점 결과", url: "/screenshots/chekki-app/store-ko-1.webp", subLabel: "페이지 위에 바로 표시되는 정답" },
+      { label: "아이에게 할 말", url: "/screenshots/chekki-app/store-ko-2.webp", subLabel: "틀린 문제마다 한국어 설명" },
+      { label: "따라 말하기", url: "/screenshots/chekki-app/store-ko-3.webp", subLabel: "원어민 발음 듣고 따라 말하기" },
+      { label: "설명 듣기", url: "/screenshots/chekki-app/store-ko-4.webp", subLabel: "막히면 채키에게 물어보기" },
+      { label: "복습 카드", url: "/screenshots/chekki-app/store-ko-5.webp", subLabel: "틀린 문제는 카드로 복습" },
+      { label: "지난 채점", url: "/screenshots/chekki-app/store-ko-6.webp", subLabel: "지난 채점도 다시 보기" },
+      { label: "선생님 수업 리포트", url: "/screenshots/chekki-app/store-ko-7.webp", subLabel: "한국인 선생님이 작성해 보내는 리포트" }
     ],
     stats: [
       { label: "역할 아키텍처", value: "4개 독립 역할", detail: "학부모, 원어민 교사, 한국인 교사, 학원장" },
