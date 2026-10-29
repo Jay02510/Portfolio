@@ -299,7 +299,6 @@ Call B — feedback
       { label: "Graded Worksheet", url: "/screenshots/chekki-app/store-en-1.webp", subLabel: "Answers Marked Right on the Page" },
       { label: "What to Say", url: "/screenshots/chekki-app/store-en-2.webp", subLabel: "Every Miss Explained in Korean for the Parent" },
       { label: "Say It", url: "/screenshots/chekki-app/store-en-3.webp", subLabel: "Hear the Answer, Then Say It Back" },
-      { label: "Explain", url: "/screenshots/chekki-app/store-en-4.webp", subLabel: "Ask Chekki About Any Question" },
       { label: "Review Cards", url: "/screenshots/chekki-app/store-en-5.webp", subLabel: "Mistakes Come Back as Flashcards" },
       { label: "Past Scans", url: "/screenshots/chekki-app/store-en-6.webp", subLabel: "Reopen Any Graded Page" },
       { label: "Teacher's Class Report", url: "/screenshots/chekki-app/store-en-7.webp", subLabel: "Written and Sent by the Korean Teacher" }
@@ -759,6 +758,7 @@ Call B — feedback
       { label: "Students", url: "/screenshots/chekki-schools/03-director-students.webp", subLabel: "Director: Parent Invites & Roster" },
       { label: "Classes", url: "/screenshots/chekki-schools/04-director-classes.webp", subLabel: "Director: 14-Day Log Streak per Class" },
       { label: "Teachers", url: "/screenshots/chekki-schools/05-director-teachers.webp", subLabel: "Director: FT & KT Invites" },
+      { label: "Answer Key", url: "/screenshots/chekki-schools/11-ft-answer-key.webp", subLabel: "Teacher: Upload the Key, Confirm AI Guesses" },
       { label: "Voice Class Log", url: "/screenshots/chekki-schools/06-ft-daily-log.webp", subLabel: "Foreign Teacher: Fill by Voice" },
       { label: "Log History", url: "/screenshots/chekki-schools/07-ft-log-history.webp", subLabel: "Foreign Teacher: See What Parents Got" },
       { label: "Class Overview", url: "/screenshots/chekki-schools/08-kt-class-overview.webp", subLabel: "Korean Teacher: Roster & Scans" },
@@ -1627,7 +1627,6 @@ function scoreAssessment(answers) {
       { label: "채점 결과", url: "/screenshots/chekki-app/store-ko-1.webp", subLabel: "페이지 위에 바로 표시되는 정답" },
       { label: "아이에게 할 말", url: "/screenshots/chekki-app/store-ko-2.webp", subLabel: "틀린 문제마다 한국어 설명" },
       { label: "따라 말하기", url: "/screenshots/chekki-app/store-ko-3.webp", subLabel: "영어 발음 듣고 따라 말하기" },
-      { label: "설명 듣기", url: "/screenshots/chekki-app/store-ko-4.webp", subLabel: "막히면 채키에게 물어보기" },
       { label: "복습 카드", url: "/screenshots/chekki-app/store-ko-5.webp", subLabel: "틀린 문제는 카드로 복습" },
       { label: "지난 채점", url: "/screenshots/chekki-app/store-ko-6.webp", subLabel: "지난 채점도 다시 보기" },
       { label: "선생님 수업 리포트", url: "/screenshots/chekki-app/store-ko-7.webp", subLabel: "한국인 선생님이 작성해 보내는 리포트" }
@@ -2084,6 +2083,7 @@ function scoreAssessment(answers) {
       { label: "학생", url: "/screenshots/chekki-schools/03-director-students-ko.webp", subLabel: "원장: 학부모 초대 및 명단" },
       { label: "반", url: "/screenshots/chekki-schools/04-director-classes-ko.webp", subLabel: "원장: 반별 최근 14일 기록 현황" },
       { label: "교사", url: "/screenshots/chekki-schools/05-director-teachers-ko.webp", subLabel: "원장: 원어민·한국인 교사 초대" },
+      { label: "정답지", url: "/screenshots/chekki-schools/11-ft-answer-key-ko.webp", subLabel: "교사: 정답지 올리고 AI 추정 답 확인" },
       { label: "음성 수업 기록", url: "/screenshots/chekki-schools/06-ft-daily-log-ko.webp", subLabel: "원어민 교사: 음성으로 채우기" },
       { label: "기록 내역", url: "/screenshots/chekki-schools/07-ft-log-history-ko.webp", subLabel: "원어민 교사: 학부모가 받은 내용 확인" },
       { label: "반 현황", url: "/screenshots/chekki-schools/08-kt-class-overview-ko.webp", subLabel: "한국인 교사: 명단 및 스캔 현황" },
