@@ -306,8 +306,8 @@ Call B — feedback
     ],
     stats: [
       { label: "Role Architecture", value: "4 Distinct Roles", detail: "Parent, Foreign Teacher, Korean Staff, Director" },
-      { label: "Scan-to-Result Target", value: "<5s Latency", detail: "Ground-Truth Answer Key OCR Ingestion" },
-      { label: "Product Rigor", value: "24 Logged Decisions", detail: "Documented Trade-Offs & PRD/Scope Trio" }
+      { label: "Mistakes Caught (Eval)", value: "100% with Key", detail: "vs 88.9% on 2.5 Flash, 0 false alarms, synthetic test pages" },
+      { label: "Product Rigor", value: "26 Logged Decisions", detail: "Documented Trade-Offs & PRD/Scope Trio" }
     ],
     problem: [
       "Parent-Child Home Study Friction: Korean parents who aren't fluent in English struggle to check English homework, so homework time turns into guessing.",
@@ -335,7 +335,7 @@ Call B — feedback
       "TypeScript",
       "Vite",
       "Tailwind CSS 4",
-      "Google Gemini 2.5 Flash & Pro",
+      "Google Gemini 3.8 Flash, 2.5 Flash & Pro",
       "@google/genai (Multimodal Vision)",
       "Capacitor JS (iOS / Android)",
       "Universal Links / App Links",
@@ -350,7 +350,7 @@ Call B — feedback
     ],
     coreLoop: [
       { step: "01. Teacher Uploads Answer Key", role: "Foreign Teacher", detail: "Weekly worksheet is OCR'd into a per-class curriculum document in Firestore; grading is anchored in ground truth." },
-      { step: "02. Parent Scans at Home", role: "Parent / Student", detail: "Mobile camera captures worksheet; Gemini vision processes image against responseSchema with <5s latency target." },
+      { step: "02. Parent Scans at Home", role: "Parent / Student", detail: "Mobile camera captures worksheet; Gemini vision grades the page against the class answer key under a strict responseSchema (~17s)." },
       { step: "03. Instant Bilingual Result", role: "Parent App", detail: "Renders visual overlays on original image with correct answers, Korean explanation, and phonetics guidance." },
       { step: "04. Mistakes Aggregate", role: "Telemetry Backend", detail: "Errors aggregate across class rosters into a 'what's the class struggling with' pre-lesson cohort view." },
       { step: "05. Teacher Acts & Logs Class", role: "Foreign Teacher", detail: "Addresses class-wide gaps, then logs the lesson with one voice recording that fills the class summary and student notes." },
@@ -391,7 +391,7 @@ Call B — feedback
     architecture: {
       lifecycle: [
         "Curriculum Ingestion: Teachers upload weekly answer keys; OCR pipeline stores ground-truth structured keys in Firestore curriculums collection.",
-        "Home Scan & Matching: Parent captures physical page; Gemini 2.5 Flash matches against curriculum key with SHA256 image caching.",
+        "Home Scan & Matching: Parent captures physical page; Gemini 3.8 Flash grades against the curriculum key with SHA256 image caching.",
         "Bilingual Overlay Render: Client renders structured problem boxes, phonetic pronunciation guides, and Korean teaching scripts directly over worksheet image.",
         "Mistake Aggregation: Errors sync to Firestore without storing raw student PII, populating teacher pre-lesson telemetry cockpit.",
         "Human-in-the-Loop Update: Foreign teacher records the lesson by voice; AI drafts a Korean report with correct honorifics; the Korean teacher approves once per class before families see it."
@@ -399,6 +399,8 @@ Call B — feedback
       guardrails: [
         "Vercel 12-Function Ceiling Architecture: Consolidated all AI endpoints into api/analyze.ts and redemption routes into api/redeem.ts with URL rewrites.",
         "Ground-Truth Anchoring: AI evaluates strictly against teacher-uploaded answer keys instead of guessing the answer itself.",
+        "Concern-Note Fact-Check: A second pass checks every needs-attention note against the teacher's words and deletes invented reasons, actions and requests; concern notes are also excluded from bulk send.",
+        "Roster-Grounded Names: The class roster goes with every voice log, so similar Korean names aren't misheard onto the wrong child.",
         "Korean-Teacher Approval Gate: Firestore rules let only the Korean teacher approve a class log; no AI draft reaches parents without that approval.",
         "Firestore Multi-Tenant Security Rules: Read/write permissions strictly scoped to verified school and class IDs with Admin SDK server guards.",
         "Data Retention: Worksheet images are discarded after grading; cached analysis expires after 30 days and is never cached for enrolled students."
@@ -442,9 +444,10 @@ Call B — feedback
     impact: {
       value: [
         "Connected 4 roles (Parent, FT, KT, Director) into a unified closed loop where home mistakes inform classroom instruction.",
+        "Built eval harnesses that drive model choice: on synthetic handwritten pages, mistakes caught with the answer key rose from 88.9% (Gemini 2.5 Flash) to 100% (3.8 Flash) with zero false alarms; a voice-to-report eval with an LLM judge cut invented details in parent notes and verified the fix.",
         "Aims to cut teachers' weekly grading and reporting work; to be measured in the Chekki Schools pilot rather than estimated.",
         "Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a two-school pilot.",
-        "Maintained 24 logged architectural/product trade-offs with rigorous scope discipline."
+        "Maintained 26 logged architectural/product trade-offs with rigorous scope discipline."
       ],
       security: [
         "Firestore security rules strictly scoped to verified school/class IDs with server-only Admin SDK privileged mutations.",

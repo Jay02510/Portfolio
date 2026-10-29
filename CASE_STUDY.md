@@ -71,8 +71,11 @@ Foreign English teachers in Korean academies face intense administrative frictio
 4. **Korean-Teacher Review per Class**: The Korean teacher reviews a whole class-day on one screen and approves once; each family sees the class summary plus only their child's note. Enforced in Firestore rules, so a foreign teacher can't self-approve.
 5. **Native-Speaker Voice Rules**: After Korean readers said drafts sounded machine-written, shared voice rules steer every report prompt toward specific, plain observations.
 
+6. **Measured Before Pilot**: Built eval harnesses from the textbook's own pages. With the answer key, mistakes caught rose from 88.9% on Gemini 2.5 Flash to 100% on 3.8 Flash, with zero right answers marked wrong (synthetic handwritten pages), so production moved to 3.8 Flash and accepted ~5s more per scan.
+7. **Fact-Checked Concern Notes**: A voice-to-report eval with an LLM judge found drafts inventing reasons and requests the teacher never made, worst in notes about a child's behaviour. Concern notes now get a second fact-check pass and can't be bulk-sent unread.
+
 ### D. Status
-* In final testing ahead of a two-school pilot; no grading-time figures measured yet.
+* In final testing ahead of a two-school pilot; teacher time saved will be measured in the pilot, not estimated.
 
 ---
 
@@ -86,7 +89,7 @@ Korean parents who aren't fluent in English struggle to check English homework, 
 Parents needed fast, zero-setup camera grading with clear Korean explanations and pronunciation keys, without storing images of their child's work.
 
 ### C. Product Decisions
-* **Tiered Models**: Gemini 2.5 Flash by default; Gemini 2.5 Pro with a capped thinking budget for Pro-plan deep checks.
+* **Tiered Models**: Gemini 3.8 Flash by default (picked on eval results); Gemini 2.5 Pro with a capped thinking budget for Pro-plan fallback checks.
 * **Direct Roster & Parent Binding**: Replaced open 6-digit class codes with secure roster pairing to prevent PII leakage.
 * **Monetization & Tier Enforcements**: Built RevenueCat webhook integrations with tiered usage gates (a few free scans a day vs. Pro).
 
