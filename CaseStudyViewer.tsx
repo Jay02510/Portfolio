@@ -1645,8 +1645,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               </div>
             </button>
 
-            {isBreakdownOpen && (
-              <div id="breakdown-panel" className="p-4 sm:p-6 md:p-10 pt-0 grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 w-full min-w-0 overflow-hidden">
+            {/* Always rendered (hidden when collapsed) so the full case study is in the prerendered HTML for search and AI crawlers. */}
+            {(
+              <div id="breakdown-panel" className={`${isBreakdownOpen ? 'grid' : 'hidden'} p-4 sm:p-6 md:p-10 pt-0 grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 w-full min-w-0 overflow-hidden`}>
                 {/* LEFT RAIL - THE STACK / INFO */}
                 <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-24 h-fit w-full min-w-0">
                   <div className="space-y-4">

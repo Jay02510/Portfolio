@@ -42,7 +42,12 @@ try {
     html = setAttr(html, /(<meta property="og:description" content=")[^"]*(")/, page.description);
     html = setAttr(html, /(<meta property="og:url" content=")[^"]*(")/, url);
     html = setAttr(html, /(<link rel="canonical" href=")[^"]*(")/, url);
-    html = html.replace('</head>', `    ${alternates}\n  </head>`);
+    if (page.image) {
+      html = setAttr(html, /(<meta property="og:image" content=")[^"]*(")/, page.image);
+      html = html.replace(/\s*<meta property="og:image:(width|height)"[^>]*>/g, '');
+    }
+    const ld = page.jsonLd.map(o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`).join('\n    ');
+    html = html.replace('</head>', `    ${alternates}\n    ${ld}\n  </head>`);
 
     const appHtml = await render(page.path);
     if (!appHtml || appHtml.length < 500) throw new Error(`rendered HTML for ${page.path} looks empty`);
@@ -82,6 +87,15 @@ ${list.map(page => {
 
 ${en.filter(p => p.caseId).map(p => `- [${p.title.replace(' | Jason Benjamin', '')}](${SITE}${p.path}): ${p.description}`).join('\n')}
 
+## Key facts
+
+- Chekki AI is live on the App Store and Google Play. Grading is checked against the teacher's own answer key; in evals on 105 synthetic worksheet pages it caught 98–100% of mistakes over repeated runs and marked at most 2 of 226 right answers wrong.
+- Chekki Schools (the staff side: directors, foreign teachers, Korean teachers) is in final testing ahead of a two-school pilot.
+- At VodaBi (July 2026 – present) Jason is the sole engineer on a voice-AI sales training platform: realtime roleplay over direct WebRTC to OpenAI Realtime, then GPT-4o scoring and a separate coaching call written from the fixed scores.
+- Based in Seoul. M.Ed. in Educational Management (University of Essex), LL.B. (University of the Western Cape).
+
+Full text of every case study: ${SITE}/llms-full.txt
+
 ## Notes on claims
 
 VodaBi has no production metrics yet, so none are quoted. Client identifiers are removed under NDA. Outcomes on the site are labelled measured, estimated or target.
@@ -91,8 +105,9 @@ VodaBi has no production metrics yet, so none are quoted. Client identifiers are
 Every page has a Korean version under ${SITE}/ko
 `;
   fs.writeFileSync(path.join(dist, 'llms.txt'), llms);
+  fs.writeFileSync(path.join(dist, 'llms-full.txt'), `# Jason Benjamin — case studies (full text)\n\nSource: ${SITE}/llms.txt\n\n` + en.filter(p => p.caseId).map(p => `${p.text}\n\nURL: ${SITE}${p.path}`).join('\n\n---\n\n') + '\n');
 
-  console.log(`[prerender] wrote ${list.length} pages, sitemap.xml and llms.txt`);
+  console.log(`[prerender] wrote ${list.length} pages, sitemap.xml, llms.txt and llms-full.txt`);
 } catch (err) {
   // Never fail the deploy over prerendering; the SPA still works without it.
   console.error('[prerender] failed, shipping the plain SPA instead:', err);
