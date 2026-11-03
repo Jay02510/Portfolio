@@ -693,10 +693,10 @@ const LOG: LogEntry[] = [
   {
     date: "2026-09-01",
     type: "feature",
-    titleEn: "VodaBi: voice-AI screening and 11-rubric evaluator shipped",
-    titleKo: "VodaBi: 음성 AI 스크리닝 및 11개 루브릭 평가 엔진 배포",
-    descEn: "Direct WebRTC voice roleplay (<200ms latency), post-call GPT-4o evaluation with BANTCQ evidence, the VOISOR coaching assistant, and multi-tenant role-based access.",
-    descKo: "Direct WebRTC 음성 롤플레이(<200ms 지연), BANTCQ 근거를 포함한 통화 후 GPT-4o 평가, VOISOR 코칭 어시스턴트, 멀티테넌트 역할 기반 접근."
+    titleEn: "VodaBi: voice-AI screening and rubric evaluator shipped",
+    titleKo: "VodaBi: 음성 AI 스크리닝 및 루브릭 평가 엔진 배포",
+    descEn: "Direct WebRTC voice roleplay, post-call GPT-4o evaluation with quoted evidence from the transcript, the VOISOR coaching assistant, and multi-tenant role-based access.",
+    descKo: "Direct WebRTC 음성 롤플레이, 통화 내용을 근거로 인용하는 통화 후 GPT-4o 평가, VOISOR 코칭 어시스턴트, 멀티테넌트 역할 기반 접근."
   },
   {
     date: "2026-09-01",
