@@ -873,9 +873,9 @@ Call B — feedback
       { label: "Lead Card & Email Draft", url: "/screenshots/lead-enrichment/02-lead-card-and-email-draft.png", subLabel: "Enriched profile with a bilingual, A/B subject-line email draft (fictional academy shown to protect real client data)" }
     ],
     stats: [
-      { label: "Compliance Coverage", value: "100% of drafts carry the (광고) label + opt-out" },
-      { label: "Personalization", value: "Verifiable hook required on every draft" },
-      { label: "Outreach Dispatch", value: "1-Click Gmail Deep Link" }
+      { label: "Compliance Coverage", value: "100%", detail: "Every draft carries the (광고) ad label and an opt-out, added in code" },
+      { label: "Personalization", value: "1 real fact", detail: "Every draft must cite a verifiable detail about the academy" },
+      { label: "Outreach Dispatch", value: "1 click", detail: "Opens the draft in Gmail, ready to review and send" }
     ],
     problem: [
       "Naver Local Search returns unstructured directory listings with no institution-type classification, fit scoring, or stable dedupe key across repeated searches.",
@@ -2208,9 +2208,9 @@ function scoreAssessment(answers) {
       { label: "리드 카드 및 이메일 초안", url: "/screenshots/lead-enrichment/02-lead-card-and-email-draft.png", subLabel: "개인화 리포트와 A/B 제목 변형이 포함된 이중언어 이메일 초안 (실제 고객 정보 보호를 위해 가상 학원명 사용)" }
     ],
     stats: [
-      { label: "컴플라이언스 적용률", value: "초안 100%에 (광고) 표기 + 수신거부 포함" },
-      { label: "개인화 검증", value: "모든 초안에 검증 가능한 hook 필수" },
-      { label: "발송 방식", value: "1클릭 Gmail 딥링크" }
+      { label: "컴플라이언스 적용률", value: "100%", detail: "모든 초안에 (광고) 표기와 수신거부 안내를 코드로 추가" },
+      { label: "개인화 검증", value: "사실 1개", detail: "모든 초안에 학원에 대한 검증 가능한 사실 포함" },
+      { label: "발송 방식", value: "1클릭", detail: "Gmail에서 초안을 열어 검토 후 발송" }
     ],
     problem: [
       "네이버 지역 검색은 업종 분류, 적합도 스코어, 반복 검색 간 안정적인 중복 제거 키 없이 비정형 디렉터리 목록만 반환합니다.",

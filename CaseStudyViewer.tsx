@@ -984,7 +984,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         </div>
 
         {/* METRICS GRID */}
-        <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 border-y py-12 ${
+        <div className={`grid grid-cols-1 gap-6 border-y py-12 ${projectData.stats.length === 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'} ${
           theme === 'dark' ? 'border-white/10' : 'border-black/10'
         }`}>
           {projectData.stats.map((stat, idx) => (
