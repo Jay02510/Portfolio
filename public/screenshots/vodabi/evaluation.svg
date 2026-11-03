@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="t d" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <title id="t">VodaBi evaluation: score, then coach</title>
+  <desc id="d">After a call, the transcript goes to a GPT-4o scoring call with a strict JSON schema, one result per rubric item. A second GPT-4o call writes coaching from those fixed scores, and the report links quotes to transcript lines. Simple checks run in code, and a marked fallback report covers failed evaluations.</desc>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e2b87d"/></marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="#101319"/>
+  <text x="60" y="80" font-size="22" font-weight="700" letter-spacing="3" fill="#e2b87d">VODABI · SCORE, THEN COACH</text>
+  <text x="60" y="118" font-size="20" fill="#a3acb9">Feedback is written from scores that are already fixed. Shape only; no real rubric content.</text>
+
+  <g font-size="19" fill="#a3acb9">
+    <rect x="60" y="170" width="330" height="210" rx="18" fill="#1a1e26" stroke="#fff" stroke-opacity="0.12" stroke-width="2"/>
+    <text x="88" y="218" font-size="16" font-weight="700" letter-spacing="2" fill="#848e9c">INPUT</text>
+    <text x="88" y="258" font-size="28" font-weight="700" fill="#faf9f6">Transcript</text>
+    <text x="88" y="296">Finished turns and pacing</text>
+    <text x="88" y="326">Read as call content,</text>
+    <text x="88" y="352">never as instructions</text>
+
+    <rect x="443" y="170" width="330" height="210" rx="18" fill="#1a1e26" stroke="#e2b87d" stroke-opacity="0.6" stroke-width="2"/>
+    <text x="471" y="218" font-size="16" font-weight="700" letter-spacing="2" fill="#e2b87d">STEP 1 · SCORE</text>
+    <text x="471" y="258" font-size="28" font-weight="700" fill="#faf9f6">GPT-4o</text>
+    <text x="471" y="296">Strict JSON schema</text>
+    <text x="471" y="326">One result per rubric item</text>
+    <text x="471" y="352">Temperature 0.2</text>
+
+    <rect x="826" y="170" width="330" height="210" rx="18" fill="#1a1e26" stroke="#e2b87d" stroke-opacity="0.6" stroke-width="2"/>
+    <text x="854" y="218" font-size="16" font-weight="700" letter-spacing="2" fill="#e2b87d">STEP 2 · COACH</text>
+    <text x="854" y="258" font-size="28" font-weight="700" fill="#faf9f6">GPT-4o</text>
+    <text x="854" y="296">Scores passed in as fixed</text>
+    <text x="854" y="326">Summary, coaching and</text>
+    <text x="854" y="352">onboarding plan</text>
+
+    <rect x="1209" y="170" width="330" height="210" rx="18" fill="#1a1e26" stroke="#fff" stroke-opacity="0.12" stroke-width="2"/>
+    <text x="1237" y="218" font-size="16" font-weight="700" letter-spacing="2" fill="#848e9c">OUTPUT</text>
+    <text x="1237" y="258" font-size="28" font-weight="700" fill="#faf9f6">Report</text>
+    <text x="1237" y="296">Scores and coaching agree</text>
+    <text x="1237" y="326">Quotes linked to</text>
+    <text x="1237" y="352">transcript lines</text>
+  </g>
+  <g stroke="#e2b87d" stroke-width="3" marker-end="url(#g)">
+    <line x1="396" y1="275" x2="436" y2="275"/>
+    <line x1="779" y1="275" x2="819" y2="275"/>
+    <line x1="1162" y1="275" x2="1202" y2="275"/>
+  </g>
+
+  <rect x="60" y="430" width="700" height="400" rx="18" fill="#1a1e26"/>
+  <text x="92" y="482" font-size="17" font-weight="700" letter-spacing="2" fill="#e2b87d">GUARDRAILS</text>
+  <g font-size="21" fill="#faf9f6">
+    <circle cx="100" cy="537" r="5" fill="#e2b87d"/><text x="120" y="544">Strict Structured Outputs on both calls</text>
+    <circle cx="100" cy="597" r="5" fill="#e2b87d"/><text x="120" y="604">Quotes picked by line index, never retyped</text>
+    <circle cx="100" cy="657" r="5" fill="#e2b87d"/><text x="120" y="664">Simple checks, like “did the trainee</text>
+    <text x="120" y="692">speak?”, run in code, not the model</text>
+    <circle cx="100" cy="747" r="5" fill="#e2b87d"/><text x="120" y="754">A clearly marked fallback report if</text>
+    <text x="120" y="782">evaluation can’t complete</text>
+  </g>
+
+  <rect x="800" y="430" width="740" height="400" rx="18" fill="#0b0d11" stroke="#fff" stroke-opacity="0.08" stroke-width="2"/>
+  <text x="832" y="482" font-size="17" font-weight="700" letter-spacing="2" fill="#e2b87d">STEP 1 OUTPUT · SHAPE ONLY</text>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="21" fill="#a3acb9">
+    <text x="832" y="540">{</text>
+    <text x="856" y="574"><tspan fill="#e2b87d">"rubricResults"</tspan>: [</text>
+    <text x="880" y="608">{ <tspan fill="#e2b87d">"code"</tspan>: "…", <tspan fill="#e2b87d">"stepIndex"</tspan>: 2,</text>
+    <text x="904" y="642"><tspan fill="#e2b87d">"rationale"</tspan>: "…" }</text>
+    <text x="856" y="676">],</text>
+    <text x="856" y="710"><tspan fill="#e2b87d">"callFlowPhases"</tspan>: [ … ],</text>
+    <text x="856" y="744"><tspan fill="#e2b87d">"keyQuotes"</tspan>: [ { <tspan fill="#e2b87d">"candidateIndex"</tspan>: 14 } ]</text>
+    <text x="832" y="778">}</text>
+  </g>
+</svg>

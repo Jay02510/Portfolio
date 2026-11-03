@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="t d" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <title id="t">VodaBi roles and access</title>
+  <desc id="d">Four roles share one bilingual interface. Admins configure personas, scenarios, rubrics and difficulty tiers without code. Managers assign training and follow team completion and reports. Staff practise, see scores by scenario and track growth. Candidates take one scored call from a magic link without an account.</desc>
+  <rect width="1600" height="900" fill="#101319"/>
+  <text x="60" y="80" font-size="22" font-weight="700" letter-spacing="3" fill="#e2b87d">VODABI · WHO SEES WHAT</text>
+  <text x="60" y="118" font-size="20" fill="#a3acb9">Role-based access across every admin, manager and staff screen.</text>
+
+  <g font-size="20" fill="#a3acb9">
+    <rect x="60" y="170" width="350" height="460" rx="18" fill="#1a1e26" stroke="#e2b87d" stroke-opacity="0.6" stroke-width="2"/>
+    <text x="90" y="222" font-size="16" font-weight="700" letter-spacing="2" fill="#e2b87d">CONFIGURES</text>
+    <text x="90" y="266" font-size="32" font-weight="700" fill="#faf9f6">Admin</text>
+    <text x="90" y="330">Personas</text>
+    <text x="90" y="370">Scenarios and scripts</text>
+    <text x="90" y="410">Rubrics</text>
+    <text x="90" y="450">Difficulty tiers</text>
+    <text x="90" y="490">Test assignments</text>
+    <text x="90" y="596" font-size="18" fill="#e2b87d">No engineer needed</text>
+
+    <rect x="436" y="170" width="350" height="460" rx="18" fill="#1a1e26" stroke="#fff" stroke-opacity="0.12" stroke-width="2"/>
+    <text x="466" y="222" font-size="16" font-weight="700" letter-spacing="2" fill="#848e9c">ASSIGNS AND TRACKS</text>
+    <text x="466" y="266" font-size="32" font-weight="700" fill="#faf9f6">Manager</text>
+    <text x="466" y="330">Assigns training</text>
+    <text x="466" y="370">Company and team</text>
+    <text x="466" y="396">completion rates</text>
+    <text x="466" y="436">Score status</text>
+    <text x="466" y="476">Each staff member’s</text>
+    <text x="466" y="502">reports</text>
+
+    <rect x="812" y="170" width="350" height="460" rx="18" fill="#1a1e26" stroke="#fff" stroke-opacity="0.12" stroke-width="2"/>
+    <text x="842" y="222" font-size="16" font-weight="700" letter-spacing="2" fill="#848e9c">PRACTISES</text>
+    <text x="842" y="266" font-size="32" font-weight="700" fill="#faf9f6">Staff</text>
+    <text x="842" y="330">Self-practice calls</text>
+    <text x="842" y="370">Assigned training</text>
+    <text x="842" y="410">Scores by scenario</text>
+    <text x="842" y="450">Competency growth</text>
+    <text x="842" y="476">and badges</text>
+    <text x="842" y="516">Coach chat about</text>
+    <text x="842" y="542">a report</text>
+
+    <rect x="1188" y="170" width="352" height="460" rx="18" fill="#1a1e26" stroke="#fff" stroke-opacity="0.12" stroke-width="2"/>
+    <text x="1218" y="222" font-size="16" font-weight="700" letter-spacing="2" fill="#848e9c">IS TESTED</text>
+    <text x="1218" y="266" font-size="32" font-weight="700" fill="#faf9f6">Candidate</text>
+    <text x="1218" y="330">Opens a magic link</text>
+    <text x="1218" y="370">Takes one scored call</text>
+    <text x="1218" y="410">No account needed</text>
+  </g>
+
+  <rect x="60" y="670" width="1480" height="80" rx="16" fill="#1a1e26"/>
+  <text x="800" y="718" font-size="20" fill="#a3acb9" text-anchor="middle">One bilingual Korean / English interface · sign-in for staff roles · personal data encrypted at rest</text>
+</svg>

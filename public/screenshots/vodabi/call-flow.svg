@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="t d" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <title id="t">VodaBi live call pipeline (simplified)</title>
+  <desc id="d">The browser streams call audio directly to OpenAI Realtime over WebRTC using a short-lived token from the NestJS backend, which stores finished turns in MariaDB. A call moves through six steps: access, mic check, live call, turns saved, score and coach, review.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#848e9c"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#e2b87d"/></marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="#101319"/>
+  <text x="60" y="80" font-size="22" font-weight="700" letter-spacing="3" fill="#e2b87d">VODABI · LIVE CALL</text>
+  <text x="60" y="118" font-size="20" fill="#a3acb9">Simplified view. No client data, prompts or rubric content.</text>
+
+  <rect x="60" y="170" width="520" height="150" rx="18" fill="#1a1e26" stroke="#fff" stroke-opacity="0.12" stroke-width="2"/>
+  <text x="92" y="232" font-size="32" font-weight="700" fill="#faf9f6">Browser</text>
+  <text x="92" y="272" font-size="21" fill="#a3acb9">React 19 · staff or candidate</text>
+
+  <rect x="1020" y="170" width="520" height="150" rx="18" fill="#1a1e26" stroke="#e2b87d" stroke-opacity="0.6" stroke-width="2"/>
+  <text x="1052" y="232" font-size="32" font-weight="700" fill="#faf9f6">OpenAI Realtime</text>
+  <text x="1052" y="272" font-size="21" fill="#a3acb9">AI customer persona · voice</text>
+
+  <line x1="590" y1="245" x2="1010" y2="245" stroke="#e2b87d" stroke-width="3" marker-start="url(#g)" marker-end="url(#g)"/>
+  <text x="800" y="226" font-size="20" font-weight="700" fill="#e2b87d" text-anchor="middle">WebRTC · direct audio</text>
+  <text x="800" y="280" font-size="17" fill="#a3acb9" text-anchor="middle">the server is not in the audio path</text>
+
+  <line x1="180" y1="412" x2="180" y2="328" stroke="#848e9c" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="196" y="360" font-size="18" fill="#a3acb9">short-lived token</text>
+  <line x1="460" y1="328" x2="460" y2="412" stroke="#848e9c" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="444" y="395" font-size="18" fill="#a3acb9" text-anchor="end">finished turns</text>
+
+  <rect x="60" y="420" width="520" height="150" rx="18" fill="#1a1e26" stroke="#fff" stroke-opacity="0.12" stroke-width="2"/>
+  <text x="92" y="482" font-size="32" font-weight="700" fill="#faf9f6">NestJS 11 API</text>
+  <text x="92" y="522" font-size="21" fill="#a3acb9">Sign-in, magic links, roles</text>
+
+  <rect x="1020" y="420" width="520" height="150" rx="18" fill="#1a1e26" stroke="#fff" stroke-opacity="0.12" stroke-width="2"/>
+  <text x="1052" y="482" font-size="32" font-weight="700" fill="#faf9f6">MariaDB · Prisma 7</text>
+  <text x="1052" y="522" font-size="21" fill="#a3acb9">Personal data encrypted at rest</text>
+
+  <line x1="590" y1="495" x2="1010" y2="495" stroke="#848e9c" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="800" y="480" font-size="18" fill="#a3acb9" text-anchor="middle">transcripts and scores</text>
+
+  <text x="60" y="655" font-size="18" font-weight="700" letter-spacing="2" fill="#e2b87d">CALL LIFECYCLE</text>
+  <g font-size="16" fill="#a3acb9">
+    <rect x="60" y="680" width="230" height="130" rx="14" fill="#1a1e26"/>
+    <text x="82" y="718" font-weight="700" fill="#e2b87d">01</text><text x="82" y="752" font-size="22" font-weight="700" fill="#faf9f6">Access</text><text x="82" y="782">Sign-in or magic link</text>
+    <rect x="310" y="680" width="230" height="130" rx="14" fill="#1a1e26"/>
+    <text x="332" y="718" font-weight="700" fill="#e2b87d">02</text><text x="332" y="752" font-size="22" font-weight="700" fill="#faf9f6">Mic check</text><text x="332" y="782">Countdown waits for it</text>
+    <rect x="560" y="680" width="230" height="130" rx="14" fill="#1a1e26"/>
+    <text x="582" y="718" font-weight="700" fill="#e2b87d">03</text><text x="582" y="752" font-size="22" font-weight="700" fill="#faf9f6">Live call</text><text x="582" y="782">Push-to-talk turns</text>
+    <rect x="810" y="680" width="230" height="130" rx="14" fill="#1a1e26"/>
+    <text x="832" y="718" font-weight="700" fill="#e2b87d">04</text><text x="832" y="752" font-size="22" font-weight="700" fill="#faf9f6">Turns saved</text><text x="832" y="782">Logged after each turn</text>
+    <rect x="1060" y="680" width="230" height="130" rx="14" fill="#1a1e26"/>
+    <text x="1082" y="718" font-weight="700" fill="#e2b87d">05</text><text x="1082" y="752" font-size="22" font-weight="700" fill="#faf9f6">Score + coach</text><text x="1082" y="782">Two GPT-4o calls</text>
+    <rect x="1310" y="680" width="230" height="130" rx="14" fill="#1a1e26"/>
+    <text x="1332" y="718" font-weight="700" fill="#e2b87d">06</text><text x="1332" y="752" font-size="22" font-weight="700" fill="#faf9f6">Review</text><text x="1332" y="782">Report, growth, team</text>
+  </g>
+</svg>

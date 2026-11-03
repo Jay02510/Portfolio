@@ -123,9 +123,9 @@ function scoreAssessment(answers) {
     tagline: "Sales staff practise realtime voice roleplay calls with AI customers, get rubric-based scores and coaching, and managers follow team progress.",
     liveUrl: "",
     screenshots: [
-      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Direct WebRTC Pipeline: Browser ↔ OpenAI Realtime (Sub-200ms Latency, Server VAD)" },
-      { label: "Tiered Rubric Evaluation Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11 Itemized Rubric Codes, BANTCQ Telemetry & 2-Week Onboarding Roadmap" },
-      { label: "Admin & Scenario Management Backoffice", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "Multi-Tenant RBAC Backoffice: Tiers, Rubrics, Scripts, Queues & Internal Test Assignment" }
+      { label: "Live Call Pipeline", url: "/screenshots/vodabi/call-flow.svg", subLabel: "Browser Talks to OpenAI Realtime Over WebRTC; the Backend Issues Tokens and Stores Turns" },
+      { label: "Score, Then Coach", url: "/screenshots/vodabi/evaluation.svg", subLabel: "Strict-JSON Scoring, Then Coaching Written From the Fixed Scores" },
+      { label: "Roles & Access", url: "/screenshots/vodabi/roles.svg", subLabel: "Admins Configure, Managers Assign, Staff Practise, Candidates Take One Call" }
     ],
     stats: [
       { label: "Time to Production", value: "~3 Weeks", detail: "Revamp plus coaching layer" },
@@ -305,7 +305,7 @@ Call B — feedback
     ],
     stats: [
       { label: "Role Architecture", value: "4 Distinct Roles", detail: "Parent, Foreign Teacher, Korean Staff, Director" },
-      { label: "Mistakes Caught (Eval)", value: "98–100%", detail: "105 synthetic photos incl. tilted, shadowed & crossed-out; 0 right answers marked wrong" },
+      { label: "Mistakes Caught (Eval)", value: "98–100%", detail: "105 synthetic pages, 35 tilted, shadowed or crossed-out; 5 runs, ≤2 of 226 right answers marked wrong" },
       { label: "Product Rigor", value: "26 Logged Decisions", detail: "Documented Trade-Offs & PRD/Scope Trio" }
     ],
     problem: [
@@ -443,7 +443,7 @@ Call B — feedback
     impact: {
       value: [
         "Connected 4 roles (Parent, FT, KT, Director) into a unified closed loop where home mistakes inform classroom instruction.",
-        "Built eval harnesses that drive model choice: with the answer key, mistakes caught rose from 88.9% (Gemini 2.5 Flash) to 100% (3.8 Flash); across 105 synthetic photos, including tilted, shadowed and crossed-out pages, 3.8 Flash caught 98–100% of mistakes over repeated runs with zero right answers marked wrong.",
+        "Built eval harnesses that drive model choice: on a 10-page first set with the answer key, Gemini 2.5 Flash caught 8 of 9 mistakes and 3.8 Flash caught 9 of 9; across 105 synthetic pages, 35 of them tilted, shadowed or crossed-out, 3.8 Flash caught 98–100% of mistakes over 5 runs and marked at most 2 of 226 right answers wrong.",
         "The harder photo set exposed two production bugs (crossed-out answers misread, a rare runaway-output loop), both fixed and re-verified; voice logs filled correctly in 6 English accents (60/60 recordings), and an LLM-judge check cut invented details in parent notes.",
         "Aims to cut teachers' weekly grading and reporting work; to be measured in the Chekki Schools pilot rather than estimated.",
         "Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a two-school pilot.",
@@ -1452,9 +1452,9 @@ function scoreAssessment(answers) {
     tagline: "영업 직원이 AI 고객과 실시간 음성 롤플레이로 연습하고 루브릭 기반 점수와 코칭을 받으며, 매니저는 팀의 진행 상황을 확인합니다.",
     liveUrl: "",
     screenshots: [
-      { label: "AI Voice Roleplay & Screening Persona", url: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2000&auto=format&fit=crop", subLabel: "Direct WebRTC 파이프라인: 브라우저 ↔ OpenAI Realtime (200ms 미만 지연, 서버 VAD)" },
-      { label: "Tiered Rubric Evaluation Scorecard", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop", subLabel: "11개 세부 루브릭 코드 채점, BANTCQ 텔레메트리 & 2주 온보딩 로드맵" },
-      { label: "Admin & Scenario Management Backoffice", url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop", subLabel: "멀티테넌트 RBAC 백오피스: 난이도 티어, 루브릭, 시나리오, 온보딩 큐 & 사내 공식 테스트 배정" }
+      { label: "실시간 통화 파이프라인", url: "/screenshots/vodabi/call-flow.svg", subLabel: "브라우저가 WebRTC로 OpenAI Realtime과 직접 통화하고, 백엔드는 토큰 발급과 턴 저장을 담당" },
+      { label: "채점 후 코칭", url: "/screenshots/vodabi/evaluation.svg", subLabel: "엄격한 JSON 스키마로 채점한 뒤, 확정된 점수를 바탕으로 코칭 작성" },
+      { label: "역할과 권한", url: "/screenshots/vodabi/roles.svg", subLabel: "관리자는 설정, 매니저는 배정과 추적, 직원은 연습, 지원자는 통화 1회" }
     ],
     stats: [
       { label: "프로덕션까지", value: "약 3주", detail: "플랫폼 개선 및 코칭 레이어 추가" },
@@ -1634,7 +1634,7 @@ function scoreAssessment(answers) {
     ],
     stats: [
       { label: "역할 아키텍처", value: "4개 독립 역할", detail: "학부모, 원어민 교사, 한국인 교사, 학원장" },
-      { label: "오답 검출 (평가)", value: "98–100%", detail: "기울고 그림자 지고 지운 답이 있는 합성 사진 105장; 정답을 오답 처리 0건" },
+      { label: "오답 검출 (평가)", value: "98–100%", detail: "합성 페이지 105장(기울고 그림자 지고 지운 답 35장), 5회 실행; 정답 226개 중 오답 처리 최대 2개" },
       { label: "프로덕트 엄밀성", value: "26개 기록된 결정", detail: "문서화된 트레이드오프 & PRD/Scope/Decisions 삼총사" }
     ],
     problem: [
@@ -1770,7 +1770,7 @@ function scoreAssessment(answers) {
     impact: {
       value: [
         "4개 역할(학부모, 원어민 교사, 한국인 교사, 원장)을 하나의 루프로 연결하여 가정 내 실수가 교실 수업 개선으로 이어지도록 구현.",
-        "평가 하네스로 모델 선택: 정답지 기준 오답 검출률이 Gemini 2.5 Flash 88.9%에서 3.8 Flash 100%로 올랐고, 기울고 그림자 지고 지운 답이 있는 합성 사진 105장에서 반복 실행 시 98–100%를 검출하며 정답을 오답으로 처리한 경우는 0건.",
+        "평가 하네스로 모델 선택: 첫 10페이지 세트에서 정답지 기준 Gemini 2.5 Flash는 오답 9개 중 8개, 3.8 Flash는 9개 모두 검출했고, 합성 페이지 105장(기울고 그림자 지고 지운 답 35장)에서 5회 실행 시 오답 98–100%를 검출하고 정답 226개 중 최대 2개만 오답으로 처리.",
         "어려운 사진 세트로 프로덕션 버그 2건(지운 답 오인식, 드문 무한 출력 루프)을 찾아 수정·재검증; 음성 일지는 6개 영어 억양에서 모두 정확히 입력(60/60), LLM 판정 검사로 학부모 메모의 지어낸 내용을 줄임.",
         "교사의 주간 채점·리포팅 업무를 줄이는 것이 목표이며, 추정치가 아닌 Chekki Schools 파일럿에서 측정할 예정.",
         "Chekki AI는 App Store와 Google Play에 출시되어 있고, Chekki Schools는 2개 학교 파일럿을 앞두고 최종 테스트 중.",
