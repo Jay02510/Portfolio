@@ -18,8 +18,8 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 | **[VodaBi Voice AI](./CASE_STUDY.md#vodabi-case-study)** | Enterprise B2B SaaS (VodaBi) | 🟢 **Featured Case Study** | **Score-then-Explain Grading** | Direct WebRTC voice roleplay, two-step GPT-4o grading, staff training & manager dashboards, AES-256-GCM encryption. |
 | **[Chekki Schools](./CASE_STUDY.md#chekki-teacher-case-study)** | EdTech Academy Operations | 🟡 **Final Testing** | **Answer-Key Grounded Grading** | Curriculum pre-seeding, ground-truth answer key calibration, and cohort mistake aggregation telemetry. |
 | **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech Closed-Loop Ecosystem | 🟢 **Live Shipped App** | **App Store & Google Play** | Ground-truth homework camera OCR, bilingual parent explanations, class mistake aggregator, and integrated teacher update pipeline. |
-| **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40h → 10min (0 Conflicts)** | Hybrid constraint architecture: Fast client-side TypeScript clash validation + Gemini heuristic optimization. |
-| **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Longitudinal Assessment Portal | 🟢 **Live Shipped App** | **Longitudinal Mastery** | Multi-axis Recharts & D3 radar charts mapping raw assessment points to CEFR/Cambridge YLE trajectories. |
+| **EduPlanner Pro** | School timetabling | 🟡 **Not shown on the site for now** | — | TypeScript solver for hard constraints; a reasoning model resolves the conflicts that remain. |
+| **Benchmark Explorer** | Assessment portal | 🟡 **Not shown on the site for now** | — | Maps assessment scores to CEFR and Cambridge YLE. |
 | **[B2B Lead Enrichment CRM](./CASE_STUDY.md#b2b-crm-case-study)** | Sales Automation CRM | 🟢 **Production CRM** | **1-Click Ingestion & Draft** | Express proxy masking Naver API keys, Leaflet TM128→WGS84 projection, and 1-click personalized Gmail deep links. |
 | **Learning Diary Hub** | Classroom photos and tags compiled into print-ready PDF portfolios | 🟡 **In progress** | — | Not shown on the site until it ships. |
 
@@ -101,11 +101,11 @@ Parents needed fast, zero-setup camera grading with clear Korean explanations an
 <a id="operations-case-study"></a>
 ## 5. OPERATIONAL ENGINES: EDUPANNER PRO & CRM PIPELINES
 
-### EduPlanner Pro (40h → 10min School Scheduling)
-* **Problem**: Master timetables take 40+ hours per term, fraught with teacher room clashes and fatigue imbalances.
+### EduPlanner Pro (School Scheduling)
+* **Problem**: Master timetables are built by hand each term, with teacher and room clashes and uneven workloads.
 * **Discovery**: Pure LLM reasoning fails at hard constraint geometry, but pure algorithmic solvers lack heuristic flexibility for teacher preferences.
 * **Decision**: Architected a hybrid model — fast client-side TypeScript validation catches 100% of hard time/room clashes locally, while Gemini Pro focuses on heuristic teacher workload balancing.
-* **Outcome**: **40 hours reduced to <10 minutes** with guaranteed 0-conflict scheduling.
+* **Outcome**: Not measured yet, so no time saving is claimed.
 
 ---
 

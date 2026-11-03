@@ -228,7 +228,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       owned: [
         "Candidate and staff flows: magic-link tests, self-practice, assigned training, and the post-call report",
         "Realtime voice pipeline: direct browser-to-model WebRTC, ephemeral tokens, push-to-talk and server-side VAD",
-        "Post-call evaluation service: two-step grading (score, then explain), BANTCQ evidence, speech-pacing telemetry",
+        "Post-call evaluation service: two-step grading (score, then explain), sales-qualification evidence quoted from the call, speech-pacing telemetry",
         "Multi-tenant backoffice with a custom roles guard, plus the VOISOR coaching assistant",
         "Staff growth and manager dashboards: scores by scenario, competency growth, badges, team completion rates",
         "Sentry error reporting and the AWS EC2 deploy"
@@ -343,7 +343,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       owned: [
         "지원자·직원 플로우: 매직링크 테스트, 자율 연습, 필수훈련 배정, 통화 후 리포트",
         "실시간 음성 파이프라인: 브라우저-모델 Direct WebRTC, 임시 토큰, Push-to-Talk 및 서버 VAD",
-        "통화 후 평가 서비스: 2단계 채점(채점 후 설명), BANTCQ 근거, 발화 속도 텔레메트리",
+        "통화 후 평가 서비스: 2단계 채점(채점 후 설명), 통화에서 인용한 영업 자격 검증 근거, 발화 속도 텔레메트리",
         "커스텀 RolesGuard 기반 멀티테넌트 백오피스 및 VOISOR 코칭 어시스턴트",
         "직원 성장·매니저 대시보드: 시나리오별 점수, 역량 성장, 배지, 팀 완료율",
         "Sentry 에러 리포팅과 AWS EC2 배포"
@@ -475,28 +475,6 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       caseStudyId: "bridgerecruit"
     },
     {
-      id: "eduplanner",
-      domains: ["ops"],
-      title: "EduPlanner Pro",
-      status: "Live MVP",
-      desc: "School master scheduling: classes, teachers and rooms solved against hard constraints, then re-woven by a reasoning model where they conflict.",
-      outcome: "40 hours → under 10 minutes, zero room or teacher clashes",
-      stack: ["TypeScript solver", "Gemini 2.5 Pro", "React", "Vite"],
-      liveUrl: "https://scheduling-app-five.vercel.app/",
-      caseStudyId: "eduplanner"
-    },
-    {
-      id: "benchmark",
-      domains: ["multimodal", "ops"],
-      title: "Benchmark Explorer",
-      status: "Live MVP",
-      desc: "Turns raw assessment scores into CEFR and Cambridge YLE skill maps so a teacher can see where a student is actually stuck.",
-      outcome: "Multi-axis mastery tracking in one click",
-      stack: ["D3.js", "Recharts", "Airtable API", "React"],
-      liveUrl: "https://education-benchmark-system.vercel.app/",
-      caseStudyId: "benchmark-explorer"
-    },
-    {
       id: "crm", minor: true,
       domains: ["ops"],
       title: "B2B lead enrichment CRM",
@@ -530,28 +508,6 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       liveUrl: "https://bridgerecruit-demo.vercel.app/",
       contactUrl: "mailto:jsn.benjamin@gmail.com?subject=BridgeRecruit%20Access%20Request",
       caseStudyId: "bridgerecruit"
-    },
-    {
-      id: "eduplanner",
-      domains: ["ops"],
-      title: "EduPlanner Pro",
-      status: "라이브 MVP",
-      desc: "학교 시간표 편성: 반·교사·교실을 하드 제약으로 먼저 풀고, 충돌 구간만 추론 모델이 재편성합니다.",
-      outcome: "40시간 → 10분 미만, 교실·교사 충돌 0건",
-      stack: ["TypeScript 솔버", "Gemini 2.5 Pro", "React", "Vite"],
-      liveUrl: "https://scheduling-app-five.vercel.app/",
-      caseStudyId: "eduplanner"
-    },
-    {
-      id: "benchmark",
-      domains: ["multimodal", "ops"],
-      title: "Benchmark Explorer",
-      status: "라이브 MVP",
-      desc: "평가 원점수를 CEFR·캠브리지 YLE 역량 지도로 변환해, 학생이 실제로 막힌 지점을 보여줍니다.",
-      outcome: "1클릭 다축 숙련도 추적",
-      stack: ["D3.js", "Recharts", "Airtable API", "React"],
-      liveUrl: "https://education-benchmark-system.vercel.app/",
-      caseStudyId: "benchmark-explorer"
     },
     {
       id: "crm", minor: true,
@@ -714,7 +670,7 @@ const LOG: LogEntry[] = [
 
 type Locale = 'en' | 'ko';
 
-export const CASE_IDS = ['vodabi', 'chekki', 'chekki-teacher', 'hagwon-readiness', 'bridgerecruit', 'eduplanner', 'benchmark-explorer', 'lead-enrichment'];
+export const CASE_IDS = ['vodabi', 'chekki', 'chekki-teacher', 'hagwon-readiness', 'bridgerecruit', 'lead-enrichment'];
 
 // URL scheme: /, /ko, /case/<id>, /ko/case/<id>. Each one is pre-rendered at build time.
 export function parsePath(path: string): { locale: Locale; caseId: string | null } {

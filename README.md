@@ -18,8 +18,8 @@ I build AI products for Korean English academies, taking them from the first tea
 | :--- | :--- | :--- |
 | **[Hagwon AI Readiness Index](https://ai-readiness.chekkiai.com)** | Bilingual self-assessment quiz that emails a personalised report and feeds the Chekki sales funnel. | Live |
 | **[BridgeRecruit](https://bridgerecruit-demo.vercel.app/)** | Outlook add-in and pipeline dashboard for international school admissions. | Live demo |
-| **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | School timetabling: a TypeScript solver enforces hard constraints, and a reasoning model resolves the conflicts that remain. | Live MVP |
-| **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Turns raw assessment scores into CEFR and Cambridge YLE skill maps. | Live MVP |
+| EduPlanner Pro | School timetabling: a TypeScript solver enforces hard constraints, and a reasoning model resolves the conflicts that remain. | Not shown on the site for now |
+| Benchmark Explorer | Turns raw assessment scores into CEFR and Cambridge YLE skill maps. | Not shown on the site for now |
 | Learning Diary Hub | Classroom photos and tags compiled into print-ready PDF portfolios. | In progress |
 | B2B lead-enrichment CRM | Finds and deduplicates regional academies and drafts personalised outreach. | Internal |
 
