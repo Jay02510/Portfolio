@@ -305,7 +305,7 @@ Call B — feedback
     ],
     stats: [
       { label: "Role Architecture", value: "4 Distinct Roles", detail: "Parent, Foreign Teacher, Korean Staff, Director" },
-      { label: "Mistakes Caught (Eval)", value: "100% with Key", detail: "vs 88.9% on 2.5 Flash, 0 false alarms, synthetic test pages" },
+      { label: "Mistakes Caught (Eval)", value: "98–100%", detail: "105 synthetic photos incl. tilted, shadowed & crossed-out; 0 right answers marked wrong" },
       { label: "Product Rigor", value: "26 Logged Decisions", detail: "Documented Trade-Offs & PRD/Scope Trio" }
     ],
     problem: [
@@ -443,7 +443,8 @@ Call B — feedback
     impact: {
       value: [
         "Connected 4 roles (Parent, FT, KT, Director) into a unified closed loop where home mistakes inform classroom instruction.",
-        "Built eval harnesses that drive model choice: on synthetic handwritten pages, mistakes caught with the answer key rose from 88.9% (Gemini 2.5 Flash) to 100% (3.8 Flash) with zero false alarms; a voice-to-report eval with an LLM judge cut invented details in parent notes and verified the fix.",
+        "Built eval harnesses that drive model choice: with the answer key, mistakes caught rose from 88.9% (Gemini 2.5 Flash) to 100% (3.8 Flash); across 105 synthetic photos, including tilted, shadowed and crossed-out pages, 3.8 Flash caught 98–100% of mistakes over repeated runs with zero right answers marked wrong.",
+        "The harder photo set exposed two production bugs (crossed-out answers misread, a rare runaway-output loop), both fixed and re-verified; voice logs filled correctly in 6 English accents (60/60 recordings), and an LLM-judge check cut invented details in parent notes.",
         "Aims to cut teachers' weekly grading and reporting work; to be measured in the Chekki Schools pilot rather than estimated.",
         "Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a two-school pilot.",
         "Maintained 26 logged architectural/product trade-offs with rigorous scope discipline."
@@ -1633,8 +1634,8 @@ function scoreAssessment(answers) {
     ],
     stats: [
       { label: "역할 아키텍처", value: "4개 독립 역할", detail: "학부모, 원어민 교사, 한국인 교사, 학원장" },
-      { label: "스캔 응답 타겟", value: "<5초 레이턴시", detail: "교사 정답지 OCR 기반 Ground-Truth 채점" },
-      { label: "프로덕트 엄밀성", value: "24개 기록된 결정", detail: "문서화된 트레이드오프 & PRD/Scope/Decisions 삼총사" }
+      { label: "오답 검출 (평가)", value: "98–100%", detail: "기울고 그림자 지고 지운 답이 있는 합성 사진 105장; 정답을 오답 처리 0건" },
+      { label: "프로덕트 엄밀성", value: "26개 기록된 결정", detail: "문서화된 트레이드오프 & PRD/Scope/Decisions 삼총사" }
     ],
     problem: [
       "가정 내 숙제 지도 마찰: 비원어민 학부모가 자녀의 영어 숙제 의도와 발음을 이해하지 못해 겪는 심리적 부담 및 비효율.",
@@ -1677,7 +1678,7 @@ function scoreAssessment(answers) {
     ],
     coreLoop: [
       { step: "01. 교사 정답지 등록", role: "원어민 교사", detail: "주간 워크시트를 OCR하여 반별 Firestore 커리큘럼 문서로 저장; 채점은 교사가 등록한 정답을 기준으로 합니다." },
-      { step: "02. 가정 내 모바일 스캔", role: "학부모 / 학생", detail: "스마트폰 카메라로 워크시트를 촬영; Gemini 비전이 5초 미만 목표 레이턴시로 이미지를 정형 분석합니다." },
+      { step: "02. 가정 내 모바일 스캔", role: "학부모 / 학생", detail: "스마트폰 카메라로 워크시트를 촬영; Gemini 3.8 Flash가 학원 정답지를 기준으로 채점합니다." },
       { step: "03. 즉각적 이중언어 결과", role: "학부모 앱", detail: "정답, 한국어 지도 스크립트, 파닉스 가이드를 원본 이미지 위 정밀 시각 오버레이로 렌더링합니다." },
       { step: "04. 오답 텔레메트리 자동 집계", role: "백엔드 엔진", detail: "개별 스캔의 오답이 반 전체 명렬표에 집계되어 '우리 반이 가장 어려워하는 개념' 사전 뷰를 구성합니다." },
       { step: "05. 수업 피드백 & 음성 로깅", role: "원어민 교사", detail: "수업 중 취약점을 지도하고, 녹음 한 번으로 수업 요약과 학생 메모를 기록합니다." },
@@ -1769,9 +1770,11 @@ function scoreAssessment(answers) {
     impact: {
       value: [
         "4개 역할(학부모, 원어민 교사, 한국인 교사, 원장)을 하나의 루프로 연결하여 가정 내 실수가 교실 수업 개선으로 이어지도록 구현.",
+        "평가 하네스로 모델 선택: 정답지 기준 오답 검출률이 Gemini 2.5 Flash 88.9%에서 3.8 Flash 100%로 올랐고, 기울고 그림자 지고 지운 답이 있는 합성 사진 105장에서 반복 실행 시 98–100%를 검출하며 정답을 오답으로 처리한 경우는 0건.",
+        "어려운 사진 세트로 프로덕션 버그 2건(지운 답 오인식, 드문 무한 출력 루프)을 찾아 수정·재검증; 음성 일지는 6개 영어 억양에서 모두 정확히 입력(60/60), LLM 판정 검사로 학부모 메모의 지어낸 내용을 줄임.",
         "교사의 주간 채점·리포팅 업무를 줄이는 것이 목표이며, 추정치가 아닌 Chekki Schools 파일럿에서 측정할 예정.",
         "Chekki AI는 App Store와 Google Play에 출시되어 있고, Chekki Schools는 2개 학교 파일럿을 앞두고 최종 테스트 중.",
-        "24개 아키텍처/프로덕트 의사결정 로그와 엄격한 스코프 관리 체계 유지."
+        "26개 아키텍처/프로덕트 의사결정 로그와 엄격한 스코프 관리 체계 유지."
       ],
       security: [
         "인증된 학교/학급 ID로 스코프된 Firestore 보안 규칙과 서버 전용 Admin SDK 권한 격리.",

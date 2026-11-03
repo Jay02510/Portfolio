@@ -71,7 +71,7 @@ Foreign English teachers in Korean academies face intense administrative frictio
 4. **Korean-Teacher Review per Class**: The Korean teacher reviews a whole class-day on one screen and approves once; each family sees the class summary plus only their child's note. Enforced in Firestore rules, so a foreign teacher can't self-approve.
 5. **Native-Speaker Voice Rules**: After Korean readers said drafts sounded machine-written, shared voice rules steer every report prompt toward specific, plain observations.
 
-6. **Measured Before Pilot**: Built eval harnesses from the textbook's own pages. With the answer key, mistakes caught rose from 88.9% on Gemini 2.5 Flash to 100% on 3.8 Flash, with zero right answers marked wrong (synthetic handwritten pages), so production moved to 3.8 Flash and accepted ~5s more per scan.
+6. **Measured Before Pilot**: Built eval harnesses from the textbook's own pages. With the answer key, mistakes caught rose from 88.9% on Gemini 2.5 Flash to 100% on 3.8 Flash, so production moved to 3.8 Flash and accepted ~5s more per scan. A harder set of 105 synthetic photos (tilted, shadowed, crossed-out answers) held at 98–100% over repeated runs with zero right answers marked wrong, and exposed two production bugs (crossed-out answers misread, a rare runaway-output loop), both fixed. Voice logs filled correctly in 6 English accents (60/60 recordings).
 7. **Fact-Checked Concern Notes**: A voice-to-report eval with an LLM judge found drafts inventing reasons and requests the teacher never made, worst in notes about a child's behaviour. Concern notes now get a second fact-check pass and can't be bulk-sent unread.
 
 ### D. Status
