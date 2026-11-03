@@ -43,6 +43,11 @@ export interface CaseStudyType {
   walkthroughVideo?: string;
   screenshots?: { label: string; url: string; subLabel?: string }[];
   stats: { label: string; value: string; detail?: string }[];
+  evals?: {
+    title: string;
+    note: string;
+    sets: { name: string; runs: { caught: number; mistakes: number; wrong: number; right: number }[] }[];
+  };
   problem: string[];
   solution: string[];
   stack: string[];

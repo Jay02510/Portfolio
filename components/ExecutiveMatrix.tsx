@@ -118,9 +118,9 @@ const SYSTEMS_DATA: SystemItem[] = [
     roleKo: "0→1 프로덕트 아키텍트 & 창업자",
     problemEn: "Instant camera OCR homework evaluation grounded in teacher answer keys with Korean honorific explanations for parents.",
     problemKo: "교사 정답지 기반의 즉각적인 카메라 OCR 숙제 채점 및 학부모를 위한 자연스러운 한국어 존댓말 해설.",
-    techStack: ["Capacitor (iOS/Android)", "Gemini 2.5", "Cloud Firestore", "Vercel Functions", "Upstash Redis", "RevenueCat"],
-    highlightMetricEn: "App Store & Google Play · 24 Documented Decisions",
-    highlightMetricKo: "App Store & Google Play 출시 · 24개 의사결정 로그",
+    techStack: ["Capacitor (iOS/Android)", "Gemini 3.8 Flash", "Cloud Firestore", "Vercel Functions", "Upstash Redis", "RevenueCat"],
+    highlightMetricEn: "App Store & Google Play · 26 Documented Decisions",
+    highlightMetricKo: "App Store & Google Play 출시 · 26개 의사결정 로그",
     liveUrl: "https://chekki-ai.vercel.app/",
     caseStudyId: "chekki"
   },

@@ -129,7 +129,7 @@ function scoreAssessment(answers) {
     ],
     stats: [
       { label: "Time to Production", value: "~3 Weeks", detail: "Revamp plus coaching layer" },
-      { label: "Voice Pipeline", value: "Direct WebRTC", detail: "Browser to OpenAI Realtime, sub-200ms" },
+      { label: "Voice Pipeline", value: "Direct WebRTC", detail: "Browser to OpenAI Realtime, no server hop" },
       { label: "Grading", value: "Score, then explain", detail: "Feedback is written from fixed scores" }
     ],
     problem: [
@@ -305,9 +305,17 @@ Call B — feedback
     ],
     stats: [
       { label: "Role Architecture", value: "4 Distinct Roles", detail: "Parent, Foreign Teacher, Korean Staff, Director" },
-      { label: "Mistakes Caught (Eval)", value: "98–100%", detail: "105 synthetic pages, 35 tilted, shadowed or crossed-out; 5 runs, ≤2 of 226 right answers marked wrong" },
+      { label: "Mistakes Caught (Eval)", value: "98–100%", detail: "105 synthetic pages, 35 of them tilted, shadowed or crossed-out; ≤2 of 226 right answers marked wrong in any run" },
       { label: "Product Rigor", value: "26 Logged Decisions", detail: "Documented Trade-Offs & PRD/Scope Trio" }
     ],
+    evals: {
+      title: "Grading eval · Gemini 3.8 Flash with the answer key",
+      note: "Synthetic worksheet pages with handwritten answers, graded against the teacher's key. On the first 10-page set, Gemini 2.5 Flash caught 8 of 9 mistakes and 3.8 Flash caught 9 of 9, so production moved to 3.8 Flash.",
+      sets: [
+        { name: "Clean pages · 70 pages", runs: [{ caught: 55, mistakes: 55, wrong: 0, right: 159 }, { caught: 55, mistakes: 55, wrong: 0, right: 159 }] },
+        { name: "Tilted, shadowed or crossed-out · 35 pages", runs: [{ caught: 40, mistakes: 40, wrong: 1, right: 67 }, { caught: 39, mistakes: 40, wrong: 0, right: 67 }, { caught: 40, mistakes: 40, wrong: 2, right: 67 }, { caught: 40, mistakes: 40, wrong: 0, right: 67 }, { caught: 38, mistakes: 40, wrong: 0, right: 67 }] }
+      ]
+    },
     problem: [
       "Parent-Child Home Study Friction: Korean parents who aren't fluent in English struggle to check English homework, so homework time turns into guessing.",
       "Disconnected Feedback Loop: Student homework errors made at home vanish into backpacks without reaching the classroom, leaving foreign teachers unaware of systemic weak spots.",
@@ -443,7 +451,7 @@ Call B — feedback
     impact: {
       value: [
         "Connected 4 roles (Parent, FT, KT, Director) into a unified closed loop where home mistakes inform classroom instruction.",
-        "Built eval harnesses that drive model choice: on a 10-page first set with the answer key, Gemini 2.5 Flash caught 8 of 9 mistakes and 3.8 Flash caught 9 of 9; across 105 synthetic pages, 35 of them tilted, shadowed or crossed-out, 3.8 Flash caught 98–100% of mistakes over 5 runs and marked at most 2 of 226 right answers wrong.",
+        "Built eval harnesses that drive model choice: on a 10-page first set with the answer key, Gemini 2.5 Flash caught 8 of 9 mistakes and 3.8 Flash caught 9 of 9; across 105 synthetic pages (70 clean, run twice; 35 tilted, shadowed or crossed-out, run 5 times), 3.8 Flash caught 98–100% of mistakes and marked at most 2 of 226 right answers wrong in any run.",
         "The harder photo set exposed two production bugs (crossed-out answers misread, a rare runaway-output loop), both fixed and re-verified; voice logs filled correctly in 6 English accents (60/60 recordings), and an LLM-judge check cut invented details in parent notes.",
         "Aims to cut teachers' weekly grading and reporting work; to be measured in the Chekki Schools pilot rather than estimated.",
         "Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a two-school pilot.",
@@ -1458,7 +1466,7 @@ function scoreAssessment(answers) {
     ],
     stats: [
       { label: "프로덕션까지", value: "약 3주", detail: "플랫폼 개선 및 코칭 레이어 추가" },
-      { label: "음성 파이프라인", value: "Direct WebRTC", detail: "브라우저와 OpenAI Realtime 직접 연결, 200ms 미만" },
+      { label: "음성 파이프라인", value: "Direct WebRTC", detail: "브라우저와 OpenAI Realtime 직접 연결, 서버 미경유" },
       { label: "채점", value: "채점 후 설명", detail: "확정된 점수로 피드백 작성" }
     ],
     problem: [
@@ -1634,9 +1642,17 @@ function scoreAssessment(answers) {
     ],
     stats: [
       { label: "역할 아키텍처", value: "4개 독립 역할", detail: "학부모, 원어민 교사, 한국인 교사, 학원장" },
-      { label: "오답 검출 (평가)", value: "98–100%", detail: "합성 페이지 105장(기울고 그림자 지고 지운 답 35장), 5회 실행; 정답 226개 중 오답 처리 최대 2개" },
+      { label: "오답 검출 (평가)", value: "98–100%", detail: "합성 페이지 105장(기울고 그림자 지고 지운 답 35장); 어느 실행에서도 정답 226개 중 오답 처리 최대 2개" },
       { label: "프로덕트 엄밀성", value: "26개 기록된 결정", detail: "문서화된 트레이드오프 & PRD/Scope/Decisions 삼총사" }
     ],
+    evals: {
+      title: "채점 평가 · 정답지 기준 Gemini 3.8 Flash",
+      note: "손글씨 답을 채운 합성 워크시트를 교사 정답지 기준으로 채점. 첫 10페이지 세트에서 Gemini 2.5 Flash는 오답 9개 중 8개, 3.8 Flash는 9개 모두 검출해 프로덕션을 3.8 Flash로 전환.",
+      sets: [
+        { name: "깨끗한 페이지 · 70장", runs: [{ caught: 55, mistakes: 55, wrong: 0, right: 159 }, { caught: 55, mistakes: 55, wrong: 0, right: 159 }] },
+        { name: "기울고 그림자 지고 지운 답 · 35장", runs: [{ caught: 40, mistakes: 40, wrong: 1, right: 67 }, { caught: 39, mistakes: 40, wrong: 0, right: 67 }, { caught: 40, mistakes: 40, wrong: 2, right: 67 }, { caught: 40, mistakes: 40, wrong: 0, right: 67 }, { caught: 38, mistakes: 40, wrong: 0, right: 67 }] }
+      ]
+    },
     problem: [
       "가정 내 숙제 지도 마찰: 비원어민 학부모가 자녀의 영어 숙제 의도와 발음을 이해하지 못해 겪는 심리적 부담 및 비효율.",
       "단절된 피드백 루프: 가정에서 발생하는 오답과 취약점이 교실로 전달되지 못하고 가방 속에 묻혀, 원어민 교사가 맞춤 피드백을 주기 어려움.",
@@ -1770,7 +1786,7 @@ function scoreAssessment(answers) {
     impact: {
       value: [
         "4개 역할(학부모, 원어민 교사, 한국인 교사, 원장)을 하나의 루프로 연결하여 가정 내 실수가 교실 수업 개선으로 이어지도록 구현.",
-        "평가 하네스로 모델 선택: 첫 10페이지 세트에서 정답지 기준 Gemini 2.5 Flash는 오답 9개 중 8개, 3.8 Flash는 9개 모두 검출했고, 합성 페이지 105장(기울고 그림자 지고 지운 답 35장)에서 5회 실행 시 오답 98–100%를 검출하고 정답 226개 중 최대 2개만 오답으로 처리.",
+        "평가 하네스로 모델 선택: 첫 10페이지 세트에서 정답지 기준 Gemini 2.5 Flash는 오답 9개 중 8개, 3.8 Flash는 9개 모두 검출했고, 합성 페이지 105장(깨끗한 70장 2회, 기울고 그림자 지고 지운 답 35장 5회 실행)에서 오답 98–100%를 검출했고, 어느 실행에서도 정답 226개 중 오답 처리는 최대 2개.",
         "어려운 사진 세트로 프로덕션 버그 2건(지운 답 오인식, 드문 무한 출력 루프)을 찾아 수정·재검증; 음성 일지는 6개 영어 억양에서 모두 정확히 입력(60/60), LLM 판정 검사로 학부모 메모의 지어낸 내용을 줄임.",
         "교사의 주간 채점·리포팅 업무를 줄이는 것이 목표이며, 추정치가 아닌 Chekki Schools 파일럿에서 측정할 예정.",
         "Chekki AI는 App Store와 Google Play에 출시되어 있고, Chekki Schools는 2개 학교 파일럿을 앞두고 최종 테스트 중.",

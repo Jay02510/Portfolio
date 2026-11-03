@@ -142,12 +142,12 @@ const FACTS = {
   en: [
     { value: "10+ years in Korean classrooms", label: "English academies since 2015: curriculum lead, author of a 20-volume textbook series, homeroom teacher." },
     { value: "6 products built solo", label: "From discovery to release. Chekki AI is on the App Store and Google Play; Chekki Schools is in final testing." },
-    { value: "24 decisions logged", label: "Architecture and product calls written down with the alternative and the tradeoff accepted." }
+    { value: "26 decisions logged", label: "Architecture and product calls written down with the alternative and the tradeoff accepted." }
   ],
   ko: [
     { value: "한국 교실 10년 이상", label: "2015년부터 영어 학원에서 커리큘럼 리드, 20권 교재 시리즈 집필, 담임을 맡았습니다." },
     { value: "제품 6개 단독 개발", label: "발견부터 출시까지. Chekki AI는 App Store와 Google Play에 출시, Chekki Schools는 최종 테스트 중." },
-    { value: "의사결정 24건 기록", label: "검토한 대안과 감수한 트레이드오프까지 함께 남긴 아키텍처·제품 판단 기록." }
+    { value: "의사결정 26건 기록", label: "검토한 대안과 감수한 트레이드오프까지 함께 남긴 아키텍처·제품 판단 기록." }
   ]
 };
 
@@ -156,7 +156,7 @@ const ROLE_COLS = {
     {
       head: "Product",
       items: [
-        "PRD authorship and a 24-entry decision log",
+        "PRD authorship and a 26-entry decision log",
         "LLM-judge pipelines that score first and explain second",
         "Tiered model routing: light model for drafting, reasoning model for conflict resolution",
         "Pricing and trial windows aligned to the customer's planning cycle",
@@ -187,7 +187,7 @@ const ROLE_COLS = {
     {
       head: "프로덕트",
       items: [
-        "PRD 작성 및 24건의 의사결정 로그",
+        "PRD 작성 및 26건의 의사결정 로그",
         "채점 후 설명하는 LLM 평가 파이프라인",
         "모델 계층 분리: 초안은 경량 모델, 충돌 해결은 추론 모델",
         "고객의 운영 주기에 맞춘 가격 정책과 체험 기간 설계",

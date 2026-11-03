@@ -997,9 +997,56 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               }`}>
                 {stat.label}
               </div>
+              {stat.detail && (
+                <p className={`text-xs leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'}`}>
+                  {stat.detail}
+                </p>
+              )}
             </div>
           ))}
         </div>
+
+        {/* EVAL RESULTS: one bar per run, full 0-100% scale so near-perfect reads as near-full, not inflated */}
+        {projectData.evals && (
+          <figure className={`rounded-2xl border p-6 md:p-8 space-y-6 ${
+            theme === 'dark' ? 'bg-white/[0.02] border-white/10' : 'bg-black/[0.02] border-black/10'
+          }`}>
+            <figcaption className="space-y-2">
+              <div className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{projectData.evals.title}</div>
+              <p className={`text-sm leading-relaxed max-w-3xl ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'}`}>
+                {projectData.evals.note}
+              </p>
+            </figcaption>
+            <div className="grid md:grid-cols-2 gap-8">
+              {projectData.evals.sets.map((set) => (
+                <div key={set.name} className="space-y-3">
+                  <div className={`text-xs font-bold ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{set.name}</div>
+                  <ul className="space-y-2.5">
+                    {set.runs.map((r, i) => {
+                      const pct = Math.round((r.caught / r.mistakes) * 100);
+                      return (
+                        <li key={i} className="grid grid-cols-[3.5rem_1fr] items-end gap-3 text-xs">
+                          <span className={`font-mono ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'}`}>
+                            {locale === 'ko' ? `${i + 1}회` : `Run ${i + 1}`}
+                          </span>
+                          <div className="space-y-1">
+                            <div className={`h-2 rounded ${theme === 'dark' ? 'bg-white/10' : 'bg-black/10'}`}>
+                              <div className="h-2 rounded bg-accent-gold" style={{ width: `${pct}%` }} />
+                            </div>
+                            <div className={`font-mono flex flex-wrap gap-x-3 ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}`}>
+                              <span>{locale === 'ko' ? `오답 ${r.caught}/${r.mistakes} 검출 (${pct}%)` : `${r.caught}/${r.mistakes} caught (${pct}%)`}</span>
+                              <span>{locale === 'ko' ? `정답 ${r.wrong}/${r.right} 오답 처리` : `${r.wrong}/${r.right} right marked wrong`}</span>
+                            </div>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </figure>
+        )}
 
         {/* BEHIND THE ARCHITECTURE Callout Insight Container */}
         {projectData.behindTheArchitecture && (
