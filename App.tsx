@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef, lazy, Suspense } from 'react';
 import ResumeModal from './components/ResumeModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import { CompactProjectCard } from './components/CompactProjectCard.tsx';
-import { SunIcon, MoonIcon, SearchIcon, ExternalLinkIcon, ChevronDownIcon } from './components/Icons.tsx';
+import { SunIcon, MoonIcon, ExternalLinkIcon, ChevronDownIcon } from './components/Icons.tsx';
 import { track } from '@vercel/analytics';
 
 // Case studies (viewer + ~2,600 lines of data) load only when one is opened.
@@ -12,6 +12,21 @@ interface Decision {
   choice: string;
   why: string;
   tradeoff: string;
+}
+
+// Muted loop that only downloads and plays while on screen; stays on its poster for reduced motion.
+function LoopVideo({ src, poster, label }: { src: string; poster?: string; label: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    v.muted = true; // React leaves `muted` out of server HTML, which blocks autoplay
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.25 });
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
+  return <video ref={ref} src={src} poster={poster} muted loop playsInline preload="none" aria-label={label} className="w-full h-full object-contain" />;
 }
 
 interface FeaturedProject {
@@ -24,6 +39,8 @@ interface FeaturedProject {
   decisions: Decision[];
   stack: string[];
   image?: string;
+  video?: string;
+  proof?: string;
   liveUrl?: string;
   stores?: { label: string; href: string }[];
 }
@@ -62,7 +79,7 @@ const COPY = {
     heroTitle: "AI product engineer building for Korean teachers and parents.",
     heroBody: "From the first teacher interview to the App Store. 10+ years in Korean English academies and six AI products built solo. Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a pilot. At VodaBi I build the frontend, backend and database of a voice-AI sales training platform.",
     ctaWork: "See the work",
-    ctaResume: "Interactive résumé",
+    ctaResume: "Résumé",
     caseLabel: "Case study ↗",
     nowLabel: "Now",
     nowBody: "The VodaBi screening platform is built and going into use with two enterprise clients.",
@@ -75,10 +92,6 @@ const COPY = {
     decisionsLabel: "Decisions and tradeoffs",
     moreTitle: "Side projects",
     moreNote: "Designed and built solo.",
-    minorTitle: "Also built: in progress or internal",
-    searchPlaceholder: "Search projects...",
-    noResults: "Nothing matches that — probably means I haven't built it yet.",
-    clearFilters: "Clear filters",
     logTitle: "Build log",
     logToggleMore: "Show all",
     logToggleLess: "Show less",
@@ -104,7 +117,7 @@ const COPY = {
     heroTitle: "한국 교사와 학부모를 위한 AI 제품을 설계하고 개발하는 AI 프로덕트 엔지니어.",
     heroBody: "첫 교사 인터뷰부터 앱 출시까지. 한국 영어 학원에서 10년 넘게 가르쳤고, AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 파일럿을 앞두고 최종 테스트 중입니다. VodaBi에서는 음성 AI 영업 훈련 플랫폼의 프론트엔드, 백엔드, 데이터베이스를 만듭니다.",
     ctaWork: "프로젝트 보기",
-    ctaResume: "인터랙티브 이력서",
+    ctaResume: "이력서",
     caseLabel: "케이스 스터디 ↗",
     nowLabel: "현재",
     nowBody: "VodaBi 스크리닝 플랫폼 구축을 마쳤고, 두 곳의 기업 고객사에서 사용을 시작합니다.",
@@ -117,10 +130,6 @@ const COPY = {
     decisionsLabel: "판단과 트레이드오프",
     moreTitle: "사이드 프로젝트",
     moreNote: "혼자 설계하고 만들었습니다.",
-    minorTitle: "그 외: 진행 중이거나 내부용",
-    searchPlaceholder: "프로젝트 검색...",
-    noResults: "조건에 맞는 프로젝트가 없습니다 — 아직 안 만들었을 가능성이 높습니다.",
-    clearFilters: "필터 초기화",
     logTitle: "빌드 로그",
     logToggleMore: "전체 보기",
     logToggleLess: "접기",
@@ -256,7 +265,9 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki",
       context: "Independent · Chekki AI",
       status: "Live · pilot",
-      image: "https://res.cloudinary.com/dginphpy4/image/upload/f_auto,q_auto,w_960/v1765770525/Chekki_Futuristic_Background_i8foqe.png",
+      image: "/video/chekki-loop-poster.webp",
+      video: "/video/chekki-loop.mp4",
+      proof: "98–100% of mistakes caught in grading evals on 105 synthetic pages",
       title: "Closed-loop homework grading for Korean ESL academies",
       problem: "Three problems that are usually treated separately: parents who cannot check English homework with their child, mistakes at home that never reach the next lesson, and teachers writing bilingual parent updates by hand. Chekki closes that loop with one camera scan graded against the teacher's own answer key.",
       owned: [
@@ -284,7 +295,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
           tradeoff: "Tradeoff: no history view, and no ability to re-run an old scan."
         }
       ],
-      stack: ["React 19", "Capacitor 8", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "Upstash Redis", "RevenueCat"],
+      stack: ["React 19", "Capacitor 8", "Gemini 3.8 Flash", "Cloud Firestore", "Vercel Functions", "Upstash Redis", "RevenueCat"],
       liveUrl: "https://chekki-ai.vercel.app/",
       stores: [
         { label: "App Store ↗", href: "https://apps.apple.com/us/app/chekkiai/id6759361725" },
@@ -295,7 +306,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki-teacher",
       context: "Same platform, staff-facing · Chekki Schools",
       status: "Final testing",
-      image: "/screenshots/chekki-schools/mascot-logo.webp",
+      image: "/screenshots/chekki-schools/02-director-dashboard.webp",
       title: "Role-scoped CRM for academy directors and teachers",
       problem: "Chekki AI is the app parents open; this is what the academy behind it runs on. A director managing the account, a foreign teacher grading homework, and a Korean teacher messaging parents were all stuck in the same single-page tool, each looking at menus meant for someone else's job.",
       owned: [
@@ -328,7 +339,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
           tradeoff: "Tradeoff: plainer, more specific reports with less praise, and one rule set to keep in sync across three prompts."
         }
       ],
-      stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "Role-scoped React hooks"],
+      stack: ["React 19", "Gemini 3.8 Flash", "Cloud Firestore", "Vercel Functions", "Role-scoped React hooks"],
       liveUrl: "https://www.chekkiai.com/schools"
     }
   ],
@@ -371,7 +382,9 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki",
       context: "독립 개발 · Chekki AI",
       status: "라이브 · 파일럿",
-      image: "https://res.cloudinary.com/dginphpy4/image/upload/f_auto,q_auto,w_960/v1765770525/Chekki_Futuristic_Background_i8foqe.png",
+      image: "/video/chekki-loop-poster.webp",
+      video: "/video/chekki-loop.mp4",
+      proof: "채점 평가에서 오답 98–100% 검출 (합성 페이지 105장)",
       title: "한국 영어학원을 위한 가정-교실 폐쇄 루프 숙제 채점",
       problem: "보통 따로 다뤄지는 세 가지 문제: 영어 숙제를 아이와 함께 확인하기 어려운 학부모, 다음 수업까지 전달되지 않는 가정 내 오답, 그리고 이중언어 알림장을 손으로 쓰는 교사. Chekki는 교사의 정답지를 기준으로 한 번의 카메라 스캔으로 이 루프를 닫습니다.",
       owned: [
@@ -399,7 +412,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
           tradeoff: "트레이드오프: 이력 조회가 없고 과거 스캔을 다시 실행할 수 없습니다."
         }
       ],
-      stack: ["React 19", "Capacitor 8", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "Upstash Redis", "RevenueCat"],
+      stack: ["React 19", "Capacitor 8", "Gemini 3.8 Flash", "Cloud Firestore", "Vercel Functions", "Upstash Redis", "RevenueCat"],
       liveUrl: "https://chekki-ai.vercel.app/",
       stores: [
         { label: "App Store ↗", href: "https://apps.apple.com/us/app/chekkiai/id6759361725" },
@@ -410,7 +423,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       id: "chekki-teacher",
       context: "같은 플랫폼, 교직원용 · Chekki Schools",
       status: "최종 테스트 중",
-      image: "/screenshots/chekki-schools/mascot-logo.webp",
+      image: "/screenshots/chekki-schools/02-director-dashboard-ko.webp",
       title: "원장·교사를 위한 역할별 CRM",
       problem: "Chekki AI가 학부모가 여는 앱이라면, 이건 그 뒤에 있는 학원이 돌아가는 도구입니다. 계정을 관리하는 원장, 숙제를 채점하는 원어민 교사, 학부모에게 메시지를 보내는 한국인 교사가 전부 같은 단일 페이지 도구에 갇혀, 서로 다른 사람의 업무용 메뉴를 마주하고 있었습니다.",
       owned: [
@@ -443,7 +456,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
           tradeoff: "트레이드오프: 칭찬은 줄고 더 담백하고 구체적인 리포트가 되며, 세 프롬프트에 걸친 규칙을 함께 관리해야 합니다."
         }
       ],
-      stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "역할별 React 훅"],
+      stack: ["React 19", "Gemini 3.8 Flash", "Cloud Firestore", "Vercel Functions", "역할별 React 훅"],
       liveUrl: "https://www.chekkiai.com/schools"
     }
   ]
@@ -519,21 +532,6 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       stack: ["Node/Express", "Naver Map API", "Gemini JSON", "Firebase"],
       caseStudyId: "lead-enrichment"
     }
-  ]
-};
-
-const FILTERS = {
-  en: [
-    { id: "all", label: "All" },
-    { id: "multimodal", label: "Multimodal" },
-    { id: "ops", label: "Automation" },
-    { id: "mobile", label: "Mobile" }
-  ],
-  ko: [
-    { id: "all", label: "전체" },
-    { id: "multimodal", label: "멀티모달" },
-    { id: "ops", label: "자동화" },
-    { id: "mobile", label: "모바일" }
   ]
 };
 
@@ -686,8 +684,6 @@ export default function App({ initialPath }: { initialPath?: string }) {
   const [initialRoute] = useState(() => parsePath(initialPath ?? (typeof window !== 'undefined' ? window.location.pathname : '/')));
   const [locale, setLocale] = useState<Locale>(initialRoute.locale);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-  const [activeFilter, setActiveFilter] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState<string>('');
   const [isLogExpanded, setIsLogExpanded] = useState<boolean>(false);
   const [isResumeOpen, setIsResumeOpen] = useState<boolean>(false);
   const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(initialRoute.caseId);
@@ -746,19 +742,6 @@ export default function App({ initialPath }: { initialPath?: string }) {
   };
 
   const L = COPY[locale];
-
-  const filteredShipped = useMemo(() => SHIPPED_PROJECTS[locale].filter(item => {
-    const matchesFilter = activeFilter === 'all' || item.domains.includes(activeFilter);
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return matchesFilter;
-    const matchesQuery = (
-      item.title.toLowerCase().includes(q) ||
-      item.desc.toLowerCase().includes(q) ||
-      item.outcome.toLowerCase().includes(q) ||
-      item.stack.some(s => s.toLowerCase().includes(q))
-    );
-    return matchesFilter && matchesQuery;
-  }), [locale, activeFilter, searchQuery]);
 
   const displayedLog = useMemo(() => isLogExpanded ? LOG : LOG.slice(0, 3), [isLogExpanded]);
 
@@ -889,25 +872,6 @@ export default function App({ initialPath }: { initialPath?: string }) {
               >
                 {L.ctaResume}
               </button>
-              <a
-                href="https://www.linkedin.com/in/jason-benjamin/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`h-[46px] px-6 rounded-xl border text-[13px] font-bold tracking-wide inline-flex items-center active:scale-95 transition-[background-color,border-color,color,transform] duration-150 ${
-                  isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
-                }`}
-              >
-                {L.linkedinLabel}
-              </a>
-              <a
-                href="mailto:jsn.benjamin@gmail.com"
-                onClick={() => track('email_click')}
-                className={`h-[46px] px-5 rounded-xl border text-[13px] font-medium tracking-wide inline-flex items-center transition-colors ${
-                  isDark ? 'border-white/10 text-[#848e9c] hover:text-white' : 'border-black/10 text-[#6b7280] hover:text-black'
-                }`}
-              >
-                jsn.benjamin@gmail.com
-              </a>
             </div>
           </div>
 
@@ -990,13 +954,17 @@ export default function App({ initialPath }: { initialPath?: string }) {
                     <div className={`aspect-video lg:aspect-auto h-full overflow-hidden border-b lg:border-b-0 lg:border-r relative p-8 ${
                       isDark ? 'bg-[#101319] border-white/10' : 'bg-[#f2f1ec] border-black/10'
                     }`}>
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-contain hover:scale-102 transition-transform duration-500"
-                        loading="lazy"
-                        referrerPolicy="no-referrer"
-                      />
+                      {project.video ? (
+                        <LoopVideo src={project.video} poster={project.image} label={project.title} />
+                      ) : (
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          className="w-full h-full object-contain hover:scale-102 transition-transform duration-500"
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                        />
+                      )}
                     </div>
                   )}
 
@@ -1016,6 +984,9 @@ export default function App({ initialPath }: { initialPath?: string }) {
                       <h3 className="mt-3 text-xl md:text-2xl font-display font-medium tracking-tight leading-snug">
                         {project.title}
                       </h3>
+                      {project.proof && (
+                        <p className="mt-2 text-sm font-semibold text-accent-gold">{project.proof}</p>
+                      )}
 
                       <p className={`mt-3 text-sm md:text-[14.5px] leading-relaxed ${
                         isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
@@ -1184,85 +1155,21 @@ export default function App({ initialPath }: { initialPath?: string }) {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2.5">
-              <div className="flex items-center gap-1.5 flex-wrap">
-                {FILTERS[locale].map(f => {
-                  const isActive = activeFilter === f.id;
-                  return (
-                    <button
-                      key={f.id}
-                      onClick={() => setActiveFilter(f.id)}
-                      aria-pressed={isActive}
-                      className={`h-[34px] px-3.5 rounded-lg text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
-                        isActive
-                          ? (isDark ? 'bg-white text-[#14171d]' : 'bg-[#14171d] text-white')
-                          : (isDark ? 'border border-white/15 text-white/70 hover:bg-white/5' : 'border border-black/15 text-black/70 hover:bg-black/5')
-                      }`}
-                    >
-                      {f.label}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className={`h-[34px] px-3 rounded-lg border flex items-center gap-2 ${
-                isDark ? 'border-white/15 bg-white/[0.02]' : 'border-black/15 bg-black/[0.02]'
-              }`}>
-                <SearchIcon className={`w-3.5 h-3.5 ${isDark ? 'text-white/40' : 'text-black/40'}`} />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={L.searchPlaceholder}
-                  className="bg-transparent border-none outline-none text-base sm:text-xs w-[120px] sm:w-[150px] placeholder-inherit"
-                />
-                {searchQuery && (
-                  <button onClick={() => setSearchQuery('')} className="text-xs opacity-50 hover:opacity-100 transition-[opacity,transform] active:scale-95">
-                    ✕
-                  </button>
-                )}
-              </div>
-            </div>
           </div>
 
-          {filteredShipped.length > 0 ? (
-            [filteredShipped.filter(p => !p.minor), filteredShipped.filter(p => p.minor)].map((group, gi) => group.length > 0 && (
-              <div key={gi}>
-                {gi === 1 && (
-                  <h3 className={`mt-12 text-sm font-bold tracking-wide ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>
-                    {L.minorTitle}
-                  </h3>
-                )}
-                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {group.map(p => (
-                    <CompactProjectCard
-                      key={p.id}
-                      project={p}
-                      theme={theme}
-                      locale={locale}
-                      caseLabel={L.caseLabel}
-                      caseHref={pathFor(locale, p.caseStudyId)}
-                      onOpenCaseStudy={openCaseStudy}
-                    />
-                  ))}
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className={`mt-6 py-10 flex flex-col items-center gap-3 text-center border-t ${
-              isDark ? 'border-white/10' : 'border-black/10'
-            }`}>
-              <p className={`text-sm ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>
-                {L.noResults}
-              </p>
-              <button
-                onClick={() => { setActiveFilter('all'); setSearchQuery(''); }}
-                className="text-xs font-bold text-accent-gold hover:underline"
-              >
-                {L.clearFilters}
-              </button>
-            </div>
-          )}
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {SHIPPED_PROJECTS[locale].map(p => (
+              <CompactProjectCard
+                key={p.id}
+                project={p}
+                theme={theme}
+                locale={locale}
+                caseLabel={L.caseLabel}
+                caseHref={pathFor(locale, p.caseStudyId)}
+                onOpenCaseStudy={openCaseStudy}
+              />
+            ))}
+          </div>
         </section>
 
         {/* BUILD LOG SECTION */}
@@ -1420,6 +1327,8 @@ export default function App({ initialPath }: { initialPath?: string }) {
             theme={theme}
             locale={locale}
             animateIn={animateCase}
+            caseIds={CASE_IDS}
+            onOpenCase={openCaseStudy}
           />
         </Suspense>
       )}

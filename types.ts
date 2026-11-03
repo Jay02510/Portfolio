@@ -37,6 +37,7 @@ export interface ProductDecision {
 export interface CaseStudyType {
   title: string;
   tagline: string;
+  meta?: { role: string; team?: string; dates?: string; status: string };
   liveUrl: string;
   storeUrl?: string;
   contactUrl?: string;

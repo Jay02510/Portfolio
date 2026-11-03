@@ -4,6 +4,7 @@ export const studyDataEn: Record<string, CaseStudyType> = {
   "hagwon-readiness": {
     title: "Hagwon AI Readiness Index — Bilingual Lead-Gen Assessment",
     tagline: "A 7-pillar, EN/KO self-assessment that scores a hagwon director's AI readiness out of 84, emails a personalized report, and routes the result into Chekki's B2B sales funnel — with GA4 attribution and a password-gated admin view behind it.",
+    meta: { role: "Product engineer", team: "Solo", status: "Live" },
     liveUrl: "https://ai-readiness.chekkiai.com",
     screenshots: [
       { label: "Quiz Landing", url: "/screenshots/hagwon-readiness/01-landing.png", subLabel: "Bilingual Entry Point" },
@@ -121,6 +122,7 @@ function scoreAssessment(answers) {
   vodabi: {
     title: "VODABI — AI Voice Sales Training & Evaluation Platform",
     tagline: "Sales staff practise realtime voice roleplay calls with AI customers, get rubric-based scores and coaching, and managers follow team progress.",
+    meta: { role: "Sole full-stack engineer", team: "Solo engineer, building from a designer's Figma", dates: "Jul 2026 – present", status: "Built; rolling out with two enterprise clients" },
     liveUrl: "",
     screenshots: [
       { label: "Live Call Pipeline", url: "/screenshots/vodabi/call-flow.svg", subLabel: "Browser Talks to OpenAI Realtime Over WebRTC; the Backend Issues Tokens and Stores Turns" },
@@ -288,6 +290,7 @@ Call B — feedback
   chekki: {
     title: "Chekki AI — AI Homework Grading & Academy Platform",
     tagline: "AI-graded homework and teacher/parent reporting platform for Korean English academies, shipped solo across web, iOS, and Android with ground-truth answer key OCR grading and a connected staff reporting loop.",
+    meta: { role: "Founder and product engineer", team: "Solo", status: "Live on the App Store and Google Play" },
     liveUrl: "https://chekki-ai.vercel.app/",
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "/video/chekki-loop.mp4",
@@ -761,6 +764,7 @@ Call B — feedback
   "chekki-teacher": {
     title: "Chekki Schools — Role-Scoped Academy CRM",
     tagline: "The staff-facing side of the Chekki platform, now in final testing: separate views for directors, foreign teachers and Korean teachers, on top of the same worksheet-grading engine that powers the Chekki AI parent app.",
+    meta: { role: "Founder and product engineer", team: "Solo", status: "Final testing; two-school pilot planned" },
     liveUrl: "https://www.chekkiai.com/schools",
     screenshots: [
       { label: "Schools Landing", url: "/screenshots/chekki-schools/01-schools-landing.webp", subLabel: "Class Notes in English, Reports in Korean" },
@@ -868,6 +872,7 @@ Call B — feedback
   "lead-enrichment": {
     title: "B2B Lead Enrichment CRM",
     tagline: "Naver Local Search → Gemini structured enrichment → Firebase-backed CRM for Chekki Schools academy outreach, with compliant bilingual email drafting built in.",
+    meta: { role: "Product engineer", team: "Solo", status: "Internal tool" },
     liveUrl: "",
     screenshots: [
       { label: "Search & Bulk Sweep", url: "/screenshots/lead-enrichment/01-search-and-bulk-sweep.png", subLabel: "Naver Local Search plus a district × keyword combo generator for unattended batch runs" },
@@ -1127,6 +1132,7 @@ Call B — feedback
   bridgerecruit: {
     title: "BridgeRecruit — Inbox-Native Admissions CRM",
     tagline: "An inbox-native CRM that lets international-school admissions recruiters log every touchpoint, track territory health, and draft AI-assisted follow-ups without leaving Outlook.",
+    meta: { role: "Product engineer", team: "Solo", status: "Live demo (portfolio build)" },
     liveUrl: "https://bridgerecruit-demo.vercel.app/",
     contactUrl: "mailto:jsn.benjamin@gmail.com?subject=BridgeRecruit%20Access%20Request",
     screenshots: [
@@ -1342,6 +1348,7 @@ export const studyDataKo: Record<string, CaseStudyType> = {
   "hagwon-readiness": {
     title: "학원 AI 준비도 지표 — 이중언어 리드 확보 진단",
     tagline: "학원 원장의 AI 준비도를 84점 만점, 7개 영역으로 진단하는 한/영 이중언어 자가진단. 결과를 개인화 리포트로 이메일 발송하고 Chekki의 B2B 세일즈 퍼널로 연결하며, GA4 유입 추적과 비밀번호 보호 관리자 화면을 갖췄습니다.",
+    meta: { role: "프로덕트 엔지니어", team: "1인", status: "운영 중" },
     liveUrl: "https://ai-readiness.chekkiai.com",
     screenshots: [
       { label: "퀴즈 랜딩", url: "/screenshots/hagwon-readiness/01-landing.png", subLabel: "이중언어 진입 화면" },
@@ -1459,6 +1466,7 @@ function scoreAssessment(answers) {
   vodabi: {
     title: "VODABI — AI 음성 세일즈 훈련 & 평가 플랫폼",
     tagline: "영업 직원이 AI 고객과 실시간 음성 롤플레이로 연습하고 루브릭 기반 점수와 코칭을 받으며, 매니저는 팀의 진행 상황을 확인합니다.",
+    meta: { role: "단독 풀스택 엔지니어", team: "엔지니어 1인, 디자이너 Figma 기반", dates: "2026년 7월 – 현재", status: "구축 완료, 기업 고객 2곳에 도입 중" },
     liveUrl: "",
     screenshots: [
       { label: "실시간 통화 파이프라인", url: "/screenshots/vodabi/call-flow.svg", subLabel: "브라우저가 WebRTC로 OpenAI Realtime과 직접 통화하고, 백엔드는 토큰 발급과 턴 저장을 담당" },
@@ -1626,6 +1634,7 @@ function scoreAssessment(answers) {
   chekki: {
     title: "Chekki AI — AI 숙제 채점 및 학원 관리 플랫폼",
     tagline: "교사 정답지 OCR 기반 즉각적 이중언어 AI 숙제 채점 + 학부모, 원어민 교사, 한국인 교사, 학원장을 연결하는 웹/iOS/안드로이드 통합 에듀테크 플랫폼.",
+    meta: { role: "창업자 · 프로덕트 엔지니어", team: "1인", status: "App Store · Google Play 출시" },
     liveUrl: "https://chekki-ai.vercel.app/",
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "/video/chekki-loop.mp4",
@@ -2097,6 +2106,7 @@ function scoreAssessment(answers) {
   "chekki-teacher": {
     title: "Chekki Schools — 역할별 학원 관리 CRM",
     tagline: "Chekki 플랫폼의 교직원용 축으로, 현재 최종 테스트 중입니다. 원장, 원어민 교사, 한국인 교사 화면이 역할별로 분리되어 있으며, 학부모용 Chekki AI 앱과 동일한 채점 엔진을 공유합니다.",
+    meta: { role: "창업자 · 프로덕트 엔지니어", team: "1인", status: "최종 테스트 중, 2개 학원 파일럿 예정" },
     liveUrl: "https://www.chekkiai.com/schools",
     screenshots: [
       { label: "Schools 랜딩", url: "/screenshots/chekki-schools/01-schools-landing-ko.webp", subLabel: "교실 기록은 영어로, 리포트는 한국어로" },
@@ -2204,6 +2214,7 @@ function scoreAssessment(answers) {
   "lead-enrichment": {
     title: "B2B 리드 인리치먼트 CRM",
     tagline: "네이버 지역 검색 → Gemini 구조화 인리치먼트 → Firebase 기반 CRM으로, Chekki Schools 학원 영업을 위한 컴플라이언스 준수 이중언어 이메일 초안까지 앱 내부에서 완결합니다.",
+    meta: { role: "프로덕트 엔지니어", team: "1인", status: "내부 도구" },
     liveUrl: "",
     screenshots: [
       { label: "검색 및 벌크 스윕", url: "/screenshots/lead-enrichment/01-search-and-bulk-sweep.png", subLabel: "네이버 지역 검색과 지역구 × 키워드 조합 생성기로 무인 배치 실행 지원" },
@@ -2464,6 +2475,7 @@ function scoreAssessment(answers) {
   bridgerecruit: {
     title: "BridgeRecruit — 인박스 네이티브 입학처 CRM",
     tagline: "국제학교 입학 담당자가 아웃룩을 벗어나지 않고 모든 접점을 기록하고, 지역 관계 건전도를 추적하며, AI 기반 후속 조치를 작성할 수 있는 인박스 네이티브 CRM.",
+    meta: { role: "프로덕트 엔지니어", team: "1인", status: "라이브 데모 (포트폴리오 프로젝트)" },
     liveUrl: "https://bridgerecruit-demo.vercel.app/",
     contactUrl: "mailto:jsn.benjamin@gmail.com?subject=BridgeRecruit%20Access%20Request",
     screenshots: [

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MailIcon, XIcon, ExternalLinkIcon, SparklesIcon, ChevronDownIcon, FileTextIcon, DeviceMobileIcon, SettingsIcon, LockIcon, CodeIcon } from './components/Icons.tsx';
+import { MailIcon, XIcon, ExternalLinkIcon, SparklesIcon, SearchIcon, ChevronDownIcon, FileTextIcon, DeviceMobileIcon, SettingsIcon, LockIcon, CodeIcon } from './components/Icons.tsx';
 import { CaseStudyType } from './types.ts';
 import { studyDataEn, studyDataKo } from './components/caseStudyData.ts';
 
@@ -12,13 +12,16 @@ interface CaseStudyViewerProps {
   // false when the page loaded directly on this case study's URL: it is already
   // in the pre-rendered HTML, so fading it in would flash the homepage first.
   animateIn?: boolean;
+  // Order of case studies for next/previous links, and how to open one in place.
+  caseIds?: string[];
+  onOpenCase?: (id: string) => void;
 }
 
 const uiTranslation = {
   en: {
     backToPortfolio: "← Back",
     launchLive: "Launch Live ↗",
-    architecturalStudy: "Architectural Case Study",
+    architecturalStudy: "Case study",
     technicalBreakdown: "Technical Breakdown ↓",
     launchLiveApp: "Launch Live App ↗",
     systemStack: "System Stack",
@@ -69,7 +72,7 @@ const uiTranslation = {
   ko: {
     backToPortfolio: "← 돌아가기",
     launchLive: "라이브 데모 실행 ↗",
-    architecturalStudy: "아키텍처 케이스 스터디",
+    architecturalStudy: "케이스 스터디",
     technicalBreakdown: "기술 세부 분석 ↓",
     launchLiveApp: "구동 데모 ↗",
     systemStack: "시스템 기술 스택",
@@ -679,7 +682,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
   theme = 'dark',
   locale = 'en',
   backgroundScrollY,
-  animateIn = true
+  animateIn = true,
+  caseIds,
+  onOpenCase
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -695,8 +700,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
     isFileVideo((locale === 'ko' ? studyDataKo : studyDataEn)[projectId]?.walkthroughVideo) ? 'video' : 'screenshots'
   );
   const [lightboxImage, setLightboxImage] = useState<{ url: string; label: string } | null>(null);
-  const [videoPlaying, setVideoPlaying] = useState(false);
-  const [videoError, setVideoError] = useState(false);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
   const [isEntered, setIsEntered] = useState(!animateIn);
   const [isClosing, setIsClosing] = useState(false);
@@ -716,8 +719,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
 
   // Reset video player state when changing tab or project
   useEffect(() => {
-    setVideoPlaying(false);
-    setVideoError(false);
   }, [projectId, proofOfWorkTab]);
 
   useEffect(() => {
@@ -933,6 +934,22 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             {projectData.tagline}
           </p>
 
+          {projectData.meta && (
+            <dl className={`flex flex-wrap gap-x-10 gap-y-4 pt-2 border-t pt-6 max-w-4xl ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+              {([
+                [locale === 'ko' ? '역할' : 'Role', projectData.meta.role],
+                [locale === 'ko' ? '팀' : 'Team', projectData.meta.team],
+                [locale === 'ko' ? '기간' : 'Dates', projectData.meta.dates],
+                [locale === 'ko' ? '상태' : 'Status', projectData.meta.status],
+              ] as const).filter(([, v]) => v).map(([k, v]) => (
+                <div key={k} className="space-y-1">
+                  <dt className={`text-[10px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'}`}>{k}</dt>
+                  <dd className="text-sm md:text-base font-medium">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
           {/* DUAL BUTTON SPLIT CTA */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 max-w-2xl w-full">
             <button 
@@ -983,7 +1000,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     : 'border-accent-gold/40 hover:bg-accent-gold/10 text-accent-gold'
                 }`}
               >
-                <span className="whitespace-nowrap leading-snug">🚀 {t.storeLink}</span>
+                <span className="whitespace-nowrap leading-snug">{t.storeLink}</span>
               </a>
             )}
           </div>
@@ -995,7 +1012,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         }`}>
           {projectData.stats.map((stat, idx) => (
             <div key={idx} className="space-y-2">
-              <div className="text-3xl md:text-5xl font-mono font-bold text-accent-gold">
+              <div className={`font-mono font-bold text-accent-gold ${/^[~<≤]?\d/.test(stat.value) ? 'text-3xl md:text-5xl' : 'text-2xl md:text-3xl'}`}>
                 {stat.value}
               </div>
               <div className={`text-[10px] font-black uppercase tracking-widest ${
@@ -1069,7 +1086,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent-gold/5 rounded-full blur-3xl pointer-events-none"></div>
               <div className="flex items-center gap-3">
-                <span className="text-2xl">🧠</span>
                 <div className="flex flex-col">
                   <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold">{t.productMindset}</span>
                   <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.behindTheArchitecture}</h2>
@@ -1089,7 +1105,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 {/* THE HUMAN PROBLEM */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">😫</span>
                     <h3 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.humanProblem}</h3>
                   </div>
                   <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
@@ -1102,7 +1117,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 {/* THE PRODUCT VISION */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">💡</span>
                     <h3 className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.productVision}</h3>
                   </div>
                   <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
@@ -1115,7 +1129,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 {/* THE CORE RATIONALE */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">🧠</span>
                     <h3 className="text-[10px] font-black uppercase tracking-widest text-[#44D9C5]">{t.coreRationale}</h3>
                   </div>
                   <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
@@ -1144,7 +1157,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
               <div className="flex items-center gap-3">
-                <span className="text-2xl">🔄</span>
                 <div className="flex flex-col">
                   <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400">{t.coreLoopSubtitle}</span>
                   <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.coreLoopTitle}</h2>
@@ -1213,7 +1225,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
               <div className="flex items-center gap-3">
-                <span className="text-2xl">⚖️</span>
                 <div className="flex flex-col">
                   <span className="text-[9px] font-black uppercase tracking-[0.3em] text-purple-400">{t.decisionsSubtitle}</span>
                   <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.decisionsTitle}</h2>
@@ -1281,7 +1292,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                         </div>
                         <div className="space-y-1">
                           <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-wider text-orange-400">
-                            <span>⚡</span>
                             <span>{t.tradeoffLabel}</span>
                           </div>
                           <p className={`text-[11px] leading-relaxed font-normal ${
@@ -1315,7 +1325,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-3xl pointer-events-none"></div>
               <div className="flex items-center justify-between gap-4 w-full flex-wrap pr-4">
                 <div className="flex items-center gap-3">
-                  <span className="text-xl">🚨</span>
                   <div className="flex flex-col">
                     <span className="text-[9px] font-black uppercase tracking-[0.3em] text-red-500">{locale === 'en' ? "WHEN THINGS BREAK" : "장애 및 결함 조치 진찰기"}</span>
                     <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.technicalHurdles}</h2>
@@ -1355,7 +1364,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                         {/* THE INCIDENT */}
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-xs text-red-500">❌</div>
+                            <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-xs text-red-500 font-bold">×</div>
                             <h3 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.incident}</h3>
                           </div>
                           <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
@@ -1368,7 +1377,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                         {/* THE DIAGNOSIS */}
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center text-xs text-orange-500">🔍</div>
+                            <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500"><SearchIcon className="w-3 h-3" /></div>
                             <h3 className="text-[10px] font-black uppercase tracking-widest text-orange-500">{t.diagnosis}</h3>
                           </div>
                           <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
@@ -1409,7 +1418,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             </div>
 
             {/* Sub-tab switcher to toggle between Interactive Screenshots and Walkthrough Video */}
-            {projectData.screenshots && projectData.screenshots.length > 0 && (projectData.walkthroughVideo !== undefined || projectId === 'chekki-teacher') && (
+            {projectData.screenshots && projectData.screenshots.length > 0 && projectData.walkthroughVideo && (
               <div className="flex rounded-xl p-1 border border-white/10 bg-black/40 text-[10px] font-bold uppercase tracking-wider overflow-hidden max-w-full self-start sm:self-auto shadow-2xl">
                 <button
                   type="button"
@@ -1420,7 +1429,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                       : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  <span>📸</span>
                   <span>{locale === 'en' ? "Screenshots" : "스크린샷"}</span>
                 </button>
                 <button
@@ -1432,7 +1440,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                       : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  <span>🎥</span>
                   <span>{locale === 'en' ? "Walkthrough Video" : "데모영상 시연"}</span>
                 </button>
               </div>
@@ -1496,13 +1503,12 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   
                   {/* Zoom Badge Indicator */}
                   <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-mono uppercase font-semibold text-white/80 tracking-widest flex items-center gap-1.5 shadow-lg opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 pointer-events-none select-none">
-                    <span>🔍</span>
                     <span>{locale === 'en' ? "Expand View" : "전체화면"}</span>
                   </div>
                   
                   {/* Mobile always-visible scale expand button icon */}
                   <div className="md:hidden absolute bottom-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/15 flex items-center justify-center text-white/90 shadow-lg" aria-hidden="true">
-                    <span className="text-[10px]">🔍</span>
+                    <SearchIcon className="w-3.5 h-3.5" />
                   </div>
                 </button>
 
@@ -1590,251 +1596,25 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             <div className={`rounded-2xl border overflow-hidden aspect-video relative flex flex-col items-center justify-center bg-black/40 ${
               theme === 'dark' ? 'border-white/10' : 'border-black/10'
             }`}>
-              {projectData.walkthroughVideo ? (
-                (() => {
-                  const url = projectData.walkthroughVideo.split('?')[0].split('#')[0].toLowerCase();
-                  const coverImg = projectData.screenshots?.[0]?.url || "";
-
-                  if (!videoPlaying && !isFileVideo(url)) {
-                    return (
-                      <button
-                        type="button"
-                        onClick={() => setVideoPlaying(true)}
-                        className="w-full h-full absolute inset-0 flex flex-col items-center justify-center cursor-pointer group/vid select-none overflow-hidden focus:outline-none bg-gradient-to-br from-neutral-900 to-neutral-950"
-                        aria-label={locale === 'ko' ? "데모 영상 재생" : "Play walkthrough video"}
-                      >
-                        {coverImg ? (
-                          <>
-                            <img
-                              src={coverImg}
-                              alt="Video Walkthrough Thumbnail"
-                              referrerPolicy="no-referrer"
-                              loading="lazy"
-                              className="w-full h-full object-cover transition-transform duration-700 ease-out brightness-[0.35] group-hover/vid:scale-[1.03] absolute inset-0"
-                              onError={(e) => {
-                                e.currentTarget.style.display = 'none';
-                              }}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/60 z-0" />
-                          </>
-                        ) : (
-                          <div className="absolute inset-0 bg-neutral-950 z-0" />
-                        )}
-                        
-                        <div className="relative z-10 flex flex-col items-center justify-center p-6 text-center max-w-sm">
-                          <div className="w-16 h-16 rounded-full bg-accent-gold text-black flex items-center justify-center shadow-2xl transform group-hover/vid:scale-110 active:scale-95 transition-transform duration-300 border-2 border-accent-gold/40">
-                            <svg className="w-6 h-6 fill-current ml-1" viewBox="0 0 24 24" aria-hidden="true">
-                              <path d="M8 5v14l11-7z" />
-                            </svg>
-                          </div>
-                          <span className="mt-4 text-[11px] font-black uppercase tracking-[0.2em] text-accent-gold block font-mono">
-                            {locale === 'en' ? "Play Walkthrough Video" : "비동기 데모 영상 재생"}
-                          </span>
-                          <span className="mt-2 text-[10px] text-white/50 block font-sans leading-relaxed max-w-[280px]">
-                            {locale === 'en' 
-                              ? "Click to launch player. Open direct walkthrough below if your browser blocks embeds." 
-                              : "클릭하면 플레이어가 재생됩니다. 보안 프록시 가드로 인해 재생이 막힌 경우 아래 새 창 버튼을 활용해 주세요."}
-                          </span>
-                        </div>
-                      </button>
-                    );
-                  }
-                  
-                  // Helper function to extract and convert youtube/loom/vimeo share links to embeddable player links
-                  const getEmbedUrl = (rawUrl: string) => {
-                    if (!rawUrl) return '';
-                    if (rawUrl.includes('guidde.com') || rawUrl.includes('embed') || rawUrl.includes('playbooks')) {
-                      return rawUrl;
-                    }
-                    if (rawUrl.includes('youtube.com/watch')) {
-                      const videoId = rawUrl.split('v=')[1]?.split('&')[0];
-                      return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}` : rawUrl;
-                    }
-                    if (rawUrl.includes('youtu.be/')) {
-                      const videoId = rawUrl.split('youtu.be/')[1]?.split('?')[0];
-                      return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}` : rawUrl;
-                    }
-                    if (rawUrl.includes('loom.com/share/')) {
-                      const videoId = rawUrl.split('loom.com/share/')[1]?.split('?')[0];
-                      return videoId ? `https://www.loom.com/embed/${videoId}?autoplay=1` : rawUrl;
-                    }
-                    if (rawUrl.includes('vimeo.com/')) {
-                      const videoId = rawUrl.split('vimeo.com/')[1]?.split('?')[0];
-                      return videoId ? `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1` : rawUrl;
-                    }
-                    return '';
-                  };
-
-                  const isGuidde = projectData.walkthroughVideo.includes('guidde.com') || projectData.walkthroughVideo.includes('playbooks');
-                  
-                  if (isGuidde) {
-                    return (
-                      <div className="w-full h-full relative flex flex-col items-center justify-center p-6 text-center select-none rounded-[15px] overflow-hidden bg-neutral-950">
-                        {coverImg && (
-                          <div className="absolute inset-0 z-0 opacity-15">
-                            <img
-                              src={coverImg}
-                              alt="Background Preview"
-                              className="w-full h-full object-cover blur-md"
-                              referrerPolicy="no-referrer"
-                              loading="lazy"
-                            />
-                            <div className="absolute inset-0 bg-neutral-950/80" />
-                          </div>
-                        )}
-                        <div className="relative z-10 flex flex-col items-center max-w-sm px-4">
-                          <div className="w-14 h-14 rounded-full bg-accent-gold/10 border border-accent-gold/25 flex items-center justify-center mb-4 text-accent-gold shadow-lg animate-in fade-in duration-500">
-                            <span className="text-xl">📽️</span>
-                          </div>
-                          <h4 className="text-sm font-bold tracking-wider text-accent-gold uppercase font-mono block">
-                            {locale === 'en' ? "Guidde Video Playbook" : "인터랙티브 데모 가이드북"}
-                          </h4>
-                          <p className="mt-3 text-[11px] text-white/70 leading-relaxed">
-                            {locale === 'en'
-                              ? "To bypass strict browser sandbox security blocks and access full step-by-step interactive hotspots, please launch the playbook in a secure, direct browser window."
-                              : "브라우저 보안 가드 및 아이프레임 차단 정책 우회 및 실시간 가이드 툴팁 감상을 위해, 아래 단추를 활용하여 다이렉트 창에서 비디오를 시청해 주세요."}
-                          </p>
-                          <a
-                            href={projectData.walkthroughVideo}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-5 inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-accent-gold hover:bg-accent-gold/90 text-black text-[10px] font-black uppercase tracking-wider transition-[background-color,transform] duration-150 shadow-md transform hover:scale-[1.02] active:scale-95 group"
-                          >
-                            <span>{locale === 'en' ? "Launch Playbook Demo" : "가이드북 데모 실행"}</span>
-                            <span className="text-xs transition-transform group-hover:translate-x-0.5">↗</span>
-                          </a>
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  if (videoError) {
-                    return (
-                      <div className="w-full h-full relative flex flex-col items-center justify-center p-6 text-center select-none rounded-[15px] overflow-hidden bg-neutral-950">
-                        <div className="relative z-10 flex flex-col items-center max-w-sm px-4">
-                          <div className="w-12 h-12 rounded-full bg-neutral-900 border border-white/10 flex items-center justify-center mb-4 text-accent-gold shadow-lg">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                          </div>
-                          <h4 className="text-sm font-bold tracking-wider text-accent-gold uppercase font-mono block">
-                            {locale === 'en' ? "Full Screen Demo Stream" : "데모 스트림 연동 완료"}
-                          </h4>
-                          <p className="mt-3 text-[11px] text-white/60 leading-relaxed">
-                            {locale === 'en'
-                              ? "Browser canvas shielding detected. Launch the direct video stream securely in a fresh dashboard window."
-                              : "보안 프라이버시 쉴드로 인해 인라인 재생이 제한되었습니다. 아래 버튼을 눌러 데모 동영상을 단독 창에서 실시간 감상하실 수 있습니다."}
-                          </p>
-                          <a
-                            href={projectData.walkthroughVideo}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-5 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-accent-gold hover:bg-accent-gold/90 text-black text-[10px] font-black uppercase tracking-wider transition-[background-color,transform] duration-150 shadow-md transform hover:scale-[1.02] active:scale-95 group"
-                          >
-                            <span>{locale === 'en' ? "Open Walkthrough" : "직접 데모 시청"}</span>
-                            <span className="text-xs transition-transform group-hover:translate-x-0.5">↗</span>
-                          </a>
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  const embedUrl = getEmbedUrl(projectData.walkthroughVideo);
-                  if (embedUrl) {
-                    return (
-                      <iframe
-                        src={embedUrl}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                        className="w-full h-full absolute inset-0"
-                        referrerPolicy="unsafe-url"
-                      />
-                    );
-                  }
-
-                  const isVideo = url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg') || url.includes('/video/upload/');
-                  return isVideo ? (
-                    <video
-                      src={projectData.walkthroughVideo}
-                      poster={projectData.walkthroughPoster}
-                      controls
-                      autoPlay={!prefersReducedMotion}
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      // React omits `muted` from server HTML, so the browser blocks the autoplay; start it once mounted.
-                      ref={(el) => { if (el && !prefersReducedMotion) { el.muted = true; el.play().catch(() => {}); } }}
-                      aria-label={projectData.title}
-                      className="w-full h-full object-cover"
-                      onError={() => setVideoError(true)}
-                    />
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => setLightboxImage({ url: projectData.walkthroughVideo!, label: projectData.title })}
-                      className="w-full h-full relative flex items-center justify-center select-none overflow-hidden cursor-zoom-in group/img focus:outline-none"
-                      aria-label={locale === 'ko' ? "데모 이미지 전체 화면으로 보기" : "View walkthrough image in full screen"}
-                    >
-                      <img 
-                        src={projectData.walkthroughVideo} 
-                        alt={projectData.title}
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover/img:scale-[1.02]"
-                      />
-                      <div className="md:hidden absolute bottom-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/15 flex items-center justify-center text-white/90 shadow-lg" aria-hidden="true">
-                        <span className="text-[10px]">🔍</span>
-                      </div>
-                    </button>
-                  );
-                })()
-              ) : (
-                <div className="p-8 text-center space-y-4 max-w-lg animate-in fade-in duration-500">
-                  <div className="w-16 h-16 rounded-full bg-accent-gold/10 flex items-center justify-center mx-auto animate-pulse">
-                    <span className="text-2xl">📽️</span>
-                  </div>
-                  <h4 className="text-sm font-bold font-mono uppercase tracking-wider text-pretty text-accent-gold">
-                    {locale === 'en' ? "Walkthrough Video Slot Ready" : "비동기 파이프라인 시연 준비 완료"}
-                  </h4>
-                  <p className="text-xs text-white/70 leading-relaxed font-sans max-w-prose text-pretty">
-                    {locale === 'en' 
-                      ? "The embedded media interface is ready. This space is reserved for the automated report builder video demo (Loom/YouTube walkthrough) being published soon!" 
-                      : "비디오 임베드 인터페이스 구성이 완비되었습니다. 곧 업로드될 데이터 통합 생성 흐름 가이드(Loom/YouTube 녹화본)를 바로 시청하실 수 있도록 준비된 전용 영역입니다."}
-                  </p>
-                  <div className="pt-2">
-                    <span className="inline-flex px-4 py-1.5 rounded-full border border-accent-gold/20 bg-accent-gold/5 text-accent-gold text-[9px] font-mono uppercase tracking-widest animate-pulse">
-                      {locale === 'en' ? "Video Mount Awaiting Link..." : "링크 연동 대기 중..."}
-                    </span>
-                  </div>
-                </div>
+              {projectData.walkthroughVideo && (
+                <video
+                  src={projectData.walkthroughVideo}
+                  poster={projectData.walkthroughPoster}
+                  controls
+                  autoPlay={!prefersReducedMotion}
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  // React omits `muted` from server HTML, so the browser blocks the autoplay; start it once mounted.
+                  ref={(el) => { if (el && !prefersReducedMotion) { el.muted = true; el.play().catch(() => {}); } }}
+                  aria-label={projectData.title}
+                  className="w-full h-full object-cover"
+                />
               )}
             </div>
           )}
 
-          {proofOfWorkTab === 'video' && projectData.walkthroughVideo && !isFileVideo(projectData.walkthroughVideo) && (
-            <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-2xl border transition-[background-color,border-color] ${
-              theme === 'dark' ? 'bg-white/[0.02] border-white/5' : 'bg-black/[0.01] border-black/5'
-            }`}>
-              <div className="flex gap-2.5 items-start">
-                <span className="text-sm shrink-0">💡</span>
-                <p className={`text-[11px] leading-relaxed select-none ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/75'}`}>
-                  {locale === 'en' 
-                    ? "If the embedded walkthrough doesn't render due to third-party cookie restrictions or browser sandboxing within the preview frames, open it directly."
-                    : "브라우저 보안 가드 및 Iframe 제약 조건으로 인해 뷰어가 보이지 않는 경우, 아래 단추를 클릭해 실시간 시연을 시청하실 수 있습니다."}
-                </p>
-              </div>
-              <a
-                href={projectData.walkthroughVideo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-accent-gold/45 bg-accent-gold/5 hover:bg-accent-gold/15 text-accent-gold text-[10px] font-black uppercase tracking-widest transition-[background-color] active:scale-95 whitespace-nowrap self-stretch sm:self-auto text-center shadow-lg"
-              >
-                <span>{locale === 'en' ? "Open Direct Walkthrough" : "실시간 데모 새 창으로 보기"}</span>
-                <span className="text-[12px]">↗</span>
-              </a>
-            </div>
-          )}
         </div>
 
         {/* THE CORE CONTENT BREAKDOWN */}
@@ -1851,7 +1631,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
             >
               <div className="flex items-center gap-3">
-                <span className="text-2xl">🛠️</span>
                 <div className="flex flex-col min-w-0 w-full">
                   <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold whitespace-normal break-words">{locale === 'en' ? "DEEP ANALYSIS" : "심층 분석 매뉴얼"}</span>
                   <h2 className={`text-[11px] font-bold uppercase tracking-widest whitespace-normal break-words text-pretty ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.technicalBreakdown}</h2>
@@ -2066,7 +1845,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                         <ul className="space-y-3">
                           {projectData.impact.security.map((s, idx) => (
                             <li key={idx} className="flex gap-4 items-start">
-                              <span className="text-accent-gold font-bold font-mono">⚡</span>
+                              <span className="w-1.5 h-1.5 rounded-full bg-accent-gold mt-2 flex-shrink-0"></span>
                               <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${
                                 theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
                               }`}>
@@ -2106,6 +1885,28 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             </a>
           </div>
         </div>
+
+        {caseIds && onOpenCase && caseIds.includes(projectId) && (() => {
+          const i = caseIds.indexOf(projectId);
+          const prev = caseIds[(i - 1 + caseIds.length) % caseIds.length];
+          const next = caseIds[(i + 1) % caseIds.length];
+          const href = (id: string) => `${locale === 'ko' ? '/ko' : ''}/case/${id}`;
+          return (
+            <nav aria-label={locale === 'ko' ? '다른 케이스 스터디' : 'More case studies'} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {([[prev, locale === 'ko' ? '← 이전' : '← Previous', 'text-left'], [next, locale === 'ko' ? '다음 →' : 'Next →', 'sm:text-right']] as const).map(([id, label, align]) => (
+                <a
+                  key={label}
+                  href={href(id)}
+                  onClick={(e) => { e.preventDefault(); onOpenCase(id); }}
+                  className={`block p-6 rounded-2xl border transition-[border-color] ${align} ${theme === 'dark' ? 'border-white/10 hover:border-accent-gold/40' : 'border-black/10 hover:border-accent-clay/40'}`}
+                >
+                  <span className={`block text-[10px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'}`}>{label}</span>
+                  <span className="block mt-2 text-base md:text-lg font-medium">{studyData[id]?.title}</span>
+                </a>
+              ))}
+            </nav>
+          );
+        })()}
       </div>
 
       {lightboxImage && (
