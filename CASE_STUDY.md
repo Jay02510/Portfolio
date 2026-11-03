@@ -21,7 +21,7 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 | **[EduPlanner Pro](https://scheduling-app-five.vercel.app/)** | AI Operations Engine | 🟢 **Live Shipped App** | **40h → 10min (0 Conflicts)** | Hybrid constraint architecture: Fast client-side TypeScript clash validation + Gemini heuristic optimization. |
 | **[Benchmark Explorer](https://education-benchmark-system.vercel.app/)** | Longitudinal Assessment Portal | 🟢 **Live Shipped App** | **Longitudinal Mastery** | Multi-axis Recharts & D3 radar charts mapping raw assessment points to CEFR/Cambridge YLE trajectories. |
 | **[B2B Lead Enrichment CRM](./CASE_STUDY.md#b2b-crm-case-study)** | Sales Automation CRM | 🟢 **Production CRM** | **1-Click Ingestion & Draft** | Express proxy masking Naver API keys, Leaflet TM128→WGS84 projection, and 1-click personalized Gmail deep links. |
-| **[Learning Diary Hub](./CASE_STUDY.md#learning-diary-case-study)** | Multi-Tenant White-Label PDF Engine | 🟢 **MVP** | **15s per Student** | Touch-optimized 'Tag & Commit' tablet workflow, Supabase RLS multi-tenancy, and in-browser `@react-pdf/renderer` compilation ($0 server cost). |
+| **Learning Diary Hub** | Classroom photos and tags compiled into print-ready PDF portfolios | 🟡 **In progress** | — | Not shown on the site until it ships. |
 
 ---
 

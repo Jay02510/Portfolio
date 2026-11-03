@@ -497,16 +497,6 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       caseStudyId: "benchmark-explorer"
     },
     {
-      id: "diary", minor: true,
-      domains: ["mobile", "multimodal"],
-      title: "Learning Diary Hub",
-      status: "WIP",
-      desc: "Classroom activity photos plus pedagogical tags compiled into print-ready PDF portfolios, with a font proxy that survives Hangul rendering.",
-      outcome: "15 seconds per student portfolio",
-      stack: ["Express", "Gemini Flash", "Supabase RLS", "@react-pdf"],
-      caseStudyId: "white-label-hub"
-    },
-    {
       id: "crm", minor: true,
       domains: ["ops"],
       title: "B2B lead enrichment CRM",
@@ -562,16 +552,6 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
       stack: ["D3.js", "Recharts", "Airtable API", "React"],
       liveUrl: "https://education-benchmark-system.vercel.app/",
       caseStudyId: "benchmark-explorer"
-    },
-    {
-      id: "diary", minor: true,
-      domains: ["mobile", "multimodal"],
-      title: "Learning Diary Hub",
-      status: "진행 중",
-      desc: "수업 활동 사진과 교육 태그를 인쇄용 PDF 포트폴리오로 컴파일하고, 한글 렌더링을 위한 폰트 프록시를 둡니다.",
-      outcome: "학생당 15초",
-      stack: ["Express", "Gemini Flash", "Supabase RLS", "@react-pdf"],
-      caseStudyId: "white-label-hub"
     },
     {
       id: "crm", minor: true,
@@ -734,7 +714,7 @@ const LOG: LogEntry[] = [
 
 type Locale = 'en' | 'ko';
 
-export const CASE_IDS = ['vodabi', 'chekki', 'chekki-teacher', 'hagwon-readiness', 'bridgerecruit', 'eduplanner', 'benchmark-explorer', 'white-label-hub', 'lead-enrichment'];
+export const CASE_IDS = ['vodabi', 'chekki', 'chekki-teacher', 'hagwon-readiness', 'bridgerecruit', 'eduplanner', 'benchmark-explorer', 'lead-enrichment'];
 
 // URL scheme: /, /ko, /case/<id>, /ko/case/<id>. Each one is pre-rendered at build time.
 export function parsePath(path: string): { locale: Locale; caseId: string | null } {

@@ -41,6 +41,7 @@ export interface CaseStudyType {
   storeUrl?: string;
   contactUrl?: string;
   walkthroughVideo?: string;
+  walkthroughPoster?: string;
   screenshots?: { label: string; url: string; subLabel?: string }[];
   stats: { label: string; value: string; detail?: string }[];
   evals?: {

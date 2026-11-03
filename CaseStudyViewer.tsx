@@ -554,6 +554,9 @@ const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
   return nodesMap[pId] || nodesMap['chekki'];
 };
 
+const SOLUTION_SHOWN = 5;
+const isFileVideo = (u?: string) => !!u && /\.(mp4|webm)$/i.test(u.split('?')[0]);
+
 const ArchitectureFlowchart: React.FC<{ projectId: string; theme: 'light' | 'dark'; locale: 'en' | 'ko' }> = ({
   projectId,
   theme,
@@ -687,7 +690,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
   const [isHurdlesOpen, setIsHurdlesOpen] = useState(false);
   const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
   const [activeScreenshotIdx, setActiveScreenshotIdx] = useState(0);
-  const [proofOfWorkTab, setProofOfWorkTab] = useState<'screenshots' | 'video'>('screenshots');
+  // A self-hosted loop is the quickest read of the product, so it opens first; screenshots stay one tab away.
+  const [proofOfWorkTab, setProofOfWorkTab] = useState<'screenshots' | 'video'>(() =>
+    isFileVideo((locale === 'ko' ? studyDataKo : studyDataEn)[projectId]?.walkthroughVideo) ? 'video' : 'screenshots'
+  );
   const [lightboxImage, setLightboxImage] = useState<{ url: string; label: string } | null>(null);
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [videoError, setVideoError] = useState(false);
@@ -810,7 +816,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
 
     const studyData = locale === 'ko' ? studyDataKo : studyDataEn;
     const project = studyData[projectId];
-    if (project && (!project.screenshots || project.screenshots.length === 0)) {
+    if (project && (!project.screenshots || project.screenshots.length === 0 || isFileVideo(project.walkthroughVideo))) {
       setProofOfWorkTab('video');
     } else {
       setProofOfWorkTab('screenshots');
@@ -1589,7 +1595,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   const url = projectData.walkthroughVideo.split('?')[0].split('#')[0].toLowerCase();
                   const coverImg = projectData.screenshots?.[0]?.url || "";
 
-                  if (!videoPlaying) {
+                  if (!videoPlaying && !isFileVideo(url)) {
                     return (
                       <button
                         type="button"
@@ -1749,13 +1755,18 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
 
                   const isVideo = url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.ogg') || url.includes('/video/upload/');
                   return isVideo ? (
-                    <video 
-                      src={projectData.walkthroughVideo} 
-                      controls 
-                      autoPlay 
-                      muted 
-                      loop 
-                      playsInline 
+                    <video
+                      src={projectData.walkthroughVideo}
+                      poster={projectData.walkthroughPoster}
+                      controls
+                      autoPlay={!prefersReducedMotion}
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      // React omits `muted` from server HTML, so the browser blocks the autoplay; start it once mounted.
+                      ref={(el) => { if (el && !prefersReducedMotion) { el.muted = true; el.play().catch(() => {}); } }}
+                      aria-label={projectData.title}
                       className="w-full h-full object-cover"
                       onError={() => setVideoError(true)}
                     />
@@ -1801,7 +1812,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             </div>
           )}
 
-          {proofOfWorkTab === 'video' && projectData.walkthroughVideo && (
+          {proofOfWorkTab === 'video' && projectData.walkthroughVideo && !isFileVideo(projectData.walkthroughVideo) && (
             <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-2xl border transition-[background-color,border-color] ${
               theme === 'dark' ? 'bg-white/[0.02] border-white/5' : 'bg-black/[0.01] border-black/5'
             }`}>
@@ -1925,18 +1936,33 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
 
                     <div className="space-y-4">
                       <h3 className="text-xl md:text-2xl font-bold uppercase tracking-wider font-display">{t.theSolution}</h3>
-                      <ul className="space-y-4">
-                        {projectData.solution.map((sol, sidx) => (
-                          <li key={sidx} className="flex gap-4 items-start">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 flex-shrink-0"></span>
-                            <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${
-                              theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
-                            }`}>
-                              {sol}
-                            </p>
-                          </li>
-                        ))}
-                      </ul>
+                      {[projectData.solution.slice(0, SOLUTION_SHOWN), projectData.solution.slice(SOLUTION_SHOWN)].map((items, part) => {
+                        if (items.length === 0) return null;
+                        const list = (
+                          <ul className={`space-y-4 ${part ? 'mt-4' : ''}`}>
+                            {items.map((sol, sidx) => (
+                              <li key={sidx} className="flex gap-4 items-start">
+                                <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 flex-shrink-0"></span>
+                                <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${
+                                  theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
+                                }`}>
+                                  {sol}
+                                </p>
+                              </li>
+                            ))}
+                          </ul>
+                        );
+                        // Lead with the few that matter; the rest sits behind a native disclosure.
+                        return part === 0 ? <React.Fragment key={part}>{list}</React.Fragment> : (
+                          <details key={part} className="group">
+                            <summary className="cursor-pointer list-none text-xs font-bold text-accent-gold hover:underline min-h-[24px] inline-flex items-center">
+                              <span className="group-open:hidden">{locale === 'ko' ? `${items.length}개 더 보기` : `Show ${items.length} more`}</span>
+                              <span className="hidden group-open:inline">{locale === 'ko' ? '접기' : 'Show less'}</span>
+                            </summary>
+                            {list}
+                          </details>
+                        );
+                      })}
                     </div>
                   </div>
 
