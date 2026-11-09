@@ -24,8 +24,8 @@ export const RESUME_DATA = {
     }
   },
   profile: {
-    en: "AI product engineer: turns problems Korean teachers and parents describe into AI products, from the first interview to the App Store. 10+ years in Korean English academies and six AI products built solo; Chekki AI is live on the App Store and Google Play, and Chekki Schools is in final testing.\n\nAt VodaBi, builds the frontend, backend and database of a voice-AI sales training platform going into use with two enterprise clients. Works daily in English and Korean.",
-    ko: "AI 프로덕트 엔지니어입니다. 한국 교사와 학부모가 말하는 문제를 첫 인터뷰부터 앱 출시까지 AI 제품으로 만듭니다. 한국 영어 학원에서 10년 넘게 가르쳤고 AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 최종 테스트 중입니다.\n\nVodaBi에서는 두 곳의 기업 고객사에서 사용을 시작하는 음성 AI 영업 훈련 플랫폼의 프론트엔드, 백엔드, 데이터베이스를 만듭니다. 매일 한국어와 영어로 일합니다."
+    en: "AI product engineer: turns problems Korean teachers and parents describe into AI products, from the first interview to the App Store. 10+ years in Korean English academies and six AI products built solo; Chekki AI is live on the App Store and Google Play, and Chekki Schools is in final testing.\n\nAt VODABI, builds the frontend, backend and database of VODATalk, a voice-AI sales training platform going into use with two enterprise clients. Works daily in English and Korean.",
+    ko: "AI 프로덕트 엔지니어입니다. 한국 교사와 학부모가 말하는 문제를 첫 인터뷰부터 앱 출시까지 AI 제품으로 만듭니다. 한국 영어 학원에서 10년 넘게 가르쳤고 AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 최종 테스트 중입니다.\n\nVODABI에서는 두 곳의 기업 고객사에서 사용을 시작하는 음성 AI 영업 훈련 플랫폼의 프론트엔드, 백엔드, 데이터베이스를 만듭니다. 매일 한국어와 영어로 일합니다."
   },
   skills: {
     aiVoice: {
@@ -67,8 +67,8 @@ export const RESUME_DATA = {
         ko: "풀스택 엔지니어"
       },
       company: {
-        en: "VodaBi",
-        ko: "VodaBi"
+        en: "VODABI",
+        ko: "VODABI"
       },
       period: {
         en: "Jul 2026 – Present",
@@ -82,8 +82,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "Voice Pipeline", ko: "음성 파이프라인" },
           text: {
-            en: "Moved live voice roleplay to a direct browser-to-OpenAI WebRTC connection (Realtime API, ephemeral tokens), cutting ~200ms of latency per turn.",
-            ko: "실시간 음성 롤플레이를 브라우저-OpenAI 직접 WebRTC 연결(Realtime API, 임시 토큰)로 전환해 턴당 약 200ms 지연을 줄임."
+            en: "Moved live voice roleplay to a direct browser-to-OpenAI WebRTC connection (Realtime API, ephemeral tokens), taking the server out of the audio path.",
+            ko: "실시간 음성 롤플레이를 브라우저-OpenAI 직접 WebRTC 연결(Realtime API, 임시 토큰)로 전환해 서버를 음성 경로에서 제외."
           }
         },
         {
@@ -131,8 +131,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "Traction", ko: "도입" },
           text: {
-            en: "Going into use with two enterprise clients for employee sales-skills testing.",
-            ko: "두 곳의 기업 고객사에서 직원 영업 역량 테스트 용도로 사용을 시작합니다."
+            en: "Going into use with two enterprise clients for employee sales-skills testing; opened candidate links to phones and hardened calls against mic loss and concurrent starts ahead of the pilot.",
+            ko: "두 곳의 기업 고객사에서 직원 영업 역량 테스트 용도로 사용을 시작합니다. 파일럿을 앞두고 지원자 링크를 휴대폰으로 확대하고, 마이크 끊김과 동시 시작에도 통화가 유지되도록 안정화."
           }
         }
       ]

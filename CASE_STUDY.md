@@ -1,8 +1,8 @@
-# VodaBi — Voice-AI Sales Training & Evaluation Platform
+# VODATalk — Voice-AI Sales Training & Evaluation Platform
 ## Realtime Voice Roleplay, Rubric Grading & Staff Training
 
-> **Author**: Jason Benjamin — Full-Stack Engineer, VodaBi  
-> **Company**: VodaBi (Enterprise B2B SaaS)  
+> **Author**: Jason Benjamin — Full-Stack Engineer, VODABI  
+> **Company**: VODABI (Enterprise B2B SaaS)  
 > **Build Window**: Jul 29, 2026 – present  
 > **Confidentiality Notice**: Client names and data are kept confidential under NDA.  
 > **Core Focus**: Realistic voice roleplay over WebRTC, rubric grading with matching coaching, and training dashboards for staff and managers.
@@ -15,7 +15,7 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 
 | Product | Category & Role | Status | Key Focus / Lead Metric | Architectural Core |
 | :--- | :--- | :--- | :--- | :--- |
-| **[VodaBi Voice AI](./CASE_STUDY.md#vodabi-case-study)** | Enterprise B2B SaaS (VodaBi) | 🟢 **Featured Case Study** | **Score-then-Explain Grading** | Direct WebRTC voice roleplay, two-step GPT-4o grading, staff training & manager dashboards, AES-256-GCM encryption. |
+| **[VODATalk Voice AI](./CASE_STUDY.md#vodabi-case-study)** | Enterprise B2B SaaS (VODABI) | 🟢 **Featured Case Study** | **Score-then-Explain Grading** | Direct WebRTC voice roleplay, two-step GPT-4o grading, staff training & manager dashboards, AES-256-GCM encryption. |
 | **[Chekki Schools](./CASE_STUDY.md#chekki-teacher-case-study)** | EdTech Academy Operations | 🟡 **Final Testing** | **Answer-Key Grounded Grading** | Curriculum pre-seeding, ground-truth answer key calibration, and cohort mistake aggregation telemetry. |
 | **[Chekki AI](https://chekki-ai.vercel.app/)** | EdTech Closed-Loop Ecosystem | 🟢 **Live Shipped App** | **App Store & Google Play** | Ground-truth homework camera OCR, bilingual parent explanations, class mistake aggregator, and integrated teacher update pipeline. |
 | **EduPlanner Pro** | School timetabling | 🟡 **Not shown on the site for now** | — | TypeScript solver for hard constraints; a reasoning model resolves the conflicts that remain. |
@@ -26,7 +26,7 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 ---
 
 <a id="vodabi-case-study"></a>
-## 2. FEATURED CASE STUDY: VODABI VOICE-AI SALES TRAINING
+## 2. FEATURED CASE STUDY: VODATALK VOICE-AI SALES TRAINING
 
 ### A. Problem
 * Sales teams assess calls by listening to them, which takes time and varies by listener.
@@ -39,6 +39,8 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 * **Staff training**: self-practice, assigned training, scores by scenario, competency growth and badges.
 * **Manager dashboard**: company and team completion rates and each staff member's reports.
 * **Candidate tests**: magic links for scored calls without an account.
+* **Calls on phones**: campaign links run on phones behind an admin switch per company and per link.
+* **Pilot hardening**: calls survive mic loss, silent calls and concurrent starts; candidate consent; closed message for full campaigns.
 
 ### C. Decisions
 1. **Direct WebRTC with push-to-talk**: keeps the server out of the audio path so each turn feels like a real call; push-to-talk gives clear turn boundaries.

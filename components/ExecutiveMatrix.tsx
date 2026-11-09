@@ -70,7 +70,7 @@ interface SystemItem {
 const SYSTEMS_DATA: SystemItem[] = [
   {
     id: "vodabi",
-    name: "VODABI — AI Voice Sales Training & Evaluation",
+    name: "VODATalk — AI Voice Sales Training & Evaluation",
     categoryEn: "Enterprise B2B SaaS",
     categoryKo: "엔터프라이즈 B2B SaaS",
     status: "enterprise",

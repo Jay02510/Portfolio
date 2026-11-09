@@ -77,12 +77,12 @@ const COPY = {
     localeSwitch: "한국어",
     resumeBtn: "Résumé",
     heroTitle: "AI product engineer building for Korean teachers and parents.",
-    heroBody: "From the first teacher interview to the App Store. 10+ years in Korean English academies and six AI products built solo. Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a pilot. At VodaBi I build the frontend, backend and database of a voice-AI sales training platform.",
+    heroBody: "From the first teacher interview to the App Store. 10+ years in Korean English academies and six AI products built solo. Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a pilot. At VODABI I build the frontend, backend and database of VODATalk, a voice-AI sales training platform.",
     ctaWork: "See the work",
     ctaResume: "Résumé",
     caseLabel: "Case study ↗",
     nowLabel: "Now",
-    nowBody: "The VodaBi screening platform is built and going into use with two enterprise clients.",
+    nowBody: "VODATalk now runs on phones as well as computers, and is going into use with two enterprise clients.",
     nextLabel: "In progress, not shipped",
     nextBody: "A RAG version of the lead-enrichment CRM, and a new textbook built on my 20-volume series that ties into Chekki.",
     roleTitle: "How I work",
@@ -115,12 +115,12 @@ const COPY = {
     localeSwitch: "English",
     resumeBtn: "이력서",
     heroTitle: "한국 교사와 학부모를 위한 AI 제품을 설계하고 개발하는 AI 프로덕트 엔지니어.",
-    heroBody: "첫 교사 인터뷰부터 앱 출시까지. 한국 영어 학원에서 10년 넘게 가르쳤고, AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 파일럿을 앞두고 최종 테스트 중입니다. VodaBi에서는 음성 AI 영업 훈련 플랫폼의 프론트엔드, 백엔드, 데이터베이스를 만듭니다.",
+    heroBody: "첫 교사 인터뷰부터 앱 출시까지. 한국 영어 학원에서 10년 넘게 가르쳤고, AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 파일럿을 앞두고 최종 테스트 중입니다. VODABI에서는 음성 AI 영업 훈련 플랫폼 VODATalk(보다톡)의 프론트엔드, 백엔드, 데이터베이스를 만듭니다.",
     ctaWork: "프로젝트 보기",
     ctaResume: "이력서",
     caseLabel: "케이스 스터디 ↗",
     nowLabel: "현재",
-    nowBody: "VodaBi 스크리닝 플랫폼 구축을 마쳤고, 두 곳의 기업 고객사에서 사용을 시작합니다.",
+    nowBody: "VODATalk(보다톡)은 이제 컴퓨터와 휴대폰 모두에서 통화할 수 있고, 두 곳의 기업 고객사에서 사용을 시작합니다.",
     nextLabel: "진행 중 · 미출시",
     nextBody: "리드 수집 CRM을 바탕으로 한 RAG 시스템, 그리고 20권 교재 시리즈를 바탕으로 Chekki와 연결되는 새 교재.",
     roleTitle: "일하는 방식",
@@ -185,7 +185,7 @@ const ROLE_COLS = {
     {
       head: "Claim discipline",
       items: [
-        "VodaBi is built and rolling out with two enterprise clients; there are no production metrics yet and I do not quote any",
+        "VODATalk is built and rolling out with two enterprise clients; there are no production metrics yet and I do not quote any",
         "Client identifiers stay sanitized under NDA",
         "Outcomes below are tagged measured, estimated, or target — never blended",
         "Where a number is an estimate, the method is in the case study"
@@ -216,7 +216,7 @@ const ROLE_COLS = {
     {
       head: "주장의 범위",
       items: [
-        "VodaBi는 구축을 마치고 두 곳의 기업 고객사에서 사용을 시작합니다. 아직 프로덕션 지표가 없어 어떤 수치도 인용하지 않습니다",
+        "VODATalk는 구축을 마치고 두 곳의 기업 고객사에서 사용을 시작합니다. 아직 프로덕션 지표가 없어 어떤 수치도 인용하지 않습니다",
         "고객사 식별 정보는 NDA에 따라 익명화합니다",
         "아래 성과는 실측·추정·목표로 구분해 표기하며 섞지 않습니다",
         "추정치의 산출 방법은 케이스 스터디에 적었습니다"
@@ -229,7 +229,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
   en: [
     {
       id: "vodabi",
-      context: "Work project · VodaBi",
+      context: "Work project · VODABI",
       status: "Built, rolling out",
       image: "/screenshots/vodabi/architecture.svg",
       title: "Voice-AI sales training and evaluation platform",
@@ -240,6 +240,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
         "Post-call evaluation service: two-step grading (score, then explain), sales-qualification evidence quoted from the call, speech-pacing telemetry",
         "Multi-tenant backoffice with a custom roles guard, plus the VOISOR coaching assistant",
         "Staff growth and manager dashboards: scores by scenario, competency growth, badges, team completion rates",
+        "Pilot readiness: candidate links that run on phones behind an admin switch, and calls that survive mic loss, silence and concurrent starts",
         "Sentry error reporting and the AWS EC2 deploy"
       ],
       decisions: [
@@ -346,7 +347,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
   ko: [
     {
       id: "vodabi",
-      context: "업무 프로젝트 · VodaBi",
+      context: "업무 프로젝트 · VODABI",
       status: "구축 완료, 도입 진행",
       image: "/screenshots/vodabi/architecture.svg",
       title: "음성 AI 세일즈 훈련 및 평가 플랫폼",
@@ -537,6 +538,22 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
 
 const LOG: LogEntry[] = [
   {
+    date: "2026-11-08",
+    type: "feature",
+    titleEn: "Chekki Schools: director onboarding",
+    titleKo: "Chekki Schools: 원장 온보딩",
+    descEn: "New directors get a setup to-do list, classes get a join link, and owners who also teach can run their own class. Solo-plan rough edges were fixed and staff screens now show what needs attention first.",
+    descKo: "새 원장에게 설정 할 일 목록을 보여주고, 반마다 참여 링크를 만들며, 직접 가르치는 원장도 자기 반을 운영할 수 있습니다. 1인 요금제의 거친 부분을 고치고, 교직원 화면은 먼저 처리할 일을 위에 보여줍니다."
+  },
+  {
+    date: "2026-11-05",
+    type: "feature",
+    titleEn: "VODATalk: calls on phones, ready for the pilot",
+    titleKo: "VODATalk: 휴대폰 통화와 파일럿 준비",
+    descEn: "Campaign links can now run on phones, behind an admin switch per company and per link, with phone layouts for registration, countdown, call and report. Calls now survive mic loss, silent calls and two starts at once; candidates give consent first, and a full campaign shows a closed message. The product was renamed VODATalk with a new logo.",
+    descKo: "회사와 링크별 관리자 스위치로 캠페인 링크를 휴대폰에서도 열 수 있게 하고, 등록·카운트다운·통화·리포트 화면을 휴대폰에 맞췄습니다. 마이크 끊김, 무음 통화, 동시 시작에도 통화가 유지되며, 지원자는 먼저 동의하고, 정원이 찬 캠페인은 마감 안내를 보여줍니다. 제품명을 VODATalk로 바꾸고 새 로고를 적용했습니다."
+  },
+  {
     date: "2026-10-14",
     type: "feature",
     titleEn: "Hagwon AI Readiness Index: server-side reports and Chekki's new design",
@@ -547,32 +564,32 @@ const LOG: LogEntry[] = [
   {
     date: "2026-10-12",
     type: "feature",
-    titleEn: "VodaBi: AI stays in role on noisy calls",
-    titleKo: "VodaBi: 소음이 있어도 역할을 유지하는 AI",
+    titleEn: "VODATalk: AI stays in role on noisy calls",
+    titleKo: "VODATalk: 소음이 있어도 역할을 유지하는 AI",
     descEn: "The AI customer now waits for a real greeting before replying, so a cough or background sound at the start of a call no longer pulls it out of role. On outbound calls it picks up first, like a real customer.",
     descKo: "AI 고객이 실제 인사말을 들은 뒤에 응답하도록 바꿔, 통화 시작 시 기침이나 주변 소리로 역할에서 벗어나지 않습니다. 아웃바운드 통화에서는 실제 고객처럼 AI가 먼저 전화를 받습니다."
   },
   {
     date: "2026-10-07",
     type: "feature",
-    titleEn: "VodaBi: staff training and manager dashboards",
-    titleKo: "VodaBi: 직원 훈련 및 매니저 대시보드",
+    titleEn: "VODATalk: staff training and manager dashboards",
+    titleKo: "VODATalk: 직원 훈련 및 매니저 대시보드",
     descEn: "Built the staff side (assigned required training, scores by scenario, competency growth, badges) and the manager company dashboard with team completion rates, implemented from the designer's Figma.",
     descKo: "직원 화면(필수훈련 배정, 시나리오별 점수, 역량 성장, 배지)과 팀 완료율을 보여주는 매니저 회사 현황 대시보드를 디자이너의 Figma대로 구현했습니다."
   },
   {
     date: "2026-10-01",
     type: "infra",
-    titleEn: "VodaBi: Sentry and a lighter first load",
-    titleKo: "VodaBi: Sentry 도입 및 첫 로딩 경량화",
+    titleEn: "VODATalk: Sentry and a lighter first load",
+    titleKo: "VODATalk: Sentry 도입 및 첫 로딩 경량화",
     descEn: "Added Sentry error reporting to backend and frontend, lazy-loaded each app area so the first download dropped from 716KB to 260KB, and patched dependency advisories.",
     descKo: "백엔드와 프론트엔드에 Sentry 에러 리포팅을 붙이고, 앱 영역별 지연 로딩으로 첫 다운로드를 716KB에서 260KB로 줄였으며, 의존성 보안 권고를 패치했습니다."
   },
   {
     date: "2026-09-18",
     type: "feature",
-    titleEn: "VodaBi: two-step grading",
-    titleKo: "VodaBi: 2단계 채점",
+    titleEn: "VODATalk: two-step grading",
+    titleKo: "VODATalk: 2단계 채점",
     descEn: "Grading now runs as a scoring call and a feedback call written from the fixed scores, both with strict JSON schemas.",
     descKo: "채점을 점수 호출과, 확정된 점수로 피드백을 쓰는 호출로 나누고 두 호출 모두 엄격한 JSON 스키마를 적용했습니다."
   },
@@ -627,8 +644,8 @@ const LOG: LogEntry[] = [
   {
     date: "2026-09-01",
     type: "feature",
-    titleEn: "VodaBi: voice-AI screening and rubric evaluator shipped",
-    titleKo: "VodaBi: 음성 AI 스크리닝 및 루브릭 평가 엔진 배포",
+    titleEn: "VODATalk: voice-AI screening and rubric evaluator shipped",
+    titleKo: "VODATalk: 음성 AI 스크리닝 및 루브릭 평가 엔진 배포",
     descEn: "Direct WebRTC voice roleplay, post-call GPT-4o evaluation with quoted evidence from the transcript, the VOISOR coaching assistant, and multi-tenant role-based access.",
     descKo: "Direct WebRTC 음성 롤플레이, 통화 내용을 근거로 인용하는 통화 후 GPT-4o 평가, VOISOR 코칭 어시스턴트, 멀티테넌트 역할 기반 접근."
   },

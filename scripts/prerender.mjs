@@ -75,7 +75,7 @@ ${list.map(page => {
   const en = list.filter(p => p.locale === 'en');
   const llms = `# Jason Benjamin — AI Product Engineer
 
-> AI product engineer in South Korea, open to remote. 10+ years in Korean English academies, six AI products built solo, and the frontend, backend and database of a voice-AI sales training platform at VodaBi. Looking for AI PM, product engineer or hybrid roles on 0→1 teams.
+> AI product engineer in South Korea, open to remote. 10+ years in Korean English academies, six AI products built solo, and the frontend, backend and database of a voice-AI sales training platform (VODATalk) at VODABI. Looking for AI PM, product engineer or hybrid roles on 0→1 teams.
 
 - Email: jsn.benjamin@gmail.com
 - LinkedIn: https://www.linkedin.com/in/jason-benjamin/
@@ -91,14 +91,14 @@ ${en.filter(p => p.caseId).map(p => `- [${p.title.replace(' | Jason Benjamin', '
 
 - Chekki AI is live on the App Store and Google Play. Grading is checked against the teacher's own answer key; in evals on 105 synthetic worksheet pages it caught 98–100% of mistakes over repeated runs and marked at most 2 of 226 right answers wrong.
 - Chekki Schools (the staff side: directors, foreign teachers, Korean teachers) is in final testing ahead of a two-school pilot.
-- At VodaBi (July 2026 – present) Jason is the sole engineer on a voice-AI sales training platform: realtime roleplay over direct WebRTC to OpenAI Realtime, then GPT-4o scoring and a separate coaching call written from the fixed scores.
+- At VODABI (July 2026 – present) Jason is the sole engineer on a voice-AI sales training platform: realtime roleplay over direct WebRTC to OpenAI Realtime, then GPT-4o scoring and a separate coaching call written from the fixed scores.
 - Based in Seoul. M.Ed. in Educational Management (University of Essex), LL.B. (University of the Western Cape).
 
 Full text of every case study: ${SITE}/llms-full.txt
 
 ## Notes on claims
 
-VodaBi has no production metrics yet, so none are quoted. Client identifiers are removed under NDA. Outcomes on the site are labelled measured, estimated or target.
+VODATalk has no production metrics yet, so none are quoted. Client identifiers are removed under NDA. Outcomes on the site are labelled measured, estimated or target.
 
 ## Korean
 

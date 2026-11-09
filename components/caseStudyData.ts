@@ -120,7 +120,7 @@ function scoreAssessment(answers) {
     ]
   },
   vodabi: {
-    title: "VODABI — AI Voice Sales Training & Evaluation Platform",
+    title: "VODATalk — AI Voice Sales Training & Evaluation Platform",
     tagline: "Sales staff practise realtime voice roleplay calls with AI customers, get rubric-based scores and coaching, and managers follow team progress.",
     meta: { role: "Sole full-stack engineer", team: "Solo engineer, building from a designer's Figma", dates: "Jul 2026 – present", status: "Built; rolling out with two enterprise clients" },
     liveUrl: "",
@@ -146,6 +146,8 @@ function scoreAssessment(answers) {
       "Staff training: self-practice, manager-assigned training, scores by scenario, competency growth and badges.",
       "Manager dashboard: company and team completion rates, score status, and each staff member's reports.",
       "Candidate tests: magic links let applicants take a scored call without creating an account.",
+      "Calls on phones: campaign links run on phones behind an admin switch per company and per link, with phone layouts for the call and report.",
+      "Pilot hardening: calls survive mic loss, silent calls and concurrent starts; candidates consent before the call, and full campaigns show a closed message.",
       "Admin backoffice: non-engineers manage personas, scenarios, rubrics and difficulty tiers without code.",
       "VOISOR coach: a chat assistant that answers follow-up questions about a report.",
       "Bilingual: full Korean and English interface."
@@ -793,7 +795,8 @@ Call B — feedback
       "Split the account into separate views for directors, foreign teachers and Korean teachers, reading and writing the same Firestore records under different logins.",
       "Foreign teachers pre-seed curriculum and calibrate answer keys before class, so a worksheet scan grades against a verified key instead of the model's own reading of the page.",
       "Foreign teachers record one voice note per class; it fills the class summary and student notes, and the Korean teacher reviews the whole class-day once before each family receives its own report.",
-      "After native Korean readers said the drafts sounded machine-written, shared voice rules steer every report prompt toward specific, plain observations."
+      "After native Korean readers said the drafts sounded machine-written, shared voice rules steer every report prompt toward specific, plain observations.",
+      "Director onboarding: a setup to-do list for new directors, a join link per class, and owners who also teach can run their own class."
     ],
     stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "Role-scoped React hooks"],
     architecture: {
@@ -1464,7 +1467,7 @@ function scoreAssessment(answers) {
     ]
   },
   vodabi: {
-    title: "VODABI — AI 음성 세일즈 훈련 & 평가 플랫폼",
+    title: "VODATalk(보다톡) — AI 음성 세일즈 훈련 & 평가 플랫폼",
     tagline: "영업 직원이 AI 고객과 실시간 음성 롤플레이로 연습하고 루브릭 기반 점수와 코칭을 받으며, 매니저는 팀의 진행 상황을 확인합니다.",
     meta: { role: "단독 풀스택 엔지니어", team: "엔지니어 1인, 디자이너 Figma 기반", dates: "2026년 7월 – 현재", status: "구축 완료, 기업 고객 2곳에 도입 중" },
     liveUrl: "",
@@ -1490,6 +1493,8 @@ function scoreAssessment(answers) {
       "직원 훈련: 자율 연습, 매니저 배정 필수훈련, 시나리오별 점수, 역량 성장, 배지.",
       "매니저 대시보드: 회사·팀별 완료율, 점수 현황, 직원별 리포트.",
       "지원자 테스트: 매직링크로 계정 없이 채점 통화 응시.",
+      "휴대폰 통화: 회사·링크별 관리자 스위치로 캠페인 링크를 휴대폰에서도 열고, 통화와 리포트 화면을 휴대폰에 맞춤.",
+      "파일럿 대비 안정화: 마이크 끊김, 무음 통화, 동시 시작에도 통화 유지. 지원자는 통화 전 동의하고, 정원이 찬 캠페인은 마감 안내.",
       "어드민 백오피스: 비개발자가 코드 없이 페르소나, 시나리오, 루브릭, 난이도 관리.",
       "VOISOR 코치: 리포트에 대한 추가 질문에 답하는 채팅 어시스턴트.",
       "한/영 이중언어 인터페이스."
@@ -2135,7 +2140,8 @@ function scoreAssessment(answers) {
       "계정을 원장, 원어민 교사, 한국인 교사 화면으로 나누되, 로그인만 다를 뿐 같은 Firestore 레코드를 읽고 씁니다.",
       "원어민 교사가 수업 전 커리큘럼과 정답지를 미리 등록해두면, 워크시트 스캔이 모델의 자체 판독이 아니라 검증된 정답지를 기준으로 채점됩니다.",
       "원어민 교사가 수업마다 음성 메모 하나를 남기면 수업 요약과 학생 메모가 채워지고, 한국인 교사가 반의 하루를 한 번에 검토한 뒤 각 가정이 자기 리포트를 받습니다.",
-      "한국어 원어민 독자들이 초안이 기계가 쓴 글 같다고 지적한 뒤, 모든 리포트 프롬프트에 구체적이고 담백한 관찰을 쓰도록 공통 문체 규칙을 적용했습니다."
+      "한국어 원어민 독자들이 초안이 기계가 쓴 글 같다고 지적한 뒤, 모든 리포트 프롬프트에 구체적이고 담백한 관찰을 쓰도록 공통 문체 규칙을 적용했습니다.",
+      "원장 온보딩: 새 원장을 위한 설정 할 일 목록, 반별 참여 링크, 직접 가르치는 원장도 자기 반을 운영할 수 있습니다."
     ],
     stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "역할별 React 훅"],
     architecture: {
