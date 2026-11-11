@@ -48,8 +48,13 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 3. **Magic links for candidates**: a scored call starts straight from a link, with expiry and rotation on re-invite.
 4. **Encryption at rest** for personal data and transcripts.
 
-### D. Status
+### D. Performance (measured, Nov 2026)
+* **Login page** (first screen every user sees), Lighthouse lab runs before and after: mobile LCP 14.3s → 3.9s, mobile score 66 → 83, desktop LCP 2.8s → 1.0s, desktop score 84 → 97, page weight 2.5 MB → 570 KB. Cause: one 2 MB PNG background (82% of the page), re-encoded as WebP at the same resolution.
+* **API**: wrote a read-only latency benchmark (no dependencies, refuses to run against production). It found the session list carrying a large configuration field no screen used (85% of the response); removing it cut the payload 84% (63 KB → 10 KB for 13 sessions).
+
+### E. Status
 * In production; the platform was revamped and the coaching layer added in about 3 weeks.
+* Production usage metrics and a voice-latency benchmark are not published yet.
 
 ---
 

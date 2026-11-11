@@ -27,7 +27,7 @@ Each project has a full case study on the site: the problem, what I built, the d
 
 ## How claims are handled
 
-- VodaBi has no production metrics yet, so none are quoted.
+- VodaBi has no production usage metrics yet, so none are quoted. Its performance figures are lab measurements (Lighthouse, an API benchmark) and are labelled as such.
 - Client identifiers are removed under NDA.
 - Outcomes are labelled as measured, estimated or target, and estimates come with their method.
 

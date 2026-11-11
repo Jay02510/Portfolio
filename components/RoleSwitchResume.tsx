@@ -115,6 +115,13 @@ export const RESUME_DATA = {
           }
         },
         {
+          tag: { en: "Performance", ko: "성능" },
+          text: {
+            en: "Cut the login page's mobile LCP from 14.3s to 3.9s and its weight by 77% (Lighthouse lab runs) by re-encoding a 2 MB background image; wrote a read-only API latency benchmark that found a list response that was 85% unused data, and cut it by 84%.",
+            ko: "2MB 배경 이미지를 재인코딩해 로그인 페이지 모바일 LCP를 14.3초에서 3.9초로, 페이지 용량을 77% 줄임(Lighthouse 랩 측정). 읽기 전용 API 지연 벤치마크를 직접 만들어, 85%가 쓰지 않는 데이터였던 목록 응답을 찾아 84% 줄임."
+          }
+        },
+        {
           tag: { en: "Deployment", ko: "배포" },
           text: {
             en: "Set up an arm64 staging environment beside amd64 production, with one CI/CD pipeline building for both.",
@@ -202,6 +209,13 @@ export const RESUME_DATA = {
           text: {
             en: "Split a 4,678-line page into role-scoped modules with no regressions, and added the first CI pipeline and test suite.",
             ko: "4,678줄 페이지를 역할별 모듈로 회귀 없이 분리하고, 첫 CI 파이프라인과 테스트 스위트 도입."
+          }
+        },
+        {
+          tag: { en: "Web Performance", ko: "웹 성능" },
+          text: {
+            en: "Raised mobile Lighthouse performance from 71 to 95 and cut LCP by 57% (5.95s → 2.53s) by prerendering the React landing pages at build time, inlining critical CSS, code-splitting and deferring third-party scripts.",
+            ko: "React 랜딩 페이지 빌드 시 사전 렌더링, 핵심 CSS 인라인, 코드 분할, 서드파티 스크립트 지연 로딩으로 모바일 Lighthouse 성능을 71에서 95로 올리고 LCP를 57%(5.95초 → 2.53초) 단축."
           }
         },
         {

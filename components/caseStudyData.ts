@@ -260,7 +260,8 @@ Call B — feedback
         "Natural, low-latency voice roleplay over direct WebRTC.",
         "Rubric-itemized scores with coaching that matches them.",
         "Staff training and manager dashboards built from the designer's Figma.",
-        "Faster first load by loading each app area on demand."
+        "Faster first load by loading each app area on demand.",
+        "Login page, measured with Lighthouse before and after (lab runs): mobile LCP 14.3s → 3.9s, mobile score 66 → 83, desktop score 84 → 97, page weight 2.5 MB → 570 KB."
       ],
       security: [
         "Encryption at rest for personal data.",
@@ -286,6 +287,18 @@ Call B — feedback
         incident: "A cough at the start of a call sometimes made the AI answer as a generic assistant instead of the customer.",
         diagnosis: "The AI replied to the noise before any real conversation had started, so it had nothing to anchor its role.",
         resolution: "The AI now waits for a real greeting before its first reply, the call opens with a note on who speaks first, and on outbound calls the AI customer picks up first."
+      },
+      {
+        title: "Slow first screen on phones",
+        incident: "On a throttled mobile Lighthouse run, the login page (the first screen every user sees) took 14.3s to show its main content.",
+        diagnosis: "One 2 MB PNG background made up 82% of the page's weight.",
+        resolution: "Re-encoded it as WebP at the same resolution (128 KB). Page weight fell from 2.5 MB to 570 KB and mobile LCP from 14.3s to 3.9s, with no layout shift."
+      },
+      {
+        title: "List responses carrying unused data",
+        incident: "A read-only API latency benchmark I wrote (no dependencies, refuses to run against production) flagged the session list as much heavier than the screen needed.",
+        diagnosis: "Each session in the list carried a large configuration field that no list screen displayed: 85% of the response.",
+        resolution: "Dropped the field from the list response, cutting it from 63 KB to 10 KB for 13 sessions (84% smaller)."
       }
     ]
   },
@@ -461,7 +474,8 @@ Call B — feedback
         "The harder photo set exposed two production bugs (crossed-out answers misread, a rare runaway-output loop), both fixed and re-verified; voice logs filled correctly in 6 English accents (60/60 recordings), and an LLM-judge check cut invented details in parent notes.",
         "Aims to cut teachers' weekly grading and reporting work; to be measured in the Chekki Schools pilot rather than estimated.",
         "Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a two-school pilot.",
-        "Maintained 26 logged architectural/product trade-offs with rigorous scope discipline."
+        "Maintained 26 logged architectural/product trade-offs with rigorous scope discipline.",
+        "Marketing site on mobile, Lighthouse median of 3 runs before and after: home performance 71 → 95 and LCP 5.95s → 2.53s; English home 80 → 97. Desktop performance 100 and accessibility 100 on the marketing pages, with zero layout shift."
       ],
       security: [
         "Firestore security rules strictly scoped to verified school/class IDs with server-only Admin SDK privileged mutations.",
@@ -470,6 +484,12 @@ Call B — feedback
       ]
     },
     technicalHurdles: [
+      {
+        title: "Slow landing pages on phones",
+        incident: "The home page took 5.95s on mobile to show its hero image (Lighthouse LCP, median of 3 runs on the live site).",
+        diagnosis: "The landing pages were drawn only in the browser, so the hero waited on JavaScript. Sentry's unused session replay (~130 KB) and the Meta Pixel also loaded before the first screen.",
+        resolution: "Prerendered the home and academy pages at build time and hydrated them, inlined the CSS the first screen needs, tree-shook Sentry, split the post-scan screens out of the app bundle, and deferred analytics and the pixel until the page settles. Mobile LCP fell to 2.53s and the performance score rose from 71 to 95."
+      },
       {
         title: "Vercel Hobby 12-Serverless-Function Ceiling",
         incident: "Adding multi-role endpoints (grading, voice-fill, question-answering, four subscription redemption routes) exceeded Vercel's strict 12-function limit, threatening deployment failure.",
@@ -1607,7 +1627,8 @@ function scoreAssessment(answers) {
         "Direct WebRTC로 자연스럽고 지연이 적은 음성 롤플레이.",
         "루브릭 항목별 점수와 그에 맞는 코칭.",
         "디자이너의 Figma로 만든 직원 훈련 화면과 매니저 대시보드.",
-        "앱 영역별 지연 로딩으로 첫 로딩 단축."
+        "앱 영역별 지연 로딩으로 첫 로딩 단축.",
+        "로그인 페이지 Lighthouse 전후 측정(랩 측정): 모바일 LCP 14.3초 → 3.9초, 모바일 점수 66 → 83, 데스크톱 점수 84 → 97, 페이지 용량 2.5MB → 570KB."
       ],
       security: [
         "개인정보 저장 시 암호화.",
@@ -1633,6 +1654,18 @@ function scoreAssessment(answers) {
         incident: "통화 시작 시 기침 소리가 나면 AI가 고객이 아닌 일반 어시스턴트처럼 응답하는 경우가 있었음.",
         diagnosis: "실제 대화가 시작되기 전에 AI가 소음에 응답해, 역할을 잡을 맥락이 없었음.",
         resolution: "실제 인사말이 들어온 뒤에 AI가 첫 응답을 하고, 통화 시작 시 누가 먼저 말하는지 알려주며, 아웃바운드에서는 AI 고객이 먼저 전화를 받음."
+      },
+      {
+        title: "휴대폰에서 느린 첫 화면",
+        incident: "모바일 Lighthouse 측정(네트워크·CPU 제한)에서 모든 사용자가 처음 보는 로그인 페이지의 주요 콘텐츠가 표시되기까지 14.3초가 걸림.",
+        diagnosis: "2MB PNG 배경 이미지 하나가 페이지 용량의 82%를 차지.",
+        resolution: "같은 해상도의 WebP(128KB)로 다시 인코딩. 페이지 용량은 2.5MB에서 570KB로, 모바일 LCP는 14.3초에서 3.9초로 줄었고 레이아웃 이동은 없음."
+      },
+      {
+        title: "쓰지 않는 데이터를 싣고 다니던 목록 응답",
+        incident: "직접 만든 읽기 전용 API 지연 벤치마크(외부 의존성 없음, 프로덕션 대상 실행 거부)에서 세션 목록 응답이 화면에 필요한 것보다 훨씬 무겁게 나타남.",
+        diagnosis: "목록의 각 세션에 어떤 목록 화면도 표시하지 않는 큰 설정 필드가 들어 있었고, 응답의 85%를 차지.",
+        resolution: "목록 응답에서 해당 필드를 빼서 세션 13개 기준 63KB에서 10KB로 84% 줄임."
       }
     ]
   },
@@ -1806,7 +1839,8 @@ function scoreAssessment(answers) {
         "어려운 사진 세트로 프로덕션 버그 2건(지운 답 오인식, 드문 무한 출력 루프)을 찾아 수정·재검증; 음성 일지는 6개 영어 억양에서 모두 정확히 입력(60/60), LLM 판정 검사로 학부모 메모의 지어낸 내용을 줄임.",
         "교사의 주간 채점·리포팅 업무를 줄이는 것이 목표이며, 추정치가 아닌 Chekki Schools 파일럿에서 측정할 예정.",
         "Chekki AI는 App Store와 Google Play에 출시되어 있고, Chekki Schools는 2개 학교 파일럿을 앞두고 최종 테스트 중.",
-        "26개 아키텍처/프로덕트 의사결정 로그와 엄격한 스코프 관리 체계 유지."
+        "26개 아키텍처/프로덕트 의사결정 로그와 엄격한 스코프 관리 체계 유지.",
+        "마케팅 사이트 모바일 Lighthouse 전후 측정(3회 중앙값): 홈 성능 71 → 95, LCP 5.95초 → 2.53초, 영어 홈 80 → 97. 마케팅 페이지 데스크톱 성능 100점, 접근성 100점, 레이아웃 이동 0."
       ],
       security: [
         "인증된 학교/학급 ID로 스코프된 Firestore 보안 규칙과 서버 전용 Admin SDK 권한 격리.",
@@ -1815,6 +1849,12 @@ function scoreAssessment(answers) {
       ]
     },
     technicalHurdles: [
+      {
+        title: "휴대폰에서 느린 랜딩 페이지",
+        incident: "홈 페이지가 모바일에서 히어로 이미지를 표시하기까지 5.95초가 걸림(실서비스 Lighthouse LCP, 3회 중앙값).",
+        diagnosis: "랜딩 페이지를 브라우저에서만 그려서 히어로가 JavaScript를 기다렸고, 쓰지 않는 Sentry 세션 리플레이(약 130KB)와 Meta 픽셀도 첫 화면보다 먼저 로드됨.",
+        resolution: "홈과 학원 페이지를 빌드 시 사전 렌더링해 하이드레이션하고, 첫 화면에 필요한 CSS를 인라인하고, Sentry를 트리 셰이킹하고, 채점 이후 화면을 앱 번들에서 분리하고, 분석 도구와 픽셀은 페이지가 안정된 뒤 로드. 모바일 LCP 2.53초, 성능 점수 71 → 95."
+      },
       {
         title: "Vercel Hobby 플랜 12개 서버리스 함수 한도 극복",
         incident: "다역할 엔드포인트(채점, 음성 추출, Q&A, 4개 구독 코드 사용 라우트) 추가 시 Vercel의 12개 함수 한도를 초과하여 배포 실패 위기 발생.",
