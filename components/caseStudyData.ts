@@ -122,7 +122,7 @@ function scoreAssessment(answers) {
   vodabi: {
     title: "VODATalk — AI Voice Sales Training & Evaluation Platform",
     tagline: "Sales staff practise realtime voice roleplay calls with AI customers, get rubric-based scores and coaching, and managers follow team progress.",
-    meta: { role: "Sole full-stack engineer", team: "Solo engineer, building from a designer's Figma", dates: "Jul 2026 – present", status: "Built; rolling out with two enterprise clients" },
+    meta: { role: "Sole full-stack engineer", team: "Solo engineer, building from a designer's Figma", dates: "Jul 2026 – present", status: "Built; rolling out with enterprise clients" },
     liveUrl: "",
     screenshots: [
       { label: "Live Call Pipeline", url: "/screenshots/vodabi/call-flow.svg", subLabel: "Browser Talks to OpenAI Realtime Over WebRTC; the Backend Issues Tokens and Stores Turns" },
@@ -261,7 +261,8 @@ Call B — feedback
         "Rubric-itemized scores with coaching that matches them.",
         "Staff training and manager dashboards built from the designer's Figma.",
         "Faster first load by loading each app area on demand.",
-        "Login page, measured with Lighthouse before and after (lab runs): mobile LCP 14.3s → 3.9s, mobile score 66 → 83, desktop score 84 → 97, page weight 2.5 MB → 570 KB."
+        "Login page profiled with Lighthouse before and after: the first screen now loads several times faster on phones.",
+        "Voice-latency and LLM grading-consistency tests, run on staging with synthetic speech, so claims about speed and scoring are measured rather than assumed."
       ],
       security: [
         "Encryption at rest for personal data.",
@@ -290,15 +291,21 @@ Call B — feedback
       },
       {
         title: "Slow first screen on phones",
-        incident: "On a throttled mobile Lighthouse run, the login page (the first screen every user sees) took 14.3s to show its main content.",
-        diagnosis: "One 2 MB PNG background made up 82% of the page's weight.",
-        resolution: "Re-encoded it as WebP at the same resolution (128 KB). Page weight fell from 2.5 MB to 570 KB and mobile LCP from 14.3s to 3.9s, with no layout shift."
+        incident: "On a throttled mobile Lighthouse run, the login page (the first screen every user sees) was far outside the range Google rates as good.",
+        diagnosis: "A single PNG background made up most of the page's weight.",
+        resolution: "Re-encoded it as WebP at the same resolution. The page became a fraction of its former size and loaded several times faster on phones, with no layout shift."
       },
       {
         title: "List responses carrying unused data",
         incident: "A read-only API latency benchmark I wrote (no dependencies, refuses to run against production) flagged the session list as much heavier than the screen needed.",
-        diagnosis: "Each session in the list carried a large configuration field that no list screen displayed: 85% of the response.",
-        resolution: "Dropped the field from the list response, cutting it from 63 KB to 10 KB for 13 sessions (84% smaller)."
+        diagnosis: "Each session in the list carried a large configuration field that no list screen displayed, and it made up most of the response.",
+        resolution: "Dropped the field from the list response, so lists download a fraction of the data and respond faster."
+      },
+      {
+        title: "Is the AI grader consistent?",
+        incident: "Candidates are scored by an LLM, so the same call should get the same grade every time. Nobody had checked.",
+        diagnosis: "Wrote a test that re-grades the same calls many times through the real grading code on staging. Scores were stable, but a call sitting right at a grade boundary could land on either side of it.",
+        resolution: "Reported it with options: flag near-boundary calls for human review, or grade twice and take the median. A companion benchmark timed live voice replies and replaced an unmeasured latency claim in the docs with a measured one."
       }
     ]
   },
@@ -1489,7 +1496,7 @@ function scoreAssessment(answers) {
   vodabi: {
     title: "VODATalk(보다톡) — AI 음성 세일즈 훈련 & 평가 플랫폼",
     tagline: "영업 직원이 AI 고객과 실시간 음성 롤플레이로 연습하고 루브릭 기반 점수와 코칭을 받으며, 매니저는 팀의 진행 상황을 확인합니다.",
-    meta: { role: "단독 풀스택 엔지니어", team: "엔지니어 1인, 디자이너 Figma 기반", dates: "2026년 7월 – 현재", status: "구축 완료, 기업 고객 2곳에 도입 중" },
+    meta: { role: "단독 풀스택 엔지니어", team: "엔지니어 1인, 디자이너 Figma 기반", dates: "2026년 7월 – 현재", status: "구축 완료, 기업 고객사에 도입 중" },
     liveUrl: "",
     screenshots: [
       { label: "실시간 통화 파이프라인", url: "/screenshots/vodabi/call-flow.svg", subLabel: "브라우저가 WebRTC로 OpenAI Realtime과 직접 통화하고, 백엔드는 토큰 발급과 턴 저장을 담당" },
@@ -1628,7 +1635,8 @@ function scoreAssessment(answers) {
         "루브릭 항목별 점수와 그에 맞는 코칭.",
         "디자이너의 Figma로 만든 직원 훈련 화면과 매니저 대시보드.",
         "앱 영역별 지연 로딩으로 첫 로딩 단축.",
-        "로그인 페이지 Lighthouse 전후 측정(랩 측정): 모바일 LCP 14.3초 → 3.9초, 모바일 점수 66 → 83, 데스크톱 점수 84 → 97, 페이지 용량 2.5MB → 570KB."
+        "로그인 페이지를 Lighthouse로 전후 측정: 휴대폰 첫 화면 로딩이 몇 배 빨라짐.",
+        "스테이징에서 합성 음성으로 돌리는 음성 지연·LLM 채점 일관성 테스트로, 속도와 채점에 대한 주장을 추정이 아닌 측정으로 확인."
       ],
       security: [
         "개인정보 저장 시 암호화.",
@@ -1657,15 +1665,21 @@ function scoreAssessment(answers) {
       },
       {
         title: "휴대폰에서 느린 첫 화면",
-        incident: "모바일 Lighthouse 측정(네트워크·CPU 제한)에서 모든 사용자가 처음 보는 로그인 페이지의 주요 콘텐츠가 표시되기까지 14.3초가 걸림.",
-        diagnosis: "2MB PNG 배경 이미지 하나가 페이지 용량의 82%를 차지.",
-        resolution: "같은 해상도의 WebP(128KB)로 다시 인코딩. 페이지 용량은 2.5MB에서 570KB로, 모바일 LCP는 14.3초에서 3.9초로 줄었고 레이아웃 이동은 없음."
+        incident: "모바일 Lighthouse 측정(네트워크·CPU 제한)에서 모든 사용자가 처음 보는 로그인 페이지가 Google의 '양호' 기준에서 크게 벗어남.",
+        diagnosis: "PNG 배경 이미지 하나가 페이지 용량의 대부분을 차지.",
+        resolution: "같은 해상도의 WebP로 다시 인코딩. 페이지 용량이 몇 분의 일로 줄고 휴대폰 로딩이 몇 배 빨라졌으며 레이아웃 이동은 없음."
       },
       {
         title: "쓰지 않는 데이터를 싣고 다니던 목록 응답",
         incident: "직접 만든 읽기 전용 API 지연 벤치마크(외부 의존성 없음, 프로덕션 대상 실행 거부)에서 세션 목록 응답이 화면에 필요한 것보다 훨씬 무겁게 나타남.",
-        diagnosis: "목록의 각 세션에 어떤 목록 화면도 표시하지 않는 큰 설정 필드가 들어 있었고, 응답의 85%를 차지.",
-        resolution: "목록 응답에서 해당 필드를 빼서 세션 13개 기준 63KB에서 10KB로 84% 줄임."
+        diagnosis: "목록의 각 세션에 어떤 목록 화면도 표시하지 않는 큰 설정 필드가 들어 있었고, 응답의 대부분을 차지.",
+        resolution: "목록 응답에서 해당 필드를 빼서 목록이 내려받는 데이터가 몇 분의 일로 줄고 응답도 빨라짐."
+      },
+      {
+        title: "AI 채점은 일관적인가?",
+        incident: "후보자는 LLM이 채점하므로 같은 통화는 매번 같은 등급을 받아야 하지만, 확인한 사람이 없었음.",
+        diagnosis: "같은 통화를 스테이징에서 실제 채점 코드로 여러 번 다시 채점하는 테스트를 작성. 점수는 안정적이었지만, 등급 경계에 걸친 통화는 경계 양쪽으로 갈릴 수 있었음.",
+        resolution: "개선안과 함께 보고: 경계 근처 통화는 담당자 검토 표시, 또는 두 번 채점해 중앙값 사용. 함께 만든 벤치마크로 실시간 음성 응답 시간을 재서, 문서의 측정되지 않은 지연 시간 문구를 실측값으로 교체."
       }
     ]
   },

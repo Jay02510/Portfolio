@@ -24,8 +24,8 @@ export const RESUME_DATA = {
     }
   },
   profile: {
-    en: "AI product engineer: turns problems Korean teachers and parents describe into AI products, from the first interview to the App Store. 10+ years in Korean English academies and six AI products built solo; Chekki AI is live on the App Store and Google Play, and Chekki Schools is in final testing.\n\nAt VODABI, builds the frontend, backend and database of VODATalk, a voice-AI sales training platform going into use with two enterprise clients. Works daily in English and Korean.",
-    ko: "AI 프로덕트 엔지니어입니다. 한국 교사와 학부모가 말하는 문제를 첫 인터뷰부터 앱 출시까지 AI 제품으로 만듭니다. 한국 영어 학원에서 10년 넘게 가르쳤고 AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 최종 테스트 중입니다.\n\nVODABI에서는 두 곳의 기업 고객사에서 사용을 시작하는 음성 AI 영업 훈련 플랫폼의 프론트엔드, 백엔드, 데이터베이스를 만듭니다. 매일 한국어와 영어로 일합니다."
+    en: "AI product engineer: turns problems Korean teachers and parents describe into AI products, from the first interview to the App Store. 10+ years in Korean English academies and six AI products built solo; Chekki AI is live on the App Store and Google Play, and Chekki Schools is in final testing.\n\nAt VODABI, builds the frontend, backend and database of VODATalk, a voice-AI sales training platform going into use with enterprise clients. Works daily in English and Korean.",
+    ko: "AI 프로덕트 엔지니어입니다. 한국 교사와 학부모가 말하는 문제를 첫 인터뷰부터 앱 출시까지 AI 제품으로 만듭니다. 한국 영어 학원에서 10년 넘게 가르쳤고 AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 최종 테스트 중입니다.\n\nVODABI에서는 기업 고객사에서 사용을 시작하는 음성 AI 영업 훈련 플랫폼의 프론트엔드, 백엔드, 데이터베이스를 만듭니다. 매일 한국어와 영어로 일합니다."
   },
   skills: {
     aiVoice: {
@@ -117,8 +117,15 @@ export const RESUME_DATA = {
         {
           tag: { en: "Performance", ko: "성능" },
           text: {
-            en: "Cut the login page's mobile LCP from 14.3s to 3.9s and its weight by 77% (Lighthouse lab runs) by re-encoding a 2 MB background image; wrote a read-only API latency benchmark that found a list response that was 85% unused data, and cut it by 84%.",
-            ko: "2MB 배경 이미지를 재인코딩해 로그인 페이지 모바일 LCP를 14.3초에서 3.9초로, 페이지 용량을 77% 줄임(Lighthouse 랩 측정). 읽기 전용 API 지연 벤치마크를 직접 만들어, 85%가 쓰지 않는 데이터였던 목록 응답을 찾아 84% 줄임."
+            en: "Profiled the app with Lighthouse and a read-only API benchmark I wrote; fixed an oversized login image and list responses full of unused data, so the first screen loads several times faster on phones.",
+            ko: "Lighthouse와 직접 만든 읽기 전용 API 벤치마크로 앱을 분석하고, 과도하게 큰 로그인 이미지와 쓰지 않는 데이터가 가득한 목록 응답을 고쳐 휴대폰 첫 화면 로딩을 몇 배 빠르게 함."
+          }
+        },
+        {
+          tag: { en: "AI Evaluation Testing", ko: "AI 평가 테스트" },
+          text: {
+            en: "Built a voice-latency benchmark and an LLM grading-consistency test that run the real pipeline on staging with synthetic speech, so no candidate data is used; replaced an unmeasured latency claim with a measured one and found that scores near a grade cutoff could flip, then proposed a fix.",
+            ko: "실제 파이프라인을 스테이징에서 합성 음성으로 돌리는 음성 지연 벤치마크와 LLM 채점 일관성 테스트를 구축해 후보자 데이터 없이 검증. 측정된 적 없던 지연 시간 문구를 실측값으로 바꾸고, 등급 경계 근처 점수는 등급이 바뀔 수 있음을 발견해 개선안을 제안."
           }
         },
         {
@@ -138,8 +145,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "Traction", ko: "도입" },
           text: {
-            en: "Going into use with two enterprise clients for employee sales-skills testing; opened candidate links to phones and hardened calls against mic loss and concurrent starts ahead of the pilot.",
-            ko: "두 곳의 기업 고객사에서 직원 영업 역량 테스트 용도로 사용을 시작합니다. 파일럿을 앞두고 지원자 링크를 휴대폰으로 확대하고, 마이크 끊김과 동시 시작에도 통화가 유지되도록 안정화."
+            en: "Going into use with enterprise clients for employee sales-skills testing; opened candidate links to phones and hardened calls against mic loss and concurrent starts ahead of the pilot.",
+            ko: "기업 고객사에서 직원 영업 역량 테스트 용도로 사용을 시작합니다. 파일럿을 앞두고 지원자 링크를 휴대폰으로 확대하고, 마이크 끊김과 동시 시작에도 통화가 유지되도록 안정화."
           }
         }
       ]

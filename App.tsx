@@ -82,7 +82,7 @@ const COPY = {
     ctaResume: "Résumé",
     caseLabel: "Case study ↗",
     nowLabel: "Now",
-    nowBody: "VODATalk now runs on phones as well as computers, and is going into use with two enterprise clients.",
+    nowBody: "VODATalk now runs on phones as well as computers, and is going into use with enterprise clients.",
     nextLabel: "In progress, not shipped",
     nextBody: "A RAG version of the lead-enrichment CRM, and a new textbook built on my 20-volume series that ties into Chekki.",
     roleTitle: "How I work",
@@ -120,7 +120,7 @@ const COPY = {
     ctaResume: "이력서",
     caseLabel: "케이스 스터디 ↗",
     nowLabel: "현재",
-    nowBody: "VODATalk(보다톡)은 이제 컴퓨터와 휴대폰 모두에서 통화할 수 있고, 두 곳의 기업 고객사에서 사용을 시작합니다.",
+    nowBody: "VODATalk(보다톡)은 이제 컴퓨터와 휴대폰 모두에서 통화할 수 있고, 기업 고객사에서 사용을 시작합니다.",
     nextLabel: "진행 중 · 미출시",
     nextBody: "리드 수집 CRM을 바탕으로 한 RAG 시스템, 그리고 20권 교재 시리즈를 바탕으로 Chekki와 연결되는 새 교재.",
     roleTitle: "일하는 방식",
@@ -185,7 +185,7 @@ const ROLE_COLS = {
     {
       head: "Claim discipline",
       items: [
-        "VODATalk is built and rolling out with two enterprise clients; there are no production metrics yet and I do not quote any",
+        "VODATalk is built and rolling out with enterprise clients; figures measured on the client's system stay private, so I do not quote any",
         "Client identifiers stay sanitized under NDA",
         "Outcomes below are tagged measured, estimated, or target — never blended",
         "Where a number is an estimate, the method is in the case study"
@@ -216,7 +216,7 @@ const ROLE_COLS = {
     {
       head: "주장의 범위",
       items: [
-        "VODATalk는 구축을 마치고 두 곳의 기업 고객사에서 사용을 시작합니다. 아직 프로덕션 지표가 없어 어떤 수치도 인용하지 않습니다",
+        "VODATalk는 구축을 마치고 기업 고객사에서 사용을 시작합니다. 고객사 시스템에서 측정한 수치는 비공개라 인용하지 않습니다",
         "고객사 식별 정보는 NDA에 따라 익명화합니다",
         "아래 성과는 실측·추정·목표로 구분해 표기하며 섞지 않습니다",
         "추정치의 산출 방법은 케이스 스터디에 적었습니다"

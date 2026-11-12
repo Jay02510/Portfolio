@@ -48,13 +48,17 @@ A suite of production-grade AI applications bridging complex Generative AI capab
 3. **Magic links for candidates**: a scored call starts straight from a link, with expiry and rotation on re-invite.
 4. **Encryption at rest** for personal data and transcripts.
 
-### D. Performance (measured, Nov 2026)
-* **Login page** (first screen every user sees), Lighthouse lab runs before and after: mobile LCP 14.3s → 3.9s, mobile score 66 → 83, desktop LCP 2.8s → 1.0s, desktop score 84 → 97, page weight 2.5 MB → 570 KB. Cause: one 2 MB PNG background (82% of the page), re-encoded as WebP at the same resolution.
-* **API**: wrote a read-only latency benchmark (no dependencies, refuses to run against production). It found the session list carrying a large configuration field no screen used (85% of the response); removing it cut the payload 84% (63 KB → 10 KB for 13 sessions).
+### D. Performance and testing (Nov 2026)
+Figures measured on the client's system stay private; these describe the work and what it found.
+* **Login page** (first screen every user sees), Lighthouse before and after: one PNG background was most of the page's weight. Re-encoded as WebP at the same resolution, the page loads several times faster on phones.
+* **API**: wrote a read-only latency benchmark (no dependencies, refuses to run against production). It found the session list carrying a large configuration field no screen used; removing it cut most of the payload.
+* **Voice latency**: a benchmark that opens real voice sessions through the app's own pipeline on staging, sends synthetic Korean speech and times the AI's reply. It replaced an unmeasured latency claim in the docs with a measured one.
+* **Grading consistency**: a test that re-grades the same calls many times through the real grading code. Scores were stable; calls right at a grade boundary could land on either side, so I proposed near-boundary review flags or median-of-two grading.
+* Billed tests run on staging only, use synthetic speech instead of candidate audio, and refuse to target production.
 
 ### E. Status
 * In production; the platform was revamped and the coaching layer added in about 3 weeks.
-* Production usage metrics and a voice-latency benchmark are not published yet.
+* Production usage figures stay private to the client.
 
 ---
 

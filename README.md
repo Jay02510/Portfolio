@@ -8,7 +8,7 @@ I build AI products for Korean English academies, taking them from the first tea
 
 | Project | What it is | Status |
 | :--- | :--- | :--- |
-| **VodaBi** (work project) | Voice-AI sales training and evaluation platform: realtime roleplay calls over direct WebRTC, two-step rubric grading (score first, then explain), staff and manager dashboards. | Built, rolling out with two enterprise clients |
+| **VodaBi** (work project) | Voice-AI sales training and evaluation platform: realtime roleplay calls over direct WebRTC, two-step rubric grading (score first, then explain), staff and manager dashboards. | Built, rolling out with enterprise clients |
 | **[Chekki AI](https://chekki-ai.vercel.app/)** | Homework grading for Korean ESL academies. A camera scan is graded against the teacher's own answer key, with bilingual explanations for parents. [App Store](https://apps.apple.com/us/app/chekkiai/id6759361725) · [Google Play](https://play.google.com/store/apps/details?id=com.chekkiai.app) | Live |
 | **[Chekki Schools](https://www.chekkiai.com/schools)** | The staff side of Chekki: separate logins for directors, foreign teachers and Korean teachers, curriculum pre-seeding, voice-first class logs. | Final testing ahead of a pilot |
 
@@ -27,7 +27,7 @@ Each project has a full case study on the site: the problem, what I built, the d
 
 ## How claims are handled
 
-- VodaBi has no production usage metrics yet, so none are quoted. Its performance figures are lab measurements (Lighthouse, an API benchmark) and are labelled as such.
+- VODATalk figures measured on the client's system (performance, latency, grading, usage) are kept private; the case study describes the work and findings without them.
 - Client identifiers are removed under NDA.
 - Outcomes are labelled as measured, estimated or target, and estimates come with their method.
 
