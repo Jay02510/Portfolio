@@ -15,6 +15,7 @@
     <meta name="description" content="Full-stack engineer shipping production LLM apps. Sole developer of a voice-AI sales training platform (VODATalk) at VODABI; builder of six AI education products for Korea." />
     <meta name="author" content="Jason Benjamin" />
     <meta name="format-detection" content="telephone=yes">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href="https://www.jason-portfolio.com/" />
 
     <!-- Open Graph / Facebook / Instagram / KakaoTalk -->
@@ -29,7 +30,9 @@
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <!-- Font CSS loads without blocking first paint; system fallback shows until it arrives -->
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" /></noscript>
     <style>
         :root {
             --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;

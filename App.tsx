@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef, lazy, Suspense } from 'react';
-import ResumeModal from './components/ResumeModal.tsx';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import { CompactProjectCard } from './components/CompactProjectCard.tsx';
 import { SunIcon, MoonIcon, ExternalLinkIcon, ChevronDownIcon } from './components/Icons.tsx';
 import { track } from '@vercel/analytics';
 
 // Case studies (viewer + ~2,600 lines of data) load only when one is opened.
+// Resume modal (and the full resume) loads on first open.
+const ResumeModal = lazy(() => import('./components/ResumeModal.tsx'));
 const CaseStudyViewer = lazy(() => import('./CaseStudyViewer.tsx').then(m => ({ default: m.CaseStudyViewer })));
 
 interface Decision {
@@ -897,8 +898,11 @@ export default function App({ initialPath }: { initialPath?: string }) {
               isDark ? 'border-white/10' : 'border-black/10'
             }`}>
               <img
-                src="/images/jason-benjamin.jpg"
+                src="/images/jason-benjamin.webp"
                 alt="Jason Benjamin"
+                width={410}
+                height={525}
+                fetchPriority="high"
                 className="w-full aspect-[4/5] object-cover object-top"
               />
             </div>
@@ -976,6 +980,8 @@ export default function App({ initialPath }: { initialPath?: string }) {
                       ) : (
                         <img
                           src={project.image}
+                          srcSet={project.image.endsWith('.webp') && project.image.includes('/screenshots/') ? `${project.image.replace('.webp', '-720.webp')} 720w, ${project.image} 1440w` : undefined}
+                          sizes="(min-width: 1024px) 480px, calc(100vw - 112px)"
                           alt={project.title}
                           className="w-full h-full object-contain hover:scale-102 transition-transform duration-500"
                           loading="lazy"
@@ -1329,12 +1335,16 @@ export default function App({ initialPath }: { initialPath?: string }) {
       </footer>
 
       {/* MODALS */}
-      <ResumeModal
-        isOpen={isResumeOpen}
-        onClose={closeResumeModal}
-        theme={theme}
-        locale={locale}
-      />
+      {isResumeOpen && (
+        <Suspense fallback={null}>
+          <ResumeModal
+            isOpen={isResumeOpen}
+            onClose={closeResumeModal}
+            theme={theme}
+            locale={locale}
+          />
+        </Suspense>
+      )}
 
       {activeCaseStudyId && (
         <Suspense fallback={null}>
