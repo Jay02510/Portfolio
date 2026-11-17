@@ -31,10 +31,10 @@ export const RESUME_DATA = {
     aiVoice: {
       label: { en: "AI & Voice Systems", ko: "AI & 음성 시스템" },
       items: [
-        "OpenAI Realtime API (WebRTC, ephemeral tokens)", "GPT-4o", "Gemini 2.5 Flash/Pro (multimodal/vision)",
+        "OpenAI Realtime API (WebRTC, ephemeral tokens)", "GPT-4o", "Gemini 3.8 Flash / Gemini Pro (multimodal/vision)",
         "LLM Judge Architecture", "Deterministic AI Evaluation", "Prompt Engineering",
         "Structured JSON Outputs (constrained responseSchema)", "Hallucination Mitigation",
-        "Retrieval-grounded generation"
+        "Retrieval-grounded generation", "Model Context Protocol (MCP)", "LLM Eval Sets & Grounding Checks"
       ]
     },
     engineeringInfra: {
@@ -43,7 +43,7 @@ export const RESUME_DATA = {
         "React 19", "TypeScript", "Vite", "NestJS 11", "Node.js 24", "Prisma 7", "MariaDB",
         "Firebase/Firestore", "Firestore Security Rules", "Capacitor (iOS/Android)", "RevenueCat",
         "Docker/Compose", "Caddy", "AWS EC2", "Upstash Redis", "GitHub Actions", "Vitest",
-        "Sentry", "Vercel Serverless"
+        "Sentry", "Vercel Serverless", "Python", "pytest", "Google Cloud Run", "Cloud Scheduler"
       ]
     },
     productMgmt: {
@@ -310,6 +310,40 @@ export const RESUME_DATA = {
       bullets: [] as { tag: { en: string; ko: string }; text: { en: string; ko: string } }[]
     }
   },
+  projects: [
+    {
+      title: { en: "Seoul Commute MCP", ko: "Seoul Commute MCP" },
+      company: { en: "Open-source side project", ko: "오픈 소스 사이드 프로젝트" },
+      period: { en: "Nov 2026", ko: "2026년 11월" },
+      sub: {
+        en: "MCP server giving Claude live Seoul transit, weather and air data · github.com/Jay02510/seoul-commute-mcp",
+        ko: "Claude에 서울 실시간 교통·날씨·대기 데이터를 제공하는 MCP 서버 · github.com/Jay02510/seoul-commute-mcp"
+      },
+      bullets: [
+        {
+          tag: { en: "MCP Server", ko: "MCP 서버" },
+          text: {
+            en: "Built 6 MCP tools on 4 Korean public APIs, served over stdio and as a token-protected Claude.ai connector on Cloud Run in Seoul.",
+            ko: "한국 공공 API 4종 위에 MCP 도구 6개를 구축해 stdio와, 서울 리전 Cloud Run의 토큰 보호 Claude.ai 커넥터로 제공."
+          }
+        },
+        {
+          tag: { en: "Grounding Evals", ko: "근거 평가" },
+          text: {
+            en: "Wrote a 33-case eval set whose grader fails any stop count, minute or fare not found in a tool result; changing tools, not the model, raised grounded answers from 22/30 to 28/30.",
+            ko: "도구 결과에 없는 정거장 수·소요 시간·요금을 실패로 처리하는 33문항 평가 세트를 만들고, 모델이 아닌 도구를 바꿔 근거 기반 답변을 22/30에서 28/30으로 개선."
+          }
+        },
+        {
+          tag: { en: "Automation", ko: "자동화" },
+          text: {
+            en: "Sends weekday Telegram commute briefings from a Cloud Run job on Cloud Scheduler; 149 offline tests run on recorded API fixtures.",
+            ko: "Cloud Scheduler로 실행되는 Cloud Run 잡이 평일 텔레그램 출퇴근 브리핑을 발송하며, 녹화된 API 응답으로 오프라인 테스트 149개를 실행."
+          }
+        }
+      ]
+    }
+  ],
   education: [
     {
       degree: {
@@ -350,6 +384,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
     en: {
       profile: "PROFILE",
       experience: "EXPERIENCE",
+      projects: "PROJECTS",
       skills: "TECHNICAL SKILLS",
       education: "EDUCATION",
       badge: "UNIFIED CAREER RESUME",
@@ -359,6 +394,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
     ko: {
       profile: "프로필 요약 (PROFILE)",
       experience: "경력 사항 (EXPERIENCE)",
+      projects: "프로젝트 (PROJECTS)",
       skills: "직무 핵심 역량 & 기술 스택 (TECHNICAL SKILLS)",
       education: "학력 사항 (EDUCATION)",
       badge: "통합 경력 명세서",
@@ -580,6 +616,51 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
           </div>
           ))}
 
+        </div>
+
+        {/* PROJECTS SECTION */}
+        <div className="space-y-6">
+          <h3 className="text-xs font-black uppercase tracking-widest text-accent-gold font-mono flex items-center gap-2">
+            <span>🛠️</span> {labels.projects}
+          </h3>
+          {data.projects.map((job, i) => (
+          <div key={i} className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
+            isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
+          }`}>
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-white/10">
+              <div>
+                <h4 className="text-base font-bold text-accent-gold font-display">
+                  {job.title[locale]}
+                </h4>
+                <span className={`text-xs sm:text-sm font-semibold block ${isDark ? 'text-white/90' : 'text-alpine-950'}`}>
+                  {job.company[locale]}
+                </span>
+              </div>
+              <span className="text-xs font-mono opacity-60 shrink-0 text-accent-gold font-bold">
+                {job.period[locale]}
+              </span>
+            </div>
+
+            <p className={`text-xs font-medium italic ${isDark ? 'text-white/70' : 'text-neutral-600'}`}>
+              {job.sub[locale]}
+            </p>
+
+            <ul className="space-y-3 pt-1">
+              {job.bullets.map((b, idx) => (
+                <li key={idx} className="space-y-1">
+                  <div className="text-xs font-bold text-accent-gold font-mono flex items-center gap-1.5">
+                    <span>–</span> <span>{b.tag[locale]}:</span>
+                  </div>
+                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light ${
+                    isDark ? 'text-white/80' : 'text-neutral-800'
+                  }`}>
+                    {b.text[locale]}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          ))}
         </div>
 
         {/* TECHNICAL SKILLS SECTION */}
@@ -864,6 +945,29 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
 
         {/* YBM PSA SEOCHO, earlier academies */}
         {[data.experience.ybm, data.experience.early].map((job, i) => (
+        <div key={i} className="print-exp-block">
+          <div className="print-exp-header">
+            <div>
+              <span className="print-title">{job.title[locale]}</span>
+              <span style={{ color: '#1D4ED8', fontWeight: 700 }}> · </span>
+              <span className="print-company">{job.company[locale]}</span>
+            </div>
+            <span className="print-dates">{job.period[locale]}</span>
+          </div>
+          <div className="print-subtitle">{job.sub[locale]}</div>
+          {job.bullets.length > 0 && <ul>
+            {job.bullets.map((b, idx) => (
+              <li key={idx}>
+                – <strong>{b.tag[locale]}:</strong> {b.text[locale]}
+              </li>
+            ))}
+          </ul>}
+        </div>
+        ))}
+
+        {/* PROJECTS */}
+        <h2>{labels.projects}</h2>
+        {data.projects.map((job, i) => (
         <div key={i} className="print-exp-block">
           <div className="print-exp-header">
             <div>

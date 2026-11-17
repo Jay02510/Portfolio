@@ -305,44 +305,43 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       ]
     },
     {
-      id: "chekki-teacher",
-      context: "Same platform, staff-facing · Chekki Schools",
-      status: "Final testing",
-      image: "/screenshots/chekki-schools/02-director-dashboard.webp",
-      title: "Role-scoped CRM for academy directors and teachers",
-      problem: "Chekki AI is the app parents open; this is what the academy behind it runs on. A director managing the account, a foreign teacher grading homework, and a Korean teacher messaging parents were all stuck in the same single-page tool, each looking at menus meant for someone else's job.",
+      id: "seoul-commute",
+      context: "Side project · Open source",
+      status: "Live",
+      image: "/video/seoul-commute-loop-poster.webp",
+      video: "/video/seoul-commute-loop.mp4",
+      proof: "Grounded answers 22/30 → 28/30 on the eval set, by changing tools, not the model",
+      title: "MCP server that grounds an AI assistant's commute answers in live Seoul data",
+      problem: "Asked how many stops it is from Hongdae to Gangnam, an assistant answers from memory: 19, when the real answer is 17. This server gives Claude live Seoul weather, fine dust, subway arrivals and routes from Korean public data, and an eval set checks that every stop count, minute and fare in the answer came from a tool.",
       owned: [
-        "Separate logins for directors, foreign teachers and Korean teachers, each showing only the tools for that job",
-        "Curriculum and answer-key pre-seeding, so grading checks a worksheet scan against what the teacher actually taught",
-        "Voice-first class log: one recording from the foreign teacher fills in the class summary and notes on named students",
-        "Korean-teacher review before anything reaches a parent, then a bilingual report per family and optional KakaoTalk copies",
-        "Firestore security rules scoping every read to a teacher's own classes, tested on the emulator in CI",
-        "Split a 4,678-line single-file teacher page into useDirectorState / useFTState / useKTState role-scoped hooks"
+        "6 MCP tools over 4 Korean public APIs (KMA, AirKorea, Seoul Metro route, Seoul realtime subway), with station and district names in Korean or English",
+        "One server, two transports: stdio for Claude Desktop, and Streamable HTTP on Cloud Run in Seoul as a Claude.ai connector behind an access token",
+        "A 33-case eval set with an automatic grader: expected tool calls, injected HTTP 503 outages, and a grounding check that fails any stop count, minute or won figure not found in a tool result",
+        "Product changes driven by the eval failures: a route tool instead of a 'don't guess' rule, and rules moved from server instructions into tool descriptions and error text",
+        "Weekday Telegram commute briefings at 07:45 and 18:00, run by a Cloud Run job and Cloud Scheduler",
+        "149 offline tests on recorded API fixtures; keys in Secret Manager, redacted tool errors, repo secret-scanned before going public"
       ],
       decisions: [
         {
-          choice: "Separate logins per role instead of one page with conditional UI",
-          why: "The single-page version made a director's billing screen and a teacher's grading queue equally reachable from either login — nobody's menu matched their job.",
-          tradeoff: "Tradeoff: three surfaces to maintain and keep visually consistent instead of one."
+          choice: "Measure grounding with an eval set instead of trusting prompt rules",
+          why: "A stricter instruction alone didn't stop the model giving stop counts and journey times from memory. A grader that matches every number against the tool results gives a score that moves after each change.",
+          tradeoff: "Tradeoff: the grader only checks stops, minutes and won; other ungrounded claims still need a human read."
         },
         {
-          choice: "One structured schema generating both the bilingual report and the KakaoTalk script",
-          why: "Two separate model calls for the same week's summary occasionally disagreed with each other.",
-          tradeoff: "Tradeoff: the script is only as good as the report it's derived from — no independent tuning per output."
+          choice: "Cloud Run in the Seoul region, after probing the APIs from there first",
+          why: "Korean government APIs may refuse overseas traffic. A probe job in asia-northeast3 confirmed all four answer before any deploy work, and scale-to-zero keeps hosting close to free.",
+          tradeoff: "Tradeoff: a shared access token instead of OAuth, rotated by hand."
         },
         {
-          choice: "Review one class-day at a time, not one card per student",
-          why: "A card per student turned every class into a queue of near-identical approvals for the Korean teacher.",
-          tradeoff: "Tradeoff: every student note is edited on one long screen instead of one at a time."
-        },
-        {
-          choice: "Shared voice rules in every report prompt, after native Korean readers flagged the drafts",
-          why: "Readers said the reports sounded machine-written: the same stock praise (매우, 훌륭한, 적극적으로) in every one.",
-          tradeoff: "Tradeoff: plainer, more specific reports with less praise, and one rule set to keep in sync across three prompts."
+          choice: "Rule-based briefing writer by default, LLM writer behind a flag",
+          why: "The briefing goes out at 07:45 whether or not the model is overloaded, and rules can't reassure about data that wasn't checked.",
+          tradeoff: "Tradeoff: plainer, less adaptive messages."
         }
       ],
-      stack: ["React 19", "Gemini 3.8 Flash", "Cloud Firestore", "Vercel Functions", "Role-scoped React hooks"],
-      liveUrl: "https://www.chekkiai.com/schools"
+      stack: ["Python", "MCP Python SDK", "Google Cloud Run", "Cloud Scheduler", "Secret Manager", "Telegram Bot API", "pytest"],
+      stores: [
+        { label: "GitHub ↗", href: "https://github.com/Jay02510/seoul-commute-mcp" }
+      ]
     }
   ],
   ko: [
@@ -422,44 +421,43 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
       ]
     },
     {
-      id: "chekki-teacher",
-      context: "같은 플랫폼, 교직원용 · Chekki Schools",
-      status: "최종 테스트 중",
-      image: "/screenshots/chekki-schools/02-director-dashboard-ko.webp",
-      title: "원장·교사를 위한 역할별 CRM",
-      problem: "Chekki AI가 학부모가 여는 앱이라면, 이건 그 뒤에 있는 학원이 돌아가는 도구입니다. 계정을 관리하는 원장, 숙제를 채점하는 원어민 교사, 학부모에게 메시지를 보내는 한국인 교사가 전부 같은 단일 페이지 도구에 갇혀, 서로 다른 사람의 업무용 메뉴를 마주하고 있었습니다.",
+      id: "seoul-commute",
+      context: "사이드 프로젝트 · 오픈 소스",
+      status: "운영 중",
+      image: "/video/seoul-commute-loop-poster.webp",
+      video: "/video/seoul-commute-loop.mp4",
+      proof: "모델은 그대로, 도구만 바꿔 평가 세트의 근거 기반 답변 22/30 → 28/30",
+      title: "AI 어시스턴트의 출퇴근 답변을 서울 실시간 데이터에 근거하게 만드는 MCP 서버",
+      problem: "홍대입구에서 강남까지 몇 정거장이냐고 물으면 어시스턴트는 기억에 의존해 19개라고 답합니다. 실제로는 17개입니다. 이 서버는 한국 공공데이터로 서울의 실시간 날씨, 미세먼지, 지하철 도착 정보와 경로를 Claude에 제공하고, 평가 세트로 답변 속 정거장 수, 소요 시간, 요금이 모두 도구에서 왔는지 검사합니다.",
       owned: [
-        "원장, 원어민 교사, 한국인 교사의 로그인을 분리해 각자 자기 업무 도구만 보이도록 구성",
-        "커리큘럼·정답지 사전 등록으로, 채점이 교사가 실제로 가르친 내용을 기준으로 워크시트 스캔을 대조",
-        "음성 우선 수업 기록: 원어민 교사의 녹음 한 번으로 수업 요약과 학생별 메모를 함께 채움",
-        "학부모에게 가기 전 한국인 교사가 검토하고, 가정별 이중언어 리포트와 선택형 카카오톡 문구로 전달",
-        "모든 읽기를 교사 본인의 반으로 제한하는 Firestore 보안 규칙, 에뮬레이터 테스트로 CI에서 검증",
-        "4,678줄짜리 단일 교사 페이지를 useDirectorState / useFTState / useKTState 역할별 훅으로 분리"
+        "한국 공공 API 4종(기상청, 에어코리아, 서울교통공사 경로, 서울 실시간 지하철) 위의 MCP 도구 6개, 역·자치구 이름은 한국어와 영어 모두 지원",
+        "하나의 서버, 두 가지 전송 방식: Claude Desktop용 stdio, 그리고 액세스 토큰으로 보호되는 서울 리전 Cloud Run의 Streamable HTTP(Claude.ai 커넥터)",
+        "자동 채점기를 갖춘 33문항 평가 세트: 기대 도구 호출, HTTP 503 장애 주입, 도구 결과에 없는 정거장 수·분·원 수치를 실패로 처리하는 근거 검사",
+        "평가 실패를 근거로 한 제품 변경: '추측하지 말라'는 규칙 대신 경로 도구 추가, 규칙을 서버 지침에서 도구 설명과 오류 문구로 이동",
+        "Cloud Run 잡과 Cloud Scheduler로 평일 07:45, 18:00 텔레그램 출퇴근 브리핑 발송",
+        "녹화된 API 응답으로 오프라인 실행하는 테스트 149개, Secret Manager 키 관리, 오류 문구 마스킹, 공개 전 저장소 시크릿 스캔"
       ],
       decisions: [
         {
-          choice: "조건부 UI 하나 대신 역할별 개별 로그인으로 분리",
-          why: "단일 페이지 버전에서는 원장의 결제 화면과 교사의 채점 큐가 어느 로그인으로 들어가든 똑같이 열려 있어, 누구의 메뉴도 자기 업무와 맞지 않았습니다.",
-          tradeoff: "트레이드오프: 화면 하나 대신 세 개를 유지 보수하고 시각적으로 일관되게 관리해야 합니다."
+          choice: "프롬프트 규칙을 믿는 대신 평가 세트로 근거 여부를 측정",
+          why: "지침을 강화하는 것만으로는 모델이 기억으로 정거장 수와 소요 시간을 말하는 것을 막지 못했습니다. 답변 속 모든 수치를 도구 결과와 대조하는 채점기가 있어야 변경마다 점수가 움직이는 것을 볼 수 있습니다.",
+          tradeoff: "트레이드오프: 채점기는 정거장, 분, 원만 검사하므로 그 밖의 근거 없는 주장은 사람이 읽어야 합니다."
         },
         {
-          choice: "이중언어 리포트와 카카오톡 스크립트를 하나의 구조화된 스키마에서 생성",
-          why: "같은 주 요약을 두 번 독립적으로 생성했을 때 서로 내용이 어긋나는 경우가 있었습니다.",
-          tradeoff: "트레이드오프: 스크립트 품질이 리포트에 종속되어, 출력별 독립 튜닝이 어렵습니다."
+          choice: "API를 먼저 현지에서 점검한 뒤 서울 리전 Cloud Run에 배포",
+          why: "한국 정부 API는 해외 트래픽을 거부할 수 있습니다. asia-northeast3의 점검 잡으로 네 API가 모두 응답하는 것을 배포 전에 확인했고, 0까지 축소되어 호스팅 비용이 거의 들지 않습니다.",
+          tradeoff: "트레이드오프: OAuth 대신 공유 액세스 토큰을 쓰며, 교체는 수동입니다."
         },
         {
-          choice: "학생별 카드 대신 반·날짜 단위로 한 번에 검토",
-          why: "학생마다 카드를 두니 수업 하나가 한국인 교사에게 거의 똑같은 승인 대기열이 되었습니다.",
-          tradeoff: "트레이드오프: 학생 메모를 하나씩이 아니라 긴 화면 하나에서 편집해야 합니다."
-        },
-        {
-          choice: "한국어 원어민 독자의 지적 후, 모든 리포트 프롬프트에 공통 문체 규칙 적용",
-          why: "리포트가 기계가 쓴 글처럼 읽힌다는 피드백이 있었습니다. 매번 같은 칭찬(매우, 훌륭한, 적극적으로)이 반복됐습니다.",
-          tradeoff: "트레이드오프: 칭찬은 줄고 더 담백하고 구체적인 리포트가 되며, 세 프롬프트에 걸친 규칙을 함께 관리해야 합니다."
+          choice: "브리핑은 기본적으로 규칙 기반 작성기, LLM 작성기는 옵션",
+          why: "브리핑은 모델이 과부하여도 07:45에 나가야 하고, 규칙은 확인하지 않은 데이터를 두고 안심시키는 말을 하지 않습니다.",
+          tradeoff: "트레이드오프: 메시지가 더 단조롭고 덜 유연합니다."
         }
       ],
-      stack: ["React 19", "Gemini 3.8 Flash", "Cloud Firestore", "Vercel Functions", "역할별 React 훅"],
-      liveUrl: "https://www.chekkiai.com/schools"
+      stack: ["Python", "MCP Python SDK", "Google Cloud Run", "Cloud Scheduler", "Secret Manager", "Telegram Bot API", "pytest"],
+      stores: [
+        { label: "GitHub ↗", href: "https://github.com/Jay02510/seoul-commute-mcp" }
+      ]
     }
   ]
 };
@@ -467,15 +465,15 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
 const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
   en: [
     {
-      id: "seoul-commute",
-      domains: ["automation"],
-      title: "Seoul Commute MCP",
-      status: "Live · Open source",
-      desc: "MCP server that gives Claude live Seoul weather, fine dust, subway arrivals and routes from Korean public data, hosted on Cloud Run in Seoul, plus weekday commute briefings on Telegram. A 33-question eval set checks that every stop count, minute and fare in the answer came from a tool.",
-      outcome: "Grounded answers 22/30 → 28/30 by changing tools, not the model",
-      stack: ["Python", "MCP", "Cloud Run", "Cloud Scheduler", "Telegram Bot API", "pytest"],
-      liveUrl: "https://github.com/Jay02510/seoul-commute-mcp",
-      caseStudyId: "seoul-commute"
+      id: "chekki-teacher",
+      domains: ["ops"],
+      title: "Chekki Schools",
+      status: "Final testing",
+      desc: "Role-scoped CRM behind Chekki AI: separate logins for directors, foreign teachers and Korean teachers, voice-first class logs, and bilingual parent reports a Korean teacher reviews before families receive them.",
+      outcome: "4,678-line teacher page split into role-scoped hooks with no regressions",
+      stack: ["React 19", "Gemini 3.8 Flash", "Cloud Firestore", "Vercel Functions"],
+      liveUrl: "https://www.chekkiai.com/schools",
+      caseStudyId: "chekki-teacher"
     },
     {
       id: "hagwon-readiness",
@@ -513,15 +511,15 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
   ],
   ko: [
     {
-      id: "seoul-commute",
-      domains: ["automation"],
-      title: "Seoul Commute MCP",
-      status: "운영 중 · 오픈 소스",
-      desc: "한국 공공데이터로 서울의 실시간 날씨, 미세먼지, 지하철 도착 정보와 경로를 Claude에 제공하는 MCP 서버. 서울 리전 Cloud Run에서 운영하며 평일 출퇴근 브리핑을 텔레그램으로 보냅니다. 33문항 평가 세트로 답변 속 정거장 수, 소요 시간, 요금이 모두 도구에서 왔는지 검사합니다.",
-      outcome: "모델은 그대로, 도구만 바꿔 근거 기반 답변 22/30 → 28/30",
-      stack: ["Python", "MCP", "Cloud Run", "Cloud Scheduler", "Telegram Bot API", "pytest"],
-      liveUrl: "https://github.com/Jay02510/seoul-commute-mcp",
-      caseStudyId: "seoul-commute"
+      id: "chekki-teacher",
+      domains: ["ops"],
+      title: "Chekki Schools",
+      status: "최종 테스트 중",
+      desc: "Chekki AI 뒤에서 학원이 쓰는 역할별 CRM: 원장·원어민 교사·한국인 교사의 로그인 분리, 음성 우선 수업 기록, 한국인 교사가 검토한 뒤 가정에 전달되는 이중언어 학부모 리포트.",
+      outcome: "4,678줄 교사 페이지를 역할별 훅으로 회귀 없이 분리",
+      stack: ["React 19", "Gemini 3.8 Flash", "Cloud Firestore", "Vercel Functions"],
+      liveUrl: "https://www.chekkiai.com/schools",
+      caseStudyId: "chekki-teacher"
     },
     {
       id: "hagwon-readiness",
@@ -716,7 +714,7 @@ const LOG: LogEntry[] = [
 
 type Locale = 'en' | 'ko';
 
-export const CASE_IDS = ['vodabi', 'chekki', 'chekki-teacher', 'seoul-commute', 'hagwon-readiness', 'bridgerecruit', 'lead-enrichment'];
+export const CASE_IDS = ['vodabi', 'chekki', 'seoul-commute', 'chekki-teacher', 'hagwon-readiness', 'bridgerecruit', 'lead-enrichment'];
 
 // URL scheme: /, /ko, /case/<id>, /ko/case/<id>. Each one is pre-rendered at build time.
 export function parsePath(path: string): { locale: Locale; caseId: string | null } {
