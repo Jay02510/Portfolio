@@ -885,7 +885,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-widest text-accent-gold transition-colors active:scale-95 hover:text-accent-gold/80 whitespace-nowrap"
             >
-              {t.launchLive}
+              {projectData.liveLabel ?? t.launchLive}
             </a>
           )}
           {projectData.contactUrl && (
@@ -973,7 +973,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     : 'border-black/20 hover:bg-black/5 text-alpine-950'
                 }`}
               >
-                <span className="whitespace-nowrap leading-snug">{t.launchLiveApp}</span>
+                <span className="whitespace-nowrap leading-snug">{projectData.liveLabel ?? t.launchLiveApp}</span>
               </a>
             )}
             {projectData.contactUrl && (

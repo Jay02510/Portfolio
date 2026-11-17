@@ -39,6 +39,7 @@ export interface CaseStudyType {
   tagline: string;
   meta?: { role: string; team?: string; dates?: string; status: string };
   liveUrl: string;
+  liveLabel?: string; // overrides the "Launch Live" link text, e.g. for a source repo
   storeUrl?: string;
   contactUrl?: string;
   walkthroughVideo?: string;

@@ -1371,6 +1371,145 @@ Call B — feedback
         resolution: "The only reliable fix was a version bump plus an explicit remove-and-re-add script of the manifest file, completely clearing the Office add-in cache."
       }
     ]
+  },
+  "seoul-commute": {
+    title: "Seoul Commute MCP — Live Transit, Weather and Air Data for AI Assistants",
+    tagline: "A Python MCP server that gives Claude and other assistants 6 tools on Korean public data (weather, forecast, fine dust, live subway arrivals, timetable routes), deployed on Cloud Run in Seoul, with weekday commute briefings on Telegram and a 33-question eval set that checks every stop count, minute and won figure against the tool results.",
+    meta: { role: "AI engineer", team: "Solo", dates: "Nov 2026", status: "Live" },
+    liveUrl: "https://github.com/Jay02510/seoul-commute-mcp",
+    liveLabel: "View on GitHub ↗",
+    screenshots: [
+      { label: "Claude.ai Connector", url: "/screenshots/seoul-commute/demo.gif", subLabel: "Hongdae to Gangnam: route, trains, weather and forecast, all from the cloud server (1.5x speed)" }
+    ],
+    stats: [
+      { label: "MCP Tools", value: "6 tools / 4 public APIs", detail: "KMA, AirKorea, Seoul Metro route, Seoul realtime subway" },
+      { label: "Eval Pass Rate", value: "22/30 → 28/30", detail: "After grounding fixes; 28/33 on the extended set, no graded failures, 5 cases not yet graded because of model outages" },
+      { label: "Tests", value: "149 offline", detail: "Recorded API fixtures, run without network or keys" }
+    ],
+    problem: [
+      "Asked how many stops it is from Hongdae to Gangnam, an assistant answers from memory, confidently and wrongly (19 stops, when the real answer is 17). Commute questions need live, local data the model doesn't have.",
+      "Korea's open data is spread across separate portals and formats: KMA forecasts use a 5 km grid instead of coordinates, AirKorea's grade fields are often blank, the route API silently returns empty results for a wrongly spelled station, and data.go.kr answers key errors in XML even when JSON was requested.",
+      "Even with tools available, a model will still fill gaps from memory or reassure the user when a data source is down. A demo that looks right once proves nothing about how often the answers are actually grounded."
+    ],
+    solution: [
+      "Wrapped the four APIs in small async modules (sources/) and exposed them as 6 MCP tools: current_weather, forecast, air_quality, next_trains, route and list_districts. Station names work in Korean or English, districts in either language.",
+      "Ran the same server two ways: over stdio for Claude Desktop, and over Streamable HTTP on Cloud Run in the Seoul region (token-protected, keys in Secret Manager), so it works as a Claude.ai custom connector from any device.",
+      "Built a 33-case eval set with an automatic grader: which tools were called with which arguments, required and forbidden phrases, injected HTTP 503 outages, and a grounding check that fails any stop count, minute figure or won amount not found in a tool result.",
+      "Used the eval failures to change the product: added a route tool instead of telling the model not to guess, moved rules from server instructions into tool descriptions and tool results, and made route return minutes per ride after the model computed one itself.",
+      "Reused the data layer for a Telegram briefing (07:45 to work, 18:00 home, weekdays) run by a Cloud Run job and Cloud Scheduler, with a rule-based writer that never says 'no umbrella or mask needed' unless every check actually answered."
+    ],
+    stack: ["Python 3.11+", "MCP Python SDK 2", "httpx (async)", "Google Cloud Run", "Cloud Scheduler", "Secret Manager", "Docker", "SQLite", "Telegram Bot API", "pytest", "Gemini / Claude (eval runner)"],
+    decisions: [
+      {
+        decision: "Measure grounding with an eval set instead of trusting prompt rules",
+        alternativeConsidered: "Adding stronger instructions ('never estimate stop counts') and checking a few answers by hand",
+        why: "Hand checks in Claude Desktop showed the instruction alone didn't work: the model still gave stop counts and journey times from memory. A grader that matches every number in the answer against the tool results turns 'seems fine' into a score that can go up or down after each change.",
+        tradeOffAccepted: "The grader is pattern-based, so it only checks stops, minutes and won. Other ungrounded claims (for example, which direction not to take) still need a human read."
+      },
+      {
+        decision: "Cloud Run in the Seoul region, after probing the APIs from there first",
+        alternativeConsidered: "Hosting on a US region or a generic PaaS, or keeping the server local-only",
+        why: "Korean government APIs may refuse overseas traffic. A one-off probe job in asia-northeast3 confirmed all four APIs answer from Google Cloud Seoul before any deploy work, and Cloud Run scales to zero, so a portfolio server costs close to nothing.",
+        tradeOffAccepted: "One instance at most, stateless JSON responses and a shared access token instead of OAuth. Simple to run, but the token appears in request logs when passed as ?key= and has to be rotated by hand."
+      },
+      {
+        decision: "Rule-based briefing writer by default, LLM writer as an option",
+        alternativeConsidered: "Letting an LLM write every Telegram briefing through the same MCP tools",
+        why: "The briefing goes out at 07:45 whether or not the free-tier model is overloaded. Rules are deterministic, testable offline and can't reassure about data that wasn't checked; the LLM writer stays available behind a flag and falls back to rules on any failure.",
+        tradeOffAccepted: "Rule-based messages are plainer and less adaptive than the LLM version."
+      },
+      {
+        decision: "Pick the route with fewest transfers unless the fastest saves more than 5 minutes",
+        alternativeConsidered: "Showing the API's fastest route as-is",
+        why: "The fastest route once meant two transfers to save two minutes, which no commuter would take. Asking for both and applying a 5-minute threshold matches how people actually ride.",
+        tradeOffAccepted: "Two route calls per briefing, and a threshold that is a judgement call rather than a measured preference."
+      }
+    ],
+    architecture: {
+      lifecycle: [
+        "Sources: sources/kma.py, airkorea.py, subway.py and route.py are plain async functions returning dicts. A shared HTTP helper turns data.go.kr's XML error replies into clear exceptions, and districts.py maps the 25 Seoul districts to KMA grid cells and AirKorea stations.",
+        "Server: server.py registers the 6 tools with MCPServer. Each tool catches network, key and data-shape errors and returns short, redacted text, so the model can say 'unavailable' instead of guessing.",
+        "Transport: Claude Desktop starts server.py over stdio; http_app.py serves the same tools over Streamable HTTP on Cloud Run (asia-northeast3), behind a Bearer token, with /healthz.",
+        "Briefing: a Cloud Run job reads routes from deploy/routes.json, fetches weather, forecast, air, trains and route in parallel, writes the message and sends it via the Telegram Bot API. Cloud Scheduler starts it at 07:45 and 18:00 on weekdays (Asia/Seoul).",
+        "Evals: evals/run.py connects a real model to the server over MCP, records every tool call and result, and evals/grade.py scores each answer; reports land in evals/results/."
+      ],
+      guardrails: [
+        "Stop counts, journey times, transfers and fares come only from the route tool; its description says to call it even when the user asks for an estimate from memory, and its error text tells the model not to fill the gap.",
+        "Station names are fully URL-encoded and capped at 30 characters; tool errors are redacted so API keys never reach the model or the user.",
+        "The container runs as a non-root user, keys come from Secret Manager, and .gcloudignore keeps .env out of the build upload.",
+        "A 30-second cache per station keeps repeated subway questions inside the 1,000-calls-a-day limit of the Seoul API.",
+        "The eval runner stops after 3 quota errors in a row and can rerun only the failed or errored cases from a saved results file."
+      ]
+    },
+    promptEngineering: {
+      logic: `# Rules live where the model actually reads them: tool descriptions and tool results.
+@mcp.tool()
+async def route(from_station: str, to_station: str, prefer: str = "fastest") -> str:
+    """Subway route between two stations ...
+    Always call this for stop counts, journey times, transfers or fares,
+    even if the user says an estimate from memory is fine:
+    memory answers have been wrong."""
+
+# On failure the result itself carries the rule:
+# "No route data: do not give stop counts, journey times or transfers from memory."`,
+      schema: `# Grounding check in evals/grade.py
+NUMBER_PATTERNS = [
+    ("stops",   r"(\\d+)...\\s*(?:stops?|stations?|정거장)"),
+    ("minutes", r"(\\d+)...\\s*(?:min(?:ute)?s?|분)"),
+    ("won",     r"(\\d[\\d,]*)\\s*(?:won|원|KRW)"),
+]
+def ungrounded(answer, tool_results):
+    # every claimed number must appear in some tool result
+    return [n for kind, n in claimed_numbers(answer) if n not in tool_results]`,
+      guardrails: [
+        "Server-level MCP instructions did not seem to reach the model in Claude Desktop, so every rule that mattered was repeated in the tool's own description and in its error text.",
+        "Outage cases inject HTTP 503 into one tool and fail the answer if it reassures anyway, for example 'no mask needed' when air quality never answered.",
+        "The grader compares station arguments as the server sees them after English-to-Korean translation, so 'Sindorim' and '신도림' count as the same call."
+      ]
+    },
+    impact: {
+      value: [
+        "Ask Claude.ai 'I'm going from Hongdae to Gangnam now, will it rain on my way home?' from any device and get live trains, the route (17 stops, 38 minutes, 1,650 won), weather and air at both ends, and an hourly forecast, all quoted from tools.",
+        "Grounded answers went from 22/30 to 28/30 on the original eval set by changing tools and descriptions, with no model change; on the extended 33-case set there are no graded failures so far.",
+        "Two Telegram briefings a weekday arrive on time with the Mac switched off, at close to zero hosting cost."
+      ],
+      security: [
+        "API keys and the Telegram token live in Google Secret Manager; .env is git-ignored and excluded from cloud builds, and the repo was secret-scanned before going public.",
+        "The remote MCP endpoint requires an access token; tool errors are generic for network failures and never include request URLs that carry keys.",
+        "httpx request logging was turned off after it was found writing API keys into the server log."
+      ]
+    },
+    behindTheArchitecture: {
+      problem: "Assistants are good at talking about a commute and bad at knowing the facts of one: which train, how many stops, whether it will rain at 9 pm in Gangnam.",
+      vision: "A small, well-tested tool server that any MCP client can use, plus the evals to prove the model actually uses it instead of improvising.",
+      rationale: "Built as a learning project for the MCP stack end to end: real Korean APIs and their quirks, a local and a hosted transport, an agent loop for the briefing, and an evaluation harness. Every step, command and gotcha is written up in the repo's BUILD_GUIDE."
+    },
+    technicalHurdles: [
+      {
+        title: "The model counted stops from memory, and got them wrong",
+        incident: "In early tests the model gave stop counts from memory (19 stops from Hongdae to Gangnam; the real answer is 17). A stricter instruction stopped the stop counts, but on another trip the model then invented a wrong-way transfer instead.",
+        diagnosis: "The next_trains tool only knew arrivals, so the model had no source for route facts and filled the gap. Server-level instructions also seemed not to reach it in Claude Desktop.",
+        resolution: "Added a route tool on Seoul Metro's shortest-path API, moved the 'route facts only from route' rule into tool descriptions and error text, and added a grounding check to the evals. Route questions now pass with numbers quoted from the tool."
+      },
+      {
+        title: "'Seoul Station' returned no route at all",
+        incident: "Eval case #19 (Seoul Station to Gangnam) kept failing: the route tool returned success with an empty path list.",
+        diagnosis: "The route API wants names without '역' ('강남'), except stations whose official name includes it ('서울역'). Stripping the suffix produced a name the API didn't know, and the API reports that as an empty success, not an error.",
+        resolution: "route() now retries with '역' added and raises a clear error if no name form matches. #19 passes: 11 stops, one transfer at 사당."
+      },
+      {
+        title: "Cloud server timed out while the local one worked",
+        incident: "During a demo recording every cloud tool except train arrivals failed with ConnectTimeout, and the assistant fell back to the local server.",
+        diagnosis: "All failing tools call apis.data.go.kr. A probe job in the same region reached all four APIs, so the government site wasn't blocking Google Cloud; the single long-running service instance had stopped connecting.",
+        resolution: "Forced a fresh instance with a new revision (one setting change, no rebuild) and confirmed all tools live. Documented the check (probe job logs, not its exit status) and the fix in the build guide."
+      },
+      {
+        title: "Morning briefings arrived late, or not at all",
+        incident: "The first scheduled briefing arrived at 07:50 instead of 07:45, and the job couldn't start at all while the project sat in ~/Desktop.",
+        diagnosis: "launchd can't read ~/Desktop under macOS privacy rules and doesn't wake a sleeping Mac; pmset can only schedule one wake a day, and there were now two briefings.",
+        resolution: "Moved the project to ~/Projects, then moved the briefing to a Cloud Run job started by Cloud Scheduler, with Seoul time set explicitly because the container runs in UTC."
+      }
+    ]
   }
 };
 
@@ -2742,6 +2881,145 @@ function scoreAssessment(answers) {
         incident: "대화상자 URL을 수정한 뒤에도 아웃룩이 이전 엔드포인트를 계속 호출하며 'Could not open sign-in dialog' 오류를 반복 발생시켰습니다.",
         diagnosis: "아웃룩 데스크톱 클라이언트는 사이드로딩된 매니페스트를 극도로 강하게 캐싱하며, XML 버전 번호 변경만으로는 호스트 컨테이너의 캐시가 무효화되지 않았습니다.",
         resolution: "버전 번호 변경과 함께 매니페스트 파일을 명시적으로 제거하고 로컬 오피스 캐시를 완전히 비운 뒤 재등록하는 스크립트를 구축하여 배포 안정성을 확보했습니다."
+      }
+    ]
+  },
+  "seoul-commute": {
+    title: "Seoul Commute MCP — AI 어시스턴트를 위한 실시간 지하철·날씨·대기질 데이터",
+    tagline: "Claude 등 AI 어시스턴트에 한국 공공데이터 기반 도구 6개(현재 날씨, 예보, 미세먼지, 실시간 지하철 도착, 시간표 기반 경로)를 제공하는 Python MCP 서버. 서울 리전 Cloud Run에 배포하고, 평일 출퇴근 브리핑을 텔레그램으로 보내며, 답변 속 정거장 수·소요 시간·요금을 도구 결과와 하나하나 대조하는 33문항 평가 세트를 갖췄습니다.",
+    meta: { role: "AI 엔지니어", team: "1인", dates: "2026년 11월", status: "운영 중" },
+    liveUrl: "https://github.com/Jay02510/seoul-commute-mcp",
+    liveLabel: "GitHub에서 보기 ↗",
+    screenshots: [
+      { label: "Claude.ai 커넥터", url: "/screenshots/seoul-commute/demo.gif", subLabel: "홍대입구에서 강남: 경로, 열차, 날씨, 예보를 모두 클라우드 서버에서 조회 (1.5배속)" }
+    ],
+    stats: [
+      { label: "MCP 도구", value: "도구 6개 / 공공 API 4종", detail: "기상청, 에어코리아, 서울교통공사 경로, 서울시 실시간 지하철" },
+      { label: "평가 통과율", value: "22/30 → 28/30", detail: "근거 기반 답변 개선 후. 확장된 33문항 세트에서는 28/33, 채점된 실패 0건, 모델 장애로 아직 채점되지 않은 문항 5건" },
+      { label: "테스트", value: "오프라인 149개", detail: "녹화한 API 응답으로 네트워크와 키 없이 실행" }
+    ],
+    problem: [
+      "홍대입구에서 강남까지 몇 정거장인지 물으면 어시스턴트는 기억에 의존해 자신 있게 틀린 답을 합니다(실제 17개를 19개로). 출퇴근 질문에는 모델이 갖고 있지 않은 실시간 지역 데이터가 필요합니다.",
+      "한국 공공데이터는 포털과 형식이 제각각입니다. 기상청 예보는 좌표 대신 5km 격자를 쓰고, 에어코리아 등급 값은 자주 비어 있으며, 경로 API는 역 이름을 잘못 쓰면 오류 없이 빈 결과를 돌려주고, data.go.kr은 JSON을 요청해도 키 오류를 XML로 답합니다.",
+      "도구가 있어도 모델은 빈 곳을 기억으로 채우거나, 데이터가 오지 않았는데도 괜찮다고 안심시킵니다. 한 번 그럴듯해 보이는 데모로는 답변이 실제로 얼마나 근거에 기반하는지 알 수 없습니다."
+    ],
+    solution: [
+      "API 4종을 작은 비동기 모듈(sources/)로 감싸 MCP 도구 6개로 제공: current_weather, forecast, air_quality, next_trains, route, list_districts. 역 이름과 구 이름은 한국어·영어 모두 지원합니다.",
+      "같은 서버를 두 방식으로 실행: Claude Desktop용 stdio, 그리고 서울 리전 Cloud Run 위 Streamable HTTP(액세스 토큰 보호, 키는 Secret Manager). 덕분에 어느 기기에서나 Claude.ai 커스텀 커넥터로 쓸 수 있습니다.",
+      "자동 채점기가 있는 33문항 평가 세트를 구축: 어떤 도구를 어떤 인자로 호출했는지, 필수·금지 문구, HTTP 503 장애 주입, 그리고 도구 결과에 없는 정거장 수·분·원 금액이 답변에 있으면 실패 처리하는 근거 검사.",
+      "평가 실패를 근거로 제품을 바꿨습니다. 모델에게 추측하지 말라고 하는 대신 경로 도구를 추가하고, 규칙을 서버 지침에서 도구 설명과 도구 결과로 옮기고, 모델이 구간 시간을 직접 계산한 뒤에는 경로 도구가 구간별 소요 시간을 함께 돌려주게 했습니다.",
+      "같은 데이터 계층으로 텔레그램 브리핑(평일 07:45 출근, 18:00 퇴근)을 만들고, Cloud Run 잡과 Cloud Scheduler로 실행합니다. 규칙 기반 작성기는 모든 확인이 실제로 응답했을 때만 '우산·마스크 필요 없음'이라고 씁니다."
+    ],
+    stack: ["Python 3.11+", "MCP Python SDK 2", "httpx (비동기)", "Google Cloud Run", "Cloud Scheduler", "Secret Manager", "Docker", "SQLite", "Telegram Bot API", "pytest", "Gemini / Claude (평가 실행기)"],
+    decisions: [
+      {
+        decision: "프롬프트 규칙을 믿는 대신 평가 세트로 근거 기반 여부를 측정",
+        alternativeConsidered: "'정거장 수를 추정하지 말 것' 같은 지침을 강화하고 답변 몇 개를 직접 확인",
+        why: "Claude Desktop에서 직접 확인해 보니 지침만으로는 효과가 없었습니다. 모델은 여전히 기억으로 정거장 수와 소요 시간을 말했습니다. 답변 속 숫자를 모두 도구 결과와 대조하는 채점기가 있으면 '괜찮아 보임'이 변경할 때마다 오르내리는 점수가 됩니다.",
+        tradeOffAccepted: "채점기가 패턴 기반이라 정거장, 분, 원만 검사합니다. 그 밖의 근거 없는 주장(예: 어느 방향은 타지 말라는 말)은 여전히 사람이 읽고 판단해야 합니다."
+      },
+      {
+        decision: "서울 리전 Cloud Run, 단 배포 전에 그곳에서 API부터 점검",
+        alternativeConsidered: "미국 리전이나 일반 PaaS에 호스팅하거나, 서버를 로컬 전용으로 유지",
+        why: "한국 공공 API는 해외 트래픽을 거부할 수 있습니다. 배포 작업 전에 asia-northeast3에서 일회성 점검 잡을 돌려 API 4종 모두 Google Cloud 서울에서 응답함을 확인했습니다. Cloud Run은 요청이 없으면 0으로 줄어들어 포트폴리오 서버 비용이 거의 들지 않습니다.",
+        tradeOffAccepted: "인스턴스 최대 1개, 상태 없는 JSON 응답, OAuth 대신 공유 액세스 토큰. 운영은 단순하지만 ?key=로 넘기면 토큰이 요청 로그에 남아 수동으로 교체해야 합니다."
+      },
+      {
+        decision: "브리핑은 기본적으로 규칙 기반 작성기, LLM 작성기는 선택 사항",
+        alternativeConsidered: "모든 텔레그램 브리핑을 같은 MCP 도구를 쓰는 LLM이 작성",
+        why: "브리핑은 무료 등급 모델이 과부하여도 07:45에 나가야 합니다. 규칙은 결정론적이고 오프라인으로 테스트할 수 있으며 확인하지 않은 데이터로 안심시킬 수 없습니다. LLM 작성기는 플래그로 켤 수 있고, 실패하면 규칙 기반으로 돌아갑니다.",
+        tradeOffAccepted: "규칙 기반 메시지는 LLM 버전보다 단조롭고 상황 대응력이 낮습니다."
+      },
+      {
+        decision: "가장 빠른 경로가 5분 넘게 아끼지 않으면 환승이 가장 적은 경로 선택",
+        alternativeConsidered: "API가 준 최단 시간 경로를 그대로 표시",
+        why: "최단 시간 경로가 2분을 아끼려고 두 번 환승하는 경우가 있었는데, 실제 출근길에 그렇게 타는 사람은 없습니다. 두 경로를 모두 받아 5분 기준을 적용하면 사람들이 실제로 타는 방식과 맞습니다.",
+        tradeOffAccepted: "브리핑마다 경로 호출이 두 번 필요하고, 5분 기준은 측정된 선호가 아닌 판단입니다."
+      }
+    ],
+    architecture: {
+      lifecycle: [
+        "데이터 소스: sources/kma.py, airkorea.py, subway.py, route.py는 dict를 돌려주는 단순한 비동기 함수입니다. 공용 HTTP 헬퍼가 data.go.kr의 XML 오류 응답을 명확한 예외로 바꾸고, districts.py가 서울 25개 구를 기상청 격자와 에어코리아 측정소에 연결합니다.",
+        "서버: server.py가 MCPServer에 도구 6개를 등록합니다. 각 도구는 네트워크·키·데이터 형식 오류를 잡아 짧고 민감 정보를 지운 텍스트로 돌려주므로, 모델은 추측하지 않고 '조회 불가'라고 말할 수 있습니다.",
+        "전송 방식: Claude Desktop은 server.py를 stdio로 실행하고, http_app.py는 같은 도구를 Cloud Run(asia-northeast3)에서 Bearer 토큰 뒤의 Streamable HTTP와 /healthz로 제공합니다.",
+        "브리핑: Cloud Run 잡이 deploy/routes.json에서 경로를 읽고 날씨·예보·대기질·열차·경로를 병렬로 조회해 메시지를 작성한 뒤 Telegram Bot API로 보냅니다. Cloud Scheduler가 평일 07:45와 18:00(서울 시간)에 실행합니다.",
+        "평가: evals/run.py가 실제 모델을 MCP로 서버에 연결해 모든 도구 호출과 결과를 기록하고, evals/grade.py가 답변마다 채점해 evals/results/에 리포트를 남깁니다."
+      ],
+      guardrails: [
+        "정거장 수, 소요 시간, 환승, 요금은 route 도구에서만 가져옵니다. 도구 설명은 사용자가 기억으로 대충 말해 달라고 해도 호출하라고 하고, 오류 텍스트는 빈 곳을 기억으로 채우지 말라고 모델에게 알립니다.",
+        "역 이름은 전부 URL 인코딩하고 30자로 제한하며, 도구 오류에서 민감 정보를 지워 API 키가 모델이나 사용자에게 닿지 않게 합니다.",
+        "컨테이너는 root가 아닌 사용자로 실행하고, 키는 Secret Manager에서 가져오며, .gcloudignore로 .env가 빌드 업로드에 포함되지 않게 합니다.",
+        "역별 30초 캐시로 반복되는 지하철 질문도 서울시 API의 하루 1,000회 한도 안에 머물게 합니다.",
+        "평가 실행기는 할당량 오류가 3번 연속되면 멈추고, 저장된 결과 파일에서 실패하거나 오류 난 문항만 다시 돌릴 수 있습니다."
+      ]
+    },
+    promptEngineering: {
+      logic: `# 규칙은 모델이 실제로 읽는 곳에 둔다: 도구 설명과 도구 결과.
+@mcp.tool()
+async def route(from_station: str, to_station: str, prefer: str = "fastest") -> str:
+    """Subway route between two stations ...
+    Always call this for stop counts, journey times, transfers or fares,
+    even if the user says an estimate from memory is fine:
+    memory answers have been wrong."""
+
+# 실패하면 결과 자체가 규칙을 전달한다:
+# "No route data: do not give stop counts, journey times or transfers from memory."`,
+      schema: `# evals/grade.py의 근거 검사
+NUMBER_PATTERNS = [
+    ("stops",   r"(\\d+)...\\s*(?:stops?|stations?|정거장)"),
+    ("minutes", r"(\\d+)...\\s*(?:min(?:ute)?s?|분)"),
+    ("won",     r"(\\d[\\d,]*)\\s*(?:won|원|KRW)"),
+]
+def ungrounded(answer, tool_results):
+    # 답변의 모든 숫자는 어떤 도구 결과엔가 있어야 한다
+    return [n for kind, n in claimed_numbers(answer) if n not in tool_results]`,
+      guardrails: [
+        "Claude Desktop에서는 서버 수준 MCP 지침이 모델에 전달되지 않는 것으로 보여, 중요한 규칙은 모두 해당 도구의 설명과 오류 텍스트에 다시 넣었습니다.",
+        "장애 문항은 도구 하나에 HTTP 503을 주입하고, 그런데도 모델이 안심시키면 실패 처리합니다. 예: 대기질 조회가 실패했는데 '마스크 필요 없음'이라고 답한 경우.",
+        "채점기는 영어→한국어 변환 후 서버가 보는 형태로 역 인자를 비교하므로 'Sindorim'과 '신도림'을 같은 호출로 봅니다."
+      ]
+    },
+    impact: {
+      value: [
+        "어느 기기에서든 Claude.ai에 '지금 홍대에서 강남 가는데, 퇴근길에 비 와?'라고 물으면 실시간 열차, 경로(17개 역, 38분, 1,650원), 양쪽 날씨와 대기질, 시간별 예보를 모두 도구에서 인용해 답합니다.",
+        "모델은 그대로 두고 도구와 도구 설명만 바꿔 원래 평가 세트에서 근거 기반 답변이 22/30에서 28/30으로 올랐습니다. 확장된 33문항 세트에서는 지금까지 채점된 실패가 없습니다.",
+        "평일 하루 두 번의 텔레그램 브리핑이 Mac이 꺼져 있어도 제시간에 도착하며, 호스팅 비용은 거의 없습니다."
+      ],
+      security: [
+        "API 키와 텔레그램 토큰은 Google Secret Manager에 두고, .env는 git과 클라우드 빌드 모두에서 제외했으며, 저장소를 공개하기 전에 비밀 정보 스캔을 했습니다.",
+        "원격 MCP 엔드포인트는 액세스 토큰이 필요하고, 네트워크 실패 시 도구 오류는 일반 문구만 보여 키가 담긴 요청 URL을 노출하지 않습니다.",
+        "httpx 요청 로그가 서버 로그에 API 키를 기록하는 것을 발견한 뒤 해당 로깅을 껐습니다."
+      ]
+    },
+    behindTheArchitecture: {
+      problem: "어시스턴트는 출퇴근에 대해 말하는 데는 능숙하지만, 어떤 열차인지, 몇 정거장인지, 밤 9시 강남에 비가 올지 같은 사실은 모릅니다.",
+      vision: "어떤 MCP 클라이언트든 쓸 수 있는 작고 잘 테스트된 도구 서버, 그리고 모델이 즉흥적으로 답하지 않고 실제로 도구를 쓰는지 증명하는 평가.",
+      rationale: "MCP 스택 전체를 배우기 위한 프로젝트로 만들었습니다. 실제 한국 API와 그 특이점, 로컬과 호스팅 두 가지 전송 방식, 브리핑용 에이전트 루프, 평가 도구까지. 모든 단계와 명령, 주의점은 저장소의 BUILD_GUIDE에 기록했습니다."
+    },
+    technicalHurdles: [
+      {
+        title: "모델이 기억으로 정거장 수를 세고, 틀렸다",
+        incident: "초기 테스트에서 모델은 기억으로 정거장 수를 말했습니다(홍대입구→강남을 19개로, 실제는 17개). 지침을 강화하자 정거장 수는 멈췄지만, 다른 경로에서는 반대 방향 환승을 지어냈습니다.",
+        diagnosis: "next_trains 도구는 도착 정보만 알았기 때문에 모델에게 경로 정보의 출처가 없었고, 빈 곳을 스스로 채웠습니다. Claude Desktop에서는 서버 수준 지침도 전달되지 않는 것으로 보였습니다.",
+        resolution: "서울교통공사 최단경로 API로 route 도구를 추가하고, '경로 정보는 route에서만'이라는 규칙을 도구 설명과 오류 텍스트로 옮기고, 평가에 근거 검사를 추가했습니다. 이제 경로 질문은 도구에서 인용한 숫자로 통과합니다."
+      },
+      {
+        title: "'서울역'만 경로가 나오지 않았다",
+        incident: "평가 19번(서울역→강남)이 계속 실패했습니다. route 도구가 성공 응답과 함께 빈 경로 목록을 돌려줬습니다.",
+        diagnosis: "경로 API는 '역'을 뺀 이름('강남')을 원하지만, 공식 이름에 '역'이 들어간 역('서울역')은 예외입니다. 접미사를 지우자 API가 모르는 이름이 됐고, API는 이를 오류가 아닌 빈 성공으로 보고했습니다.",
+        resolution: "route()가 '역'을 붙여 다시 시도하고, 어떤 형태도 맞지 않으면 명확한 오류를 내도록 고쳤습니다. 19번은 통과: 11개 역, 사당에서 1회 환승."
+      },
+      {
+        title: "로컬은 되는데 클라우드 서버만 타임아웃",
+        incident: "데모 녹화 중 열차 도착을 제외한 모든 클라우드 도구가 ConnectTimeout으로 실패했고, 어시스턴트는 로컬 서버로 전환했습니다.",
+        diagnosis: "실패한 도구는 모두 apis.data.go.kr을 호출합니다. 같은 리전의 점검 잡은 API 4종 모두에 접속했으므로 정부 사이트가 Google Cloud를 막은 것이 아니었고, 오래 떠 있던 단일 서비스 인스턴스가 연결을 못 하고 있었습니다.",
+        resolution: "새 리비전으로 인스턴스를 새로 띄우고(설정 하나 변경, 재빌드 없음) 모든 도구를 실시간으로 확인했습니다. 점검 방법(종료 상태가 아닌 점검 잡 로그)과 해결책을 빌드 가이드에 기록했습니다."
+      },
+      {
+        title: "아침 브리핑이 늦거나 아예 오지 않았다",
+        incident: "첫 예약 브리핑이 07:45가 아닌 07:50에 도착했고, 프로젝트가 ~/Desktop에 있는 동안에는 작업이 아예 시작되지 않았습니다.",
+        diagnosis: "macOS 개인정보 보호 규칙상 launchd는 ~/Desktop을 읽을 수 없고 잠든 Mac을 깨우지도 않습니다. pmset은 하루 한 번만 깨우기를 예약할 수 있는데 브리핑은 두 번이 됐습니다.",
+        resolution: "프로젝트를 ~/Projects로 옮긴 뒤, 브리핑을 Cloud Scheduler가 실행하는 Cloud Run 잡으로 옮겼습니다. 컨테이너가 UTC로 돌기 때문에 서울 시간은 명시적으로 설정했습니다."
       }
     ]
   }

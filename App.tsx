@@ -467,6 +467,17 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
 const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
   en: [
     {
+      id: "seoul-commute",
+      domains: ["automation"],
+      title: "Seoul Commute MCP",
+      status: "Live · Open source",
+      desc: "MCP server that gives Claude live Seoul weather, fine dust, subway arrivals and routes from Korean public data, hosted on Cloud Run in Seoul, plus weekday commute briefings on Telegram. A 33-question eval set checks that every stop count, minute and fare in the answer came from a tool.",
+      outcome: "Grounded answers 22/30 → 28/30 by changing tools, not the model",
+      stack: ["Python", "MCP", "Cloud Run", "Cloud Scheduler", "Telegram Bot API", "pytest"],
+      liveUrl: "https://github.com/Jay02510/seoul-commute-mcp",
+      caseStudyId: "seoul-commute"
+    },
+    {
       id: "hagwon-readiness",
       domains: ["ops"],
       title: "Hagwon AI Readiness Index",
@@ -501,6 +512,17 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
     }
   ],
   ko: [
+    {
+      id: "seoul-commute",
+      domains: ["automation"],
+      title: "Seoul Commute MCP",
+      status: "운영 중 · 오픈 소스",
+      desc: "한국 공공데이터로 서울의 실시간 날씨, 미세먼지, 지하철 도착 정보와 경로를 Claude에 제공하는 MCP 서버. 서울 리전 Cloud Run에서 운영하며 평일 출퇴근 브리핑을 텔레그램으로 보냅니다. 33문항 평가 세트로 답변 속 정거장 수, 소요 시간, 요금이 모두 도구에서 왔는지 검사합니다.",
+      outcome: "모델은 그대로, 도구만 바꿔 근거 기반 답변 22/30 → 28/30",
+      stack: ["Python", "MCP", "Cloud Run", "Cloud Scheduler", "Telegram Bot API", "pytest"],
+      liveUrl: "https://github.com/Jay02510/seoul-commute-mcp",
+      caseStudyId: "seoul-commute"
+    },
     {
       id: "hagwon-readiness",
       domains: ["ops"],
@@ -538,6 +560,14 @@ const SHIPPED_PROJECTS: Record<'en' | 'ko', ShippedProject[]> = {
 };
 
 const LOG: LogEntry[] = [
+  {
+    date: "2026-11-17",
+    type: "feature",
+    titleEn: "Seoul Commute MCP: live transit and weather tools for AI assistants",
+    titleKo: "Seoul Commute MCP: AI 어시스턴트를 위한 실시간 교통·날씨 도구",
+    descEn: "An MCP server with 6 tools on Korean public data, live as a Claude.ai connector on Cloud Run in Seoul, with Telegram commute briefings at 07:45 and 18:00 on weekdays. A 33-question eval set with a grounding check raised grounded answers from 22/30 to 28/30 by changing tools and tool descriptions.",
+    descKo: "한국 공공데이터 기반 도구 6개를 갖춘 MCP 서버로, 서울 리전 Cloud Run에서 Claude.ai 커넥터로 운영하며 평일 07:45와 18:00에 텔레그램 출퇴근 브리핑을 보냅니다. 근거 검사가 포함된 33문항 평가 세트로, 도구와 도구 설명만 바꿔 근거 기반 답변을 22/30에서 28/30으로 올렸습니다."
+  },
   {
     date: "2026-11-08",
     type: "feature",
@@ -686,7 +716,7 @@ const LOG: LogEntry[] = [
 
 type Locale = 'en' | 'ko';
 
-export const CASE_IDS = ['vodabi', 'chekki', 'chekki-teacher', 'hagwon-readiness', 'bridgerecruit', 'lead-enrichment'];
+export const CASE_IDS = ['vodabi', 'chekki', 'chekki-teacher', 'seoul-commute', 'hagwon-readiness', 'bridgerecruit', 'lead-enrichment'];
 
 // URL scheme: /, /ko, /case/<id>, /ko/case/<id>. Each one is pre-rendered at build time.
 export function parsePath(path: string): { locale: Locale; caseId: string | null } {
