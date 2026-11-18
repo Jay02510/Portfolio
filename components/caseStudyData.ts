@@ -1384,7 +1384,7 @@ Call B — feedback
     stats: [
       { label: "MCP Tools", value: "6 tools / 4 public APIs", detail: "KMA, AirKorea, Seoul Metro route, Seoul realtime subway" },
       { label: "Eval Pass Rate", value: "22/30 → 28/30", detail: "After grounding fixes; 28/33 on the extended set, no graded failures, 5 cases not yet graded because of model outages" },
-      { label: "Tests", value: "149 offline", detail: "Recorded API fixtures, run without network or keys" }
+      { label: "Tests", value: "153 offline", detail: "Recorded API fixtures, run on every push without network or keys" }
     ],
     problem: [
       "Asked how many stops it is from Hongdae to Gangnam, an assistant answers from memory, confidently and wrongly (19 stops, when the real answer is 17). Commute questions need live, local data the model doesn't have.",
@@ -1500,8 +1500,8 @@ def ungrounded(answer, tool_results):
       {
         title: "Cloud server timed out while the local one worked",
         incident: "During a demo recording every cloud tool except train arrivals failed with ConnectTimeout, and the assistant fell back to the local server.",
-        diagnosis: "All failing tools call apis.data.go.kr. A probe job in the same region reached all four APIs, so the government site wasn't blocking Google Cloud; the single long-running service instance had stopped connecting.",
-        resolution: "Forced a fresh instance with a new revision (one setting change, no rebuild) and confirmed all tools live. Documented the check (probe job logs, not its exit status) and the fix in the build guide."
+        diagnosis: "All failing tools call apis.data.go.kr. A fresh instance seemed to fix it, but the next morning's briefing failed the same way in a brand-new container and worked again by 10:00: connections from Google Cloud to data.go.kr fail intermittently, sometimes for hours.",
+        resolution: "Corrected the first diagnosis in the build guide, then made connection failures retry twice with backoff (replies are never re-sent) and log the host on each retry, so the logs show whether short retries are enough or a fixed outgoing IP is needed."
       },
       {
         title: "Morning briefings arrived late, or not at all",
@@ -2896,7 +2896,7 @@ function scoreAssessment(answers) {
     stats: [
       { label: "MCP 도구", value: "도구 6개 / 공공 API 4종", detail: "기상청, 에어코리아, 서울교통공사 경로, 서울시 실시간 지하철" },
       { label: "평가 통과율", value: "22/30 → 28/30", detail: "근거 기반 답변 개선 후. 확장된 33문항 세트에서는 28/33, 채점된 실패 0건, 모델 장애로 아직 채점되지 않은 문항 5건" },
-      { label: "테스트", value: "오프라인 149개", detail: "녹화한 API 응답으로 네트워크와 키 없이 실행" }
+      { label: "테스트", value: "오프라인 153개", detail: "녹화한 API 응답으로 푸시할 때마다 네트워크와 키 없이 실행" }
     ],
     problem: [
       "홍대입구에서 강남까지 몇 정거장인지 물으면 어시스턴트는 기억에 의존해 자신 있게 틀린 답을 합니다(실제 17개를 19개로). 출퇴근 질문에는 모델이 갖고 있지 않은 실시간 지역 데이터가 필요합니다.",
@@ -3012,8 +3012,8 @@ def ungrounded(answer, tool_results):
       {
         title: "로컬은 되는데 클라우드 서버만 타임아웃",
         incident: "데모 녹화 중 열차 도착을 제외한 모든 클라우드 도구가 ConnectTimeout으로 실패했고, 어시스턴트는 로컬 서버로 전환했습니다.",
-        diagnosis: "실패한 도구는 모두 apis.data.go.kr을 호출합니다. 같은 리전의 점검 잡은 API 4종 모두에 접속했으므로 정부 사이트가 Google Cloud를 막은 것이 아니었고, 오래 떠 있던 단일 서비스 인스턴스가 연결을 못 하고 있었습니다.",
-        resolution: "새 리비전으로 인스턴스를 새로 띄우고(설정 하나 변경, 재빌드 없음) 모든 도구를 실시간으로 확인했습니다. 점검 방법(종료 상태가 아닌 점검 잡 로그)과 해결책을 빌드 가이드에 기록했습니다."
+        diagnosis: "실패한 도구는 모두 apis.data.go.kr을 호출합니다. 인스턴스를 새로 띄우자 해결된 듯했지만, 다음 날 아침 브리핑이 완전히 새 컨테이너에서도 똑같이 실패했다가 10시에는 다시 정상이었습니다. Google Cloud에서 data.go.kr로의 연결이 간헐적으로, 때로는 몇 시간씩 실패하는 문제였습니다.",
+        resolution: "빌드 가이드의 첫 진단을 바로잡고, 연결 실패 시 간격을 두고 두 번 재시도하도록 했습니다(이미 받은 응답은 다시 보내지 않음). 재시도마다 호스트를 로그에 남겨, 짧은 재시도로 충분한지 고정 출구 IP가 필요한지 로그로 판단할 수 있게 했습니다."
       },
       {
         title: "아침 브리핑이 늦거나 아예 오지 않았다",

@@ -337,8 +337,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "Automation", ko: "자동화" },
           text: {
-            en: "Sends weekday Telegram commute briefings from a Cloud Run job on Cloud Scheduler; 149 offline tests run on recorded API fixtures.",
-            ko: "Cloud Scheduler로 실행되는 Cloud Run 잡이 평일 텔레그램 출퇴근 브리핑을 발송하며, 녹화된 API 응답으로 오프라인 테스트 149개를 실행."
+            en: "Sends weekday Telegram commute briefings from a Cloud Run job on Cloud Scheduler; 153 offline tests run on recorded API fixtures.",
+            ko: "Cloud Scheduler로 실행되는 Cloud Run 잡이 평일 텔레그램 출퇴근 브리핑을 발송하며, 녹화된 API 응답으로 오프라인 테스트 153개를 실행."
           }
         }
       ]
