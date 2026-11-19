@@ -318,7 +318,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
         "One server, two transports: stdio for Claude Desktop, and Streamable HTTP on Cloud Run in Seoul as a Claude.ai connector behind an access token",
         "A 33-case eval set with an automatic grader: expected tool calls, injected HTTP 503 outages, and a grounding check that fails any stop count, minute or won figure not found in a tool result",
         "Product changes driven by the eval failures: a route tool instead of a 'don't guess' rule, and rules moved from server instructions into tool descriptions and error text",
-        "Weekday Telegram commute briefings at 07:45 and 18:00, run by a Cloud Run job and Cloud Scheduler",
+        "Telegram commute briefings from a Cloud Run job, piloted on a weekday 07:45 and 18:00 schedule",
         "153 offline tests, run on every push, on recorded API fixtures; keys in Secret Manager, redacted tool errors, repo secret-scanned before going public"
       ],
       decisions: [
@@ -434,7 +434,7 @@ const FEATURED_PROJECTS: Record<'en' | 'ko', FeaturedProject[]> = {
         "하나의 서버, 두 가지 전송 방식: Claude Desktop용 stdio, 그리고 액세스 토큰으로 보호되는 서울 리전 Cloud Run의 Streamable HTTP(Claude.ai 커넥터)",
         "자동 채점기를 갖춘 33문항 평가 세트: 기대 도구 호출, HTTP 503 장애 주입, 도구 결과에 없는 정거장 수·분·원 수치를 실패로 처리하는 근거 검사",
         "평가 실패를 근거로 한 제품 변경: '추측하지 말라'는 규칙 대신 경로 도구 추가, 규칙을 서버 지침에서 도구 설명과 오류 문구로 이동",
-        "Cloud Run 잡과 Cloud Scheduler로 평일 07:45, 18:00 텔레그램 출퇴근 브리핑 발송",
+        "Cloud Run 잡의 텔레그램 출퇴근 브리핑, 평일 07:45·18:00 예약 발송으로 시험 운영",
         "녹화된 API 응답으로 오프라인 실행하는 테스트 153개(푸시마다 실행), Secret Manager 키 관리, 오류 문구 마스킹, 공개 전 저장소 시크릿 스캔"
       ],
       decisions: [

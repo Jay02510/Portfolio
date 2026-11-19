@@ -337,8 +337,8 @@ export const RESUME_DATA = {
         {
           tag: { en: "Automation", ko: "자동화" },
           text: {
-            en: "Sends weekday Telegram commute briefings from a Cloud Run job on Cloud Scheduler; 153 offline tests run on recorded API fixtures.",
-            ko: "Cloud Scheduler로 실행되는 Cloud Run 잡이 평일 텔레그램 출퇴근 브리핑을 발송하며, 녹화된 API 응답으로 오프라인 테스트 153개를 실행."
+            en: "Built Telegram commute briefings as a scheduled Cloud Run job, reusing the same data layer; 153 offline tests run on recorded API fixtures.",
+            ko: "같은 데이터 계층으로 텔레그램 출퇴근 브리핑을 예약 실행 Cloud Run 잡으로 구축하고, 녹화된 API 응답으로 오프라인 테스트 153개를 실행."
           }
         }
       ]

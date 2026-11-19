@@ -1383,7 +1383,7 @@ Call B — feedback
     ],
     stats: [
       { label: "MCP Tools", value: "6 tools / 4 public APIs", detail: "KMA, AirKorea, Seoul Metro route, Seoul realtime subway" },
-      { label: "Eval Pass Rate", value: "22/30 → 28/30", detail: "After grounding fixes; 28/33 on the extended set, no graded failures, 5 cases not yet graded because of model outages" },
+      { label: "Eval Pass Rate", value: "22/30 → 28/30", detail: "After grounding fixes; 30/33 on the extended set with no graded failures (3 cases not yet graded because of model timeouts)" },
       { label: "Tests", value: "153 offline", detail: "Recorded API fixtures, run on every push without network or keys" }
     ],
     problem: [
@@ -1471,7 +1471,7 @@ def ungrounded(answer, tool_results):
       value: [
         "Ask Claude.ai 'I'm going from Hongdae to Gangnam now, will it rain on my way home?' from any device and get live trains, the route (17 stops, 38 minutes, 1,650 won), weather and air at both ends, and an hourly forecast, all quoted from tools.",
         "Grounded answers went from 22/30 to 28/30 on the original eval set by changing tools and descriptions, with no model change; on the extended 33-case set there are no graded failures so far.",
-        "Two Telegram briefings a weekday arrive on time with the Mac switched off, at close to zero hosting cost."
+        "The Telegram briefing runs as a Cloud Run job at close to zero cost. It ran on a weekday schedule as a pilot; because data.go.kr intermittently drops connections from Google Cloud for minutes to hours, it now runs on demand rather than paying for a fixed outgoing IP."
       ],
       security: [
         "API keys and the Telegram token live in Google Secret Manager; .env is git-ignored and excluded from cloud builds, and the repo was secret-scanned before going public.",
@@ -2895,7 +2895,7 @@ function scoreAssessment(answers) {
     ],
     stats: [
       { label: "MCP 도구", value: "도구 6개 / 공공 API 4종", detail: "기상청, 에어코리아, 서울교통공사 경로, 서울시 실시간 지하철" },
-      { label: "평가 통과율", value: "22/30 → 28/30", detail: "근거 기반 답변 개선 후. 확장된 33문항 세트에서는 28/33, 채점된 실패 0건, 모델 장애로 아직 채점되지 않은 문항 5건" },
+      { label: "평가 통과율", value: "22/30 → 28/30", detail: "근거 기반 답변 개선 후. 확장된 33문항 세트에서는 30/33, 채점된 실패 0건 (모델 응답 지연으로 아직 채점되지 않은 문항 3건)" },
       { label: "테스트", value: "오프라인 153개", detail: "녹화한 API 응답으로 푸시할 때마다 네트워크와 키 없이 실행" }
     ],
     problem: [
@@ -2983,7 +2983,7 @@ def ungrounded(answer, tool_results):
       value: [
         "어느 기기에서든 Claude.ai에 '지금 홍대에서 강남 가는데, 퇴근길에 비 와?'라고 물으면 실시간 열차, 경로(17개 역, 38분, 1,650원), 양쪽 날씨와 대기질, 시간별 예보를 모두 도구에서 인용해 답합니다.",
         "모델은 그대로 두고 도구와 도구 설명만 바꿔 원래 평가 세트에서 근거 기반 답변이 22/30에서 28/30으로 올랐습니다. 확장된 33문항 세트에서는 지금까지 채점된 실패가 없습니다.",
-        "평일 하루 두 번의 텔레그램 브리핑이 Mac이 꺼져 있어도 제시간에 도착하며, 호스팅 비용은 거의 없습니다."
+        "텔레그램 브리핑은 거의 비용 없이 Cloud Run 잡으로 실행됩니다. 평일 예약 발송으로 시험 운영했지만, data.go.kr이 Google Cloud에서 오는 연결을 몇 분에서 몇 시간씩 간헐적으로 끊어, 고정 출구 IP 비용을 들이는 대신 지금은 필요할 때 실행합니다."
       ],
       security: [
         "API 키와 텔레그램 토큰은 Google Secret Manager에 두고, .env는 git과 클라우드 빌드 모두에서 제외했으며, 저장소를 공개하기 전에 비밀 정보 스캔을 했습니다.",
