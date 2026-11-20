@@ -3,9 +3,6 @@
 @tailwind utilities;
 
 /* ---- v2 ---- */
-/* portrait fades into the canvas at the bottom */
-.hero-portrait { mask-image: linear-gradient(to bottom, #000 70%, transparent); }
-
 .rise { animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
 

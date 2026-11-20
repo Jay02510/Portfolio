@@ -56,10 +56,10 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
   const isDark = theme === 'dark';
 
   return (
-    <section className="py-24 px-6">
-      <div className="max-w-3xl mx-auto">
-        <div className={`rounded-2xl p-8 sm:p-12 md:p-16 relative overflow-hidden group transition-[background-color,border-color] duration-500 border ${
-          isDark ? 'bg-alpine-900 border-white/10' : 'bg-white border-black/10'
+    <section className="pb-24">
+      <div className="max-w-[1180px] mx-auto px-6 md:px-10">
+        <div className={`rounded-2xl p-8 md:p-12 relative overflow-hidden group transition-[background-color,border-color] duration-500 border ${
+          isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
         }`}>
           {/* Decorative background element */}
           <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-[transform,background-color] duration-1000 ${
@@ -67,9 +67,9 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
           }`}></div>
 
           {!isSent ? (
-            <div className="space-y-8 relative z-10">
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-8 lg:gap-14 items-start">
               <div className="space-y-3">
-                <h3 className={`text-3xl sm:text-4xl font-display font-medium tracking-tight ${
+                <h3 className={`text-2xl md:text-3xl lg:text-4xl font-display font-medium tracking-tight leading-tight ${
                   isDark ? 'text-white' : 'text-alpine-950'
                 }`}>
                   See a gap?

@@ -23,7 +23,7 @@ interface Props {
   locale: 'en' | 'ko';
   ownedLabel: string;
   decisionsLabel: string;
-  caseHref: string;
+  caseHref: string | null; // null: no case study
   onOpenCase: (id: string) => void;
 }
 
@@ -125,7 +125,7 @@ export default function ProjectCard({ project, isDark, locale, ownedLabel, decis
           </div>
 
           <div className={`mt-6 pt-5 border-t flex flex-wrap items-center gap-3 ${line}`}>
-            <a
+            {caseHref && <a
               href={caseHref}
               onClick={(e) => { e.preventDefault(); onOpenCase(project.id); }}
               className={`h-[40px] px-4 rounded-full font-bold text-xs tracking-wider inline-flex items-center transition-[background-color,transform] active:scale-95 ${
@@ -133,7 +133,7 @@ export default function ProjectCard({ project, isDark, locale, ownedLabel, decis
               }`}
             >
               {locale === 'en' ? 'Read the case study ↗' : '케이스 스터디 읽기 ↗'}
-            </a>
+            </a>}
             {project.liveUrl && (
               <a
                 href={project.liveUrl}

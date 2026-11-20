@@ -20,17 +20,17 @@ interface Props {
 
 const SPIN = 5;            // idle auto-spin, deg/s
 const DRAG = 0.28;         // deg per px dragged
-const RY_RATIO = 0.18;     // vertical squash of the ellipse, relative to its width
+const RY_RATIO = 0.13;     // vertical squash of the ellipse, relative to its width
 
-// Position of card i for a ring angle. Front of the ring (cos=1) sits low and in front of the portrait.
+// Position of card i for a ring angle. Front of the ring (cos=1) sits low, large and bright.
 function place(i: number, n: number, angle: number, rx: number) {
   const t = ((i * 360) / n + angle) * (Math.PI / 180);
   const c = Math.cos(t);
   const d = (c + 1) / 2; // 0 back … 1 front
   return {
-    transform: `translate(-50%, -50%) translate3d(${(Math.sin(t) * rx).toFixed(1)}px, ${(c * rx * RY_RATIO).toFixed(1)}px, 0) scale(${(0.56 + 0.44 * d).toFixed(3)})`,
-    opacity: +(0.3 + 0.7 * d).toFixed(3),
-    zIndex: (c > 0 ? 101 : 0) + Math.round(d * 99), // portrait sits at 100
+    transform: `translate(-50%, -50%) translate3d(${(Math.sin(t) * rx).toFixed(1)}px, ${(c * rx * RY_RATIO).toFixed(1)}px, 0) scale(${(0.5 + 0.5 * d).toFixed(3)})`,
+    opacity: +(0.1 + 0.9 * d ** 2.5).toFixed(3),
+    zIndex: Math.round(d * 100),
   };
 }
 
@@ -66,7 +66,7 @@ export default function HeroCover(p: Props) {
     st.reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (st.reduce) st.auto = false;
 
-    const ro = new ResizeObserver(([e]) => { st.rx = Math.min(e.contentRect.width * 0.46, 560); });
+    const ro = new ResizeObserver(([e]) => { st.rx = Math.min(Math.max(e.contentRect.width, window.innerWidth * 0.8) * 0.45, 620); });
     ro.observe(stage);
     const io = new IntersectionObserver(([e]) => { st.visible = e.isIntersecting; });
     io.observe(stage);
@@ -165,24 +165,12 @@ export default function HeroCover(p: Props) {
           onPointerCancel={up}
           onPointerEnter={() => { s.current.hover = true; }}
           onPointerLeave={() => { s.current.hover = false; }}
-          className="orbit-stage relative mt-4 h-[360px] sm:h-[440px] lg:h-[500px] select-none cursor-grab active:cursor-grabbing touch-pan-y"
+          className="orbit-stage relative mt-4 h-[300px] sm:h-[400px] lg:h-[480px] select-none cursor-grab active:cursor-grabbing touch-pan-y"
         >
-          <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-[200px] sm:w-[250px] lg:w-[290px] aspect-[4/5] z-[100] hero-portrait pointer-events-none">
-            <img
-              src="/images/jason-benjamin.webp"
-              alt="Jason Benjamin"
-              width={410}
-              height={525}
-              fetchPriority="high"
-              draggable={false}
-              className="w-full h-full object-cover object-top rounded-t-full"
-            />
-          </div>
-
-          <ul className="absolute left-1/2 top-[64%] w-0 h-0" aria-label="Projects">
+          <ul className="absolute left-1/2 top-[48%] w-0 h-0" aria-label="Projects">
             {p.items.map((it, i) => {
               const sel = it.id === p.selectedId;
-              const pos = place(i, n, 0, 440);
+              const pos = place(i, n, 0, 460);
               return (
                 <li key={it.id}>
                   <button
@@ -191,7 +179,7 @@ export default function HeroCover(p: Props) {
                     onFocus={e => { if (e.currentTarget.matches(':focus-visible')) focus(i); }}
                     aria-pressed={sel}
                     style={pos}
-                    className="orbit-card group absolute left-0 top-0 w-[128px] sm:w-[160px] lg:w-[212px] text-left will-change-transform"
+                    className="orbit-card group absolute left-0 top-0 w-[190px] sm:w-[280px] lg:w-[360px] text-left will-change-transform"
                   >
                     <span className={`block aspect-[16/10] rounded-[10px] overflow-hidden border transition-[border-color,box-shadow] duration-300 ${
                       sel
@@ -200,7 +188,7 @@ export default function HeroCover(p: Props) {
                     } ${p.isDark ? 'bg-[#1a1e26]' : 'bg-white'}`}>
                       <img src={it.thumb} alt="" draggable={false} decoding="async" className="w-full h-full object-cover object-top" />
                     </span>
-                    <span className={`mt-2 block text-center text-[11.5px] lg:text-[12.5px] font-semibold tracking-tight truncate transition-colors ${
+                    <span className={`mt-3 block text-center text-[13px] lg:text-[15px] font-semibold tracking-tight truncate transition-colors ${
                       sel ? 'text-accent-gold' : p.isDark ? 'text-white/85' : 'text-black/80'
                     }`}>
                       {it.name}

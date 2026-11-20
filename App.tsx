@@ -141,15 +141,46 @@ const FACTS = {
   ]
 };
 
-// Short names and small thumbnails for the cover orbit, keyed by case-study id.
-const ORBIT_META: Record<string, { name: string; thumb: string }> = {
-  vodabi: { name: "VODATalk", thumb: "/screenshots/vodabi/call-flow.svg" },
-  chekki: { name: "Chekki AI", thumb: "/orbit/chekki.webp" },
-  "seoul-commute": { name: "Seoul Commute MCP", thumb: "/orbit/seoul-commute.webp" },
-  "chekki-teacher": { name: "Chekki Schools", thumb: "/screenshots/chekki-schools/02-director-dashboard-720.webp" },
-  "hagwon-readiness": { name: "AI Readiness Index", thumb: "/orbit/hagwon-readiness.webp" },
-  bridgerecruit: { name: "BridgeRecruit", thumb: "/screenshots/bridgerecruit/pipeline.svg" },
-  "lead-enrichment": { name: "Lead Enrichment CRM", thumb: "/orbit/lead-enrichment.webp" }
+// Short names (per locale) and small thumbnails for the cover orbit, keyed by project id.
+const ORBIT_META: Record<string, { en: string; ko: string; thumb: string }> = {
+  vodabi: { en: "VODATalk", ko: "보다톡", thumb: "/screenshots/vodabi/call-flow.svg" },
+  chekki: { en: "Chekki AI", ko: "채키 AI", thumb: "/orbit/chekki.webp" },
+  "seoul-commute": { en: "Seoul Commute MCP", ko: "서울 출퇴근 MCP", thumb: "/orbit/seoul-commute.webp" },
+  "chekki-english-1": { en: "Chekki English 1", ko: "채키 영어 1", thumb: "/orbit/textbook.webp" },
+  "chekki-teacher": { en: "Chekki Schools", ko: "채키 스쿨즈", thumb: "/screenshots/chekki-schools/02-director-dashboard-720.webp" },
+  "hagwon-readiness": { en: "AI Readiness Index", ko: "학원 AI 준비도 지표", thumb: "/orbit/hagwon-readiness.webp" },
+  bridgerecruit: { en: "BridgeRecruit", ko: "브릿지리크루트", thumb: "/screenshots/bridgerecruit/pipeline.svg" },
+  "lead-enrichment": { en: "Lead Enrichment CRM", ko: "리드 인리치먼트 CRM", thumb: "/orbit/lead-enrichment.webp" }
+};
+
+// The workbook has its own product page, no case study.
+const TEXTBOOK: Record<'en' | 'ko', FeaturedProject> = {
+  en: {
+    id: "chekki-english-1",
+    context: "Independent · Chekki AI",
+    status: "Live · on sale",
+    title: "Chekki English 1: a first-sentences workbook for ages 4–7",
+    proof: "Built on my 20-volume curriculum series, used by about 200 students",
+    problem: "A 72-page workbook: children listen, read a short sentence and circle the matching picture. The pictures differ by one word, so a child has to read the whole sentence. Every page has QR audio and a Korean tip for parents.",
+    owned: [],
+    decisions: [],
+    stack: ["Curriculum design", "385 QR audio tracks", "4 voices · 2 speeds", "3-question level check", "A4 PDF"],
+    image: "/orbit/textbook.webp",
+    liveUrl: "https://www.chekkiai.com/books/english-1"
+  },
+  ko: {
+    id: "chekki-english-1",
+    context: "독립 · Chekki AI",
+    status: "출시 · 판매 중",
+    title: "채키 영어 1: 만 4–7세 첫 문장 읽기 워크북",
+    proof: "약 200명이 사용한 20권 교재 시리즈를 바탕으로 제작",
+    problem: "짧은 영어 문장을 듣고, 읽고, 알맞은 그림에 동그라미 하는 72쪽 워크북. 그림이 한 단어만 달라 문장을 끝까지 읽어야 맞힐 수 있습니다. 모든 페이지에 QR 음원과 한국어 부모님 팁이 있습니다.",
+    owned: [],
+    decisions: [],
+    stack: ["커리큘럼 설계", "QR 음원 385개", "목소리 4가지 · 속도 2단계", "3문항 수준 진단", "A4 PDF"],
+    image: "/orbit/textbook.webp",
+    liveUrl: "https://www.chekkiai.com/books/english-1"
+  }
 };
 
 const ROLE_COLS = {
@@ -809,6 +840,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
   // One list drives the orbit, the detail card and the project index.
   const projects = useMemo<FeaturedProject[]>(() => [
     ...FEATURED_PROJECTS[locale],
+    TEXTBOOK[locale],
     ...SHIPPED_PROJECTS[locale].map(sp => ({
       id: sp.caseStudyId,
       context: locale === 'en' ? 'Side project' : '사이드 프로젝트',
@@ -824,7 +856,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
       stores: sp.contactUrl ? [{ label: locale === 'en' ? 'Request access ↗' : '접근 요청 ↗', href: sp.contactUrl }] : undefined,
     })),
   ], [locale]);
-  const orbitItems = useMemo<OrbitItem[]>(() => projects.map(pr => ({ id: pr.id, ...ORBIT_META[pr.id] })), [projects]);
+  const orbitItems = useMemo<OrbitItem[]>(() => projects.map(pr => ({ id: pr.id, name: ORBIT_META[pr.id][locale], thumb: ORBIT_META[pr.id].thumb })), [projects]);
   const selected = projects.find(pr => pr.id === selectedId) ?? projects[0];
 
   const showProject = (id: string, scroll: boolean) => {
@@ -973,7 +1005,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
               locale={locale}
               ownedLabel={L.ownedLabel}
               decisionsLabel={L.decisionsLabel}
-              caseHref={pathFor(locale, selected.id)}
+              caseHref={CASE_IDS.includes(selected.id) ? pathFor(locale, selected.id) : null}
               onOpenCase={openCaseStudy}
             />
           </div>
@@ -990,11 +1022,11 @@ export default function App({ initialPath }: { initialPath?: string }) {
                 <li key={pr.id} className={`group py-3.5 grid grid-cols-[28px_1fr] md:grid-cols-[28px_minmax(0,1fr)_auto] gap-x-3 gap-y-2 items-center transition-colors ${on ? 'bg-accent-gold/[0.04]' : ''}`}>
                   <span className={`text-[11px] font-mono ${on ? 'text-accent-gold' : isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{String(i + 1).padStart(2, '0')}</span>
                   <button onClick={() => showProject(pr.id, true)} className="min-w-0 text-left flex items-baseline gap-3">
-                    <span className={`text-[15px] md:text-base font-semibold whitespace-nowrap transition-colors ${on ? 'text-accent-gold' : 'group-hover:text-accent-gold'}`}>{ORBIT_META[pr.id]?.name ?? pr.title}</span>
+                    <span className={`text-[15px] md:text-base font-semibold whitespace-nowrap transition-colors ${on ? 'text-accent-gold' : 'group-hover:text-accent-gold'}`}>{ORBIT_META[pr.id][locale]}</span>
                     <span className={`hidden sm:inline truncate text-[13px] ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{pr.title}</span>
                   </button>
                   <div className="col-start-2 md:col-start-3 flex flex-wrap gap-1.5">
-                    <a href={pathFor(locale, pr.id)} onClick={(e) => { e.preventDefault(); openCaseStudy(pr.id); }} className={pill}>{L.caseShort}</a>
+                    {CASE_IDS.includes(pr.id) && <a href={pathFor(locale, pr.id)} onClick={(e) => { e.preventDefault(); openCaseStudy(pr.id); }} className={pill}>{L.caseShort}</a>}
                     {pr.liveUrl && <a href={pr.liveUrl} target="_blank" rel="noopener noreferrer" className={pill}>{L.liveShort} ↗</a>}
                     {pr.stores?.map(st => <a key={st.href} href={st.href} target="_blank" rel="noopener noreferrer" className={pill}>{st.label}</a>)}
                   </div>
@@ -1078,10 +1110,18 @@ export default function App({ initialPath }: { initialPath?: string }) {
         </section>
 
         {/* CONTACT / HIRING SECTION */}
-        <section id="contact" className="reveal pt-20 pb-24">
-          <div className={`border rounded-2xl p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-10 lg:gap-14 items-center ${
+        <section id="contact" className="reveal pt-20 pb-6">
+          <div className={`border rounded-2xl p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[200px_1.3fr_1fr] gap-10 lg:gap-12 items-center ${
             isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
           }`}>
+            <img
+              src="/images/jason-benjamin.webp"
+              alt="Jason Benjamin"
+              width={410}
+              height={525}
+              loading="lazy"
+              className="w-28 lg:w-full aspect-[4/5] object-cover object-top rounded-t-full rounded-b-2xl"
+            />
             <div>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-medium tracking-tight leading-tight text-balance">
                 {L.contactTitle}
