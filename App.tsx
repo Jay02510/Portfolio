@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef, lazy, Suspense } from 'react';
 import FeedbackBox from './components/FeedbackBox.tsx';
-import { CompactProjectCard } from './components/CompactProjectCard.tsx';
-import { SunIcon, MoonIcon, ExternalLinkIcon, ChevronDownIcon } from './components/Icons.tsx';
+import HeroCover, { type OrbitItem } from './components/HeroCover.tsx';
+import ProjectCard from './components/ProjectCard.tsx';
+import { SunIcon, MoonIcon } from './components/Icons.tsx';
 import { track } from '@vercel/analytics';
 
 // Case studies (viewer + ~2,600 lines of data) load only when one is opened.
@@ -15,22 +16,7 @@ interface Decision {
   tradeoff: string;
 }
 
-// Muted loop that only downloads and plays while on screen; stays on its poster for reduced motion.
-function LoopVideo({ src, poster, label }: { src: string; poster?: string; label: string }) {
-  const ref = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const v = ref.current;
-    if (!v) return;
-    v.muted = true; // React leaves `muted` out of server HTML, which blocks autoplay
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.25 });
-    io.observe(v);
-    return () => io.disconnect();
-  }, []);
-  return <video ref={ref} src={src} poster={poster} muted loop playsInline preload="none" aria-label={label} className="w-full h-full object-contain" />;
-}
-
-interface FeaturedProject {
+export interface FeaturedProject {
   id: string;
   context: string;
   status: string;
@@ -72,27 +58,24 @@ interface LogEntry {
 const COPY = {
   en: {
     navWork: "Work",
-    navMore: "Side projects",
     navLog: "Build log",
     navContact: "Contact",
     localeSwitch: "한국어",
     resumeBtn: "Résumé",
-    heroTitle: "AI product engineer building for Korean teachers and parents.",
-    heroBody: "From the first teacher interview to the App Store. 10+ years in Korean English academies and six AI products built solo. Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a pilot. At VODABI I build the frontend, backend and database of VODATalk, a voice-AI sales training platform.",
+    heroTitle: "AI product engineer. From first interview to shipped product.",
+    heroSub: "Voice AI, LLM evaluation and the apps around them, designed and built end to end.",
+    nowChip: "Now · VODATalk at VODABI",
+    orbitHint: "Drag to spin · click a project",
     ctaWork: "See the work",
     ctaResume: "Résumé",
-    caseLabel: "Case study ↗",
-    nowLabel: "Now",
-    nowBody: "VODATalk now runs on phones as well as computers, and is going into use with enterprise clients.",
-    nextLabel: "In progress, not shipped",
-    nextBody: "A RAG version of the lead-enrichment CRM, and a new textbook built on my 20-volume series that ties into Chekki.",
+    basedIn: "Based in Seoul, South Korea",
     roleTitle: "How I work",
     workTitle: "Selected work",
-    workNote: "Two products in depth: the problem, what I built, and the calls I made along the way.",
+    allTitle: "All projects",
+    caseShort: "Case study",
+    liveShort: "Live",
     ownedLabel: "What I built",
     decisionsLabel: "Decisions and tradeoffs",
-    moreTitle: "Side projects",
-    moreNote: "Designed and built solo.",
     logTitle: "Build log",
     logToggleMore: "Show all",
     logToggleLess: "Show less",
@@ -110,27 +93,24 @@ const COPY = {
   },
   ko: {
     navWork: "주요 프로젝트",
-    navMore: "사이드 프로젝트",
     navLog: "빌드 로그",
     navContact: "연락",
     localeSwitch: "English",
     resumeBtn: "이력서",
-    heroTitle: "한국 교사와 학부모를 위한 AI 제품을 설계하고 개발하는 AI 프로덕트 엔지니어.",
-    heroBody: "첫 교사 인터뷰부터 앱 출시까지. 한국 영어 학원에서 10년 넘게 가르쳤고, AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 파일럿을 앞두고 최종 테스트 중입니다. VODABI에서는 음성 AI 영업 훈련 플랫폼 VODATalk(보다톡)의 프론트엔드, 백엔드, 데이터베이스를 만듭니다.",
+    heroTitle: "AI 프로덕트 엔지니어. 첫 인터뷰부터 출시까지.",
+    heroSub: "음성 AI, LLM 평가, 그리고 그 위의 앱까지 처음부터 끝까지 설계하고 만듭니다.",
+    nowChip: "현재 · VODABI에서 VODATalk 개발",
+    orbitHint: "드래그해서 돌리고, 프로젝트를 클릭하세요",
     ctaWork: "프로젝트 보기",
     ctaResume: "이력서",
-    caseLabel: "케이스 스터디 ↗",
-    nowLabel: "현재",
-    nowBody: "VODATalk(보다톡)은 이제 컴퓨터와 휴대폰 모두에서 통화할 수 있고, 기업 고객사에서 사용을 시작합니다.",
-    nextLabel: "진행 중 · 미출시",
-    nextBody: "리드 수집 CRM을 바탕으로 한 RAG 시스템, 그리고 20권 교재 시리즈를 바탕으로 Chekki와 연결되는 새 교재.",
+    basedIn: "서울 거주",
     roleTitle: "일하는 방식",
     workTitle: "주요 프로젝트",
-    workNote: "두 제품을 깊게 다룹니다. 문제, 직접 만든 부분, 그 과정에서 내린 판단.",
+    allTitle: "전체 프로젝트",
+    caseShort: "케이스 스터디",
+    liveShort: "라이브",
     ownedLabel: "직접 만든 부분",
     decisionsLabel: "판단과 트레이드오프",
-    moreTitle: "사이드 프로젝트",
-    moreNote: "혼자 설계하고 만들었습니다.",
     logTitle: "빌드 로그",
     logToggleMore: "전체 보기",
     logToggleLess: "접기",
@@ -150,15 +130,26 @@ const COPY = {
 
 const FACTS = {
   en: [
-    { value: "10+ years in Korean classrooms", label: "English academies since 2015: curriculum lead, author of a 20-volume textbook series, homeroom teacher." },
-    { value: "6 products built solo", label: "From discovery to release. Chekki AI is on the App Store and Google Play; Chekki Schools is in final testing." },
-    { value: "26 decisions logged", label: "Architecture and product calls written down with the alternative and the tradeoff accepted." }
+    { n: 10, suffix: "+", label: "years in Korean classrooms" },
+    { n: 6, suffix: "", label: "AI products built solo" },
+    { n: 26, suffix: "", label: "product decisions logged" }
   ],
   ko: [
-    { value: "한국 교실 10년 이상", label: "2015년부터 영어 학원에서 커리큘럼 리드, 20권 교재 시리즈 집필, 담임을 맡았습니다." },
-    { value: "제품 6개 단독 개발", label: "발견부터 출시까지. Chekki AI는 App Store와 Google Play에 출시, Chekki Schools는 최종 테스트 중." },
-    { value: "의사결정 26건 기록", label: "검토한 대안과 감수한 트레이드오프까지 함께 남긴 아키텍처·제품 판단 기록." }
+    { n: 10, suffix: "+", label: "년 한국 교실 경력" },
+    { n: 6, suffix: "", label: "개 AI 제품 단독 개발" },
+    { n: 26, suffix: "", label: "건 제품 의사결정 기록" }
   ]
+};
+
+// Short names and small thumbnails for the cover orbit, keyed by case-study id.
+const ORBIT_META: Record<string, { name: string; thumb: string }> = {
+  vodabi: { name: "VODATalk", thumb: "/screenshots/vodabi/call-flow.svg" },
+  chekki: { name: "Chekki AI", thumb: "/orbit/chekki.webp" },
+  "seoul-commute": { name: "Seoul Commute MCP", thumb: "/orbit/seoul-commute.webp" },
+  "chekki-teacher": { name: "Chekki Schools", thumb: "/screenshots/chekki-schools/02-director-dashboard-720.webp" },
+  "hagwon-readiness": { name: "AI Readiness Index", thumb: "/orbit/hagwon-readiness.webp" },
+  bridgerecruit: { name: "BridgeRecruit", thumb: "/screenshots/bridgerecruit/pipeline.svg" },
+  "lead-enrichment": { name: "Lead Enrichment CRM", thumb: "/orbit/lead-enrichment.webp" }
 };
 
 const ROLE_COLS = {
@@ -714,6 +705,32 @@ const LOG: LogEntry[] = [
 
 type Locale = 'en' | 'ko';
 
+// Counts up once when scrolled into view. Server HTML and reduced motion show the final number.
+function CountUp({ to }: { to: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [v, setV] = useState(to);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (el.getBoundingClientRect().top < window.innerHeight) return; // already on screen: leave it
+    setV(0);
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const k = Math.min((now - t0) / 1100, 1);
+        setV(Math.round(to * (1 - Math.pow(1 - k, 3))));
+        if (k < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, { threshold: 0.6 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [to]);
+  return <span ref={ref}>{v}</span>;
+}
+
 export const CASE_IDS = ['vodabi', 'chekki', 'seoul-commute', 'chekki-teacher', 'hagwon-readiness', 'bridgerecruit', 'lead-enrichment'];
 
 // URL scheme: /, /ko, /case/<id>, /ko/case/<id>. Each one is pre-rendered at build time.
@@ -733,7 +750,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
   const [isLogExpanded, setIsLogExpanded] = useState<boolean>(false);
   const [isResumeOpen, setIsResumeOpen] = useState<boolean>(false);
   const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(initialRoute.caseId);
-  const [expandedFeaturedId, setExpandedFeaturedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string>('vodabi');
 
   // Keep the CSS custom-property theme (index.html body.light rules) in sync with React state
   useEffect(() => {
@@ -789,6 +806,34 @@ export default function App({ initialPath }: { initialPath?: string }) {
 
   const L = COPY[locale];
 
+  // One list drives the orbit, the detail card and the project index.
+  const projects = useMemo<FeaturedProject[]>(() => [
+    ...FEATURED_PROJECTS[locale],
+    ...SHIPPED_PROJECTS[locale].map(sp => ({
+      id: sp.caseStudyId,
+      context: locale === 'en' ? 'Side project' : '사이드 프로젝트',
+      status: sp.status,
+      title: sp.title,
+      problem: sp.desc,
+      proof: sp.outcome,
+      owned: [],
+      decisions: [],
+      stack: sp.stack,
+      image: ORBIT_META[sp.caseStudyId]?.thumb,
+      liveUrl: sp.liveUrl,
+      stores: sp.contactUrl ? [{ label: locale === 'en' ? 'Request access ↗' : '접근 요청 ↗', href: sp.contactUrl }] : undefined,
+    })),
+  ], [locale]);
+  const orbitItems = useMemo<OrbitItem[]>(() => projects.map(pr => ({ id: pr.id, ...ORBIT_META[pr.id] })), [projects]);
+  const selected = projects.find(pr => pr.id === selectedId) ?? projects[0];
+
+  const showProject = (id: string, scroll: boolean) => {
+    setSelectedId(id);
+    track('project_select', { id });
+    // wait for the orbit to swing the card round before moving the page
+    if (scroll) setTimeout(() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 550);
+  };
+
   const displayedLog = useMemo(() => isLogExpanded ? LOG : LOG.slice(0, 3), [isLogExpanded]);
 
   const openResume = () => { setIsResumeOpen(true); track('resume_open'); };
@@ -834,13 +879,6 @@ export default function App({ initialPath }: { initialPath?: string }) {
               className={`transition-colors ${isDark ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
             >
               {L.navWork}
-            </a>
-            <a
-              href="#more"
-              onClick={scrollToSection('more')}
-              className={`transition-colors ${isDark ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
-            >
-              {L.navMore}
             </a>
             <a
               href="#log"
@@ -891,281 +929,83 @@ export default function App({ initialPath }: { initialPath?: string }) {
       {/* MAIN CONTENT CONTAINER */}
       <main id="top" className="max-w-[1180px] mx-auto px-6 md:px-10">
 
-        {/* HERO SECTION */}
-        <section className="pt-16 md:pt-20 pb-14 grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-12 lg:gap-16 items-start">
-          <div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[4.1rem] font-display font-semibold leading-[1.06] tracking-tight text-balance">
-              {L.heroTitle}
-            </h1>
-            <p className={`mt-6 max-w-[62ch] text-base md:text-[17px] leading-relaxed font-normal text-pretty ${
-              isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
-            }`}>
-              {L.heroBody}
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a
-                href="#work"
-                onClick={scrollToSection('work')}
-                className="h-[46px] px-6 rounded-xl bg-accent-gold text-[#14171d] text-[13px] font-bold tracking-wide inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform] duration-150 shadow-sm"
-              >
-                {L.ctaWork}
-              </a>
-              <button
-                onClick={openResume}
-                className={`h-[46px] px-6 rounded-xl border text-[13px] font-bold tracking-wide active:scale-95 transition-[background-color,border-color,color,transform] duration-150 ${
-                  isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
-                }`}
-              >
-                {L.ctaResume}
-              </button>
-            </div>
-          </div>
+        {/* COVER */}
+        <HeroCover
+          isDark={isDark}
+          title={L.heroTitle}
+          sub={L.heroSub}
+          ctaWork={L.ctaWork}
+          ctaResume={L.ctaResume}
+          nowChip={L.nowChip}
+          basedIn={L.basedIn}
+          hint={L.orbitHint}
+          items={orbitItems}
+          selectedId={selectedId}
+          onSelect={(id) => showProject(id, true)}
+          onWork={scrollToSection('work')}
+          onResume={openResume}
+        />
 
-          <div className="flex flex-col gap-6">
-            <div className={`rounded-2xl overflow-hidden border ${
-              isDark ? 'border-white/10' : 'border-black/10'
-            }`}>
-              <img
-                src="/images/jason-benjamin.webp"
-                alt="Jason Benjamin"
-                width={410}
-                height={525}
-                fetchPriority="high"
-                className="w-full aspect-[4/5] object-cover object-top"
-              />
-            </div>
-
-            <aside className={`border rounded-2xl p-6 transition-colors ${
-              isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
-            }`}>
-              <div className="flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-[#5fd48b]">
-                <span className="w-2 h-2 rounded-full bg-[#5fd48b] animate-pulse"></span>
-                <span>{L.nowLabel}</span>
-              </div>
-              <p className={`mt-3 text-sm md:text-[15px] leading-relaxed font-medium ${
-                isDark ? 'text-[#faf9f6]' : 'text-[#14171d]'
-              }`}>
-                {L.nowBody}
-              </p>
-              <div className={`mt-5 pt-4 border-t text-[11px] font-bold tracking-widest uppercase ${
-                isDark ? 'border-white/10 text-[#848e9c]' : 'border-black/10 text-[#6b7280]'
-              }`}>
-                {L.nextLabel}
-              </div>
-              <p className={`mt-2 text-[13px] leading-relaxed ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>
-                {L.nextBody}
-              </p>
-            </aside>
-          </div>
-        </section>
-
-        {/* FACTS BAR */}
-        <section className={`border-y py-6 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 ${
-          isDark ? 'border-white/10' : 'border-black/10'
-        }`}>
+        {/* STATS */}
+        <section className={`reveal border-y py-7 grid grid-cols-3 gap-4 md:gap-8 ${isDark ? 'border-white/10' : 'border-black/10'}`}>
           {FACTS[locale].map((f, i) => (
-            <div key={i} className="pr-4">
-              <div className="font-display text-lg md:text-xl font-semibold tracking-tight text-accent-gold">
-                {f.value}
+            <div key={i}>
+              <div className="font-serif text-4xl md:text-6xl leading-none text-accent-gold tabular-nums">
+                <CountUp to={f.n} />{f.suffix}
               </div>
-              <div className={`mt-1.5 text-xs md:text-[13px] leading-relaxed ${
-                isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
-              }`}>
-                {f.label}
-              </div>
+              <div className={`mt-2 text-xs md:text-sm ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>{f.label}</div>
             </div>
           ))}
         </section>
 
-        {/* SELECTED WORK SECTION */}
-        <section id="work" className="pt-20 md:pt-24">
-          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-2">
-            <h2 className="text-3xl md:text-4xl font-display font-semibold tracking-tight text-balance">
-              {L.workTitle}
-            </h2>
-            <p className={`text-xs md:text-[13.5px] max-w-[46ch] ${
-              isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-            }`}>
-              {L.workNote}
-            </p>
+        {/* SELECTED PROJECT (driven by the orbit and the index) */}
+        <section id="work" className="pt-16 md:pt-20 scroll-mt-[76px]">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 className="text-3xl md:text-4xl font-serif tracking-tight">{L.workTitle}</h2>
+            <span className={`text-xs font-mono ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>
+              {String(projects.indexOf(selected) + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+            </span>
+          </div>
+          <div key={selected.id} className="rise mt-6">
+            <ProjectCard
+              project={selected}
+              isDark={isDark}
+              locale={locale}
+              ownedLabel={L.ownedLabel}
+              decisionsLabel={L.decisionsLabel}
+              caseHref={pathFor(locale, selected.id)}
+              onOpenCase={openCaseStudy}
+            />
           </div>
 
-          <div className="space-y-8 mt-6">
-            {FEATURED_PROJECTS[locale].map((project) => (
-              <article
-                key={project.id}
-                className={`border rounded-2xl overflow-hidden transition-[background-color,border-color] ${
-                  isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
-                }`}
-              >
-                <div className={`grid grid-cols-1 ${project.image ? 'lg:grid-cols-[0.9fr_1.1fr]' : 'grid-cols-1'}`}>
-                  {project.image && (
-                    <div className={`aspect-video lg:aspect-auto h-full overflow-hidden border-b lg:border-b-0 lg:border-r relative p-8 ${
-                      isDark ? 'bg-[#101319] border-white/10' : 'bg-[#f2f1ec] border-black/10'
-                    }`}>
-                      {project.video ? (
-                        <LoopVideo src={project.video} poster={project.image} label={project.title} />
-                      ) : (
-                        <img
-                          src={project.image}
-                          srcSet={project.image.endsWith('.webp') && project.image.includes('/screenshots/') ? `${project.image.replace('.webp', '-720.webp')} 720w, ${project.image} 1440w` : undefined}
-                          sizes="(min-width: 1024px) 480px, calc(100vw - 112px)"
-                          alt={project.title}
-                          className="w-full h-full object-contain hover:scale-102 transition-transform duration-500"
-                          loading="lazy"
-                          referrerPolicy="no-referrer"
-                        />
-                      )}
-                    </div>
-                  )}
-
-                  <div className="p-6 md:p-8 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-3 flex-wrap">
-                        <span className={`text-[11px] font-bold tracking-widest uppercase ${
-                          isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-                        }`}>
-                          {project.context}
-                        </span>
-                        <span className="text-[11px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-md bg-accent-gold/15 text-accent-gold border border-accent-gold/25">
-                          {project.status}
-                        </span>
-                      </div>
-
-                      <h3 className="mt-3 text-xl md:text-2xl font-display font-medium tracking-tight leading-snug">
-                        {project.title}
-                      </h3>
-                      {project.proof && (
-                        <p className="mt-2 text-sm font-semibold text-accent-gold">{project.proof}</p>
-                      )}
-
-                      <p className={`mt-3 text-sm md:text-[14.5px] leading-relaxed ${
-                        isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
-                      }`}>
-                        {project.problem}
-                      </p>
-
-                      {/* DETAILS TOGGLE */}
-                      <button
-                        onClick={() => setExpandedFeaturedId(expandedFeaturedId === project.id ? null : project.id)}
-                        aria-expanded={expandedFeaturedId === project.id}
-                        className={`mt-6 pt-5 border-t w-full flex items-center justify-between gap-3 text-left ${
-                          isDark ? 'border-white/10' : 'border-black/10'
-                        }`}
-                      >
-                        <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                          isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-                        }`}>
-                          {locale === 'en' ? "What I built & why" : "무엇을, 왜 만들었는지"}
-                        </h4>
-                        <ChevronDownIcon className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ${
-                          expandedFeaturedId === project.id ? 'rotate-180 text-accent-gold' : (isDark ? 'text-[#848e9c]' : 'text-[#6b7280]')
-                        }`} />
-                      </button>
-
-                      {expandedFeaturedId === project.id && (
-                        <div className="animate-in fade-in slide-in-from-top-1 duration-200">
-                          {/* WHAT I BUILT */}
-                          <div className="mt-4">
-                            <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                              isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-                            }`}>
-                              {L.ownedLabel}
-                            </h4>
-                            <ul className="mt-3 space-y-2">
-                              {project.owned.map((item, idx) => (
-                                <li key={idx} className="text-xs md:text-[13.5px] leading-relaxed flex items-start gap-2.5">
-                                  <span className="text-accent-gold shrink-0">—</span>
-                                  <span className={isDark ? 'text-[#faf9f6]' : 'text-[#14171d]'}>{item}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          {/* DECISIONS & TRADEOFFS */}
-                          <div className={`mt-6 pt-5 border-t ${isDark ? 'border-white/10' : 'border-black/10'}`}>
-                            <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                              isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-                            }`}>
-                              {L.decisionsLabel}
-                            </h4>
-                            <div className="mt-3 space-y-3.5">
-                              {project.decisions.map((d, idx) => (
-                                <div key={idx} className="text-xs md:text-[13px] leading-relaxed">
-                                  <div className="font-semibold text-accent-gold">{d.choice}</div>
-                                  <div className={`mt-0.5 ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>{d.why}</div>
-                                  <div className={`mt-0.5 italic ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{d.tradeoff}</div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* STACK TAGS */}
-                      <div className="mt-5 flex flex-wrap gap-1.5">
-                        {project.stack.map((tech, idx) => (
-                          <span
-                            key={idx}
-                            className={`text-[11px] font-mono px-2 py-0.5 rounded border ${
-                              isDark ? 'border-white/10 text-[#a3acb9] bg-white/[0.02]' : 'border-black/10 text-[#4b5563] bg-black/[0.02]'
-                            }`}
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* ACTIONS */}
-                    <div className={`mt-6 pt-5 border-t flex flex-wrap items-center gap-3 ${isDark ? 'border-white/10' : 'border-black/10'}`}>
-                      <a
-                        href={pathFor(locale, project.id)}
-                        onClick={(e) => { e.preventDefault(); openCaseStudy(project.id); }}
-                        className={`h-[40px] px-4 rounded-lg font-bold text-xs tracking-wider inline-flex items-center transition-[background-color,transform] active:scale-95 shadow-sm ${
-                          isDark ? 'bg-white text-[#14171d] hover:bg-white/90' : 'bg-[#14171d] text-white hover:bg-black/90'
-                        }`}
-                      >
-                        {locale === 'en' ? "Read the case study ↗" : "케이스 스터디 읽기 ↗"}
-                      </a>
-
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`h-[40px] px-4 rounded-lg border text-xs font-semibold tracking-wider inline-flex items-center gap-1.5 transition-[background-color,transform] active:scale-95 ${
-                            isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
-                          }`}
-                        >
-                          <span>{locale === 'en' ? "Open live app" : "라이브 앱 열기"}</span>
-                          <ExternalLinkIcon className="w-3.5 h-3.5" />
-                        </a>
-                      )}
-
-                      {project.stores?.map((store, idx) => (
-                        <a
-                          key={idx}
-                          href={store.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`h-[40px] px-3.5 rounded-lg border text-xs font-semibold tracking-wider inline-flex items-center gap-1 transition-[background-color,color,transform] active:scale-95 ${
-                            isDark ? 'border-white/10 text-[#a3acb9] hover:text-white hover:bg-white/5' : 'border-black/10 text-[#4b5563] hover:text-black hover:bg-black/5'
-                          }`}
-                        >
-                          <span>{store.label}</span>
-                        </a>
-                      ))}
-                    </div>
+          {/* one line per project, every link in reach */}
+          <h3 className={`mt-14 text-[11px] font-bold tracking-widest uppercase ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{L.allTitle}</h3>
+          <ul className={`reveal mt-3 border-t divide-y ${isDark ? 'border-white/10 divide-white/10' : 'border-black/10 divide-black/10'}`}>
+            {projects.map((pr, i) => {
+              const on = pr.id === selected.id;
+              const pill = `h-7 px-3 rounded-full border text-[11.5px] font-semibold inline-flex items-center transition-colors ${
+                isDark ? 'border-white/12 text-white/75 hover:text-white hover:bg-white/5' : 'border-black/12 text-black/70 hover:text-black hover:bg-black/5'
+              }`;
+              return (
+                <li key={pr.id} className={`group py-3.5 grid grid-cols-[28px_1fr] md:grid-cols-[28px_minmax(0,1fr)_auto] gap-x-3 gap-y-2 items-center transition-colors ${on ? 'bg-accent-gold/[0.04]' : ''}`}>
+                  <span className={`text-[11px] font-mono ${on ? 'text-accent-gold' : isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{String(i + 1).padStart(2, '0')}</span>
+                  <button onClick={() => showProject(pr.id, true)} className="min-w-0 text-left flex items-baseline gap-3">
+                    <span className={`text-[15px] md:text-base font-semibold whitespace-nowrap transition-colors ${on ? 'text-accent-gold' : 'group-hover:text-accent-gold'}`}>{ORBIT_META[pr.id]?.name ?? pr.title}</span>
+                    <span className={`hidden sm:inline truncate text-[13px] ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{pr.title}</span>
+                  </button>
+                  <div className="col-start-2 md:col-start-3 flex flex-wrap gap-1.5">
+                    <a href={pathFor(locale, pr.id)} onClick={(e) => { e.preventDefault(); openCaseStudy(pr.id); }} className={pill}>{L.caseShort}</a>
+                    {pr.liveUrl && <a href={pr.liveUrl} target="_blank" rel="noopener noreferrer" className={pill}>{L.liveShort} ↗</a>}
+                    {pr.stores?.map(st => <a key={st.href} href={st.href} target="_blank" rel="noopener noreferrer" className={pill}>{st.label}</a>)}
                   </div>
-                </div>
-              </article>
-            ))}
-          </div>
+                </li>
+              );
+            })}
+          </ul>
         </section>
 
         {/* HOW I WORK SECTION */}
-        <section className="pt-12 pb-4">
+        <section className="reveal pt-20 pb-4">
           <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-balance">
             {L.roleTitle}
           </h2>
@@ -1192,39 +1032,8 @@ export default function App({ initialPath }: { initialPath?: string }) {
           </div>
         </section>
 
-        {/* ALSO SHIPPED SECTION */}
-        <section id="more" className="pt-20">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-balance">
-                {L.moreTitle}
-              </h2>
-              <p className={`mt-1 text-xs md:text-[13.5px] max-w-[58ch] ${
-                isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-              }`}>
-                {L.moreNote}
-              </p>
-            </div>
-
-          </div>
-
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SHIPPED_PROJECTS[locale].map(p => (
-              <CompactProjectCard
-                key={p.id}
-                project={p}
-                theme={theme}
-                locale={locale}
-                caseLabel={L.caseLabel}
-                caseHref={pathFor(locale, p.caseStudyId)}
-                onOpenCaseStudy={openCaseStudy}
-              />
-            ))}
-          </div>
-        </section>
-
         {/* BUILD LOG SECTION */}
-        <section id="log" className="pt-20">
+        <section id="log" className="reveal pt-20">
           <div className="flex items-baseline justify-between gap-4 pb-2">
             <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-balance">
               {L.logTitle}
@@ -1269,7 +1078,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
         </section>
 
         {/* CONTACT / HIRING SECTION */}
-        <section id="contact" className="pt-20 pb-24">
+        <section id="contact" className="reveal pt-20 pb-24">
           <div className={`border rounded-2xl p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-10 lg:gap-14 items-center ${
             isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
           }`}>
