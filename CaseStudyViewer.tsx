@@ -627,7 +627,7 @@ const ArchitectureFlowchart: React.FC<{ projectId: string; theme: 'light' | 'dar
                   : 'bg-white border-black/5 shadow-sm hover:border-accent-gold/50 hover:bg-black/[0.01]'
               }`}>
                 {/* Node counter */}
-                <div className="absolute top-2 left-2.5 font-mono text-[9px] font-bold text-accent-gold/60">
+                <div className="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-accent-gold/60">
                   0{index + 1}
                 </div>
 
@@ -647,7 +647,7 @@ const ArchitectureFlowchart: React.FC<{ projectId: string; theme: 'light' | 'dar
                   }`}>
                     {node.title}
                   </h4>
-                  <p className={`text-[9px] leading-relaxed max-w-[200px] mx-auto opacity-60 ${
+                  <p className={`text-[11px] leading-relaxed max-w-[200px] mx-auto opacity-60 ${
                     theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'
                   }`}>
                     {node.subtitle}
@@ -871,7 +871,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
       }`}>
         <button
           onClick={handleClose}
-          className={`flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-colors active:scale-95 whitespace-nowrap shrink-0 ${
+          className={`flex items-center gap-1.5 sm:gap-2 text-[13px] font-medium transition-colors active:scale-95 whitespace-nowrap shrink-0 ${
             theme === 'dark' ? 'text-white/60 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'
           }`}
         >
@@ -883,7 +883,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               href={projectData.liveUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-widest text-accent-gold transition-colors active:scale-95 hover:text-accent-gold/80 whitespace-nowrap"
+              className="hidden sm:inline-flex items-center gap-1.5 h-9 px-4 rounded-full border border-accent-gold/30 text-xs font-semibold text-accent-gold transition-[background-color,transform] active:scale-95 hover:bg-accent-gold/10 whitespace-nowrap"
             >
               {projectData.liveLabel ?? t.launchLive}
             </a>
@@ -891,7 +891,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           {projectData.contactUrl && (
             <a 
               href={projectData.contactUrl} 
-              className="flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-widest text-accent-gold transition-colors active:scale-95 hover:text-accent-gold/80 whitespace-nowrap"
+              className="hidden sm:inline-flex items-center gap-1.5 h-9 px-4 rounded-full border border-accent-gold/30 text-xs font-semibold text-accent-gold transition-[background-color,transform] active:scale-95 hover:bg-accent-gold/10 whitespace-nowrap"
             >
               {locale === 'en' ? "Contact to try ↗" : "체험 문의 ↗"}
             </a>
@@ -901,7 +901,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               href={projectData.storeUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-widest text-accent-gold transition-colors active:scale-95 hover:text-accent-gold/80 whitespace-nowrap"
+              className="hidden sm:inline-flex items-center gap-1.5 h-9 px-4 rounded-full border border-accent-gold/30 text-xs font-semibold text-accent-gold transition-[background-color,transform] active:scale-95 hover:bg-accent-gold/10 whitespace-nowrap"
             >
               {t.storeLink}
             </a>
@@ -918,10 +918,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-24 space-y-24">
+      <div className="max-w-[1180px] mx-auto px-6 md:px-12 py-12 md:py-24 space-y-24">
         {/* HERO TITLE BLOCK */}
         <div className="space-y-6 md:space-y-10">
-          <div className="flex items-center gap-2 text-[10px] md:text-[12px] font-black tracking-[0.4em] uppercase text-accent-gold">
+          <div className="flex items-center gap-2 text-[11px] md:text-[12px] font-bold tracking-[0.2em] uppercase text-accent-gold">
             <SparklesIcon className="w-4 h-4" />
             {t.architecturalStudy}
           </div>
@@ -943,7 +943,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 [locale === 'ko' ? '상태' : 'Status', projectData.meta.status],
               ] as const).filter(([, v]) => v).map(([k, v]) => (
                 <div key={k} className="space-y-1">
-                  <dt className={`text-[10px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'}`}>{k}</dt>
+                  <dt className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'}`}>{k}</dt>
                   <dd className="text-sm md:text-base font-medium">{v}</dd>
                 </div>
               ))}
@@ -951,14 +951,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           )}
 
           {/* DUAL BUTTON SPLIT CTA */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 max-w-2xl w-full">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 pt-4 w-full">
             <button 
               onClick={scrollToBreakdown}
-              className={`shiny-cta py-4 sm:py-5 text-center shadow-2xl whitespace-normal break-words leading-tight rounded-full ${
-                (hasLiveApp || projectData.storeUrl) 
-                  ? 'w-full sm:w-auto px-4 sm:px-8 text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest' 
-                  : 'w-full sm:w-auto px-6 sm:px-12 text-[10px] sm:text-[11px] tracking-wider sm:tracking-widest'
-              }`}
+              className="w-full sm:w-auto whitespace-nowrap py-3 px-6 rounded-full bg-accent-gold text-[#14171d] text-[13px] font-bold text-center hover:brightness-105 active:scale-95 transition-[filter,transform]"
             >
               <span className="leading-snug text-center">{t.technicalBreakdown}</span>
             </button>
@@ -967,7 +963,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 href={projectData.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`w-full py-4 sm:py-5 px-4 rounded-full border flex items-center justify-center gap-2 sm:gap-3 font-extrabold uppercase text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest transition-[background-color] active:scale-95 text-center ${
+                className={`w-full sm:w-auto py-3 px-5 rounded-full border flex items-center justify-center gap-2 sm:gap-3 font-semibold text-[13px] transition-[background-color] active:scale-95 text-center ${
                   theme === 'dark'
                     ? 'border-white/20 hover:bg-white/5 text-white'
                     : 'border-black/20 hover:bg-black/5 text-alpine-950'
@@ -979,7 +975,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             {projectData.contactUrl && (
               <a 
                 href={projectData.contactUrl}
-                className={`w-full sm:w-auto py-4 sm:py-5 px-5 rounded-full border flex items-center justify-center gap-2 sm:gap-2.5 font-extrabold uppercase text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest transition-[background-color] active:scale-95 text-center ${
+                className={`w-full sm:w-auto py-3 px-5 rounded-full border flex items-center justify-center gap-2 sm:gap-2.5 font-semibold text-[13px] transition-[background-color] active:scale-95 text-center ${
                   theme === 'dark'
                     ? 'border-accent-gold/50 bg-accent-gold/10 hover:bg-accent-gold/20 text-accent-gold'
                     : 'border-accent-gold/60 bg-accent-gold/10 hover:bg-accent-gold/20 text-accent-gold'
@@ -994,7 +990,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 href={projectData.storeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`w-full py-4 sm:py-5 px-4 rounded-full border flex items-center justify-center gap-2 sm:gap-3 font-extrabold uppercase text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest transition-[background-color] active:scale-95 text-center ${
+                className={`w-full sm:w-auto py-3 px-5 rounded-full border flex items-center justify-center gap-2 sm:gap-3 font-semibold text-[13px] transition-[background-color] active:scale-95 text-center ${
                   theme === 'dark'
                     ? 'border-accent-gold/30 hover:bg-accent-gold/5 text-accent-gold'
                     : 'border-accent-gold/40 hover:bg-accent-gold/10 text-accent-gold'
@@ -1012,10 +1008,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         }`}>
           {projectData.stats.map((stat, idx) => (
             <div key={idx} className="space-y-2">
-              <div className={`font-mono font-bold text-accent-gold ${/^[~<≤]?\d/.test(stat.value) ? 'text-3xl md:text-5xl' : 'text-2xl md:text-3xl'}`}>
+              <div className={`font-serif leading-none text-accent-gold tabular-nums ${/^[~<≤]?\d/.test(stat.value) ? 'text-4xl md:text-6xl' : 'text-2xl md:text-3xl'}`}>
                 {stat.value}
               </div>
-              <div className={`text-[10px] font-black uppercase tracking-widest ${
+              <div className={`text-[11px] font-bold uppercase tracking-widest ${
                 theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'
               }`}>
                 {stat.label}
@@ -1035,7 +1031,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             theme === 'dark' ? 'bg-white/[0.02] border-white/10' : 'bg-black/[0.02] border-black/10'
           }`}>
             <figcaption className="space-y-2">
-              <div className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{projectData.evals.title}</div>
+              <div className="text-[11px] font-bold uppercase tracking-widest text-accent-gold">{projectData.evals.title}</div>
               <p className={`text-sm leading-relaxed max-w-3xl ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'}`}>
                 {projectData.evals.note}
               </p>
@@ -1075,8 +1071,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         {projectData.behindTheArchitecture && (
           <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 lg:mx-0 ${
             theme === 'dark' 
-              ? 'bg-white/[0.02] border-white/5 shadow-2xl relative overflow-hidden' 
-              : 'bg-black/[0.02] border-black/5 shadow-lg relative overflow-hidden'
+              ? 'bg-[#1a1e26] border-white/10 relative overflow-hidden' 
+              : 'bg-white border-black/10 shadow-sm relative overflow-hidden'
           }`}>
             <button
               onClick={() => setIsArchOpen(!isArchOpen)}
@@ -1084,11 +1080,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               aria-controls="arch-panel"
               className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent-gold/5 rounded-full blur-3xl pointer-events-none"></div>
               <div className="flex items-center gap-3">
                 <div className="flex flex-col">
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold">{t.productMindset}</span>
-                  <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.behindTheArchitecture}</h2>
+                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent-gold">{t.productMindset}</span>
+                  <h2 className={`mt-1 font-serif text-2xl md:text-3xl tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>{t.behindTheArchitecture}</h2>
                 </div>
               </div>
               <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
@@ -1105,7 +1100,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 {/* THE HUMAN PROBLEM */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.humanProblem}</h3>
+                    <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#E15A5A]">{t.humanProblem}</h3>
                   </div>
                   <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                     theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
@@ -1117,7 +1112,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 {/* THE PRODUCT VISION */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.productVision}</h3>
+                    <h3 className="text-[11px] font-bold uppercase tracking-widest text-accent-gold">{t.productVision}</h3>
                   </div>
                   <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                     theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
@@ -1129,7 +1124,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 {/* THE CORE RATIONALE */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-[10px] font-black uppercase tracking-widest text-[#44D9C5]">{t.coreRationale}</h3>
+                    <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#44D9C5]">{t.coreRationale}</h3>
                   </div>
                   <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                     theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
@@ -1146,8 +1141,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         {projectData.coreLoop && projectData.coreLoop.length > 0 && (
           <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 lg:mx-0 ${
             theme === 'dark' 
-              ? 'bg-[#0B1017]/60 border-blue-500/10 shadow-[0_20px_50px_rgba(59,130,246,0.03)] relative overflow-hidden' 
-              : 'bg-[#F4F8FC]/70 border-blue-500/10 shadow-lg relative overflow-hidden'
+              ? 'bg-[#1a1e26] border-white/10 relative overflow-hidden' 
+              : 'bg-white border-black/10 shadow-sm relative overflow-hidden'
           }`}>
             <button
               onClick={() => setIsCoreLoopOpen(!isCoreLoopOpen)}
@@ -1155,19 +1150,18 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               aria-controls="core-loop-panel"
               className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
               <div className="flex items-center gap-3">
                 <div className="flex flex-col">
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400">{t.coreLoopSubtitle}</span>
-                  <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.coreLoopTitle}</h2>
+                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent-gold">{t.coreLoopSubtitle}</span>
+                  <h2 className={`mt-1 font-serif text-2xl md:text-3xl tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>{t.coreLoopTitle}</h2>
                 </div>
               </div>
               <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
                 isCoreLoopOpen 
-                  ? 'rotate-180 bg-blue-500/15 border-blue-500/30' 
+                  ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
                   : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
               }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isCoreLoopOpen ? 'text-blue-400' : 'text-white/60'}`} />
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isCoreLoopOpen ? 'text-accent-gold' : 'text-white/60'}`} />
               </div>
             </button>
 
@@ -1179,13 +1173,13 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                       key={idx} 
                       className={`p-4 rounded-xl border flex flex-col justify-between space-y-3 transition-[background-color,border-color] ${
                         theme === 'dark'
-                          ? 'bg-black/30 border-white/5 hover:border-blue-400/30 hover:bg-white/[0.02]'
-                          : 'bg-white border-black/5 shadow-sm hover:border-blue-400/40'
+                          ? 'bg-black/30 border-white/5 hover:border-accent-gold/30 hover:bg-white/[0.02]'
+                          : 'bg-white border-black/5 shadow-sm hover:border-accent-gold/40'
                       }`}
                     >
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="font-mono text-[9px] font-bold text-blue-400 uppercase tracking-wider">
+                          <span className="font-mono text-[11px] font-bold text-accent-gold uppercase tracking-wider">
                             {item.step}
                           </span>
                           {item.role && (
@@ -1214,8 +1208,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         {projectData.decisions && projectData.decisions.length > 0 && (
           <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 lg:mx-0 ${
             theme === 'dark' 
-              ? 'bg-[#100D14]/60 border-purple-500/10 shadow-[0_20px_50px_rgba(168,85,247,0.03)] relative overflow-hidden' 
-              : 'bg-[#FAF6FD]/70 border-purple-500/10 shadow-lg relative overflow-hidden'
+              ? 'bg-[#1a1e26] border-white/10 relative overflow-hidden' 
+              : 'bg-white border-black/10 shadow-sm relative overflow-hidden'
           }`}>
             <button
               onClick={() => setIsDecisionsOpen(!isDecisionsOpen)}
@@ -1223,19 +1217,18 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               aria-controls="decisions-panel"
               className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
               <div className="flex items-center gap-3">
                 <div className="flex flex-col">
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-purple-400">{t.decisionsSubtitle}</span>
-                  <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.decisionsTitle}</h2>
+                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent-gold">{t.decisionsSubtitle}</span>
+                  <h2 className={`mt-1 font-serif text-2xl md:text-3xl tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>{t.decisionsTitle}</h2>
                 </div>
               </div>
               <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
                 isDecisionsOpen 
-                  ? 'rotate-180 bg-purple-500/15 border-purple-500/30' 
+                  ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
                   : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
               }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isDecisionsOpen ? 'text-purple-400' : 'text-white/60'}`} />
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isDecisionsOpen ? 'text-accent-gold' : 'text-white/60'}`} />
               </div>
             </button>
 
@@ -1247,15 +1240,15 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                       key={idx} 
                       className={`p-5 rounded-xl border flex flex-col justify-between space-y-4 transition-[background-color,border-color] ${
                         theme === 'dark'
-                          ? 'bg-black/40 border-white/5 hover:border-purple-400/30 hover:bg-white/[0.02]'
-                          : 'bg-white border-black/5 shadow-sm hover:border-purple-400/40'
+                          ? 'bg-black/40 border-white/5 hover:border-accent-gold/30 hover:bg-white/[0.02]'
+                          : 'bg-white border-black/5 shadow-sm hover:border-accent-gold/40'
                       }`}
                     >
                       {/* Decision Header */}
                       <div className="space-y-1.5">
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-[9px] font-bold text-purple-400">ADR 0{idx + 1}</span>
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">• {t.decisionLabel}</span>
+                          <span className="font-mono text-[11px] font-bold text-accent-gold">ADR 0{idx + 1}</span>
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-accent-gold">• {t.decisionLabel}</span>
                         </div>
                         <h3 className={`text-xs md:text-sm font-semibold leading-snug ${
                           theme === 'dark' ? 'text-white' : 'text-alpine-950'
@@ -1266,7 +1259,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
 
                       {/* Alternative Considered */}
                       <div className="space-y-1 text-xs">
-                        <div className="flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-wider text-white/60">
+                        <div className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-white/60">
                           <span>↪</span>
                           <span>{t.alternativeLabel}</span>
                         </div>
@@ -1280,7 +1273,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                       {/* Why & Tradeoff Grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-white/5">
                         <div className="space-y-1">
-                          <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-wider text-green-400">
+                          <div className="flex items-center gap-1 text-[11px] font-mono uppercase tracking-wider text-green-400">
                             <span>✓</span>
                             <span>{t.whyLabel}</span>
                           </div>
@@ -1291,7 +1284,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                           </p>
                         </div>
                         <div className="space-y-1">
-                          <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-wider text-orange-400">
+                          <div className="flex items-center gap-1 text-[11px] font-mono uppercase tracking-wider text-orange-400">
                             <span>{t.tradeoffLabel}</span>
                           </div>
                           <p className={`text-[11px] leading-relaxed font-normal ${
@@ -1313,8 +1306,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         {projectData.technicalHurdles && (
           <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 lg:mx-0 ${
             theme === 'dark' 
-              ? 'bg-[#120D0D]/50 border-red-500/10 shadow-[0_20px_50px_rgba(239,68,68,0.05)] relative overflow-hidden' 
-              : 'bg-[#FFF5F5]/60 border-red-500/10 shadow-lg relative overflow-hidden'
+              ? 'bg-[#1a1e26] border-white/10 relative overflow-hidden' 
+              : 'bg-white border-black/10 shadow-sm relative overflow-hidden'
           }`}>
             <button
               onClick={() => setIsHurdlesOpen(!isHurdlesOpen)}
@@ -1322,22 +1315,21 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               aria-controls="hurdles-panel"
               className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-3xl pointer-events-none"></div>
               <div className="flex items-center justify-between gap-4 w-full flex-wrap pr-4">
                 <div className="flex items-center gap-3">
                   <div className="flex flex-col">
-                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-red-500">{locale === 'en' ? "WHEN THINGS BREAK" : "장애 및 결함 조치 진찰기"}</span>
-                    <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.technicalHurdles}</h2>
+                    <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent-gold">{locale === 'en' ? "WHEN THINGS BREAK" : "장애 및 결함 조치 진찰기"}</span>
+                    <h2 className={`mt-1 font-serif text-2xl md:text-3xl tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>{t.technicalHurdles}</h2>
                   </div>
                 </div>
-                <div className="bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20 px-3 py-1 rounded-full text-[9px] font-mono uppercase font-black tracking-widest">
+                <div className="hidden sm:block bg-accent-gold/10 text-accent-gold border border-accent-gold/25 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">
                   {locale === 'en' ? "Production Diagnostic Win" : "프로덕션 실시간 완치 실적"}
                 </div>
               </div>
               <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
                 isHurdlesOpen 
-                  ? 'rotate-180 bg-red-500/15 border-red-500/30' 
-                  : (theme === 'dark' ? 'border-red-500/10 hover:border-red-500/20' : 'border-red-500/10 hover:border-red-500/20')
+                  ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
+                  : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
               }`}>
                 <ChevronDownIcon className={`w-3.5 h-3.5 ${isHurdlesOpen ? 'text-red-500' : 'text-white/60'}`} />
               </div>
@@ -1349,12 +1341,12 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 : [projectData.technicalHurdles];
               
               return (
-                <div id="hurdles-panel" className="border-t border-red-500/5 divide-y divide-red-500/5 relative z-10 animate-in fade-in slide-in-from-top-2 duration-300">
+                <div id="hurdles-panel" className="border-t border-white/10 divide-y divide-white/10 relative z-10 animate-in fade-in slide-in-from-top-2 duration-300">
                   {hurdlesList.map((hurdle, hIdx) => (
                     <div key={hIdx} className={`${hIdx > 0 ? 'pt-8 md:pt-12' : ''} p-6 md:p-10 pb-8 md:pb-12 space-y-6`}>
                       {hurdle.title && (
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500 font-mono">
+                          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-red-500 font-mono">
                             {hurdle.title}
                           </span>
                         </div>
@@ -1365,7 +1357,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
                             <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-xs text-red-500 font-bold">×</div>
-                            <h3 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.incident}</h3>
+                            <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#E15A5A]">{t.incident}</h3>
                           </div>
                           <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                             theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
@@ -1378,7 +1370,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
                             <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500"><SearchIcon className="w-3 h-3" /></div>
-                            <h3 className="text-[10px] font-black uppercase tracking-widest text-orange-500">{t.diagnosis}</h3>
+                            <h3 className="text-[11px] font-bold uppercase tracking-widest text-orange-500">{t.diagnosis}</h3>
                           </div>
                           <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                             theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
@@ -1391,7 +1383,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
                             <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center text-xs text-green-500 font-bold">✓</div>
-                            <h3 className="text-[10px] font-black uppercase tracking-widest text-green-500">{t.resolution}</h3>
+                            <h3 className="text-[11px] font-bold uppercase tracking-widest text-green-500">{t.resolution}</h3>
                           </div>
                           <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
                             theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
@@ -1411,15 +1403,13 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         {/* PROOF OF WORK / VIDEO SECTION */}
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4">
-            <div className={`text-[10px] font-black uppercase tracking-[0.4em] ${
-              theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'
-            }`}>
+            <h2 className="font-serif text-2xl md:text-3xl tracking-tight">
               {t.proofOfWorkTitle}
-            </div>
+            </h2>
 
             {/* Sub-tab switcher to toggle between Interactive Screenshots and Walkthrough Video */}
             {projectData.screenshots && projectData.screenshots.length > 0 && projectData.walkthroughVideo && (
-              <div className="flex rounded-xl p-1 border border-white/10 bg-black/40 text-[10px] font-bold uppercase tracking-wider overflow-hidden max-w-full self-start sm:self-auto shadow-2xl">
+              <div className="flex rounded-xl p-1 border border-white/10 bg-black/40 text-[11px] font-bold uppercase tracking-wider overflow-hidden max-w-full self-start sm:self-auto shadow-2xl">
                 <button
                   type="button"
                   onClick={() => setProofOfWorkTab('screenshots')}
@@ -1460,7 +1450,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 theme === 'dark' ? 'border-white/10' : 'border-black/10'
               }`}>
                 {/* Floating Index Tag */}
-                <div className="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-mono uppercase font-semibold text-accent-gold tracking-widest flex items-center gap-1.5 shadow-lg select-none">
+                <div className="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[11px] font-mono uppercase font-semibold text-accent-gold tracking-widest flex items-center gap-1.5 shadow-lg select-none">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-gold animate-pulse"></span>
                   {String(activeScreenshotIdx + 1).padStart(2, '0')} / {String(projectData.screenshots.length).padStart(2, '0')} • {projectData.screenshots[activeScreenshotIdx].label}
                 </div>
@@ -1479,10 +1469,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                       </div>
-                      <span className="text-[10px] font-black tracking-[0.15em] text-white uppercase font-mono block">
+                      <span className="text-[11px] font-bold tracking-[0.15em] text-white uppercase font-mono block">
                         {locale === 'en' ? "Interactive Slide Preview" : "데모 슬라이드"}
                       </span>
-                      <span className="mt-2 text-[10px] text-white/50 block font-sans leading-relaxed max-w-[280px]">
+                      <span className="mt-2 text-[11px] text-white/50 block font-sans leading-relaxed max-w-[280px]">
                         {locale === 'en' 
                           ? "We are rendering the slider. Click 'Expand View' below to zoom, or open the direct gateway link under the section headers." 
                           : "데모 슬라이드가 안전하게 구성되었습니다. 원격 보안 등으로 이미지가 가려진 경우 우측 하단의 돋보기 버튼을 통해 확대 감상해 주세요."}
@@ -1502,7 +1492,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   )}
                   
                   {/* Zoom Badge Indicator */}
-                  <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-mono uppercase font-semibold text-white/80 tracking-widest flex items-center gap-1.5 shadow-lg opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 pointer-events-none select-none">
+                  <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[11px] font-mono uppercase font-semibold text-white/80 tracking-widest flex items-center gap-1.5 shadow-lg opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 pointer-events-none select-none">
                     <span>{locale === 'en' ? "Expand View" : "전체화면"}</span>
                   </div>
                   
@@ -1553,14 +1543,14 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     >
                       {/* Left accent color indicator bar for active slide */}
                       <div className={`absolute top-0 bottom-0 left-0 w-1 transition-[background-color] ${isActive ? 'bg-accent-gold' : 'bg-transparent'}`}></div>
-                      <div className={`font-mono text-[9px] uppercase font-bold tracking-widest shrink-0 ${isActive ? 'text-accent-gold' : theme === 'dark' ? 'text-white/30' : 'text-alpine-950/30'}`}>
+                      <div className={`font-mono text-[11px] uppercase font-bold tracking-widest shrink-0 ${isActive ? 'text-accent-gold' : theme === 'dark' ? 'text-white/30' : 'text-alpine-950/30'}`}>
                         {String(sIdx + 1).padStart(2, '0')}
                       </div>
                       <div className="space-y-0.5">
                         <div className={`text-[11px] font-bold tracking-tight line-clamp-1 leading-snug ${isActive ? 'text-accent-gold' : theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>
                           {scr.label}
                         </div>
-                        <div className={`text-[9px] font-normal font-mono opacity-40 line-clamp-1 ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
+                        <div className={`text-[11px] font-normal font-mono opacity-40 line-clamp-1 ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
                           {scr.subLabel || (sIdx === 0 ? (locale === 'en' ? "Primary View" : "기본 대시보드") : sIdx === 1 ? (locale === 'en' ? "Data Processing" : "수집 분석 지표") : (locale === 'en' ? "Email Synthesizer" : "이메일 템플레이트"))}
                         </div>
                       </div>
@@ -1580,7 +1570,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     <FileTextIcon className="w-5 h-5 text-accent-gold" />
                   </div>
                   <div className="space-y-0.5">
-                    <div className="text-[10px] font-bold uppercase tracking-wider font-mono text-accent-gold">
+                    <div className="text-[11px] font-bold uppercase tracking-wider font-mono text-accent-gold">
                       {locale === 'en' ? "DOCUMENTATION REFERENCE" : "첨부 문서 자료 안내"}
                     </div>
                     <p className="text-xs leading-relaxed max-w-prose text-pretty opacity-85">
@@ -1632,8 +1622,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             >
               <div className="flex items-center gap-3">
                 <div className="flex flex-col min-w-0 w-full">
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold whitespace-normal break-words">{locale === 'en' ? "DEEP ANALYSIS" : "심층 분석 매뉴얼"}</span>
-                  <h2 className={`text-[11px] font-bold uppercase tracking-widest whitespace-normal break-words text-pretty ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.technicalBreakdown}</h2>
+                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent-gold whitespace-normal break-words">{locale === 'en' ? "DEEP ANALYSIS" : "심층 분석 매뉴얼"}</span>
+                  <h2 className={`mt-1 font-serif text-2xl md:text-3xl tracking-tight whitespace-normal break-words text-pretty ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>{t.technicalBreakdown}</h2>
                 </div>
               </div>
               <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
@@ -1651,7 +1641,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 {/* LEFT RAIL - THE STACK / INFO */}
                 <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-24 h-fit w-full min-w-0">
                   <div className="space-y-4">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.systemStack}</span>
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-accent-gold">{t.systemStack}</span>
                     <div className="grid grid-cols-1 gap-3 pt-2">
                        {projectData.stack.map((st, sidx) => {
                         const explanation = stackExplains[st]
@@ -1673,7 +1663,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                             >
                               {st}
                             </span>
-                            <p className={`text-[10px] leading-relaxed mt-2 select-text font-normal text-pretty break-words whitespace-normal w-full min-w-0 ${
+                            <p className={`text-[11px] leading-relaxed mt-2 select-text font-normal text-pretty break-words whitespace-normal w-full min-w-0 ${
                               theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'
                             }`}>
                               {explanation}
@@ -1685,7 +1675,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   </div>
 
                   <div className="space-y-4">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold font-display">{t.systemScopeOverview}</span>
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-accent-gold font-display">{t.systemScopeOverview}</span>
                     <p className={`text-xs md:text-sm font-normal leading-relaxed max-w-prose text-pretty ${
                       theme === 'dark' ? 'text-white/60' : 'text-alpine-950/50'
                     }`}>
@@ -1793,14 +1783,14 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     <div className="space-y-6 font-mono font-normal text-pretty">
                       <div className="w-full min-w-0">
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.structuredInstruction}</h4>
-                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-green-400 w-full max-w-full whitespace-pre-wrap break-words md:whitespace-pre md:break-normal">
+                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[11px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-green-400 w-full max-w-full whitespace-pre-wrap break-words md:whitespace-pre md:break-normal">
                           <code>{projectData.promptEngineering.logic}</code>
                         </pre>
                       </div>
 
                       <div className="w-full min-w-0">
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.runtimeEnforcedSchema}</h4>
-                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-blue-400 w-full max-w-full whitespace-pre-wrap break-words md:whitespace-pre md:break-normal">
+                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[11px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-[#a3acb9] w-full max-w-full whitespace-pre-wrap break-words md:whitespace-pre md:break-normal">
                           <code>{projectData.promptEngineering.schema}</code>
                         </pre>
                       </div>
@@ -1868,7 +1858,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         <div className={`p-8 md:p-14 rounded-2xl border text-center space-y-6 relative overflow-hidden ${
           theme === 'dark' ? 'border-white/10 bg-white/[0.01]' : 'border-black/5 bg-white shadow-xl'
         }`}>
-          <div className="absolute top-0 right-0 w-64 h-64 bg-accent-gold/5 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
           <h2 className="text-3xl md:text-5xl tracking-tight font-serif text-pretty">
             {t.wantToSeeTitle}
           </h2>
@@ -1880,7 +1869,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           <div className="pt-4">
             <a 
               href={projectData.contactUrl || "mailto:jsn.benjamin@gmail.com"} 
-              className="shiny-cta inline-block px-12 py-5 rounded-full"
+              className="inline-block px-8 py-3 rounded-full bg-accent-gold text-[#14171d] text-[13px] font-bold hover:brightness-105 active:scale-95 transition-[filter,transform]"
             >
               {projectData.contactUrl ? (locale === 'en' ? "Contact to Try BridgeRecruit" : "BridgeRecruit 체험 문의하기") : t.startCollaboration}
             </a>
@@ -1901,7 +1890,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   onClick={(e) => { e.preventDefault(); onOpenCase(id); }}
                   className={`block p-6 rounded-2xl border transition-[border-color] ${align} ${theme === 'dark' ? 'border-white/10 hover:border-accent-gold/40' : 'border-black/10 hover:border-accent-clay/40'}`}
                 >
-                  <span className={`block text-[10px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'}`}>{label}</span>
+                  <span className={`block text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'}`}>{label}</span>
                   <span className="block mt-2 text-base md:text-lg font-medium">{studyData[id]?.title}</span>
                 </a>
               ))}
