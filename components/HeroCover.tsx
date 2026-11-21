@@ -59,9 +59,10 @@ export default function HeroCover(p: Props) {
 
   // Selection from elsewhere (the project list) also brings that card round; not on first render.
   s.current.paused = p.paused;
-  const mounted = useRef(false);
+  const prevSel = useRef(p.selectedId); // StrictMode runs effects twice, so compare ids rather than counting runs
   useEffect(() => {
-    if (!mounted.current) { mounted.current = true; return; }
+    if (prevSel.current === p.selectedId) return;
+    prevSel.current = p.selectedId;
     const idx = p.items.findIndex(it => it.id === p.selectedId);
     if (idx >= 0) focus(idx);
     // eslint-disable-next-line react-hooks/exhaustive-deps
