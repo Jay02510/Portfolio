@@ -35,6 +35,8 @@ function place(i: number, n: number, angle: number, rx: number) {
     transform: `translate(-50%, -50%) translate3d(${(Math.sin(t) * rx).toFixed(1)}px, ${(c * rx * RY_RATIO).toFixed(1)}px, 0) scale(${(0.5 + 0.5 * d).toFixed(3)})`,
     opacity: +(0.1 + 0.9 * d ** 2.5).toFixed(3),
     zIndex: Math.round(d * 100),
+    // on narrow rings the side cards overlap, so only the front card keeps its caption
+    label: rx < 320 ? Math.min(1, Math.max(0, (d - 0.88) / 0.1)) : 1,
   };
 }
 
@@ -110,6 +112,7 @@ export default function HeroCover(p: Props) {
           el.style.transform = pos.transform;
           el.style.opacity = String(pos.opacity);
           el.style.zIndex = String(pos.zIndex);
+          el.style.setProperty('--label', String(pos.label));
         });
       }
       raf = requestAnimationFrame(frame);
@@ -169,7 +172,7 @@ export default function HeroCover(p: Props) {
       <div className="relative max-w-[1180px] mx-auto px-6 md:px-10 pt-8 pb-14">
         <div className={`flex flex-wrap justify-center gap-2 text-[12px] font-medium ${muted}`}>
           <span className={`inline-flex items-center gap-2 h-8 px-3.5 rounded-full border ${glass}`}>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#5fd48b] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#5fd48b]" />
             {p.nowChip}
           </span>
           <a href="#contact" onClick={p.onContact} className={`inline-flex items-center gap-1.5 h-8 px-3.5 rounded-full border transition-colors hover:text-accent-gold ${glass}`}>
@@ -199,7 +202,7 @@ export default function HeroCover(p: Props) {
                     onClick={() => { focus(i); p.onSelect(it.id); }}
                     onFocus={e => { if (e.currentTarget.matches(':focus-visible')) focus(i); }}
                     aria-pressed={sel}
-                    style={pos}
+                    style={{ transform: pos.transform, opacity: pos.opacity, zIndex: pos.zIndex }}
                     className="orbit-card group absolute left-0 top-0 w-[190px] sm:w-[280px] lg:w-[360px] text-left will-change-transform"
                   >
                     <span className={`block aspect-[16/10] rounded-[10px] overflow-hidden border transition-[border-color,box-shadow] duration-300 ${
@@ -209,12 +212,12 @@ export default function HeroCover(p: Props) {
                     } ${p.isDark ? 'bg-[#1a1e26]' : 'bg-white'}`}>
                       <img src={it.thumb} alt="" draggable={false} decoding="async" className="w-full h-full object-cover object-top" />
                     </span>
-                    <span className={`mt-3 block text-center text-[13px] lg:text-[15px] font-semibold tracking-tight truncate transition-colors ${
+                    <span style={{ opacity: 'var(--label, 1)' }} className={`mt-3 block text-center text-[13px] lg:text-[15px] font-semibold tracking-tight truncate transition-colors ${
                       sel ? 'text-accent-gold' : p.isDark ? 'text-white/85' : 'text-black/80'
                     }`}>
                       {it.name}
                     </span>
-                    <span className={`mt-0.5 block text-center text-[11.5px] lg:text-[13px] truncate ${p.isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>
+                    <span style={{ opacity: 'var(--label, 1)' }} className={`mt-0.5 block text-center text-[11.5px] lg:text-[13px] truncate ${p.isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>
                       {it.blurb}
                     </span>
                   </button>
@@ -226,8 +229,7 @@ export default function HeroCover(p: Props) {
 
         <div className="mt-10 grid lg:grid-cols-[1.4fr_1fr] gap-6 lg:gap-12 items-end">
           <div className="rise">
-            <p className="text-[11px] font-bold tracking-[0.22em] uppercase text-accent-gold">Jason Benjamin</p>
-            <h1 className="mt-3 font-serif text-[2.5rem] sm:text-5xl lg:text-[3.6rem] leading-[1.02] tracking-[-0.01em] text-balance">
+            <h1 className="font-serif text-[2.5rem] sm:text-5xl lg:text-[3.6rem] leading-[1.02] tracking-[-0.01em] text-balance">
               {p.title}
             </h1>
           </div>

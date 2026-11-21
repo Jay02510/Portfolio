@@ -91,8 +91,8 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
                   rows={4}
                   className={`w-full border rounded-2xl p-5 text-base sm:text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-[box-shadow,border-color] resize-none ${
                     isDark 
-                      ? 'bg-white/[0.03] border-white/15 text-white placeholder-white/40 focus:border-accent-gold/50' 
-                      : 'bg-black/[0.03] border-black/15 text-alpine-950 placeholder-black/40 focus:border-accent-clay/50'
+                      ? 'bg-white/[0.03] border-white/15 text-white placeholder-white/60 focus:border-accent-gold/50' 
+                      : 'bg-black/[0.03] border-black/15 text-alpine-950 placeholder-black/55 focus:border-accent-clay/50'
                   }`}
                   required
                 />
@@ -107,8 +107,8 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
                     placeholder="Your email or LinkedIn (optional)"
                     className={`w-full sm:flex-1 border rounded-xl px-4 py-3 text-base sm:text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-[box-shadow,border-color] ${
                       isDark 
-                        ? 'bg-white/[0.03] border-white/15 text-white placeholder-white/40' 
-                        : 'bg-black/[0.03] border-black/15 text-alpine-950 placeholder-black/40'
+                        ? 'bg-white/[0.03] border-white/15 text-white placeholder-white/60' 
+                        : 'bg-black/[0.03] border-black/15 text-alpine-950 placeholder-black/55'
                     }`}
                   />
                   <button

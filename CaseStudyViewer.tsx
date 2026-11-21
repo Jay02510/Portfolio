@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { XIcon, SparklesIcon, SearchIcon, ChevronDownIcon, FileTextIcon } from './components/Icons.tsx';
+import { XIcon, SearchIcon, ChevronDownIcon, FileTextIcon } from './components/Icons.tsx';
 import { CaseStudyType } from './types.ts';
 import { studyDataEn, studyDataKo } from './components/caseStudyData.ts';
 
@@ -382,7 +382,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         {/* HERO TITLE BLOCK */}
         <div className="space-y-6 md:space-y-10">
           <div className="flex items-center gap-2 text-[11px] md:text-[12px] font-bold tracking-[0.2em] uppercase text-accent-gold">
-            <SparklesIcon className="w-4 h-4" />
             {t.architecturalStudy}
           </div>
           <h1 id="case-study-title" className="text-5xl md:text-8xl tracking-[-0.01em] leading-[1.02] font-serif text-pretty">
@@ -492,7 +491,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           }`}>
             <figcaption className="space-y-2">
               <div className="text-[11px] font-bold uppercase tracking-widest text-accent-gold">{projectData.evals.title}</div>
-              <p className={`text-sm leading-relaxed max-w-3xl ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'}`}>
+              <p className={`text-sm leading-relaxed max-w-[68ch] ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'}`}>
                 {projectData.evals.note}
               </p>
             </figcaption>
@@ -750,7 +749,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             >
               <div className="flex items-center gap-3">
                 <div className="flex flex-col">
-                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent-gold">{t.coreLoopSubtitle}</span>
                   <h2 className={`mt-1 font-serif text-2xl md:text-3xl tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>{t.coreLoopTitle}</h2>
                 </div>
               </div>
@@ -817,7 +815,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             >
               <div className="flex items-center gap-3">
                 <div className="flex flex-col">
-                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent-gold">{t.decisionsSubtitle}</span>
                   <h2 className={`mt-1 font-serif text-2xl md:text-3xl tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>{t.decisionsTitle}</h2>
                 </div>
               </div>
@@ -916,7 +913,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               <div className="flex items-center justify-between gap-4 w-full flex-wrap pr-4">
                 <div className="flex items-center gap-3">
                   <div className="flex flex-col">
-                    <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent-gold">{locale === 'en' ? "Troubleshooting" : "트러블슈팅"}</span>
                     <h2 className={`mt-1 font-serif text-2xl md:text-3xl tracking-tight ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>{t.technicalHurdles}</h2>
                   </div>
                 </div>
@@ -1011,7 +1007,6 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             >
               <div className="flex items-center gap-3">
                 <div className="flex flex-col min-w-0 w-full">
-                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-accent-gold whitespace-normal break-words">{locale === 'en' ? "Under the hood" : "내부 구조"}</span>
                   <h2 className={`mt-1 font-serif text-2xl md:text-3xl tracking-tight whitespace-normal break-words text-pretty ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>{t.technicalBreakdown.replace(' ↓', '')}</h2>
                 </div>
               </div>

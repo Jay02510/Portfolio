@@ -972,7 +972,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
                       <span aria-hidden className="text-accent-gold transition-transform group-hover:translate-x-0.5">→</span>
                     </span>
                     <span className={`mt-0.5 block text-[13px] leading-snug ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>{ORBIT_META[id].blurb[locale]}</span>
-                    <span className="mt-2 inline-block text-[10.5px] font-bold tracking-wider uppercase text-accent-gold">{pr.status}</span>
+                    <span className="mt-2 inline-block text-[11px] font-bold tracking-wider uppercase text-accent-gold">{pr.status}</span>
                   </span>
                 </button>
               );
@@ -1017,7 +1017,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
             {displayedLog.map((e, idx) => (
               <div key={idx} className="py-3.5 grid grid-cols-[88px_minmax(0,1fr)] sm:grid-cols-[110px_90px_minmax(0,1fr)] gap-x-4 sm:gap-x-6 items-baseline">
                 <span className={`text-xs font-mono ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{e.date}</span>
-                <span className="hidden sm:inline text-[10.5px] font-bold tracking-widest uppercase text-accent-gold">[{e.type}]</span>
+                <span className="hidden sm:inline text-[11px] font-bold tracking-widest uppercase text-accent-gold">[{e.type}]</span>
                 <span className="text-sm md:text-[14.5px] font-medium truncate" title={locale === 'ko' ? e.descKo : e.descEn}>{locale === 'ko' ? e.titleKo : e.titleEn}</span>
               </div>
             ))}

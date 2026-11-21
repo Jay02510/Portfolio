@@ -25,3 +25,4 @@
 @keyframes fade-in { from { opacity: 0; } }
 body:has(dialog[open]) { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .rise-fast, .project-modal[open], .project-modal[open]::backdrop { animation: none; } }
+p, dd, li { text-wrap: pretty; }
