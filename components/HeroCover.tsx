@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from 'react';
 export interface OrbitItem { id: string; name: string; blurb: string; thumb: string }
 
 interface Props {
-  isDark: boolean;
   title: string;
   sub: string;
   ctaWork: string;
@@ -158,16 +157,12 @@ export default function HeroCover(p: Props) {
     s.current.last = performance.now();
   };
 
-  const muted = p.isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]';
-  const glass = p.isDark ? 'bg-white/[0.06] border-white/10 backdrop-blur-xl' : 'bg-white/70 border-black/10 backdrop-blur-xl shadow-sm';
+  const muted = 'text-ink-2';
+  const glass = 'bg-ink/[0.06] border-ink/10 backdrop-blur-xl shadow-sm';
 
   return (
     <section className="relative w-screen ml-[calc(50%-50vw)] overflow-hidden">
-      <div aria-hidden className={`absolute inset-0 pointer-events-none ${
-        p.isDark
-          ? 'bg-[radial-gradient(55%_50%_at_50%_45%,rgba(226,184,125,0.13),transparent_70%)]'
-          : 'bg-[radial-gradient(55%_50%_at_50%_45%,rgba(179,130,52,0.12),transparent_70%)]'
-      }`} />
+      <div aria-hidden className="absolute inset-0 pointer-events-none bg-[radial-gradient(55%_50%_at_50%_45%,rgb(var(--rgb-gold)/0.13),transparent_70%)]" />
 
       <div className="relative max-w-[1180px] mx-auto px-6 md:px-10 pt-8 pb-14">
         <div className={`flex flex-wrap justify-center gap-2 text-[12px] font-medium ${muted}`}>
@@ -208,16 +203,16 @@ export default function HeroCover(p: Props) {
                     <span className={`block aspect-[16/10] rounded-[10px] overflow-hidden border transition-[border-color,box-shadow] duration-300 ${
                       sel
                         ? 'border-accent-gold shadow-[0_0_0_1px_rgba(226,184,125,0.6),0_20px_44px_-14px_rgba(0,0,0,0.6)]'
-                        : `${p.isDark ? 'border-white/15' : 'border-black/10'} shadow-[0_18px_40px_-14px_rgba(0,0,0,0.5)] group-hover:border-accent-gold/60`
-                    } ${p.isDark ? 'bg-[#1a1e26]' : 'bg-white'}`}>
+                        : `border-ink/15 shadow-[0_18px_40px_-14px_rgba(0,0,0,0.5)] group-hover:border-accent-gold/60`
+                    } bg-card`}>
                       <img src={it.thumb} alt="" draggable={false} decoding="async" className="w-full h-full object-cover object-top" />
                     </span>
                     <span style={{ opacity: 'var(--label, 1)' }} className={`mt-3 block text-center text-[13px] lg:text-[15px] font-semibold tracking-tight truncate transition-colors ${
-                      sel ? 'text-accent-gold' : p.isDark ? 'text-white/85' : 'text-black/80'
+                      sel ? 'text-ink' : 'text-ink/80'
                     }`}>
                       {it.name}
                     </span>
-                    <span style={{ opacity: 'var(--label, 1)' }} className={`mt-0.5 block text-center text-[11.5px] lg:text-[13px] truncate ${p.isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>
+                    <span style={{ opacity: 'var(--label, 1)' }} className="mt-0.5 block text-center text-[11.5px] lg:text-[13px] truncate text-ink-2">
                       {it.blurb}
                     </span>
                   </button>
@@ -239,19 +234,19 @@ export default function HeroCover(p: Props) {
               <a
                 href="#work"
                 onClick={p.onWork}
-                className="h-[44px] px-5 rounded-full bg-accent-gold text-[#14171d] text-[13px] font-bold tracking-wide inline-flex items-center gap-2 hover:brightness-105 active:scale-95 transition-[filter,transform] duration-150"
+                className="h-[44px] px-5 rounded-full bg-accent-fill text-[#14171d] text-[13px] font-bold tracking-wide inline-flex items-center gap-2 hover:brightness-105 active:scale-95 transition-[filter,transform] duration-150"
               >
                 {p.ctaWork} <span aria-hidden>→</span>
               </a>
               <button
                 onClick={p.onResume}
                 className={`h-[44px] px-5 rounded-full border text-[13px] font-bold tracking-wide active:scale-95 transition-[background-color,transform] duration-150 ${glass} ${
-                  p.isDark ? 'text-white hover:bg-white/10' : 'text-black hover:bg-white'
+                  'text-ink hover:bg-ink/10'
                 }`}
               >
                 {p.ctaResume}
               </button>
-              <span className={`text-[12px] ${p.isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>
+              <span className="text-[12px] text-ink-3">
                 <span className="hidden [@media(hover:hover)]:inline">{p.hint}</span>
                 <span className="[@media(hover:hover)]:hidden">{p.hintTouch}</span>
               </span>

@@ -409,9 +409,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
       <div className="print:hidden space-y-8">
         
         {/* RESUME HEADER CARD */}
-        <div className={`p-6 sm:p-8 rounded-2xl border ${
-          isDark ? 'bg-white/[0.02] border-white/10' : 'bg-black/[0.02] border-black/10 shadow-sm'
-        }`}>
+        <div className={`p-6 sm:p-8 rounded-2xl border bg-ink/[0.02] border-ink/10 shadow-sm`}>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-6 border-accent-gold/20">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
@@ -422,12 +420,12 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
               <h1 className="text-2xl sm:text-3xl font-black font-display tracking-tight text-accent-gold">
                 {data.header.name}
               </h1>
-              <h2 className={`text-sm sm:text-base font-semibold mt-1 ${isDark ? 'text-white/90' : 'text-alpine-950/90'}`}>
+              <h2 className={`text-sm sm:text-base font-semibold mt-1 text-ink/90`}>
                 {data.header.title[locale]}
               </h2>
             </div>
             
-            <div className={`text-xs space-y-1 sm:text-right font-mono ${isDark ? 'text-white/70' : 'text-alpine-950/70'}`}>
+            <div className={`text-xs space-y-1 sm:text-right font-mono text-ink/70`}>
               <div>
                 <a href={`mailto:${data.header.contact.email}`} className="hover:underline hover:text-accent-gold">
                   {data.header.contact.email}
@@ -448,9 +446,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
             <h3 className="text-xs font-black uppercase tracking-widest text-accent-gold font-mono flex items-center gap-2">
               <span>✦</span> {labels.profile}
             </h3>
-            <p className={`text-xs sm:text-sm leading-relaxed whitespace-pre-line font-light ${
-              isDark ? 'text-white/85' : 'text-neutral-800'
-            }`}>
+            <p className={`text-xs sm:text-sm leading-relaxed whitespace-pre-line font-light text-ink/85`}>
               {data.profile[locale]}
             </p>
           </div>
@@ -463,15 +459,13 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
           </h3>
 
           {/* 1. VODABI */}
-          <div className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
-            isDark ? 'bg-white/[0.02] border-accent-gold/30' : 'bg-white border-accent-clay/30 shadow-sm'
-          }`}>
+          <div className={`p-5 sm:p-7 rounded-2xl border space-y-4 bg-ink/[0.02] border-accent-gold/30 shadow-sm`}>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-accent-gold/20">
               <div>
                 <h4 className="text-base font-bold text-accent-gold font-display">
                   {data.experience.vodabi.title[locale]}
                 </h4>
-                <span className={`text-xs sm:text-sm font-semibold block ${isDark ? 'text-white/90' : 'text-alpine-950'}`}>
+                <span className={`text-xs sm:text-sm font-semibold block text-ink/90`}>
                   {data.experience.vodabi.company[locale]}
                 </span>
               </div>
@@ -480,7 +474,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
               </span>
             </div>
 
-            <p className={`text-xs font-medium italic ${isDark ? 'text-white/70' : 'text-neutral-600'}`}>
+            <p className={`text-xs font-medium italic text-ink/70`}>
               {data.experience.vodabi.sub[locale]}
             </p>
 
@@ -490,9 +484,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
                   <div className="text-xs font-bold text-accent-gold font-mono flex items-center gap-1.5">
                     <span>–</span> <span>{b.tag[locale]}:</span>
                   </div>
-                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light ${
-                    isDark ? 'text-white/80' : 'text-neutral-800'
-                  }`}>
+                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light text-ink/80`}>
                     {b.text[locale]}
                   </p>
                 </li>
@@ -501,15 +493,13 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
           </div>
 
           {/* 2. CHEKKI */}
-          <div className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
-            isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
-          }`}>
+          <div className={`p-5 sm:p-7 rounded-2xl border space-y-4 bg-ink/[0.02] border-ink/10 shadow-sm`}>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-white/10">
               <div>
                 <h4 className="text-base font-bold text-accent-gold font-display">
                   {data.experience.chekki.title[locale]}
                 </h4>
-                <span className={`text-xs sm:text-sm font-semibold block ${isDark ? 'text-white/90' : 'text-alpine-950'}`}>
+                <span className={`text-xs sm:text-sm font-semibold block text-ink/90`}>
                   {data.experience.chekki.company[locale]}
                 </span>
               </div>
@@ -518,7 +508,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
               </span>
             </div>
 
-            <p className={`text-xs font-medium italic ${isDark ? 'text-white/70' : 'text-neutral-600'}`}>
+            <p className={`text-xs font-medium italic text-ink/70`}>
               {data.experience.chekki.sub[locale]}
             </p>
 
@@ -528,9 +518,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
                   <div className="text-xs font-bold text-accent-gold font-mono flex items-center gap-1.5">
                     <span>–</span> <span>{b.tag[locale]}:</span>
                   </div>
-                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light ${
-                    isDark ? 'text-white/80' : 'text-neutral-800'
-                  }`}>
+                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light text-ink/80`}>
                     {b.text[locale]}
                   </p>
                 </li>
@@ -539,15 +527,13 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
           </div>
 
           {/* 3. BLEND ENG ACADEMY */}
-          <div className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
-            isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
-          }`}>
+          <div className={`p-5 sm:p-7 rounded-2xl border space-y-4 bg-ink/[0.02] border-ink/10 shadow-sm`}>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-white/10">
               <div>
                 <h4 className="text-base font-bold text-accent-gold font-display">
                   {data.experience.blend.title[locale]}
                 </h4>
-                <span className={`text-xs sm:text-sm font-semibold block ${isDark ? 'text-white/90' : 'text-alpine-950'}`}>
+                <span className={`text-xs sm:text-sm font-semibold block text-ink/90`}>
                   {data.experience.blend.company[locale]}
                 </span>
               </div>
@@ -556,7 +542,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
               </span>
             </div>
 
-            <p className={`text-xs font-medium italic ${isDark ? 'text-white/70' : 'text-neutral-600'}`}>
+            <p className={`text-xs font-medium italic text-ink/70`}>
               {data.experience.blend.sub[locale]}
             </p>
 
@@ -566,9 +552,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
                   <div className="text-xs font-bold text-accent-gold font-mono flex items-center gap-1.5">
                     <span>–</span> <span>{b.tag[locale]}:</span>
                   </div>
-                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light ${
-                    isDark ? 'text-white/80' : 'text-neutral-800'
-                  }`}>
+                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light text-ink/80`}>
                     {b.text[locale]}
                   </p>
                 </li>
@@ -578,15 +562,13 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
 
           {/* 4–5. YBM PSA SEOCHO, earlier academies */}
           {[data.experience.ybm, data.experience.early].map((job, i) => (
-          <div key={i} className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
-            isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
-          }`}>
+          <div key={i} className={`p-5 sm:p-7 rounded-2xl border space-y-4 bg-ink/[0.02] border-ink/10 shadow-sm`}>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-white/10">
               <div>
                 <h4 className="text-base font-bold text-accent-gold font-display">
                   {job.title[locale]}
                 </h4>
-                <span className={`text-xs sm:text-sm font-semibold block ${isDark ? 'text-white/90' : 'text-alpine-950'}`}>
+                <span className={`text-xs sm:text-sm font-semibold block text-ink/90`}>
                   {job.company[locale]}
                 </span>
               </div>
@@ -595,7 +577,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
               </span>
             </div>
 
-            <p className={`text-xs font-medium italic ${isDark ? 'text-white/70' : 'text-neutral-600'}`}>
+            <p className={`text-xs font-medium italic text-ink/70`}>
               {job.sub[locale]}
             </p>
 
@@ -605,9 +587,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
                   <div className="text-xs font-bold text-accent-gold font-mono flex items-center gap-1.5">
                     <span>–</span> <span>{b.tag[locale]}:</span>
                   </div>
-                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light ${
-                    isDark ? 'text-white/80' : 'text-neutral-800'
-                  }`}>
+                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light text-ink/80`}>
                     {b.text[locale]}
                   </p>
                 </li>
@@ -624,15 +604,13 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
             <span>🛠️</span> {labels.projects}
           </h3>
           {data.projects.map((job, i) => (
-          <div key={i} className={`p-5 sm:p-7 rounded-2xl border space-y-4 ${
-            isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
-          }`}>
+          <div key={i} className={`p-5 sm:p-7 rounded-2xl border space-y-4 bg-ink/[0.02] border-ink/10 shadow-sm`}>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b pb-3 border-white/10">
               <div>
                 <h4 className="text-base font-bold text-accent-gold font-display">
                   {job.title[locale]}
                 </h4>
-                <span className={`text-xs sm:text-sm font-semibold block ${isDark ? 'text-white/90' : 'text-alpine-950'}`}>
+                <span className={`text-xs sm:text-sm font-semibold block text-ink/90`}>
                   {job.company[locale]}
                 </span>
               </div>
@@ -641,7 +619,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
               </span>
             </div>
 
-            <p className={`text-xs font-medium italic ${isDark ? 'text-white/70' : 'text-neutral-600'}`}>
+            <p className={`text-xs font-medium italic text-ink/70`}>
               {job.sub[locale]}
             </p>
 
@@ -651,9 +629,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
                   <div className="text-xs font-bold text-accent-gold font-mono flex items-center gap-1.5">
                     <span>–</span> <span>{b.tag[locale]}:</span>
                   </div>
-                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light ${
-                    isDark ? 'text-white/80' : 'text-neutral-800'
-                  }`}>
+                  <p className={`text-xs sm:text-[13px] leading-relaxed pl-4 font-light text-ink/80`}>
                     {b.text[locale]}
                   </p>
                 </li>
@@ -670,54 +646,38 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
           </h3>
 
           <div className="space-y-3">
-            <div className={`p-4 sm:p-5 rounded-xl border space-y-2 ${
-              isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
-            }`}>
+            <div className={`p-4 sm:p-5 rounded-xl border space-y-2 bg-ink/[0.02] border-ink/10 shadow-sm`}>
               <span className="text-xs font-bold text-accent-gold font-mono uppercase block">
                 {data.skills.aiVoice.label[locale]}
               </span>
-              <p className={`text-xs sm:text-[13px] font-light leading-relaxed ${
-                isDark ? 'text-white/85' : 'text-neutral-700'
-              }`}>
+              <p className={`text-xs sm:text-[13px] font-light leading-relaxed text-ink/85`}>
                 {data.skills.aiVoice.items.join(' · ')}
               </p>
             </div>
 
-            <div className={`p-4 sm:p-5 rounded-xl border space-y-2 ${
-              isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
-            }`}>
+            <div className={`p-4 sm:p-5 rounded-xl border space-y-2 bg-ink/[0.02] border-ink/10 shadow-sm`}>
               <span className="text-xs font-bold text-accent-gold font-mono uppercase block">
                 {data.skills.engineeringInfra.label[locale]}
               </span>
-              <p className={`text-xs sm:text-[13px] font-light leading-relaxed ${
-                isDark ? 'text-white/85' : 'text-neutral-700'
-              }`}>
+              <p className={`text-xs sm:text-[13px] font-light leading-relaxed text-ink/85`}>
                 {data.skills.engineeringInfra.items.join(' · ')}
               </p>
             </div>
 
-            <div className={`p-4 sm:p-5 rounded-xl border space-y-2 ${
-              isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
-            }`}>
+            <div className={`p-4 sm:p-5 rounded-xl border space-y-2 bg-ink/[0.02] border-ink/10 shadow-sm`}>
               <span className="text-xs font-bold text-accent-gold font-mono uppercase block">
                 {data.skills.productMgmt.label[locale]}
               </span>
-              <p className={`text-xs sm:text-[13px] font-light leading-relaxed ${
-                isDark ? 'text-white/85' : 'text-neutral-700'
-              }`}>
+              <p className={`text-xs sm:text-[13px] font-light leading-relaxed text-ink/85`}>
                 {data.skills.productMgmt.items.join(' · ')}
               </p>
             </div>
 
-            <div className={`p-4 sm:p-5 rounded-xl border space-y-2 ${
-              isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
-            }`}>
+            <div className={`p-4 sm:p-5 rounded-xl border space-y-2 bg-ink/[0.02] border-ink/10 shadow-sm`}>
               <span className="text-xs font-bold text-accent-gold font-mono uppercase block">
                 {data.skills.otherTools.label[locale]}
               </span>
-              <p className={`text-xs sm:text-[13px] font-light leading-relaxed ${
-                isDark ? 'text-white/85' : 'text-neutral-700'
-              }`}>
+              <p className={`text-xs sm:text-[13px] font-light leading-relaxed text-ink/85`}>
                 {data.skills.otherTools.items.join(' · ')}
               </p>
             </div>
@@ -732,9 +692,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {data.education.map((edu, idx) => (
-              <div key={idx} className={`p-4 sm:p-5 rounded-xl border space-y-1 ${
-                isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white border-black/10 shadow-sm'
-              }`}>
+              <div key={idx} className={`p-4 sm:p-5 rounded-xl border space-y-1 bg-ink/[0.02] border-ink/10 shadow-sm`}>
                 <div className="flex items-center justify-between gap-2">
                   <div className="text-xs sm:text-sm font-bold text-accent-gold">
                     {edu.degree[locale]}
@@ -743,7 +701,7 @@ export default function UnifiedResume({ locale, theme }: ResumeProps) {
                     {edu.year}
                   </span>
                 </div>
-                <div className={`text-xs font-mono ${isDark ? 'text-white/70' : 'text-neutral-600'}`}>
+                <div className={`text-xs font-mono text-ink/70`}>
                   {edu.school[locale]}
                 </div>
               </div>

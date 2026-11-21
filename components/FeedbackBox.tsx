@@ -58,25 +58,17 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
   return (
     <section className="pb-24">
       <div className="max-w-[1180px] mx-auto px-6 md:px-10">
-        <div className={`rounded-2xl p-8 md:p-12 relative overflow-hidden group transition-[background-color,border-color] duration-500 border ${
-          isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
-        }`}>
+        <div className={`rounded-2xl p-8 md:p-12 relative overflow-hidden group transition-[background-color,border-color] duration-500 border bg-card border-ink/10 shadow-sm`}>
           {/* Decorative background element */}
-          <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-[transform,background-color] duration-1000 ${
-            isDark ? 'bg-accent-gold/5 group-hover:bg-accent-gold/10' : 'bg-accent-clay/5 group-hover:bg-accent-clay/10'
-          }`}></div>
+          <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-[transform,background-color] duration-1000 bg-accent-gold/5 group-hover:bg-accent-gold/10`}></div>
 
           {!isSent ? (
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-8 lg:gap-14 items-start">
               <div className="space-y-3">
-                <h3 className={`text-2xl md:text-3xl lg:text-4xl font-display font-medium tracking-tight leading-tight ${
-                  isDark ? 'text-white' : 'text-alpine-950'
-                }`}>
+                <h3 className={`text-2xl md:text-3xl lg:text-4xl font-display font-medium tracking-tight leading-tight text-ink`}>
                   See a gap?
                 </h3>
-                <p className={`text-sm leading-relaxed max-w-md ${
-                  isDark ? 'text-white/70' : 'text-alpine-950/70'
-                }`}>
+                <p className={`text-sm leading-relaxed max-w-md text-ink/70`}>
                   I'm constantly refining these products. If you have an idea for an improvement or just want to call out a friction point, I'm all ears.
                 </p>
               </div>
@@ -89,11 +81,7 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
                   onChange={(e) => setFeedback(e.target.value)}
                   placeholder="Tell it to me straight..."
                   rows={4}
-                  className={`w-full border rounded-2xl p-5 text-base sm:text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-[box-shadow,border-color] resize-none ${
-                    isDark 
-                      ? 'bg-white/[0.03] border-white/15 text-white placeholder-white/60 focus:border-accent-gold/50' 
-                      : 'bg-black/[0.03] border-black/15 text-alpine-950 placeholder-black/55 focus:border-accent-clay/50'
-                  }`}
+                  className={`w-full border rounded-2xl p-5 text-base sm:text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-[box-shadow,border-color] resize-none bg-ink/[0.03] border-ink/15 text-ink placeholder-ink/60 focus:border-accent-gold/50`}
                   required
                 />
 
@@ -105,11 +93,7 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
                     placeholder="Your email or LinkedIn (optional)"
-                    className={`w-full sm:flex-1 border rounded-xl px-4 py-3 text-base sm:text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-[box-shadow,border-color] ${
-                      isDark 
-                        ? 'bg-white/[0.03] border-white/15 text-white placeholder-white/60' 
-                        : 'bg-black/[0.03] border-black/15 text-alpine-950 placeholder-black/55'
-                    }`}
+                    className={`w-full sm:flex-1 border rounded-xl px-4 py-3 text-base sm:text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/70 transition-[box-shadow,border-color] bg-ink/[0.03] border-ink/15 text-ink placeholder-ink/60`}
                   />
                   <button
                     type="submit"
@@ -124,16 +108,14 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
             </div>
           ) : (
             <div className="py-8 flex flex-col items-center justify-center text-center space-y-5 animate-in fade-in zoom-in duration-500">
-              <div className={`w-16 h-16 rounded-full flex items-center justify-center border ${
-                isDark ? 'bg-accent-gold/10 border-accent-gold/20' : 'bg-accent-clay/10 border-accent-clay/20'
-              }`}>
-                <MailIcon className={`w-7 h-7 ${isDark ? 'text-accent-gold' : 'text-accent-clay'}`} />
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center border bg-accent-gold/10 border-accent-gold/20`}>
+                <MailIcon className="w-7 h-7 text-accent-gold" />
               </div>
               <div className="space-y-2">
-                <h4 className={`text-2xl font-display font-medium ${isDark ? 'text-white' : 'text-alpine-950'}`}>
+                <h4 className="text-2xl font-display font-medium text-ink">
                   Feedback Received
                 </h4>
-                <p className={`text-sm max-w-sm ${isDark ? 'text-white/70' : 'text-alpine-950/70'}`}>
+                <p className="text-sm max-w-sm text-ink/70">
                   Thank you for taking the time to share your thoughts. Your perspective helps sharpen the entire ecosystem.
                 </p>
               </div>
@@ -141,18 +123,14 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ theme = 'dark' }) => {
                 <button
                   type="button"
                   onClick={copyToClipboard}
-                  className={`text-xs px-4 py-2 rounded-lg border font-mono font-medium transition-[border-color,transform] active:scale-95 ${
-                    isDark
-                      ? 'border-white/15 hover:border-white/30 text-white/80'
-                      : 'border-black/15 hover:border-black/30 text-alpine-950/80'
-                  }`}
+                  className={`text-xs px-4 py-2 rounded-lg border font-mono font-medium transition-[border-color,transform] active:scale-95 border-ink/15 hover:border-ink/30 text-ink/80`}
                 >
                   {copied ? "Copied to clipboard!" : "Copy note to clipboard"}
                 </button>
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="text-xs px-4 py-2 rounded-lg bg-accent-gold text-alpine-950 font-bold hover:brightness-110 active:scale-95 transition-[filter,transform]"
+                  className="text-xs px-4 py-2 rounded-lg bg-accent-fill text-alpine-950 font-bold hover:brightness-110 active:scale-95 transition-[filter,transform]"
                 >
                   Send another note
                 </button>

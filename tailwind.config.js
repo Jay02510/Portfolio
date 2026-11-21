@@ -23,9 +23,14 @@ export default {
           tert: '#848e9c',
         },
         accent: {
-          gold: '#e2b87d',
+          gold: 'rgb(var(--rgb-gold) / <alpha-value>)', // text, borders and tints; follows the theme
+          fill: '#e2b87d', // button fill, same in both themes (dark text on it)
           clay: '#8c6239'
-        }
+        },
+        ink: { DEFAULT: 'rgb(var(--rgb-ink) / <alpha-value>)', 2: 'rgb(var(--rgb-ink-2) / <alpha-value>)', 3: 'rgb(var(--rgb-ink-3) / <alpha-value>)' },
+        canvas: 'rgb(var(--rgb-canvas) / <alpha-value>)',
+        card: 'rgb(var(--rgb-card) / <alpha-value>)',
+        inset: 'rgb(var(--rgb-inset) / <alpha-value>)'
       },
     },
   },

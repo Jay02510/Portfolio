@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import HeroCover, { type OrbitItem } from './components/HeroCover.tsx';
 import ProjectModal from './components/ProjectModal.tsx';
@@ -680,32 +680,6 @@ const LOG: LogEntry[] = [
 
 type Locale = 'en' | 'ko';
 
-// Counts up once when scrolled into view. Server HTML and reduced motion show the final number.
-function CountUp({ to }: { to: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [v, setV] = useState(to);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (el.getBoundingClientRect().top < window.innerHeight) return; // already on screen: leave it
-    setV(0);
-    const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      io.disconnect();
-      const t0 = performance.now();
-      const tick = (now: number) => {
-        const k = Math.min((now - t0) / 1100, 1);
-        setV(Math.round(to * (1 - Math.pow(1 - k, 3))));
-        if (k < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    }, { threshold: 0.6 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [to]);
-  return <span ref={ref}>{v}</span>;
-}
-
 export const CASE_IDS = ['vodabi', 'chekki', 'seoul-commute', 'chekki-teacher', 'hagwon-readiness', 'bridgerecruit', 'lead-enrichment'];
 
 // URL scheme: /, /ko, /case/<id>, /ko/case/<id>. Each one is pre-rendered at build time.
@@ -727,6 +701,14 @@ export default function App({ initialPath }: { initialPath?: string }) {
   const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(initialRoute.caseId);
   const [selectedId, setSelectedId] = useState<string>('vodabi');
   const [modalOpen, setModalOpen] = useState(false);
+
+  // Start from the visitor's saved choice, else their OS setting (after mount, so SSR stays dark)
+  useEffect(() => {
+    let saved: string | null = null;
+    try { saved = localStorage.getItem('theme'); } catch {}
+    if (saved === 'light' || saved === 'dark') setTheme(saved);
+    else if (window.matchMedia('(prefers-color-scheme: light)').matches) setTheme('light');
+  }, []);
 
   // Keep the CSS custom-property theme (index.html body.light rules) in sync with React state
   useEffect(() => {
@@ -848,11 +830,11 @@ export default function App({ initialPath }: { initialPath?: string }) {
 
   return (
     <div className={`min-h-screen font-sans transition-colors duration-200 ${
-      isDark ? 'bg-[#14171d] text-[#faf9f6]' : 'bg-[#faf9f6] text-[#14171d]'
+      'bg-canvas text-ink'
     }`}>
       {/* STICKY HEADER */}
-      <header className={`sticky top-0 z-50 border-b backdrop-blur-md transition-colors ${
-        isDark ? 'bg-[#14171d]/90 border-white/10' : 'bg-[#faf9f6]/90 border-black/10'
+      <header data-page className={`sticky top-0 z-50 border-b backdrop-blur-md transition-colors ${
+        'bg-canvas/90 border-ink/10'
       }`}>
         <div className="max-w-[1180px] mx-auto px-6 md:px-10 h-[60px] flex items-center justify-between gap-6">
           <a
@@ -867,21 +849,21 @@ export default function App({ initialPath }: { initialPath?: string }) {
             <a
               href="#work"
               onClick={scrollToSection('work')}
-              className={`transition-colors ${isDark ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
+              className="transition-colors text-ink/70 hover:text-ink"
             >
               {L.navWork}
             </a>
             <a
               href="#log"
               onClick={scrollToSection('log')}
-              className={`transition-colors ${isDark ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
+              className="transition-colors text-ink/70 hover:text-ink"
             >
               {L.navLog}
             </a>
             <a
               href="#contact"
               onClick={scrollToSection('contact')}
-              className={`transition-colors ${isDark ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
+              className="transition-colors text-ink/70 hover:text-ink"
             >
               {L.navContact}
             </a>
@@ -891,16 +873,16 @@ export default function App({ initialPath }: { initialPath?: string }) {
             <button
               onClick={switchLocale}
               className={`h-[34px] px-3 rounded-full border text-xs font-semibold tracking-wider transition-[background-color,transform] active:scale-95 ${
-                isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
+                'border-ink/15 text-ink/80 hover:bg-ink/5'
               }`}
             >
               {L.localeSwitch}
             </button>
             <button
-              onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+              onClick={() => setTheme(t => { const n = t === 'dark' ? 'light' : 'dark'; try { localStorage.setItem('theme', n); } catch {} return n; })}
               aria-label="Toggle theme"
               className={`relative w-[34px] h-[34px] rounded-full border flex items-center justify-center transition-colors before:absolute before:inset-[-5px] before:content-[''] ${
-                isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
+                'border-ink/15 text-ink/80 hover:bg-ink/5'
               }`}
             >
               {isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
@@ -908,7 +890,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
             <a
               href="mailto:jsn.benjamin@gmail.com"
               onClick={() => track('email_click', { from: 'header' })}
-              className="h-[34px] px-4 rounded-full bg-accent-gold text-[#14171d] font-bold text-xs tracking-wider inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform]"
+              className="h-[34px] px-4 rounded-full bg-accent-fill text-[#14171d] font-bold text-xs tracking-wider inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform]"
             >
               {L.emailBtn}
             </a>
@@ -917,11 +899,10 @@ export default function App({ initialPath }: { initialPath?: string }) {
       </header>
 
       {/* MAIN CONTENT CONTAINER */}
-      <main id="top" className="max-w-[1180px] mx-auto px-6 md:px-10">
+      <main data-page id="top" className={`max-w-[1180px] mx-auto px-6 md:px-10`}>
 
         {/* COVER */}
         <HeroCover
-          isDark={isDark}
           title={L.heroTitle}
           sub={L.heroSub}
           ctaWork={L.ctaWork}
@@ -940,13 +921,13 @@ export default function App({ initialPath }: { initialPath?: string }) {
         />
 
         {/* STATS */}
-        <section className={`reveal border-y py-7 grid grid-cols-3 gap-4 md:gap-8 ${isDark ? 'border-white/10' : 'border-black/10'}`}>
+        <section className="reveal border-y py-7 grid grid-cols-3 gap-4 md:gap-8 border-ink/10">
           {FACTS[locale].map((f, i) => (
             <div key={i}>
               <div className="font-serif text-4xl md:text-6xl leading-none text-accent-gold tabular-nums">
-                <CountUp to={f.n} />{f.suffix}
+                {f.n}{f.suffix}
               </div>
-              <div className={`mt-2 text-xs md:text-sm ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>{f.label}</div>
+              <div className="mt-2 text-xs md:text-sm text-ink-2">{f.label}</div>
             </div>
           ))}
         </section>
@@ -962,16 +943,16 @@ export default function App({ initialPath }: { initialPath?: string }) {
                   key={id}
                   onClick={() => showProject(id)}
                   className={`group text-left grid grid-cols-[96px_minmax(0,1fr)] sm:grid-cols-[132px_minmax(0,1fr)] gap-4 items-center p-3 pr-5 rounded-2xl border transition-[border-color,transform] duration-200 hover:border-accent-gold/50 active:scale-[0.99] ${
-                    isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
+                    'bg-card border-ink/10 shadow-sm'
                   }`}
                 >
-                  <img src={ORBIT_META[id].thumb} alt="" loading="lazy" className={`w-full aspect-[16/10] object-cover object-top rounded-lg ${isDark ? 'bg-[#101319]' : 'bg-[#f2f1ec]'}`} />
+                  <img src={ORBIT_META[id].thumb} alt="" loading="lazy" className="w-full aspect-[16/10] object-cover object-top rounded-lg bg-inset" />
                   <span className="min-w-0">
                     <span className="flex items-baseline justify-between gap-3">
                       <span className="text-base md:text-lg font-semibold transition-colors group-hover:text-accent-gold">{ORBIT_META[id][locale]}</span>
                       <span aria-hidden className="text-accent-gold transition-transform group-hover:translate-x-0.5">→</span>
                     </span>
-                    <span className={`mt-0.5 block text-[13px] leading-snug ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>{ORBIT_META[id].blurb[locale]}</span>
+                    <span className="mt-0.5 block text-[13px] leading-snug text-ink-2">{ORBIT_META[id].blurb[locale]}</span>
                     <span className="mt-2 inline-block text-[11px] font-bold tracking-wider uppercase text-accent-gold">{pr.status}</span>
                   </span>
                 </button>
@@ -985,11 +966,11 @@ export default function App({ initialPath }: { initialPath?: string }) {
           <h2 className="text-3xl md:text-4xl font-serif tracking-tight">
             {L.roleTitle}
           </h2>
-          <dl className={`mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t ${isDark ? 'border-white/10' : 'border-black/10'}`}>
+          <dl className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-ink/10">
             {ROLE_COLS[locale].map(col => (
               <div key={col.head}>
                 <dt className="text-sm md:text-[15px] font-bold tracking-wide text-accent-gold">{col.head}</dt>
-                <dd className={`mt-1.5 text-[13.5px] md:text-sm leading-relaxed ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>{col.line}</dd>
+                <dd className="mt-1.5 text-[13.5px] md:text-sm leading-relaxed text-ink-2">{col.line}</dd>
               </div>
             ))}
           </dl>
@@ -1004,7 +985,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
             <button
               onClick={() => setIsLogExpanded(!isLogExpanded)}
               className={`h-[34px] px-3.5 rounded-full border text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
-                isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
+                'border-ink/15 text-ink/80 hover:bg-ink/5'
               }`}
             >
               {isLogExpanded ? L.logToggleLess : L.logToggleMore}
@@ -1012,11 +993,11 @@ export default function App({ initialPath }: { initialPath?: string }) {
           </div>
 
           <div className={`mt-6 border-t divide-y ${
-            isDark ? 'border-white/10 divide-white/10' : 'border-black/10 divide-black/10'
+            'border-ink/10 divide-ink/10'
           }`}>
             {displayedLog.map((e, idx) => (
               <div key={idx} className="py-3.5 grid grid-cols-[88px_minmax(0,1fr)] sm:grid-cols-[110px_90px_minmax(0,1fr)] gap-x-4 sm:gap-x-6 items-baseline">
-                <span className={`text-xs font-mono ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{e.date}</span>
+                <span className="text-xs font-mono text-ink-3">{e.date}</span>
                 <span className="hidden sm:inline text-[11px] font-bold tracking-widest uppercase text-accent-gold">[{e.type}]</span>
                 <span className="text-sm md:text-[14.5px] font-medium truncate" title={locale === 'ko' ? e.descKo : e.descEn}>{locale === 'ko' ? e.titleKo : e.titleEn}</span>
               </div>
@@ -1027,7 +1008,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
         {/* CONTACT / HIRING SECTION */}
         <section id="contact" className="reveal pt-20 pb-6">
           <div className={`border rounded-2xl p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[200px_1.3fr_1fr] gap-10 lg:gap-12 items-center ${
-            isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
+            'bg-card border-ink/10 shadow-sm'
           }`}>
             <img
               src="/images/jason-benjamin.webp"
@@ -1042,7 +1023,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
                 {L.contactTitle}
               </h2>
               <p className={`mt-4 text-sm md:text-base leading-relaxed max-w-[52ch] ${
-                isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
+                'text-ink-2'
               }`}>
                 {L.contactBody}
               </p>
@@ -1050,7 +1031,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
                 <a
                   href="mailto:jsn.benjamin@gmail.com"
                   onClick={() => track('email_click')}
-                  className="h-[46px] px-6 rounded-full bg-accent-gold text-[#14171d] text-xs font-bold tracking-wider inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform] shadow-sm"
+                  className="h-[46px] px-6 rounded-full bg-accent-fill text-[#14171d] text-xs font-bold tracking-wider inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform] shadow-sm"
                 >
                   {L.contactCta}
                 </a>
@@ -1059,7 +1040,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`h-[46px] px-6 rounded-full border text-xs font-bold tracking-wider inline-flex items-center transition-[background-color,transform] active:scale-95 ${
-                    isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
+                    'border-ink/20 text-ink hover:bg-ink/5'
                   }`}
                 >
                   {L.linkedinLabel}
@@ -1067,7 +1048,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
                 <button
                   onClick={openResume}
                   className={`h-[46px] px-6 rounded-full border text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
-                    isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
+                    'border-ink/20 text-ink hover:bg-ink/5'
                   }`}
                 >
                   {L.ctaResume}
@@ -1076,11 +1057,11 @@ export default function App({ initialPath }: { initialPath?: string }) {
             </div>
 
             <dl className={`space-y-4 pt-6 lg:pt-0 border-t lg:border-t-0 lg:border-l lg:pl-10 ${
-              isDark ? 'border-white/10' : 'border-black/10'
+              'border-ink/10'
             }`}>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
+                  'text-ink-3'
                 }`}>
                   {L.lookingLabel}
                 </dt>
@@ -1090,7 +1071,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
               </div>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
+                  'text-ink-3'
                 }`}>
                   {L.basedLabel}
                 </dt>
@@ -1100,7 +1081,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
               </div>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
+                  'text-ink-3'
                 }`}>
                   {L.langLabel}
                 </dt>
@@ -1114,11 +1095,11 @@ export default function App({ initialPath }: { initialPath?: string }) {
 
       </main>
 
-      <FeedbackBox theme={theme} />
+      <div data-page><FeedbackBox theme={theme} /></div>
 
       {/* FOOTER */}
-      <footer className={`border-t py-8 transition-colors ${
-        isDark ? 'border-white/10 text-[#848e9c]' : 'border-black/10 text-[#6b7280]'
+      <footer data-page className={`border-t py-8 transition-colors ${
+        'border-ink/10 text-ink-3'
       }`}>
         <div className="max-w-[1180px] mx-auto px-6 md:px-10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium">
           <span>© Jason Benjamin</span>
@@ -1142,7 +1123,6 @@ export default function App({ initialPath }: { initialPath?: string }) {
         project={selected}
         name={ORBIT_META[selected.id][locale]}
         open={modalOpen}
-        isDark={isDark}
         locale={locale}
         position={`${String(projects.indexOf(selected) + 1).padStart(2, '0')} / ${String(projects.length).padStart(2, '0')}`}
         caseHref={CASE_IDS.includes(selected.id) ? pathFor(locale, selected.id) : null}
