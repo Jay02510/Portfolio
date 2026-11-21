@@ -18,3 +18,10 @@
 @media (prefers-reduced-motion: reduce) {
   .rise, .reveal { animation: none; }
 }
+.rise-fast { animation: rise 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.project-modal[open] { animation: modal-in 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+.project-modal[open]::backdrop { animation: fade-in 0.3s ease-out; }
+@keyframes modal-in { from { opacity: 0; transform: translateY(16px) scale(0.98); } }
+@keyframes fade-in { from { opacity: 0; } }
+body:has(dialog[open]) { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .rise-fast, .project-modal[open], .project-modal[open]::backdrop { animation: none; } }

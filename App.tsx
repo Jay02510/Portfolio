@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef, lazy, Suspense } from 'react';
 import FeedbackBox from './components/FeedbackBox.tsx';
 import HeroCover, { type OrbitItem } from './components/HeroCover.tsx';
-import ProjectCard from './components/ProjectCard.tsx';
+import ProjectModal from './components/ProjectModal.tsx';
 import { SunIcon, MoonIcon } from './components/Icons.tsx';
 import { track } from '@vercel/analytics';
 
@@ -65,17 +65,12 @@ const COPY = {
     heroTitle: "AI product engineer. From first interview to shipped product.",
     heroSub: "Voice AI, LLM evaluation and the apps around them, designed and built end to end.",
     nowChip: "Now · VODATalk at VODABI",
-    orbitHint: "Drag to spin · click a project",
+    orbitHint: "Drag to spin · click any project",
     ctaWork: "See the work",
     ctaResume: "Résumé",
-    basedIn: "Based in Seoul, South Korea",
+    basedIn: "Open to AI PM & engineer roles · Seoul or remote",
     roleTitle: "How I work",
     workTitle: "Selected work",
-    allTitle: "All projects",
-    caseShort: "Case study",
-    liveShort: "Live",
-    ownedLabel: "What I built",
-    decisionsLabel: "Decisions and tradeoffs",
     logTitle: "Build log",
     logToggleMore: "Show all",
     logToggleLess: "Show less",
@@ -103,14 +98,9 @@ const COPY = {
     orbitHint: "드래그해서 돌리고, 프로젝트를 클릭하세요",
     ctaWork: "프로젝트 보기",
     ctaResume: "이력서",
-    basedIn: "서울 거주",
+    basedIn: "AI PM·엔지니어 포지션 찾는 중 · 서울 또는 원격",
     roleTitle: "일하는 방식",
     workTitle: "주요 프로젝트",
-    allTitle: "전체 프로젝트",
-    caseShort: "케이스 스터디",
-    liveShort: "라이브",
-    ownedLabel: "직접 만든 부분",
-    decisionsLabel: "판단과 트레이드오프",
     logTitle: "빌드 로그",
     logToggleMore: "전체 보기",
     logToggleLess: "접기",
@@ -782,6 +772,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
   const [isResumeOpen, setIsResumeOpen] = useState<boolean>(false);
   const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(initialRoute.caseId);
   const [selectedId, setSelectedId] = useState<string>('vodabi');
+  const [modalOpen, setModalOpen] = useState(false);
 
   // Keep the CSS custom-property theme (index.html body.light rules) in sync with React state
   useEffect(() => {
@@ -859,12 +850,16 @@ export default function App({ initialPath }: { initialPath?: string }) {
   const orbitItems = useMemo<OrbitItem[]>(() => projects.map(pr => ({ id: pr.id, name: ORBIT_META[pr.id][locale], thumb: ORBIT_META[pr.id].thumb })), [projects]);
   const selected = projects.find(pr => pr.id === selectedId) ?? projects[0];
 
-  const showProject = (id: string, scroll: boolean) => {
+  const showProject = (id: string) => {
     setSelectedId(id);
-    track('project_select', { id });
-    // wait for the orbit to swing the card round before moving the page
-    if (scroll) setTimeout(() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 550);
+    setModalOpen(true);
+    track('project_open', { id });
   };
+  const stepProject = (dir: 1 | -1) => {
+    const i = projects.indexOf(selected);
+    setSelectedId(projects[(i + dir + projects.length) % projects.length].id);
+  };
+  const openCaseFromModal = (id: string) => { setModalOpen(false); openCaseStudy(id); };
 
   const displayedLog = useMemo(() => isLogExpanded ? LOG : LOG.slice(0, 3), [isLogExpanded]);
 
@@ -973,8 +968,9 @@ export default function App({ initialPath }: { initialPath?: string }) {
           hint={L.orbitHint}
           items={orbitItems}
           selectedId={selectedId}
-          onSelect={(id) => showProject(id, true)}
+          onSelect={showProject}
           onWork={scrollToSection('work')}
+          onContact={scrollToSection('contact')}
           onResume={openResume}
         />
 
@@ -990,49 +986,27 @@ export default function App({ initialPath }: { initialPath?: string }) {
           ))}
         </section>
 
-        {/* SELECTED PROJECT (driven by the orbit and the index) */}
+        {/* SELECTED WORK: one line per project; each opens the project modal */}
         <section id="work" className="pt-16 md:pt-20 scroll-mt-[76px]">
-          <div className="flex items-baseline justify-between gap-4">
-            <h2 className="text-3xl md:text-4xl font-serif tracking-tight">{L.workTitle}</h2>
-            <span className={`text-xs font-mono ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>
-              {String(projects.indexOf(selected) + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
-            </span>
-          </div>
-          <div key={selected.id} className="rise mt-6">
-            <ProjectCard
-              project={selected}
-              isDark={isDark}
-              locale={locale}
-              ownedLabel={L.ownedLabel}
-              decisionsLabel={L.decisionsLabel}
-              caseHref={CASE_IDS.includes(selected.id) ? pathFor(locale, selected.id) : null}
-              onOpenCase={openCaseStudy}
-            />
-          </div>
-
-          {/* one line per project, every link in reach */}
-          <h3 className={`mt-14 text-[11px] font-bold tracking-widest uppercase ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{L.allTitle}</h3>
-          <ul className={`reveal mt-3 border-t divide-y ${isDark ? 'border-white/10 divide-white/10' : 'border-black/10 divide-black/10'}`}>
-            {projects.map((pr, i) => {
-              const on = pr.id === selected.id;
-              const pill = `h-7 px-3 rounded-full border text-[11.5px] font-semibold inline-flex items-center transition-colors ${
-                isDark ? 'border-white/12 text-white/75 hover:text-white hover:bg-white/5' : 'border-black/12 text-black/70 hover:text-black hover:bg-black/5'
-              }`;
-              return (
-                <li key={pr.id} className={`group py-3.5 grid grid-cols-[28px_1fr] md:grid-cols-[28px_minmax(0,1fr)_auto] gap-x-3 gap-y-2 items-center transition-colors ${on ? 'bg-accent-gold/[0.04]' : ''}`}>
-                  <span className={`text-[11px] font-mono ${on ? 'text-accent-gold' : isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{String(i + 1).padStart(2, '0')}</span>
-                  <button onClick={() => showProject(pr.id, true)} className="min-w-0 text-left flex items-baseline gap-3">
-                    <span className={`text-[15px] md:text-base font-semibold whitespace-nowrap transition-colors ${on ? 'text-accent-gold' : 'group-hover:text-accent-gold'}`}>{ORBIT_META[pr.id][locale]}</span>
+          <h2 className="text-3xl md:text-4xl font-serif tracking-tight">{L.workTitle}</h2>
+          <ul className={`mt-6 border-t divide-y ${isDark ? 'border-white/10 divide-white/10' : 'border-black/10 divide-black/10'}`}>
+            {projects.map((pr, i) => (
+              <li key={pr.id}>
+                <button
+                  onClick={() => showProject(pr.id)}
+                  className="group w-full py-3.5 grid grid-cols-[28px_minmax(0,1fr)_auto] gap-x-3 items-baseline text-left"
+                >
+                  <span className={`text-[11px] font-mono ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{String(i + 1).padStart(2, '0')}</span>
+                  <span className="min-w-0 flex items-baseline gap-3">
+                    <span className="text-[15px] md:text-base font-semibold whitespace-nowrap transition-colors group-hover:text-accent-gold">{ORBIT_META[pr.id][locale]}</span>
                     <span className={`hidden sm:inline truncate text-[13px] ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{pr.title}</span>
-                  </button>
-                  <div className="col-start-2 md:col-start-3 flex flex-wrap gap-1.5">
-                    {CASE_IDS.includes(pr.id) && <a href={pathFor(locale, pr.id)} onClick={(e) => { e.preventDefault(); openCaseStudy(pr.id); }} className={pill}>{L.caseShort}</a>}
-                    {pr.liveUrl && <a href={pr.liveUrl} target="_blank" rel="noopener noreferrer" className={pill}>{L.liveShort} ↗</a>}
-                    {pr.stores?.map(st => <a key={st.href} href={st.href} target="_blank" rel="noopener noreferrer" className={pill}>{st.label}</a>)}
-                  </div>
-                </li>
-              );
-            })}
+                  </span>
+                  <span className={`text-[12px] whitespace-nowrap transition-[color,transform] group-hover:text-accent-gold group-hover:translate-x-0.5 ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>
+                    {pr.status} <span aria-hidden>→</span>
+                  </span>
+                </button>
+              </li>
+            ))}
           </ul>
         </section>
 
@@ -1222,6 +1196,19 @@ export default function App({ initialPath }: { initialPath?: string }) {
           />
         </Suspense>
       )}
+
+      <ProjectModal
+        project={selected}
+        name={ORBIT_META[selected.id][locale]}
+        open={modalOpen}
+        isDark={isDark}
+        locale={locale}
+        position={`${String(projects.indexOf(selected) + 1).padStart(2, '0')} / ${String(projects.length).padStart(2, '0')}`}
+        caseHref={CASE_IDS.includes(selected.id) ? pathFor(locale, selected.id) : null}
+        onClose={() => setModalOpen(false)}
+        onStep={stepProject}
+        onOpenCase={openCaseFromModal}
+      />
 
       {activeCaseStudyId && (
         <Suspense fallback={null}>

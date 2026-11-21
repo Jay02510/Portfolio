@@ -15,6 +15,7 @@ interface Props {
   selectedId: string | null;
   onSelect: (id: string) => void;
   onWork: (e: React.MouseEvent) => void;
+  onContact: (e: React.MouseEvent) => void;
   onResume: () => void;
 }
 
@@ -153,7 +154,9 @@ export default function HeroCover(p: Props) {
             <span className="w-1.5 h-1.5 rounded-full bg-[#5fd48b] animate-pulse" />
             {p.nowChip}
           </span>
-          <span className={`inline-flex items-center h-8 px-3.5 rounded-full border ${glass}`}>{p.basedIn}</span>
+          <a href="#contact" onClick={p.onContact} className={`inline-flex items-center gap-1.5 h-8 px-3.5 rounded-full border transition-colors hover:text-accent-gold ${glass}`}>
+            {p.basedIn} <span aria-hidden>→</span>
+          </a>
         </div>
 
         {/* stage: portrait with the project ring around it */}
