@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export interface OrbitItem { id: string; name: string; thumb: string }
+export interface OrbitItem { id: string; name: string; blurb: string; thumb: string }
 
 interface Props {
   isDark: boolean;
@@ -11,6 +11,8 @@ interface Props {
   nowChip: string;
   basedIn: string;
   hint: string;
+  hintTouch: string;
+  paused: boolean; // a dialog is open over the orbit
   items: OrbitItem[];
   selectedId: string | null;
   onSelect: (id: string) => void;
@@ -22,6 +24,7 @@ interface Props {
 const SPIN = 5;            // idle auto-spin, deg/s
 const DRAG = 0.28;         // deg per px dragged
 const RY_RATIO = 0.13;     // vertical squash of the ellipse, relative to its width
+const IDLE_MS = 3500;      // auto-spin resumes this long after the last interaction
 
 // Position of card i for a ring angle. Front of the ring (cos=1) sits low, large and bright.
 function place(i: number, n: number, angle: number, rx: number) {
@@ -38,7 +41,7 @@ function place(i: number, n: number, angle: number, rx: number) {
 export default function HeroCover(p: Props) {
   const stageRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const s = useRef({ angle: 0, vel: 0, target: null as number | null, rx: 440, hover: false, auto: true, visible: true, reduce: false,
+  const s = useRef({ angle: 0, vel: 0, target: null as number | null, rx: 440, hover: false, auto: true, visible: true, reduce: false, last: 0, paused: false,
     drag: null as null | { x: number; last: number; t: number; moved: boolean; id: number } });
   const n = p.items.length;
 
@@ -49,10 +52,12 @@ export default function HeroCover(p: Props) {
     const delta = ((goal - st.angle) % 360 + 540) % 360 - 180;
     st.vel = 0;
     st.auto = false;
+    st.last = performance.now();
     if (st.reduce) st.angle += delta; else st.target = st.angle + delta;
   };
 
   // Selection from elsewhere (the project list) also brings that card round; not on first render.
+  s.current.paused = p.paused;
   const mounted = useRef(false);
   useEffect(() => {
     if (!mounted.current) { mounted.current = true; return; }
@@ -72,6 +77,15 @@ export default function HeroCover(p: Props) {
     const io = new IntersectionObserver(([e]) => { st.visible = e.isIntersecting; });
     io.observe(stage);
 
+    // Trackpad swipe (horizontal wheel) spins the ring; vertical scrolling passes through.
+    const wheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      st.angle -= e.deltaX * DRAG * 0.6;
+      st.vel = 0; st.target = null; st.auto = false; st.last = performance.now();
+    };
+    stage.addEventListener('wheel', wheel, { passive: false });
+
     let raf = 0, prev = performance.now();
     const frame = (now: number) => {
       const dt = Math.min((now - prev) / 1000, 0.05);
@@ -85,6 +99,8 @@ export default function HeroCover(p: Props) {
         } else if (Math.abs(st.vel) > 1) {
           st.angle += st.vel * dt;
           st.vel *= Math.pow(0.04, dt);
+        } else if (!st.auto && !st.reduce && !st.paused && now - st.last > IDLE_MS) {
+          st.auto = true;
         } else if (st.auto) {
           st.angle += SPIN * dt * (st.hover ? 0.3 : 1); // slows under the cursor so cards are easy to hit
         }
@@ -99,7 +115,7 @@ export default function HeroCover(p: Props) {
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); };
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); stage.removeEventListener('wheel', wheel); };
   }, [n]);
 
   // Horizontal drag spins the ring; a press that barely moves stays a click.
@@ -120,6 +136,7 @@ export default function HeroCover(p: Props) {
     const now = performance.now();
     const step = (e.clientX - d.last) * DRAG;
     st.angle += step;
+    st.last = now;
     st.vel = step / Math.max((now - d.t) / 1000, 0.008);
     d.last = e.clientX;
     d.t = now;
@@ -135,6 +152,7 @@ export default function HeroCover(p: Props) {
       if (stageRef.current?.hasPointerCapture(e.pointerId)) stageRef.current.releasePointerCapture(e.pointerId);
     } else s.current.vel = 0;
     s.current.drag = null;
+    s.current.last = performance.now();
   };
 
   const muted = p.isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]';
@@ -196,6 +214,9 @@ export default function HeroCover(p: Props) {
                     }`}>
                       {it.name}
                     </span>
+                    <span className={`mt-0.5 block text-center text-[11.5px] lg:text-[13px] truncate ${p.isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>
+                      {it.blurb}
+                    </span>
                   </button>
                 </li>
               );
@@ -228,7 +249,10 @@ export default function HeroCover(p: Props) {
               >
                 {p.ctaResume}
               </button>
-              <span className={`hidden sm:inline text-[12px] ${p.isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{p.hint}</span>
+              <span className={`text-[12px] ${p.isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>
+                <span className="hidden [@media(hover:hover)]:inline">{p.hint}</span>
+                <span className="[@media(hover:hover)]:hidden">{p.hintTouch}</span>
+              </span>
             </div>
           </div>
         </div>
