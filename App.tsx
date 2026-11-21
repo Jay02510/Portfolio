@@ -146,7 +146,7 @@ const ORBIT_META: Record<string, { en: string; ko: string; thumb: string; blurb:
   "chekki-teacher": { en: "Chekki Schools", ko: "채키 스쿨즈", thumb: "/screenshots/chekki-schools/02-director-dashboard-720.webp", blurb: { en: "Academy CRM for directors and teachers", ko: "원장·강사용 학원 CRM" } },
   "hagwon-readiness": { en: "AI Readiness Index", ko: "학원 AI 준비도 지표", thumb: "/orbit/hagwon-readiness.webp", blurb: { en: "AI readiness quiz for academies", ko: "학원 AI 준비도 진단 퀴즈" } },
   bridgerecruit: { en: "BridgeRecruit", ko: "브릿지리크루트", thumb: "/screenshots/bridgerecruit/pipeline.svg", blurb: { en: "Admissions CRM inside Outlook", ko: "Outlook 안의 입학 상담 CRM" } },
-  "lead-enrichment": { en: "Lead Enrichment CRM", ko: "리드 인리치먼트 CRM", thumb: "/orbit/lead-enrichment.webp", blurb: { en: "Finds and qualifies B2B leads", ko: "B2B 리드 발굴·정리 도구" } }
+  "lead-enrichment": { en: "Lead Enrichment CRM", ko: "B2B 리드 발굴 CRM", thumb: "/orbit/lead-enrichment.webp", blurb: { en: "Finds and qualifies B2B leads", ko: "B2B 리드 발굴·정리 도구" } }
 };
 
 // The workbook has its own product page, no case study.
