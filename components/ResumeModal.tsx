@@ -74,32 +74,28 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
       } print:max-h-full print:border-none print:shadow-none print:w-full print:rounded-none print:text-black print:bg-white`}>
         
         {/* HEADER */}
-        <div className={`p-4 sm:p-6 md:p-8 flex items-center justify-between gap-3 border-b shrink-0 ${
-          isDark ? 'border-white/10 bg-white/[0.01]' : 'border-black/5 bg-black/[0.01]'
-        } print:hidden`}>
+        <div className={`p-4 sm:p-6 md:p-8 flex items-center justify-between gap-3 border-b shrink-0 border-ink/10 bg-ink/[0.01] print:hidden`}>
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-accent-gold/20 flex items-center justify-center shrink-0">
               <FileTextIcon className="w-4 h-4 sm:w-5 sm:h-5 text-accent-gold" />
             </div>
             <div className="min-w-0">
               <h3 id="resume-modal-title" className="text-sm sm:text-base md:text-lg font-display font-medium leading-tight truncate">{headerTitle}</h3>
-              <p className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 truncate ${isDark ? 'text-white/60' : 'text-alpine-950/60'}`}>{headerSubtitle}</p>
+              <p className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 truncate text-ink-3`}>{headerSubtitle}</p>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <a
               href={`/resume/Jason_Benjamin_Resume_${locale === 'en' ? 'KO' : 'EN'}.pdf`}
               download
-              className={`hidden sm:inline-flex px-3 py-2 rounded-full border text-xs font-bold tracking-wider whitespace-nowrap transition-[background-color,transform] active:scale-95 ${
-                isDark ? 'border-white/15 hover:bg-white/10' : 'border-black/15 hover:bg-black/5'
-              }`}
+              className={`hidden sm:inline-flex px-3 py-2 rounded-full border text-xs font-bold tracking-wider whitespace-nowrap transition-[background-color,transform] active:scale-95 border-ink/15 hover:bg-ink/10`}
             >
               {locale === 'en' ? "한국어 PDF" : "English PDF"}
             </a>
             <a
               href={`/resume/Jason_Benjamin_Resume_${locale === 'en' ? 'EN' : 'KO'}.pdf`}
               download
-              className="px-3 py-2 sm:px-4 sm:py-2 bg-accent-gold hover:brightness-110 text-alpine-950 rounded-full text-xs font-bold uppercase tracking-wider transition-[filter,transform] active:scale-95 shadow-md flex items-center gap-1.5 whitespace-nowrap"
+              className="px-3 py-2 sm:px-4 sm:py-2 bg-accent-fill hover:brightness-110 text-alpine-950 rounded-full text-xs font-bold uppercase tracking-wider transition-[filter,transform] active:scale-95 shadow-md flex items-center gap-1.5 whitespace-nowrap"
             >
               <FileTextIcon className="w-3.5 h-3.5" />
               <span>{locale === 'en' ? "Download PDF" : "PDF 다운로드"}</span>
@@ -107,17 +103,13 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
             <button 
               onClick={triggerPdfDownload}
               aria-label={locale === 'en' ? "Print" : "인쇄"}
-              className={`hidden sm:flex w-11 h-11 rounded-full border items-center justify-center transition-[background-color,transform] active:scale-95 ${
-                isDark ? 'border-white/10 hover:bg-white/10' : 'border-black/10 hover:bg-black/10'
-              }`}
+              className={`hidden sm:flex w-11 h-11 rounded-full border items-center justify-center transition-[background-color,transform] active:scale-95 border-ink/10 hover:bg-ink/10`}
             >
               <PrinterIcon className="w-4 h-4" />
             </button>
             <button 
               onClick={onClose}
-              className={`w-11 h-11 rounded-full border transition-[background-color,color,transform] active:scale-95 flex items-center justify-center ${
-                isDark ? 'border-white/10 hover:bg-white/10 text-white/80 hover:text-white' : 'border-black/10 hover:bg-black/10 text-alpine-950/80 hover:text-alpine-950'
-              }`}
+              className={`w-11 h-11 rounded-full border transition-[background-color,color,transform] active:scale-95 flex items-center justify-center border-ink/10 hover:bg-ink/10 text-ink/80 hover:text-ink`}
               aria-label={locale === 'ko' ? "이력서 닫기" : "Close resume"}
             >
               <XIcon className="w-5 h-5" />
@@ -135,12 +127,10 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
           />
 
           {/* CONTACT INFO CONTAINER */}
-          <div className={`p-6 rounded-2xl border flex flex-col md:flex-row md:items-center justify-between gap-6 ${
-            isDark ? 'bg-white/[0.01] border-white/5' : 'bg-black/[0.01] border-black/5'
-          } print:hidden`}>
+          <div className={`p-6 rounded-2xl border flex flex-col md:flex-row md:items-center justify-between gap-6 bg-ink/[0.01] border-ink/5 print:hidden`}>
             <div>
               <h4 className="text-xs font-black uppercase tracking-widest text-accent-gold">{locale === 'en' ? "Get in Touch" : "연락처 및 협업 제안"}</h4>
-              <p className={`text-xs mt-1 ${isDark ? 'text-white/60' : 'text-alpine-950/60'}`}>
+              <p className={`text-xs mt-1 text-ink-3`}>
                 {locale === 'en'
                   ? "Available for AI product strategy, 0-to-1 generative AI development, and enterprise SaaS opportunities."
                   : "AI 프로덕트 전략 수립, 0-to-1 생성형 AI 개발 및 엔터프라이즈 SaaS 협업 제안을 환영합니다."}
@@ -149,7 +139,7 @@ export default function ResumeModal({ isOpen, onClose, theme, locale }: ResumeMo
             <div className="flex flex-col sm:flex-row gap-4 shrink-0">
               <a 
                 href="mailto:jsn.benjamin@gmail.com?subject=Strategic%20Opportunity%20Inquiry"
-                className="px-5 py-3 rounded-full bg-accent-gold text-alpine-950 text-xs font-black uppercase tracking-widest inline-flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-[filter,transform] shadow-md font-mono"
+                className="px-5 py-3 rounded-full bg-accent-fill text-alpine-950 text-xs font-black uppercase tracking-widest inline-flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-[filter,transform] shadow-md font-mono"
               >
                 <MailIcon className="w-3.5 h-3.5" />
                 <span>jsn.benjamin@gmail.com</span>

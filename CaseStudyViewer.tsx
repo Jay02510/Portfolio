@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MailIcon, XIcon, ExternalLinkIcon, SparklesIcon, SearchIcon, ChevronDownIcon, FileTextIcon, DeviceMobileIcon, SettingsIcon, LockIcon, CodeIcon } from './components/Icons.tsx';
+import { XIcon, SearchIcon, ChevronDownIcon, FileTextIcon } from './components/Icons.tsx';
 import { CaseStudyType } from './types.ts';
 import { studyDataEn, studyDataKo } from './components/caseStudyData.ts';
 
@@ -20,34 +20,34 @@ interface CaseStudyViewerProps {
 const uiTranslation = {
   en: {
     backToPortfolio: "← Back",
-    launchLive: "Launch Live ↗",
+    launchLive: "Live app ↗",
     architecturalStudy: "Case study",
-    technicalBreakdown: "Technical Breakdown ↓",
-    launchLiveApp: "Launch Live App ↗",
-    systemStack: "System Stack",
+    technicalBreakdown: "Technical details ↓",
+    launchLiveApp: "Open the live app ↗",
+    systemStack: "Stack",
     systemScopeOverview: "System Overview",
     systemScopeBody: "Designed to optimize workflows and reduce administrative friction. This architecture processes transactions securely without exposing keys or credentials.",
-    theProblem: "The Problem",
-    theSolution: "The Solution",
-    technicalPipelineMap: "Architecture Map",
+    theProblem: "Problem",
+    theSolution: "What I built",
+    technicalPipelineMap: "Architecture",
     pipelineExecutionLifecycle: "Execution Lifecycle",
-    pipelineEdgeCaseGuardrails: "Edge-Case Guardrails",
-    edgeCasePrefix: "Edge Case",
-    promptOrchestration: "Prompt Design & AI Guardrails",
-    structuredInstruction: "System Instructions",
-    runtimeEnforcedSchema: "Enforced JSON Schema",
+    pipelineEdgeCaseGuardrails: "Safeguards",
+    edgeCasePrefix: "Safeguard",
+    promptOrchestration: "Prompts and output format",
+    structuredInstruction: "Prompt logic",
+    runtimeEnforcedSchema: "JSON schema",
     formattingConsistency: "Formatting Guardrails",
     productImpactScale: "Impact & Operational Metrics",
     quantifiedValue: "Operational Value",
     enterpriseSecurity: "Security & Compliance",
-    wantToSeeTitle: "Interested in the implementation details?",
-    wantToSeeBody: "I would be happy to discuss the relational database schemas, automation rules, or model tuning parameters in more detail. Let's start a conversation by email.",
-    startCollaboration: "Get in Touch",
-    proofOfWorkTitle: "System Interface & Screenshots",
-    productionWalkthrough: "Integration Walkthrough",
+    wantToSeeTitle: "Want the implementation details?",
+    wantToSeeBody: "I'm happy to walk through the schema, the prompts or the deployment by email.",
+    startCollaboration: "Email me",
+    proofOfWorkTitle: "Screenshots",
+    productionWalkthrough: "Walkthrough",
     productionWalkthroughBodyLive: "Interactive application workflow running directly across connected client-server endpoints and model APIs.",
     productionWalkthroughBodyBackground: "Integrated automated routines running background synchronizations and conditional database pipelines.",
-    openLiveSandbox: "Launch Project Sandbox",
+    openLiveSandbox: "Open the sandbox",
     projectNotFound: "Project not found.",
     backBtn: "Back",
     productMindset: "[ Product & Design Focus ]",
@@ -55,626 +55,76 @@ const uiTranslation = {
     humanProblem: "The Focus Bottleneck",
     productVision: "Product Objective",
     coreRationale: "Engineering Choices",
-    technicalHurdles: "Troubleshooting & Resolutions",
-    incident: "Incident",
-    diagnosis: "Root Cause Diagnosis",
-    resolution: "Production Resolution",
-    storeLink: "App Store / Play Store ↗",
-    coreLoopTitle: "The Connected Core Loop",
-    coreLoopSubtitle: "End-to-End Product Engine & Data Lifecycle",
-    decisionsTitle: "Product Decisions & Trade-offs (ADR Log)",
-    decisionsSubtitle: "Strategic Choices, Evaluated Alternatives & Accepted Trade-offs",
+    technicalHurdles: "What broke and how I fixed it",
+    incident: "What happened",
+    diagnosis: "Cause",
+    resolution: "Fix",
+    storeLink: "App Store / Google Play ↗",
+    coreLoopTitle: "How it works",
+    coreLoopSubtitle: "The product loop, step by step",
+    decisionsTitle: "Product decisions",
+    decisionsSubtitle: "What I chose, what I passed on, and the cost",
     decisionLabel: "Decision",
-    alternativeLabel: "Alternative Considered",
-    whyLabel: "Why (Strategic Rationale)",
-    tradeoffLabel: "Trade-off Accepted"
+    alternativeLabel: "Alternative",
+    whyLabel: "Why",
+    tradeoffLabel: "Trade-off"
   },
   ko: {
     backToPortfolio: "← 돌아가기",
-    launchLive: "라이브 데모 실행 ↗",
+    launchLive: "라이브 앱 ↗",
     architecturalStudy: "케이스 스터디",
-    technicalBreakdown: "기술 세부 분석 ↓",
-    launchLiveApp: "구동 데모 ↗",
-    systemStack: "시스템 기술 스택",
+    technicalBreakdown: "기술 상세 ↓",
+    launchLiveApp: "라이브 앱 열기 ↗",
+    systemStack: "기술 스택",
     systemScopeOverview: "시스템 개요",
     systemScopeBody: "수작업 행정 피로를 소거하고 업무 생산성을 높이기 위한 구조적 설계 사례입니다. 모든 요청 처리와 저장 구조는 프라이버시 유지 및 보안 규정 준수를 우선 고려해 구축되었습니다.",
-    theProblem: "현장의 어려움 (Problem)",
-    theSolution: "아키텍처 설계 (Solution)",
-    technicalPipelineMap: "기술 파이프라인 구조 설계도",
+    theProblem: "문제",
+    theSolution: "만든 것",
+    technicalPipelineMap: "아키텍처",
     pipelineExecutionLifecycle: "파이프라인 실행 라이프사이클",
-    pipelineEdgeCaseGuardrails: "예외 분기 처리 장치",
-    edgeCasePrefix: "예외 상황",
-    promptOrchestration: "프롬프트 튜닝 및 입출력 제어",
-    structuredInstruction: "시스템 프롬프트 (System Instructions)",
-    runtimeEnforcedSchema: "JSON 출력 구조 적용 (Schema Structure)",
+    pipelineEdgeCaseGuardrails: "안전장치",
+    edgeCasePrefix: "안전장치",
+    promptOrchestration: "프롬프트와 출력 형식",
+    structuredInstruction: "프롬프트 구조",
+    runtimeEnforcedSchema: "JSON 스키마",
     formattingConsistency: "응답 레이아웃 보장 규칙",
     productImpactScale: "실무 영향 및 성과",
     quantifiedValue: "업무 생산성 향상 지표",
     enterpriseSecurity: "보안 가이드라인 준수성",
-    wantToSeeTitle: "이 아키텍처의 설계 및 상세 흐름에 대해 관심이 있으신가요?",
-    wantToSeeBody: "관계형 시트 구조 설계, API 미들웨어 프록시 구현, 자동화 동기화 시나리오 등에 노하우를 기꺼이 공유합니다. 이메일 편의 채널로 편하게 문의 주세요.",
-    startCollaboration: "이메일 문의 보내기",
-    proofOfWorkTitle: "시스템 인터페이스 및 명세 자료",
-    productionWalkthrough: "구동 시나리오 아웃포커스",
+    wantToSeeTitle: "구현 내용이 더 궁금하신가요?",
+    wantToSeeBody: "스키마, 프롬프트, 배포 방식까지 메일로 자세히 설명드릴게요.",
+    startCollaboration: "메일 보내기",
+    proofOfWorkTitle: "스크린샷",
+    productionWalkthrough: "시연 영상",
     productionWalkthroughBodyLive: "안전하게 라우팅된 실시간 인스턴스와 API 엔드포인트를 중심으로 정상 작동 메타데이터가 파이프라인 전반에 흐르고 있습니다.",
     productionWalkthroughBodyBackground: "수신 웹훅 연동, 실시간 데이터 정합성 보존 등 백그라운드 오토메이션 시퀀스를 무인 수행합니다.",
-    openLiveSandbox: "라이브 샌드박스로 가기",
-    projectNotFound: "상세 케이스가 부재합니다.",
-    backBtn: "이전 화면",
+    openLiveSandbox: "샌드박스 열기",
+    projectNotFound: "프로젝트를 찾을 수 없습니다.",
+    backBtn: "돌아가기",
     productMindset: "[ 기획 및 설계 사유 ]",
     behindTheArchitecture: "Behind the Architecture",
     humanProblem: "업무 병목 현상 (Human Problem)",
     productVision: "기획적 목표 및 시점 (Product Vision)",
     coreRationale: "엔지니어링 의사결정 (Core Rationale)",
-    technicalHurdles: "장애 트러블슈팅 기록",
-    incident: "장애 일지 (Incident)",
-    diagnosis: "원인 규명 및 진단 (Diagnosis)",
-    resolution: "프로덕션 조치 (Resolution)",
-    storeLink: "스토어 둘러보기 ↗",
-    coreLoopTitle: "연결된 핵심 루프 (The Core Loop)",
-    coreLoopSubtitle: "가정-교실 폐쇄 피드백 및 데이터 생명주기",
-    decisionsTitle: "제품 의사결정 및 트레이드오프 (ADR)",
-    decisionsSubtitle: "전략적 제품 판단, 기각된 대안 및 수용된 타협점",
-    decisionLabel: "결정 사항 (Decision)",
-    alternativeLabel: "검토된 대안 (Alternative)",
-    whyLabel: "선택 사유 (Why)",
-    tradeoffLabel: "수용된 트레이드오프 (Trade-off)"
+    technicalHurdles: "문제가 생겼을 때",
+    incident: "무슨 일이 있었나",
+    diagnosis: "원인",
+    resolution: "해결",
+    storeLink: "App Store / Google Play ↗",
+    coreLoopTitle: "작동 방식",
+    coreLoopSubtitle: "제품이 돌아가는 순서",
+    decisionsTitle: "제품 의사결정",
+    decisionsSubtitle: "무엇을 골랐고, 무엇을 포기했는지",
+    decisionLabel: "결정",
+    alternativeLabel: "검토한 대안",
+    whyLabel: "이유",
+    tradeoffLabel: "감수한 점"
   }
-};
-
-const stackExplains: Record<string, { en: string; ko: string }> = {
-  "React 18": {
-    en: "Core state hydration and rendering lifecycle for mobile viewport agility.",
-    ko: "모바일 뷰포트 기민성에 대응하는 컴포넌트 하이드레이션 및 상태 생명주기 관리."
-  },
-  "React 19": {
-    en: "Native action handlers for async transitions.",
-    ko: "비동기 상태 전이를 매끄럽게 핸들링하는 네이티브 액션 핸들러 탑재."
-  },
-  "Capacitor JS (v8)": {
-    en: "Drives native cross-platform deployment to iOS and Android from a unified codebase.",
-    ko: "단일 코드베이스에서 iOS 및 안드로이드 네이티브 앱 배포를 구동하는 하이브리드 엔진."
-  },
-  "Vercel Serverless Functions": {
-    en: "Provides highly scalable, serverless micro-endpoints for secure API routing and auth validation.",
-    ko: "API 보안 라우팅 및 세션 유효 인증을 안전하게 위임 수행하는 저지연 서버리스 함수."
-  },
-  "Cloud Firestore": {
-    en: "Real-time document storage for user quotas, image analysis caches, and learning dashboards.",
-    ko: "사용자 실시간 사용 한도, 오답 기록부, 캐시 데이터베이스를 관리하는 NoSQL DB."
-  },
-  "Gemini 2.5 Pro & Flash": {
-    en: "Parallel Hybrid Execution: Flash extracts layouts instantly; Pro analyzes handwriting via 20k token thinking budgets.",
-    ko: "병렬 하이브리드 추론 파이프라인: Flash의 기민한 레이아웃 추출과 Pro의 2만 토큰 팅킹 오답 판정 협업."
-  },
-  "TypeScript": {
-    en: "Type-safety contracts that eliminate runtime layout exceptions during builds.",
-    ko: "발생 가능한 컴포넌트 런타임 오류를 차단하는 엄격한 타입 계약 정의."
-  },
-  "Vite": {
-    en: "Bundling environment providing optimized code delivery with minimal footprint.",
-    ko: "최소한의 파일 구성 요소로 모바일 번들 크기를 최적화하는 빌드 도구."
-  },
-  "Gemini Flash Pipeline (Gemini 1.5 & 2.0 Flash)": {
-    en: "Gemini 1.5 Flash for precise layout extraction -> Gemini 2.0 Flash for high-fidelity bilingual script synthesis.",
-    ko: "Gemini 1.5 Flash를 통한 정밀 레이아웃 인식기 및 Gemini 2.0 Flash 기반 이중언어 맞춤 스크립트 도출."
-  },
-  "제미나이 플래시 파이프라인 (Gemini 1.5 & 2.0 Flash)": {
-    en: "Gemini 1.5 Flash for precise layout extraction -> Gemini 2.0 Flash for high-fidelity bilingual script synthesis.",
-    ko: "Gemini 1.5 Flash를 통한 정밀 레이아웃 인식기 및 Gemini 2.0 Flash 기반 이중언어 맞춤 스크립트 도출."
-  },
-  "Google GenAI SDK (gemini-3-pro-preview)": {
-    en: "High-reasoning SDK selected to resolve NP-complete scheduling branches.",
-    ko: "조율하기 까다로운 자원 분배 조합 최적화를 위해 실시간 호출되는 지능형 SDK."
-  },
-  "Google GenAI SDK": {
-    en: "Enterprise server-side SDK to secure connections with Gemini endpoints.",
-    ko: "AI 모델 엔드포인트와 안전하고 유연하게 고성능 통신을 수행할 수 있는 SDK."
-  },
-  "Google Gemini API": {
-    en: "Deep reasoning engine to normalize unstructured text inputs securely.",
-    ko: "비정형 교사 관찰 데이터를 글로벌 벤치마크 기준 언어로 변환하는 핵심 엔진."
-  },
-  "Tailwind CSS": {
-    en: "Design consistency utilizing structural theme variables and zero CSS overhead.",
-    ko: "스타일 크기 오버헤드를 제로로 유도하며 일관된 변수를 보장하는 유틸리티 테마."
-  },
-  "Recharts & D3": {
-    en: "Visualizing CEFR speaking, reading, and listening domains in custom radar charts.",
-    ko: "원생별 특성을 언어 공인 척도로 대조하여 반응형 다각 레이더 그래프로 시각화."
-  },
-  "Airtable Relational Sheets": {
-    en: "Unified relational schema backplane ensuring direct multi-table student rosters.",
-    ko: "여러 테이블 간의 상호 참조 정합성을 강력 유지하는 실시간 데이터베이스."
-  },
-  "Airtable Relational DB": {
-    en: "Normalized CRM record storage that keeps direct cross-table alignments.",
-    ko: "상호 연결된 고객 및 기록 테두리를 견고하게 엮어주는 다대다 참조형 DB."
-  },
-  "Make.com Automation Nodes": {
-    en: "Headless webhook orchestrators automating backend flow routing and triggers.",
-    ko: "백엔드 트리거 처리와 API 데이터 전처리를 담당하는 자동화 분산 워크플로 노드."
-  },
-  "Make.com Nodes": {
-    en: "Scalable async webhook handlers evaluating student feedback pipelines.",
-    ko: "원생별 개별 피드백 파이프라인의 안전 전송 및 흐름 제어를 처리하는 비동기 핸들러."
-  },
-  "Framer Motion": {
-    en: "Hardware-accelerated animations reinforcing route transitions and UX hierarchy.",
-    ko: "화면 전이와 뷰포트 레이아웃 우선순위 변화를 깔끔하게 처리하는 저지연 애니메이션."
-  },
-  "Fillout Forms": {
-    en: "Dynamic multi-page intake forms feeding schema-validated databases.",
-    ko: "데이터베이스 자료 필드 명세와 100% 대응되어 에러를 사전 방지하는 고성능 폼."
-  },
-  "Softr Portal": {
-    en: "Authorized parent access gateway rendering records with row-level view boundaries.",
-    ko: "개별 계정별 행 수준 권한 경계를 설정하여 타 사용자 데이터 유출을 막는 보안 포털."
-  },
-  "React-Leaflet & Leaflet.js": {
-    en: "Dynamic coordinate mappings visualizer optimized for mobile touch inputs.",
-    ko: "모바일 터치 환경에 완벽 대응하는 저지연 위치 마커 시각화 지도 라이브러리."
-  },
-  "Custom Express API": {
-    en: "Handles API key shielding, request sanitization, and CORS headers resolution.",
-    ko: "안전하게 비밀 API 키를 차단하고, 요청 정화 및 교차 크레덴셜 이슈를 조율하는 백엔드."
-  },
-  "esbuild": {
-    en: "High-performance bundler compiling express routes into single stable bundles.",
-    ko: "여러 서버 사이드 모듈을 하나의 경량 CJS 스크립트로 압축해 기동 latency를 단축하는 컴파일러."
-  },
-  "Naver Search API": {
-    en: "Live coordinate and localized geographic directory lookup for prospects indexing.",
-    ko: "지도 타운 및 신규 고객 주소지의 정확한 하드웨어 공간 좌표를 가져오는 지리 데이터 조회 API."
-  },
-  "Firebase v11 Suite": {
-    en: "Row-isolated cloud storage and encrypted session tokens for user security.",
-    ko: "세션 유효 체크 및 사용자 데이터 격리를 통해 고신뢰성 다중 인증을 보조하는 인프라."
-  },
-  "Express.js / Node.js": {
-    en: "Provides zero-expose routing with process-level key caching and stable file proxies.",
-    ko: "프로세스 수준의 API 키 캐싱 및 안정적 한글 글꼴 프록시를 보장하는 무노출 백엔드."
-  },
-  "PostgreSQL Supabase (RLS)": {
-    en: "Durable database engine applying Row-Level Security policies to keep school records completely isolated.",
-    ko: "행 레벨 보안(RLS) 정책을 통해 학원별 데이터베이스 기록을 영구 격리 보장하는 정밀 DB."
-  },
-  "@react-pdf/renderer": {
-    en: "Direct in-browser print compiler creating beautifully structured documents with dynamic custom brand parameters.",
-    ko: "학원별 고유 브랜드 테마 및 Noto Sans KR 서체를 결합해 즉각적인 인쇄용 PDF를 만드는 엔진."
-  },
-  "Google Gemini 1.5 Flash": {
-    en: "High-throughput vision/text model utilized to normalize pedagogical notes into rigid 2-sentence narratives.",
-    ko: "단 두 문장의 엄격한 피드백 명세 구조로 교육 내용을 정형 완수하는 고성능 추론 모델."
-  },
-  "NestJS": {
-    en: "Enterprise Node.js framework providing modular WebSocket signaling gateways and server-side VAD pipeline.",
-    ko: "모듈식 WebSocket 시그널링 게이트웨이 및 서버 측 VAD 파이프라인을 제공하는 엔터프라이즈 백엔드 프레임워크."
-  },
-  "WebRTC": {
-    en: "Low-latency browser-to-server audio streaming allowing candidate speech and natural turn interruption.",
-    ko: "자연스러운 음성 발화 및 실시간 끼어들기를 지원하는 초저지연 브라우저-서버 간 오디오 스트리밍."
-  },
-  "Socket.IO": {
-    en: "Bidirectional WebSocket event communication for real-time voice session signaling and status updates.",
-    ko: "실시간 음성 세션 시그널링 및 상태 동기화를 위한 양방향 WebSocket 통신 게이트웨이."
-  },
-  "Prisma 7 (MariaDB Driver)": {
-    en: "Modern ORM data layer utilizing high-performance MariaDB driver adapters for applicant evaluation records.",
-    ko: "후보자 평가 기록을 위한 고성능 MariaDB 드라이버 어댑터 기반 차세대 ORM 데이터 레이어."
-  },
-  "OpenAI Realtime API (gpt-4o-realtime-preview)": {
-    en: "Realtime Voice-AI model persona executing sub-200ms voice simulation roleplays and candidate screening.",
-    ko: "Sub-200ms 음성 대화 시뮬레이션 및 후보자 스크리닝을 수행하는 실시간 Voice-AI 모델 페르소나."
-  },
-  "Docker": {
-    en: "Containerized deployment isolating backend services and micro-gateways across cloud environments.",
-    ko: "클라우드 환경 전반에 백엔드 서비스 및 마이크로 게이트웨이를 격리 배포하는 컨테이너화 인프라."
-  },
-  "Nginx": {
-    en: "High-performance reverse proxy and SSL termination layer shielding internal NestJS endpoints.",
-    ko: "내부 NestJS 엔드포인트를 보호하고 SSL 종단을 처리하는 고성능 리버스 프록시."
-  },
-  "i18next": {
-    en: "Internationalization framework delivering seamless bilingual UI localizations across evaluation portals.",
-    ko: "평가 포털 전반에 입체적인 이중언어 UI 지역화를 제공하는 국제화 프레임워크."
-  },
-  "Next.js / App Router": {
-    en: "Modern full-stack React framework utilizing Server Components and scoped API route handlers.",
-    ko: "서버 컴포넌트와 스코프드 API 라우트 핸들러를 제공하는 모던 풀스택 React 프레임워크."
-  },
-  "Supabase / Postgres": {
-    en: "Managed relational Postgres database running timestamp-driven triggers and relationship health columns.",
-    ko: "타임스탬프 기반 DB 트리거와 관계 건전도 생성 열을 지원하는 관리형 관계형 Postgres."
-  },
-  "Microsoft Entra ID (MSAL)": {
-    en: "Enterprise identity provider handling delegated sign-in and token acquisition across Outlook and web.",
-    ko: "아웃룩 애드인과 웹 전반에서 위임 로그인 및 토큰 발급을 처리하는 엔터프라이즈 ID 인증 공급자."
-  },
-  "Graph API — On-Behalf-Of": {
-    en: "Server-side OAuth flow exchanging recruiter tokens for Graph-scoped access without browser exposure.",
-    ko: "브라우저 노출 없이 서버 단에서 담당자 토큰을 Graph 스코프 토큰으로 교환하는 서버 OAuth 플로우."
-  },
-  "Office.js Outlook Add-in": {
-    en: "Native Microsoft Office client runtime executing domain matching and touchpoint logging in the reading pane.",
-    ko: "아웃룩 읽기 창에서 이메일 도메인 매칭과 원클릭 접점 수집을 수행하는 Office.js 클라이언트 런타임."
-  },
-  "OpenAI Structured Outputs": {
-    en: "Deterministic JSON schema model inference generating executive partnership briefings grounded in a fixed JSON schema.",
-    ko: "고정된 스키마에 근거해 경영진용 파트너십 브리핑을 정확한 JSON 스키마로 산출하는 OpenAI 구조화 출력."
-  },
-  "Vercel": {
-    en: "Global edge deployment platform providing automated CI/CD and secure serverless route execution.",
-    ko: "자동화된 CI/CD와 안전한 서버리스 라우트 실행 환경을 제공하는 글로벌 엣지 배포 플랫폼."
-  }
-};
-
-interface FlowchartNode {
-  title: string;
-  subtitle: string;
-  tech: string;
-  icon: 'mobile' | 'settings' | 'sparkles' | 'fileText' | 'code' | 'lock';
-}
-
-const getFlowchartNodes = (pId: string, lang: 'en' | 'ko'): FlowchartNode[] => {
-  const nodesMap: Record<string, FlowchartNode[]> = {
-    'vodabi': [
-      {
-        title: lang === 'en' ? "Magic Link Auth System" : "매직링크 인증 시스템",
-        subtitle: lang === 'en' ? "Stateless, tokenized links for zero-friction applicant testing" : "계정 필요 없는 토큰화 매직링크 및 서버 만료 보안",
-        tech: "Stateless Token Auth",
-        icon: "lock"
-      },
-      {
-        title: lang === 'en' ? "Realtime Audio Pipeline" : "실시간 오디오 파이프라인",
-        subtitle: lang === 'en' ? "Browser WebRTC stream + Socket.IO in NestJS with server VAD" : "NestJS WebSocket 게이트웨이 & WebRTC 실시간 끼어들기",
-        tech: "NestJS / WebRTC / Socket.IO",
-        icon: "mobile"
-      },
-      {
-        title: lang === 'en' ? "Automated Evaluation Engine" : "자동 채점 평가 엔진",
-        subtitle: lang === 'en' ? "Async gpt-4o BANTCQ scoring, 11-pt rubric & WPM telemetry" : "gpt-4o BANTCQ 영업 지표, 11개 루브릭 & 발화 텔레메트리",
-        tech: "OpenAI Realtime API / gpt-4o",
-        icon: "sparkles"
-      },
-      {
-        title: lang === 'en' ? "Admin & Analytics Backoffice" : "어드민 & 애널리틱스 백오피스",
-        subtitle: lang === 'en' ? "Role-gated console, VOISOR RAG assistant & Prisma 7 MariaDB" : "React 19 Glassmorphism, VOISOR RAG AI & Prisma 7",
-        tech: "React 19 / Prisma 7 / MariaDB",
-        icon: "settings"
-      }
-    ],
-    'chekki': [
-      {
-        title: lang === 'en' ? "Co-Pilot Mobile Client" : "모바일 하이브리드 클라이언트",
-        subtitle: lang === 'en' ? "Captures paper worksheets via native camera stream" : "Capacitor 카메라 제어 및 학습지 이미지 업로드",
-        tech: "React 19 / Capacitor JS",
-        icon: "mobile"
-      },
-      {
-        title: lang === 'en' ? "Serverless Gateway" : "서버리스 API 게이트웨이",
-        subtitle: lang === 'en' ? "Handles secure API routes, SSO tokens & quotas" : "보안 토큰 인가 검증, 사용 한도 및 오답 기록부 동기화",
-        tech: "Vercel / Firestore",
-        icon: "settings"
-      },
-      {
-        title: lang === 'en' ? "Parallel Gemini Pipeline" : "병렬 제미나이 엔진",
-        subtitle: lang === 'en' ? "Flash maps layouts; Pro solves ambiguous inputs" : "2.5 Flash 고속 파싱 및 2.5 Pro 오답 판정 이중 교정",
-        tech: "Gemini 2.5 Pro & Flash",
-        icon: "sparkles"
-      },
-      {
-        title: lang === 'en' ? "Co-Pilot Dashboard" : "인터랙티브 대시보드",
-        subtitle: lang === 'en' ? "Renders pronunciation training & digital flashcards" : "실시간 이중언어 발음 연습(TTS/STT) 및 플래시카드",
-        tech: "React 19 / TTS & STT",
-        icon: "fileText"
-      }
-    ],
-    'benchmark-explorer': [
-      {
-        title: lang === 'en' ? "Teacher Ingest Form" : "교사 저널 입력 단말",
-        subtitle: lang === 'en' ? "Captures qualitative review items in real-time" : "실시간 정성적 서술지 입력 및 비동기 Webhook 발행",
-        tech: "Fillout Ingest Node",
-        icon: "fileText"
-      },
-      {
-        title: lang === 'en' ? "Orchestrator Nodes" : "Make.com 자동화 엔진",
-        subtitle: lang === 'en' ? "Sequences webhook triggers & triggers Gemini" : "웹훅 완충 대기, 프롬프트 병합 및 데이터 번역 조율",
-        tech: "Make.com Flow Nodes",
-        icon: "settings"
-      },
-      {
-        title: lang === 'en' ? "CEFR Database" : "Airtable 관계형 DB",
-        subtitle: lang === 'en' ? "Stores student records, rosters & histories" : "클래스 마스터 테이블, 원생 발달 인덱스 매핑 보관",
-        tech: "Airtable Sheets",
-        icon: "lock"
-      },
-      {
-        title: lang === 'en' ? "Principal Dashboard" : "교원 평가 대시보드",
-        subtitle: lang === 'en' ? "Renders D3 speaking / reading radar matrices" : "실시간 D3 다각 방사선 평가 차트 조감 렌더링",
-        tech: "React / Recharts / D3",
-        icon: "sparkles"
-      }
-    ],
-    'eduplanner': [
-      {
-        title: lang === 'en' ? "Scheduler Input UI" : "시간표 조건 설정 뷰",
-        subtitle: lang === 'en' ? "Pushes room sizes, course targets & slots" : "교과 시수 배정, 시설 정원, 교사 제약 입력 수집",
-        tech: "React 19 Frontend",
-        icon: "settings"
-      },
-      {
-        title: lang === 'en' ? "Local Pre-Compiler" : "성능 최적화 TS 솔버",
-        subtitle: lang === 'en' ? "Prunes trivial overlapping conflicts inline" : "수학적 탐색 루프 사전 가동으로 명백한 충돌 병목 제거",
-        tech: "TypeScript Class Solver",
-        icon: "code"
-      },
-      {
-        title: lang === 'en' ? "Gemini API Engine" : "Gemini Dense Reasoner",
-        subtitle: lang === 'en' ? "Solves high-complexity NP-hard combinations" : "해결이 까다로운 복합 제약 충돌 조정 결과 자동 조립",
-        tech: "gemini-3-pro-preview",
-        icon: "sparkles"
-      },
-      {
-        title: lang === 'en' ? "Durable Auth Memory" : "파이어베이스 DB 통합",
-        subtitle: lang === 'en' ? "Saves schedules & manages secure admin sessions" : "시간표 영속 일지 작성 및 원 로그인 세션 권한 조율",
-        tech: "Firebase v11 & Firestore",
-        icon: "lock"
-      }
-    ],
-    'chekki-teacher': [
-      {
-        title: lang === 'en' ? "Role-Scoped Hooks" : "역할별 React 훅",
-        subtitle: lang === 'en' ? "Director, foreign-teacher and Korean-teacher state kept independent" : "원장·원어민 교사·한국인 교사 상태를 서로 독립적으로 관리",
-        tech: "useDirectorState / useFTState / useKTState",
-        icon: "code"
-      },
-      {
-        title: lang === 'en' ? "Answer-Key Grading" : "정답지 기반 채점",
-        subtitle: lang === 'en' ? "Scans grade against a teacher-verified key, not a fresh model read" : "매번 새로 판독하지 않고 교사가 검증한 정답지 기준으로 채점",
-        tech: "Gemini 2.5 Pro & Flash",
-        icon: "sparkles"
-      },
-      {
-        title: lang === 'en' ? "Scoped Data Layer" : "역할 범위 데이터 레이어",
-        subtitle: lang === 'en' ? "Security rules restrict every read to a teacher's assigned classes" : "모든 읽기를 교사가 배정된 반으로 제한하는 보안 규칙",
-        tech: "Cloud Firestore",
-        icon: "lock"
-      },
-      {
-        title: lang === 'en' ? "Bilingual Script Generator" : "이중언어 스크립트 생성기",
-        subtitle: lang === 'en' ? "One schema drives both the parent report and the KakaoTalk message" : "하나의 스키마가 학부모 리포트와 카카오톡 메시지를 함께 생성",
-        tech: "Vercel Functions",
-        icon: "fileText"
-      }
-    ],
-    'hagwon-readiness': [
-      {
-        title: lang === 'en' ? "7-Pillar Scoring Engine" : "7영역 채점 엔진",
-        subtitle: lang === 'en' ? "Weighted answers into a 21-84 score, band, and weakest pillar" : "답변에 가중치를 부여해 21~84점, 등급, 최약점 영역을 산출",
-        tech: "Shared TS Builder (Browser + Server)",
-        icon: "code"
-      },
-      {
-        title: lang === 'en' ? "Report + Lead Email" : "리포트 및 리드 이메일",
-        subtitle: lang === 'en' ? "Bilingual HTML report to the submitter, alert to sales" : "제출자에게 이중언어 HTML 리포트, 세일즈팀에 리드 알림 발송",
-        tech: "Resend",
-        icon: "fileText"
-      },
-      {
-        title: lang === 'en' ? "Persistent Permalink" : "영구 결과 링크",
-        subtitle: lang === 'en' ? "Report snapshot stored so a result survives without localStorage" : "리포트 스냅샷을 저장해 localStorage 없이도 결과가 유지",
-        tech: "Cloud Firestore",
-        icon: "lock"
-      },
-      {
-        title: lang === 'en' ? "Attribution + Admin View" : "유입 추적 및 관리자 화면",
-        subtitle: lang === 'en' ? "GA4 lead events, Basic-Auth dashboard of score distribution" : "GA4 리드 이벤트, Basic Auth 점수 분포 대시보드",
-        tech: "GA4 / Vercel Middleware",
-        icon: "sparkles"
-      }
-    ],
-    'lead-enrichment': [
-      {
-        title: lang === 'en' ? "Interactive Map UI" : "Geographic Map 대시보드",
-        subtitle: lang === 'en' ? "Plots coordinate locations & user maps" : "지역 및 수집 기준 입력 수집, 지도 마커 실시간 표기",
-        tech: "React-Leaflet / Leaflet.js",
-        icon: "mobile"
-      },
-      {
-        title: lang === 'en' ? "Proxy API Backend" : "Express 좌표 서버",
-        subtitle: lang === 'en' ? "Shields API keys & handles coordinate projections" : "외부 Naver API 키 보안 밀폐, 구글 통신 CORS 조율",
-        tech: "Custom Express Proxy",
-        icon: "settings"
-      },
-      {
-        title: lang === 'en' ? "Naver Directory API" : "네이버 지도 데이터",
-        subtitle: lang === 'en' ? "Compiles live local businesses & map addresses" : "실시간 정확한 장소 및 지역 비즈니스 상호 위치 수합",
-        tech: "Naver Search Maps API",
-        icon: "fileText"
-      },
-      {
-        title: lang === 'en' ? "Outreach AI Engine" : "Gemini 메일 제너레이터",
-        subtitle: lang === 'en' ? "Translates details and outputs polite proposals" : "데이터 통합 번역, 공익 성격 맞춤 한국어 존댓말 제안 조합",
-        tech: "Google GenAI API (Gemini)",
-        icon: "sparkles"
-      }
-    ],
-    'white-label-hub': [
-      {
-        title: lang === 'en' ? "Teacher Tagging UI" : "교사용 태그 입력 단말",
-        subtitle: lang === 'en' ? "Vite app to upload student work & assign localized didactic tags" : "교사가 학습 결과물 사진을 올리고 한/영 교육적 태그 선택",
-        tech: "Vite / React 18",
-        icon: "mobile"
-      },
-      {
-        title: lang === 'en' ? "Express.js Proxy Server" : "Express 백엔드 미들웨어",
-        subtitle: lang === 'en' ? "Masks proprietary API keys & guides structured Gemini synthesis requests" : "상용 API 키 은폐 및 Gemini 인접 문단 일직선 합성 조율",
-        tech: "Express / Node.js",
-        icon: "settings"
-      },
-      {
-        title: lang === 'en' ? "Supabase Postgres DB" : "Supabase 관계형 DB",
-        subtitle: lang === 'en' ? "Locks relational academic portfolios behind strict Row Level Security" : "철저한 행 레벨 보안(RLS)으로 다중 학교 간 학생 기록 완벽 격리",
-        tech: "Postgres / Supabase RLS",
-        icon: "lock"
-      },
-      {
-        title: lang === 'en' ? "Dynamic PDF Compiler" : "Direct 브라우저 렌더러",
-        subtitle: lang === 'en' ? "Executes custom @react-pdf/renderer compiler to build fully-branded bilingual PDFs" : "브라우저 단에서 직접 브랜드 맞춤 색상 및 글꼴의 PDF 즉시 인쇄 컴파일",
-        tech: "@react-pdf/renderer",
-        icon: "sparkles"
-      }
-    ],
-    'bridgerecruit': [
-      {
-        title: lang === 'en' ? "Outlook Add-in Capture" : "아웃룩 애드인 수집 레이어",
-        subtitle: lang === 'en' ? "Office.js reads open email, matches sender domain to institution record" : "Office.js로 수신 이메일 도메인을 학교 기관 레코드와 즉시 매칭",
-        tech: "Office.js / Manifest",
-        icon: "fileText"
-      },
-      {
-        title: lang === 'en' ? "On-Behalf-Of Token Exchange" : "On-Behalf-Of 토큰 교환",
-        subtitle: lang === 'en' ? "Entra ID auth with server-side Graph OBO exchange; zero tokens in browser" : "Entra ID 자가 발행 토큰을 서버에서 Graph 토큰으로 안전 교환",
-        tech: "Microsoft Entra ID / MSAL",
-        icon: "lock"
-      },
-      {
-        title: lang === 'en' ? "Scoped Next.js API Routes" : "Next.js 스코프드 API 엔진",
-        subtitle: lang === 'en' ? "19 routes enforcing recruiter user_id tenancy and AI structured outputs" : "19개 API 라우트에서 담당자 테넌시 격리 및 OpenAI 구조화 출력 처리",
-        tech: "Next.js App Router / OpenAI",
-        icon: "code"
-      },
-      {
-        title: lang === 'en' ? "Territory & Pipeline Engine" : "지역 관리 & 파이프라인 엔진",
-        subtitle: lang === 'en' ? "Supabase Postgres with DB-computed relationship health & kanban pipeline" : "DB 트리거 기반 관계 건전도 산출 및 칸반 파이프라인 동기화",
-        tech: "Supabase / Postgres",
-        icon: "settings"
-      }
-    ]
-  };
-
-  return nodesMap[pId] || nodesMap['chekki'];
 };
 
 const SOLUTION_SHOWN = 5;
 const isFileVideo = (u?: string) => !!u && /\.(mp4|webm)$/i.test(u.split('?')[0]);
 
-const ArchitectureFlowchart: React.FC<{ projectId: string; theme: 'light' | 'dark'; locale: 'en' | 'ko' }> = ({
-  projectId,
-  theme,
-  locale
-}) => {
-  const nodes = getFlowchartNodes(projectId, locale);
-  
-  const getIcon = (type: string) => {
-    switch (type) {
-      case 'mobile':
-        return <DeviceMobileIcon className="w-5 h-5 text-accent-gold" />;
-      case 'settings':
-        return <SettingsIcon className="w-5 h-5 text-accent-gold" />;
-      case 'sparkles':
-        return <SparklesIcon className="w-5 h-5 text-accent-gold animate-pulse" />;
-      case 'fileText':
-        return <FileTextIcon className="w-5 h-5 text-accent-gold" />;
-      case 'code':
-        return <CodeIcon className="w-5 h-5 text-accent-gold" />;
-      case 'lock':
-        return <LockIcon className="w-5 h-5 text-accent-gold" />;
-      default:
-        return <SettingsIcon className="w-5 h-5 text-accent-gold" />;
-    }
-  };
-
-  return (
-    <div className="space-y-4">
-      <style>{`
-        @keyframes flow-line-motion {
-          to {
-            stroke-dashoffset: -20;
-          }
-        }
-        .animated-flow-line {
-          animation: flow-line-motion 1.5s linear infinite;
-        }
-      `}</style>
-
-      <div className={`rounded-xl border p-6 overflow-hidden relative z-10 transition-[background-color,border-color,box-shadow] ${
-        theme === 'dark' 
-          ? 'bg-black/30 border-white/5 shadow-2xl shadow-black/80' 
-          : 'bg-black/[0.01] shadow border-black/5'
-      }`}>
-        {/* Connection flow lines absolute decoration for desktop */}
-        <svg className="absolute top-1/2 left-0 w-full h-8 -translate-y-1/2 pointer-events-none hidden lg:block z-0" viewBox="0 0 1000 32" fill="none" preserveAspectRatio="none">
-          <path d="M 80 16 L 920 16" stroke="url(#glowing-line-gradient)" strokeWidth="1.5" strokeDasharray="6,4" className="animated-flow-line" />
-          <defs>
-            <linearGradient id="glowing-line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.1" />
-              <stop offset="30%" stopColor="#D4AF37" stopOpacity="0.8" />
-              <stop offset="70%" stopColor="#D4AF37" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#D4AF37" stopOpacity="0.1" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        {/* Content list */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 relative z-10">
-          {nodes.map((node, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <div className={`w-full p-4 rounded-xl border flex flex-col items-center text-center space-y-3 relative transition-[background-color,border-color,transform] duration-300 md:hover:scale-[1.02] ${
-                theme === 'dark' 
-                  ? 'bg-white/[0.01] border-white/5 hover:border-accent-gold/40 hover:bg-white/[0.03]' 
-                  : 'bg-white border-black/5 shadow-sm hover:border-accent-gold/50 hover:bg-black/[0.01]'
-              }`}>
-                {/* Node counter */}
-                <div className="absolute top-2 left-2.5 font-mono text-[9px] font-bold text-accent-gold/60">
-                  0{index + 1}
-                </div>
-
-                {/* Badge Icon wrapper */}
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center border transition-[background-color,border-color] ${
-                  theme === 'dark' 
-                    ? 'bg-white/5 border-white/10' 
-                    : 'bg-black/5 border-black/5 shadow-inner'
-                }`}>
-                  {getIcon(node.icon)}
-                </div>
-
-                {/* Labels */}
-                <div className="space-y-1">
-                  <h4 className={`text-[11px] font-bold uppercase tracking-wider font-display ${
-                    theme === 'dark' ? 'text-white' : 'text-alpine-950'
-                  }`}>
-                    {node.title}
-                  </h4>
-                  <p className={`text-[9px] leading-relaxed max-w-[200px] mx-auto opacity-60 ${
-                    theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'
-                  }`}>
-                    {node.subtitle}
-                  </p>
-                </div>
-
-                {/* Tech specifications label */}
-                <div className={`px-2 py-0.5 rounded font-mono text-[7px] uppercase font-bold tracking-widest ${
-                  theme === 'dark' 
-                    ? 'bg-accent-gold/10 border border-accent-gold/20 text-accent-gold' 
-                    : 'bg-accent-gold/5 border border-accent-gold/15 text-accent-gold/90'
-                }`}>
-                  {node.tech}
-                </div>
-              </div>
-
-              {/* Connecting dashed elements for mobile responsive timelines */}
-              {index < 3 && (
-                <div className="h-6 w-0.5 border-r border-dashed border-accent-gold lg:hidden mt-2"></div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
   projectId,
@@ -689,9 +139,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
   const scrollRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [isArchOpen, setIsArchOpen] = useState(true);
-  const [isCoreLoopOpen, setIsCoreLoopOpen] = useState(true);
-  const [isDecisionsOpen, setIsDecisionsOpen] = useState(true);
+  const [isCoreLoopOpen, setIsCoreLoopOpen] = useState(false);
+  const [isDecisionsOpen, setIsDecisionsOpen] = useState(false);
   const [isHurdlesOpen, setIsHurdlesOpen] = useState(false);
   const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
   const [activeScreenshotIdx, setActiveScreenshotIdx] = useState(0);
@@ -703,6 +152,11 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
   const [isEntered, setIsEntered] = useState(!animateIn);
   const [isClosing, setIsClosing] = useState(false);
+  // Once the case study fully covers the page, hide the page under it (paint and screen readers)
+  useEffect(() => {
+    document.body.classList.toggle('case-open', isEntered && !isClosing);
+    return () => document.body.classList.remove('case-open');
+  }, [isEntered, isClosing]);
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Case study open/close is the site's core interaction (card -> full technical depth);
@@ -807,10 +261,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
       scrollRef.current.scrollTop = 0;
     }
 
-    // Reset collapsible states: Keep high-level overview open, keep deep dives collapsed for skimmability
-    setIsArchOpen(true);
-    setIsCoreLoopOpen(true);
-    setIsDecisionsOpen(true);
+    // Every section starts folded on a new case study
+    setIsCoreLoopOpen(false);
+    setIsDecisionsOpen(false);
     setIsHurdlesOpen(false);
     setIsBreakdownOpen(false);
     setActiveScreenshotIdx(0);
@@ -855,9 +308,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
       aria-modal="true"
       aria-labelledby="case-study-title"
       tabIndex={-1}
-      className={`outline-none fixed inset-0 z-[200] overflow-y-auto overflow-x-hidden w-full min-w-0 transition-colors duration-300 ${
-        theme === 'dark' ? 'bg-alpine-950 text-white' : 'bg-alpine-50 text-alpine-950'
-      } ${
+      className={`outline-none fixed inset-0 z-[200] overflow-y-auto overflow-x-hidden w-full min-w-0 transition-colors duration-300 bg-canvas text-ink ${
         prefersReducedMotion
           ? (isEntered && !isClosing ? 'opacity-100' : 'opacity-0') + ' transition-opacity duration-150'
           : (isEntered && !isClosing ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3') +
@@ -866,24 +317,32 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
       }`}
     >
       {/* HEADER BAR */}
-      <div className={`sticky top-0 z-[210] flex items-center justify-between px-3.5 sm:px-6 py-3 sm:py-4 border-b backdrop-blur-xl ${
-        theme === 'dark' ? 'bg-alpine-950/90 border-white/10' : 'bg-white/90 border-black/10'
-      }`}>
+      <div className={`sticky top-0 z-[210] flex items-center justify-between px-3.5 sm:px-6 py-3 sm:py-4 border-b backdrop-blur-xl bg-canvas/90 border-ink/10`}>
         <button
           onClick={handleClose}
-          className={`flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-colors active:scale-95 whitespace-nowrap shrink-0 ${
-            theme === 'dark' ? 'text-white/60 hover:text-white' : 'text-alpine-950/50 hover:text-alpine-950'
-          }`}
+          className={`flex items-center gap-1.5 sm:gap-2 text-[13px] font-medium transition-colors active:scale-95 whitespace-nowrap shrink-0 text-ink-3 hover:text-ink`}
         >
           {t.backToPortfolio}
         </button>
+        {caseIds && onOpenCase && caseIds.includes(projectId) && (() => {
+          const i = caseIds.indexOf(projectId), n = caseIds.length;
+          const go = (d: number) => onOpenCase(caseIds[(i + d + n) % n]);
+          const btn = `w-8 h-8 rounded-full inline-flex items-center justify-center transition-colors hover:bg-ink/10 text-ink/70`;
+          return (
+            <nav aria-label={locale === 'ko' ? '케이스 스터디 이동' : 'Case study pages'} className="flex items-center gap-1 text-xs font-mono">
+              <button onClick={() => go(-1)} aria-label={locale === 'ko' ? '이전 케이스 스터디' : 'Previous case study'} className={btn}>←</button>
+              <span className="text-ink-3">{String(i + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}</span>
+              <button onClick={() => go(1)} aria-label={locale === 'ko' ? '다음 케이스 스터디' : 'Next case study'} className={btn}>→</button>
+            </nav>
+          );
+        })()}
         <div className="flex items-center gap-2 sm:gap-4 md:gap-6 shrink-0">
           {hasLiveApp && (
             <a 
               href={projectData.liveUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-widest text-accent-gold transition-colors active:scale-95 hover:text-accent-gold/80 whitespace-nowrap"
+              className="hidden sm:inline-flex items-center gap-1.5 h-9 px-4 rounded-full border border-accent-gold/30 text-xs font-semibold text-accent-gold transition-[background-color,transform] active:scale-95 hover:bg-accent-gold/10 whitespace-nowrap"
             >
               {projectData.liveLabel ?? t.launchLive}
             </a>
@@ -891,9 +350,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           {projectData.contactUrl && (
             <a 
               href={projectData.contactUrl} 
-              className="flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-widest text-accent-gold transition-colors active:scale-95 hover:text-accent-gold/80 whitespace-nowrap"
+              className="hidden sm:inline-flex items-center gap-1.5 h-9 px-4 rounded-full border border-accent-gold/30 text-xs font-semibold text-accent-gold transition-[background-color,transform] active:scale-95 hover:bg-accent-gold/10 whitespace-nowrap"
             >
-              {locale === 'en' ? "Contact to try ↗" : "체험 문의 ↗"}
+              {locale === 'en' ? "Ask to try it ↗" : "체험 문의 ↗"}
             </a>
           )}
           {projectData.storeUrl && (
@@ -901,7 +360,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               href={projectData.storeUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-widest text-accent-gold transition-colors active:scale-95 hover:text-accent-gold/80 whitespace-nowrap"
+              className="hidden sm:inline-flex items-center gap-1.5 h-9 px-4 rounded-full border border-accent-gold/30 text-xs font-semibold text-accent-gold transition-[background-color,transform] active:scale-95 hover:bg-accent-gold/10 whitespace-nowrap"
             >
               {t.storeLink}
             </a>
@@ -909,33 +368,28 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           <button
             onClick={handleClose}
             aria-label={locale === 'ko' ? "케이스 스터디 닫기" : "Close case study"}
-            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors active:scale-95 shrink-0 ${
-              theme === 'dark' ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-black/5 hover:bg-black/10 text-alpine-950'
-            }`}
+            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors active:scale-95 shrink-0 bg-ink/5 hover:bg-ink/10 text-ink`}
           >
             <XIcon className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-24 space-y-24">
+      <div className="max-w-[1180px] mx-auto px-6 md:px-12 py-10 md:py-16 space-y-14 md:space-y-16">
         {/* HERO TITLE BLOCK */}
         <div className="space-y-6 md:space-y-10">
-          <div className="flex items-center gap-2 text-[10px] md:text-[12px] font-black tracking-[0.4em] uppercase text-accent-gold">
-            <SparklesIcon className="w-4 h-4" />
+          <div className="flex items-center gap-2 text-[11px] md:text-[12px] font-bold tracking-[0.2em] uppercase text-accent-gold">
             {t.architecturalStudy}
           </div>
-          <h1 id="case-study-title" className="text-4xl md:text-8xl font-medium tracking-tighter leading-[1.1] font-display text-pretty">
+          <h1 id="case-study-title" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl max-w-[18ch] tracking-[-0.01em] leading-[1.04] font-serif text-balance">
             {projectData.title}
           </h1>
-          <p className={`text-base md:text-2xl max-w-4xl font-normal leading-relaxed text-pretty ${
-            theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
-          }`}>
+          <p className={`text-base md:text-2xl max-w-4xl font-normal leading-relaxed text-pretty text-ink-3`}>
             {projectData.tagline}
           </p>
 
           {projectData.meta && (
-            <dl className={`flex flex-wrap gap-x-10 gap-y-4 pt-2 border-t pt-6 max-w-4xl ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
+            <dl className="flex flex-wrap gap-x-10 gap-y-4 pt-2 border-t pt-6 max-w-4xl border-ink/10">
               {([
                 [locale === 'ko' ? '역할' : 'Role', projectData.meta.role],
                 [locale === 'ko' ? '팀' : 'Team', projectData.meta.team],
@@ -943,7 +397,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 [locale === 'ko' ? '상태' : 'Status', projectData.meta.status],
               ] as const).filter(([, v]) => v).map(([k, v]) => (
                 <div key={k} className="space-y-1">
-                  <dt className={`text-[10px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'}`}>{k}</dt>
+                  <dt className="text-[11px] font-bold uppercase tracking-widest text-ink-3">{k}</dt>
                   <dd className="text-sm md:text-base font-medium">{v}</dd>
                 </div>
               ))}
@@ -951,14 +405,10 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           )}
 
           {/* DUAL BUTTON SPLIT CTA */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 max-w-2xl w-full">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 pt-4 w-full">
             <button 
               onClick={scrollToBreakdown}
-              className={`shiny-cta py-4 sm:py-5 text-center shadow-2xl whitespace-normal break-words leading-tight rounded-xl ${
-                (hasLiveApp || projectData.storeUrl) 
-                  ? 'w-full sm:w-auto px-4 sm:px-8 text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest' 
-                  : 'w-full sm:w-auto px-6 sm:px-12 text-[10px] sm:text-[11px] tracking-wider sm:tracking-widest'
-              }`}
+              className="w-full sm:w-auto whitespace-nowrap py-3 px-6 rounded-full bg-accent-fill text-[#14171d] text-[13px] font-bold text-center hover:brightness-105 active:scale-95 transition-[filter,transform]"
             >
               <span className="leading-snug text-center">{t.technicalBreakdown}</span>
             </button>
@@ -967,11 +417,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 href={projectData.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`w-full py-4 sm:py-5 px-4 rounded-xl border flex items-center justify-center gap-2 sm:gap-3 font-extrabold uppercase text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest transition-[background-color] active:scale-95 text-center ${
-                  theme === 'dark'
-                    ? 'border-white/20 hover:bg-white/5 text-white'
-                    : 'border-black/20 hover:bg-black/5 text-alpine-950'
-                }`}
+                className={`w-full sm:w-auto py-3 px-5 rounded-full border flex items-center justify-center gap-2 sm:gap-3 font-semibold text-[13px] transition-[background-color] active:scale-95 text-center border-ink/20 hover:bg-ink/5 text-ink`}
               >
                 <span className="whitespace-nowrap leading-snug">{projectData.liveLabel ?? t.launchLiveApp}</span>
               </a>
@@ -979,14 +425,14 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
             {projectData.contactUrl && (
               <a 
                 href={projectData.contactUrl}
-                className={`w-full sm:w-auto py-4 sm:py-5 px-5 rounded-xl border flex items-center justify-center gap-2 sm:gap-2.5 font-extrabold uppercase text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest transition-[background-color] active:scale-95 text-center ${
+                className={`w-full sm:w-auto py-3 px-5 rounded-full border flex items-center justify-center gap-2 sm:gap-2.5 font-semibold text-[13px] transition-[background-color] active:scale-95 text-center ${
                   theme === 'dark'
                     ? 'border-accent-gold/50 bg-accent-gold/10 hover:bg-accent-gold/20 text-accent-gold'
                     : 'border-accent-gold/60 bg-accent-gold/10 hover:bg-accent-gold/20 text-accent-gold'
                 }`}
               >
                 <span className="text-xs">✉</span>
-                <span className="whitespace-nowrap leading-snug">{locale === 'en' ? "Contact to try" : "체험 문의하기"}</span>
+                <span className="whitespace-nowrap leading-snug">{locale === 'en' ? "Ask to try it" : "체험 문의"}</span>
               </a>
             )}
             {projectData.storeUrl && (
@@ -994,7 +440,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 href={projectData.storeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`w-full py-4 sm:py-5 px-4 rounded-xl border flex items-center justify-center gap-2 sm:gap-3 font-extrabold uppercase text-[9px] sm:text-[10px] tracking-wide sm:tracking-widest transition-[background-color] active:scale-95 text-center ${
+                className={`w-full sm:w-auto py-3 px-5 rounded-full border flex items-center justify-center gap-2 sm:gap-3 font-semibold text-[13px] transition-[background-color] active:scale-95 text-center ${
                   theme === 'dark'
                     ? 'border-accent-gold/30 hover:bg-accent-gold/5 text-accent-gold'
                     : 'border-accent-gold/40 hover:bg-accent-gold/10 text-accent-gold'
@@ -1007,21 +453,17 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
         </div>
 
         {/* METRICS GRID */}
-        <div className={`grid grid-cols-1 gap-6 border-y py-12 ${projectData.stats.length === 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'} ${
-          theme === 'dark' ? 'border-white/10' : 'border-black/10'
-        }`}>
+        <div className={`grid grid-cols-1 gap-6 border-y py-12 ${projectData.stats.length === 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'} border-ink/10`}>
           {projectData.stats.map((stat, idx) => (
             <div key={idx} className="space-y-2">
-              <div className={`font-mono font-bold text-accent-gold ${/^[~<≤]?\d/.test(stat.value) ? 'text-3xl md:text-5xl' : 'text-2xl md:text-3xl'}`}>
+              <div className={`font-serif leading-none text-accent-gold tabular-nums ${/^[~<≤]?\d/.test(stat.value) ? 'text-4xl md:text-6xl' : 'text-2xl md:text-3xl'}`}>
                 {stat.value}
               </div>
-              <div className={`text-[10px] font-black uppercase tracking-widest ${
-                theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'
-              }`}>
+              <div className={`text-[11px] font-bold uppercase tracking-widest text-ink-3`}>
                 {stat.label}
               </div>
               {stat.detail && (
-                <p className={`text-xs leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'}`}>
+                <p className="text-xs leading-relaxed text-ink-3">
                   {stat.detail}
                 </p>
               )}
@@ -1031,32 +473,30 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
 
         {/* EVAL RESULTS: one bar per run, full 0-100% scale so near-perfect reads as near-full, not inflated */}
         {projectData.evals && (
-          <figure className={`rounded-2xl border p-6 md:p-8 space-y-6 ${
-            theme === 'dark' ? 'bg-white/[0.02] border-white/10' : 'bg-black/[0.02] border-black/10'
-          }`}>
+          <figure className={`rounded-2xl border p-6 md:p-8 space-y-6 bg-ink/[0.02] border-ink/10`}>
             <figcaption className="space-y-2">
-              <div className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{projectData.evals.title}</div>
-              <p className={`text-sm leading-relaxed max-w-3xl ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'}`}>
+              <div className="text-[11px] font-bold uppercase tracking-widest text-accent-gold">{projectData.evals.title}</div>
+              <p className="text-sm leading-relaxed max-w-[58ch] text-ink/70">
                 {projectData.evals.note}
               </p>
             </figcaption>
             <div className="grid md:grid-cols-2 gap-8">
               {projectData.evals.sets.map((set) => (
                 <div key={set.name} className="space-y-3">
-                  <div className={`text-xs font-bold ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{set.name}</div>
+                  <div className="text-xs font-bold text-ink/80">{set.name}</div>
                   <ul className="space-y-2.5">
                     {set.runs.map((r, i) => {
                       const pct = Math.round((r.caught / r.mistakes) * 100);
                       return (
                         <li key={i} className="grid grid-cols-[3.5rem_1fr] items-end gap-3 text-xs">
-                          <span className={`font-mono ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'}`}>
+                          <span className="font-mono text-ink-3">
                             {locale === 'ko' ? `${i + 1}회` : `Run ${i + 1}`}
                           </span>
                           <div className="space-y-1">
-                            <div className={`h-2 rounded ${theme === 'dark' ? 'bg-white/10' : 'bg-black/10'}`}>
-                              <div className="h-2 rounded bg-accent-gold" style={{ width: `${pct}%` }} />
+                            <div className="h-2 rounded bg-ink/10">
+                              <div className="h-2 rounded bg-accent-fill" style={{ width: `${pct}%` }} />
                             </div>
-                            <div className={`font-mono flex flex-wrap gap-x-3 ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}`}>
+                            <div className="font-mono flex flex-wrap gap-x-3 text-ink/70">
                               <span>{locale === 'ko' ? `오답 ${r.caught}/${r.mistakes} 검출 (${pct}%)` : `${r.caught}/${r.mistakes} caught (${pct}%)`}</span>
                               <span>{locale === 'ko' ? `정답 ${r.wrong}/${r.right} 오답 처리` : `${r.wrong}/${r.right} right marked wrong`}</span>
                             </div>
@@ -1071,362 +511,23 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           </figure>
         )}
 
-        {/* BEHIND THE ARCHITECTURE Callout Insight Container */}
-        {projectData.behindTheArchitecture && (
-          <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 lg:mx-0 ${
-            theme === 'dark' 
-              ? 'bg-white/[0.02] border-white/5 shadow-2xl relative overflow-hidden' 
-              : 'bg-black/[0.02] border-black/5 shadow-lg relative overflow-hidden'
-          }`}>
-            <button
-              onClick={() => setIsArchOpen(!isArchOpen)}
-              aria-expanded={isArchOpen}
-              aria-controls="arch-panel"
-              className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent-gold/5 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col">
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold">{t.productMindset}</span>
-                  <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.behindTheArchitecture}</h2>
-                </div>
-              </div>
-              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
-                isArchOpen 
-                  ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
-                  : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
-              }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isArchOpen ? 'text-accent-gold' : 'text-white/60'}`} />
-              </div>
-            </button>
-            
-            {isArchOpen && (
-              <div id="arch-panel" className="p-6 md:p-10 pt-0 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10">
-                {/* THE HUMAN PROBLEM */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.humanProblem}</h3>
-                  </div>
-                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
-                    theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
-                  }`}>
-                    {projectData.behindTheArchitecture.problem}
-                  </p>
-                </div>
-
-                {/* THE PRODUCT VISION */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.productVision}</h3>
-                  </div>
-                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
-                    theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
-                  }`}>
-                    {projectData.behindTheArchitecture.vision}
-                  </p>
-                </div>
-
-                {/* THE CORE RATIONALE */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-[10px] font-black uppercase tracking-widest text-[#44D9C5]">{t.coreRationale}</h3>
-                  </div>
-                  <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
-                    theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
-                  }`}>
-                    {projectData.behindTheArchitecture.rationale}
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* CONNECTED CORE LOOP (THE PRODUCT ENGINE) */}
-        {projectData.coreLoop && projectData.coreLoop.length > 0 && (
-          <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 lg:mx-0 ${
-            theme === 'dark' 
-              ? 'bg-[#0B1017]/60 border-blue-500/10 shadow-[0_20px_50px_rgba(59,130,246,0.03)] relative overflow-hidden' 
-              : 'bg-[#F4F8FC]/70 border-blue-500/10 shadow-lg relative overflow-hidden'
-          }`}>
-            <button
-              onClick={() => setIsCoreLoopOpen(!isCoreLoopOpen)}
-              aria-expanded={isCoreLoopOpen}
-              aria-controls="core-loop-panel"
-              className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col">
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400">{t.coreLoopSubtitle}</span>
-                  <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.coreLoopTitle}</h2>
-                </div>
-              </div>
-              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
-                isCoreLoopOpen 
-                  ? 'rotate-180 bg-blue-500/15 border-blue-500/30' 
-                  : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
-              }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isCoreLoopOpen ? 'text-blue-400' : 'text-white/60'}`} />
-              </div>
-            </button>
-
-            {isCoreLoopOpen && (
-              <div id="core-loop-panel" className="p-6 md:p-10 pt-0 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {projectData.coreLoop.map((item, idx) => (
-                    <div 
-                      key={idx} 
-                      className={`p-4 rounded-xl border flex flex-col justify-between space-y-3 transition-[background-color,border-color] ${
-                        theme === 'dark'
-                          ? 'bg-black/30 border-white/5 hover:border-blue-400/30 hover:bg-white/[0.02]'
-                          : 'bg-white border-black/5 shadow-sm hover:border-blue-400/40'
-                      }`}
-                    >
-                      <div className="space-y-1.5">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="font-mono text-[9px] font-bold text-blue-400 uppercase tracking-wider">
-                            {item.step}
-                          </span>
-                          {item.role && (
-                            <span className={`px-2 py-0.5 rounded text-[8px] font-mono font-semibold uppercase tracking-wider ${
-                              theme === 'dark' ? 'bg-white/5 text-white/70' : 'bg-black/5 text-alpine-950/70'
-                            }`}>
-                              {item.role}
-                            </span>
-                          )}
-                        </div>
-                        <p className={`text-xs leading-relaxed font-normal ${
-                          theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
-                        }`}>
-                          {item.detail}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* PRODUCT DECISIONS & TRADEOFFS (ADR LOG) */}
-        {projectData.decisions && projectData.decisions.length > 0 && (
-          <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 lg:mx-0 ${
-            theme === 'dark' 
-              ? 'bg-[#100D14]/60 border-purple-500/10 shadow-[0_20px_50px_rgba(168,85,247,0.03)] relative overflow-hidden' 
-              : 'bg-[#FAF6FD]/70 border-purple-500/10 shadow-lg relative overflow-hidden'
-          }`}>
-            <button
-              onClick={() => setIsDecisionsOpen(!isDecisionsOpen)}
-              aria-expanded={isDecisionsOpen}
-              aria-controls="decisions-panel"
-              className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col">
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-purple-400">{t.decisionsSubtitle}</span>
-                  <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.decisionsTitle}</h2>
-                </div>
-              </div>
-              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
-                isDecisionsOpen 
-                  ? 'rotate-180 bg-purple-500/15 border-purple-500/30' 
-                  : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
-              }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isDecisionsOpen ? 'text-purple-400' : 'text-white/60'}`} />
-              </div>
-            </button>
-
-            {isDecisionsOpen && (
-              <div id="decisions-panel" className="p-6 md:p-10 pt-0 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {projectData.decisions.map((dec, idx) => (
-                    <div 
-                      key={idx} 
-                      className={`p-5 rounded-xl border flex flex-col justify-between space-y-4 transition-[background-color,border-color] ${
-                        theme === 'dark'
-                          ? 'bg-black/40 border-white/5 hover:border-purple-400/30 hover:bg-white/[0.02]'
-                          : 'bg-white border-black/5 shadow-sm hover:border-purple-400/40'
-                      }`}
-                    >
-                      {/* Decision Header */}
-                      <div className="space-y-1.5">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-[9px] font-bold text-purple-400">ADR 0{idx + 1}</span>
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">• {t.decisionLabel}</span>
-                        </div>
-                        <h3 className={`text-xs md:text-sm font-semibold leading-snug ${
-                          theme === 'dark' ? 'text-white' : 'text-alpine-950'
-                        }`}>
-                          {dec.decision}
-                        </h3>
-                      </div>
-
-                      {/* Alternative Considered */}
-                      <div className="space-y-1 text-xs">
-                        <div className="flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-wider text-white/60">
-                          <span>↪</span>
-                          <span>{t.alternativeLabel}</span>
-                        </div>
-                        <p className={`leading-relaxed font-normal ${
-                          theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
-                        }`}>
-                          {dec.alternativeConsidered}
-                        </p>
-                      </div>
-
-                      {/* Why & Tradeoff Grid */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-white/5">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-wider text-green-400">
-                            <span>✓</span>
-                            <span>{t.whyLabel}</span>
-                          </div>
-                          <p className={`text-[11px] leading-relaxed font-normal ${
-                            theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
-                          }`}>
-                            {dec.why}
-                          </p>
-                        </div>
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-wider text-orange-400">
-                            <span>{t.tradeoffLabel}</span>
-                          </div>
-                          <p className={`text-[11px] leading-relaxed font-normal ${
-                            theme === 'dark' ? 'text-white/70' : 'text-alpine-950/80'
-                          }`}>
-                            {dec.tradeOffAccepted}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* TECHNICAL HURDLES / WHEN THINGS BREAK */}
-        {projectData.technicalHurdles && (
-          <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 lg:mx-0 ${
-            theme === 'dark' 
-              ? 'bg-[#120D0D]/50 border-red-500/10 shadow-[0_20px_50px_rgba(239,68,68,0.05)] relative overflow-hidden' 
-              : 'bg-[#FFF5F5]/60 border-red-500/10 shadow-lg relative overflow-hidden'
-          }`}>
-            <button
-              onClick={() => setIsHurdlesOpen(!isHurdlesOpen)}
-              aria-expanded={isHurdlesOpen}
-              aria-controls="hurdles-panel"
-              className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="flex items-center justify-between gap-4 w-full flex-wrap pr-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex flex-col">
-                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-red-500">{locale === 'en' ? "WHEN THINGS BREAK" : "장애 및 결함 조치 진찰기"}</span>
-                    <h2 className={`text-[11px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.technicalHurdles}</h2>
-                  </div>
-                </div>
-                <div className="bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20 px-3 py-1 rounded-full text-[9px] font-mono uppercase font-black tracking-widest">
-                  {locale === 'en' ? "Production Diagnostic Win" : "프로덕션 실시간 완치 실적"}
-                </div>
-              </div>
-              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
-                isHurdlesOpen 
-                  ? 'rotate-180 bg-red-500/15 border-red-500/30' 
-                  : (theme === 'dark' ? 'border-red-500/10 hover:border-red-500/20' : 'border-red-500/10 hover:border-red-500/20')
-              }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isHurdlesOpen ? 'text-red-500' : 'text-white/60'}`} />
-              </div>
-            </button>
-            
-            {isHurdlesOpen && (() => {
-              const hurdlesList = Array.isArray(projectData.technicalHurdles)
-                ? projectData.technicalHurdles
-                : [projectData.technicalHurdles];
-              
-              return (
-                <div id="hurdles-panel" className="border-t border-red-500/5 divide-y divide-red-500/5 relative z-10 animate-in fade-in slide-in-from-top-2 duration-300">
-                  {hurdlesList.map((hurdle, hIdx) => (
-                    <div key={hIdx} className={`${hIdx > 0 ? 'pt-8 md:pt-12' : ''} p-6 md:p-10 pb-8 md:pb-12 space-y-6`}>
-                      {hurdle.title && (
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500 font-mono">
-                            {hurdle.title}
-                          </span>
-                        </div>
-                      )}
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                        {/* THE INCIDENT */}
-                        <div className="space-y-3">
-                          <div className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-xs text-red-500 font-bold">×</div>
-                            <h3 className="text-[10px] font-black uppercase tracking-widest text-[#E15A5A]">{t.incident}</h3>
-                          </div>
-                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
-                            theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
-                          }`}>
-                            {hurdle.incident}
-                          </p>
-                        </div>
-
-                        {/* THE DIAGNOSIS */}
-                        <div className="space-y-3">
-                          <div className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500"><SearchIcon className="w-3 h-3" /></div>
-                            <h3 className="text-[10px] font-black uppercase tracking-widest text-orange-500">{t.diagnosis}</h3>
-                          </div>
-                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
-                            theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
-                          }`}>
-                            {hurdle.diagnosis}
-                          </p>
-                        </div>
-
-                        {/* THE RESOLUTION */}
-                        <div className="space-y-3">
-                          <div className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center text-xs text-green-500 font-bold">✓</div>
-                            <h3 className="text-[10px] font-black uppercase tracking-widest text-green-500">{t.resolution}</h3>
-                          </div>
-                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal ${
-                            theme === 'dark' ? 'text-white/60' : 'text-alpine-950/70'
-                          }`}>
-                            {hurdle.resolution}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              );
-            })()}
-          </div>
-        )}
-
         {/* PROOF OF WORK / VIDEO SECTION */}
         <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4">
-            <div className={`text-[10px] font-black uppercase tracking-[0.4em] ${
-              theme === 'dark' ? 'text-white/60' : 'text-alpine-950/60'
-            }`}>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-ink/10 pb-4">
+            <h2 className="font-serif text-2xl md:text-3xl tracking-tight">
               {t.proofOfWorkTitle}
-            </div>
+            </h2>
 
             {/* Sub-tab switcher to toggle between Interactive Screenshots and Walkthrough Video */}
             {projectData.screenshots && projectData.screenshots.length > 0 && projectData.walkthroughVideo && (
-              <div className="flex rounded-xl p-1 border border-white/10 bg-black/40 text-[10px] font-bold uppercase tracking-wider overflow-hidden max-w-full self-start sm:self-auto shadow-2xl">
+              <div className="flex rounded-xl p-1 border border-ink/10 bg-ink/[0.04] text-[11px] font-bold uppercase tracking-wider overflow-hidden max-w-full self-start sm:self-auto shadow-2xl">
                 <button
                   type="button"
                   onClick={() => setProofOfWorkTab('screenshots')}
                   className={`px-4 py-2 rounded-lg transition-[background-color,color,box-shadow] active:scale-95 flex items-center gap-2 ${
                     proofOfWorkTab === 'screenshots'
-                      ? 'bg-accent-gold text-black shadow-md'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
+                      ? 'bg-accent-fill text-black shadow-md'
+                      : 'text-ink-3 hover:text-ink hover:bg-ink/5'
                   }`}
                 >
                   <span>{locale === 'en' ? "Screenshots" : "스크린샷"}</span>
@@ -1436,8 +537,8 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   onClick={() => setProofOfWorkTab('video')}
                   className={`px-4 py-2 rounded-lg transition-[background-color,color,box-shadow] active:scale-95 flex items-center gap-2 ${
                     proofOfWorkTab === 'video'
-                      ? 'bg-accent-gold text-black shadow-md'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
+                      ? 'bg-accent-fill text-black shadow-md'
+                      : 'text-ink-3 hover:text-ink hover:bg-ink/5'
                   }`}
                 >
                   <span>{locale === 'en' ? "Walkthrough Video" : "데모영상 시연"}</span>
@@ -1456,12 +557,9 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               </div>
 
               {/* Image Frame with Navigation */}
-              <div className={`rounded-2xl border overflow-hidden aspect-video relative flex items-center justify-center bg-black/85 group ${
-                theme === 'dark' ? 'border-white/10' : 'border-black/10'
-              }`}>
+              <div className={`rounded-2xl border overflow-hidden aspect-video relative flex items-center justify-center bg-black/85 group border-ink/10`}>
                 {/* Floating Index Tag */}
-                <div className="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-mono uppercase font-semibold text-accent-gold tracking-widest flex items-center gap-1.5 shadow-lg select-none">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-gold animate-pulse"></span>
+                <div className="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[11px] font-mono uppercase font-semibold text-accent-fill tracking-widest flex items-center gap-1.5 shadow-lg select-none">
                   {String(activeScreenshotIdx + 1).padStart(2, '0')} / {String(projectData.screenshots.length).padStart(2, '0')} • {projectData.screenshots[activeScreenshotIdx].label}
                 </div>
 
@@ -1474,15 +572,15 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                 >
                   {imageErrors[projectData.screenshots[activeScreenshotIdx].url] ? (
                     <div className="flex flex-col items-center justify-center p-8 text-center select-none max-w-sm animate-in fade-in duration-300">
-                      <div className="w-12 h-12 rounded-full bg-neutral-900 border border-white/10 flex items-center justify-center mb-4 text-accent-gold">
+                      <div className="w-12 h-12 rounded-full bg-neutral-900 border border-white/10 flex items-center justify-center mb-4 text-accent-fill">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                       </div>
-                      <span className="text-[10px] font-black tracking-[0.15em] text-white uppercase font-mono block">
+                      <span className="text-[11px] font-bold tracking-[0.15em] text-white uppercase font-mono block">
                         {locale === 'en' ? "Interactive Slide Preview" : "데모 슬라이드"}
                       </span>
-                      <span className="mt-2 text-[10px] text-white/50 block font-sans leading-relaxed max-w-[280px]">
+                      <span className="mt-2 text-[11px] text-white/50 block font-sans leading-relaxed max-w-[280px]">
                         {locale === 'en' 
                           ? "We are rendering the slider. Click 'Expand View' below to zoom, or open the direct gateway link under the section headers." 
                           : "데모 슬라이드가 안전하게 구성되었습니다. 원격 보안 등으로 이미지가 가려진 경우 우측 하단의 돋보기 버튼을 통해 확대 감상해 주세요."}
@@ -1502,7 +600,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   )}
                   
                   {/* Zoom Badge Indicator */}
-                  <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-mono uppercase font-semibold text-white/80 tracking-widest flex items-center gap-1.5 shadow-lg opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 pointer-events-none select-none">
+                  <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[11px] font-mono uppercase font-semibold text-white/80 tracking-widest flex items-center gap-1.5 shadow-lg opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 pointer-events-none select-none">
                     <span>{locale === 'en' ? "Expand View" : "전체화면"}</span>
                   </div>
                   
@@ -1546,21 +644,19 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                       className={`text-left p-3 rounded-xl border transition-[background-color,border-color,box-shadow] active:scale-95 duration-300 flex items-start gap-3 relative overflow-hidden ${
                         isActive
                           ? 'border-accent-gold bg-accent-gold/5 shadow-[0_0_15px_rgba(230,175,46,0.08)]'
-                          : theme === 'dark'
-                            ? 'border-white/5 bg-white/[0.01] hover:bg-white/[0.04]'
-                            : 'border-black/5 bg-black/[0.01] hover:bg-black/[0.03]'
+                          : 'border-ink/5 bg-ink/[0.01] hover:bg-ink/[0.04]'
                       }`}
                     >
                       {/* Left accent color indicator bar for active slide */}
-                      <div className={`absolute top-0 bottom-0 left-0 w-1 transition-[background-color] ${isActive ? 'bg-accent-gold' : 'bg-transparent'}`}></div>
-                      <div className={`font-mono text-[9px] uppercase font-bold tracking-widest shrink-0 ${isActive ? 'text-accent-gold' : theme === 'dark' ? 'text-white/30' : 'text-alpine-950/30'}`}>
+                      <div className={`absolute top-0 bottom-0 left-0 w-1 transition-[background-color] ${isActive ? 'bg-accent-fill' : 'bg-transparent'}`}></div>
+                      <div className={`font-mono text-[11px] uppercase font-bold tracking-widest shrink-0 ${isActive ? 'text-accent-gold' : 'text-ink-3'}`}>
                         {String(sIdx + 1).padStart(2, '0')}
                       </div>
                       <div className="space-y-0.5">
-                        <div className={`text-[11px] font-bold tracking-tight line-clamp-1 leading-snug ${isActive ? 'text-accent-gold' : theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>
+                        <div className={`text-[11px] font-bold tracking-tight line-clamp-1 leading-snug ${isActive ? 'text-accent-gold' : 'text-ink/80'}`}>
                           {scr.label}
                         </div>
-                        <div className={`text-[9px] font-normal font-mono opacity-40 line-clamp-1 ${theme === 'dark' ? 'text-white' : 'text-alpine-950'}`}>
+                        <div className="text-[11px] font-normal font-mono line-clamp-1 text-ink-3">
                           {scr.subLabel || (sIdx === 0 ? (locale === 'en' ? "Primary View" : "기본 대시보드") : sIdx === 1 ? (locale === 'en' ? "Data Processing" : "수집 분석 지표") : (locale === 'en' ? "Email Synthesizer" : "이메일 템플레이트"))}
                         </div>
                       </div>
@@ -1580,7 +676,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     <FileTextIcon className="w-5 h-5 text-accent-gold" />
                   </div>
                   <div className="space-y-0.5">
-                    <div className="text-[10px] font-bold uppercase tracking-wider font-mono text-accent-gold">
+                    <div className="text-[11px] font-bold uppercase tracking-wider font-mono text-accent-gold">
                       {locale === 'en' ? "DOCUMENTATION REFERENCE" : "첨부 문서 자료 안내"}
                     </div>
                     <p className="text-xs leading-relaxed max-w-prose text-pretty opacity-85">
@@ -1593,9 +689,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
               )}
             </div>
           ) : (
-            <div className={`rounded-2xl border overflow-hidden aspect-video relative flex flex-col items-center justify-center bg-black/40 ${
-              theme === 'dark' ? 'border-white/10' : 'border-black/10'
-            }`}>
+            <div className={`rounded-2xl border overflow-hidden aspect-video relative flex flex-col items-center justify-center bg-black/40 border-ink/10`}>
               {projectData.walkthroughVideo && (
                 <video
                   src={projectData.walkthroughVideo}
@@ -1617,81 +711,274 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
 
         </div>
 
+        <div className="space-y-3">
+        {/* CONNECTED CORE LOOP (THE PRODUCT ENGINE) */}
+        {projectData.coreLoop && projectData.coreLoop.length > 0 && (
+          <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 lg:mx-0 bg-card border-ink/10 shadow-sm relative overflow-hidden`}>
+            <button
+              onClick={() => setIsCoreLoopOpen(!isCoreLoopOpen)}
+              aria-expanded={isCoreLoopOpen}
+              aria-controls="core-loop-panel"
+              className="w-full text-left px-5 py-5 md:px-8 md:py-6 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex flex-col">
+                  <h2 className="mt-1 font-serif text-2xl md:text-3xl tracking-tight text-ink">{t.coreLoopTitle}</h2>
+                </div>
+              </div>
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
+                isCoreLoopOpen 
+                  ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
+                  : ('border-ink/10 hover:border-ink/20')
+              }`}>
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isCoreLoopOpen ? 'text-accent-gold' : 'text-ink-3'}`} />
+              </div>
+            </button>
+
+            {isCoreLoopOpen && (
+              <div id="core-loop-panel" className="p-6 md:p-10 pt-0 border-t border-ink/10 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {projectData.coreLoop.map((item, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`p-4 rounded-xl border flex flex-col justify-between space-y-3 transition-[background-color,border-color] ${
+                        theme === 'dark'
+                          ? 'bg-black/30 border-white/5 hover:border-accent-gold/30 hover:bg-white/[0.02]'
+                          : 'bg-white border-black/5 shadow-sm hover:border-accent-gold/40'
+                      }`}
+                    >
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-mono text-[11px] font-bold text-accent-gold uppercase tracking-wider">
+                            {item.step}
+                          </span>
+                          {item.role && (
+                            <span className={`px-2 py-0.5 rounded text-[8px] font-mono font-semibold uppercase tracking-wider bg-ink/5 text-ink/70`}>
+                              {item.role}
+                            </span>
+                          )}
+                        </div>
+                        <p className={`text-xs leading-relaxed font-normal text-ink/70`}>
+                          {item.detail}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* PRODUCT DECISIONS & TRADEOFFS (ADR LOG) */}
+        {projectData.decisions && projectData.decisions.length > 0 && (
+          <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 lg:mx-0 bg-card border-ink/10 shadow-sm relative overflow-hidden`}>
+            <button
+              onClick={() => setIsDecisionsOpen(!isDecisionsOpen)}
+              aria-expanded={isDecisionsOpen}
+              aria-controls="decisions-panel"
+              className="w-full text-left px-5 py-5 md:px-8 md:py-6 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex flex-col">
+                  <h2 className="mt-1 font-serif text-2xl md:text-3xl tracking-tight text-ink">{t.decisionsTitle}</h2>
+                </div>
+              </div>
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
+                isDecisionsOpen 
+                  ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
+                  : ('border-ink/10 hover:border-ink/20')
+              }`}>
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isDecisionsOpen ? 'text-accent-gold' : 'text-ink-3'}`} />
+              </div>
+            </button>
+
+            {isDecisionsOpen && (
+              <div id="decisions-panel" className="p-6 md:p-10 pt-0 border-t border-ink/10 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {projectData.decisions.map((dec, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`p-5 rounded-xl border flex flex-col justify-between space-y-4 transition-[background-color,border-color] ${
+                        theme === 'dark'
+                          ? 'bg-black/40 border-white/5 hover:border-accent-gold/30 hover:bg-white/[0.02]'
+                          : 'bg-white border-black/5 shadow-sm hover:border-accent-gold/40'
+                      }`}
+                    >
+                      {/* Decision Header */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-[11px] font-bold text-accent-gold">ADR 0{idx + 1}</span>
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-accent-gold">• {t.decisionLabel}</span>
+                        </div>
+                        <h3 className={`text-xs md:text-sm font-semibold leading-snug text-ink`}>
+                          {dec.decision}
+                        </h3>
+                      </div>
+
+                      {/* Alternative Considered */}
+                      <div className="space-y-1 text-xs">
+                        <div className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-ink-3">
+                          <span>↪</span>
+                          <span>{t.alternativeLabel}</span>
+                        </div>
+                        <p className={`leading-relaxed font-normal text-ink-3`}>
+                          {dec.alternativeConsidered}
+                        </p>
+                      </div>
+
+                      {/* Why & Tradeoff Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-ink/10">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-1 text-[11px] font-mono uppercase tracking-wider text-green-400">
+                            <span>✓</span>
+                            <span>{t.whyLabel}</span>
+                          </div>
+                          <p className={`text-[11px] leading-relaxed font-normal text-ink/70`}>
+                            {dec.why}
+                          </p>
+                        </div>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-1 text-[11px] font-mono uppercase tracking-wider text-orange-400">
+                            <span>{t.tradeoffLabel}</span>
+                          </div>
+                          <p className={`text-[11px] leading-relaxed font-normal text-ink/70`}>
+                            {dec.tradeOffAccepted}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* TECHNICAL HURDLES / WHEN THINGS BREAK */}
+        {projectData.technicalHurdles && (
+          <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 lg:mx-0 bg-card border-ink/10 shadow-sm relative overflow-hidden`}>
+            <button
+              onClick={() => setIsHurdlesOpen(!isHurdlesOpen)}
+              aria-expanded={isHurdlesOpen}
+              aria-controls="hurdles-panel"
+              className="w-full text-left px-5 py-5 md:px-8 md:py-6 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
+            >
+              <div className="flex items-center justify-between gap-4 w-full flex-wrap pr-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex flex-col">
+                    <h2 className="mt-1 font-serif text-2xl md:text-3xl tracking-tight text-ink">{t.technicalHurdles}</h2>
+                  </div>
+                </div>
+                <div className="hidden sm:block bg-accent-gold/10 text-accent-gold border border-accent-gold/25 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">
+                  {locale === 'en' ? "Production fixes" : "실서비스 수정"}
+                </div>
+              </div>
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
+                isHurdlesOpen 
+                  ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
+                  : ('border-ink/10 hover:border-ink/20')
+              }`}>
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isHurdlesOpen ? 'text-red-500' : 'text-ink-3'}`} />
+              </div>
+            </button>
+            
+            {isHurdlesOpen && (() => {
+              const hurdlesList = Array.isArray(projectData.technicalHurdles)
+                ? projectData.technicalHurdles
+                : [projectData.technicalHurdles];
+              
+              return (
+                <div id="hurdles-panel" className="border-t border-ink/10 divide-y divide-ink/10 relative z-10 animate-in fade-in slide-in-from-top-2 duration-300">
+                  {hurdlesList.map((hurdle, hIdx) => (
+                    <div key={hIdx} className={`${hIdx > 0 ? 'pt-8 md:pt-12' : ''} p-6 md:p-10 pb-8 md:pb-12 space-y-6`}>
+                      {hurdle.title && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-red-500 font-mono">
+                            {hurdle.title}
+                          </span>
+                        </div>
+                      )}
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                        {/* THE INCIDENT */}
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center text-xs text-red-500 font-bold">×</div>
+                            <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#E15A5A]">{t.incident}</h3>
+                          </div>
+                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal text-ink-3`}>
+                            {hurdle.incident}
+                          </p>
+                        </div>
+
+                        {/* THE DIAGNOSIS */}
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500"><SearchIcon className="w-3 h-3" /></div>
+                            <h3 className="text-[11px] font-bold uppercase tracking-widest text-orange-500">{t.diagnosis}</h3>
+                          </div>
+                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal text-ink-3`}>
+                            {hurdle.diagnosis}
+                          </p>
+                        </div>
+
+                        {/* THE RESOLUTION */}
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center text-xs text-green-500 font-bold">✓</div>
+                            <h3 className="text-[11px] font-bold uppercase tracking-widest text-green-500">{t.resolution}</h3>
+                          </div>
+                          <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 font-normal text-ink-3`}>
+                            {hurdle.resolution}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
+          </div>
+        )}
+
         {/* THE CORE CONTENT BREAKDOWN */}
-        <div ref={contentRef} className="pt-12">
-          <div className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 ${
-            theme === 'dark'
-              ? 'bg-white/[0.01] border-white/5'
-              : 'bg-black/[0.01] border-black/5 shadow-md'
-          }`}>
+        <div ref={contentRef}>
+          <div className={`rounded-2xl border bg-card border-ink/10 shadow-sm`}>
             <button
               onClick={() => setIsBreakdownOpen(!isBreakdownOpen)}
               aria-expanded={isBreakdownOpen}
               aria-controls="breakdown-panel"
-              className="w-full text-left p-6 md:p-10 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
+              className="w-full text-left px-5 py-5 md:px-8 md:py-6 flex items-center justify-between gap-6 focus:outline-none hover:bg-white/[0.01]/10 active:bg-white/[0.02]/20 transition-[background-color] relative z-10"
             >
               <div className="flex items-center gap-3">
                 <div className="flex flex-col min-w-0 w-full">
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent-gold whitespace-normal break-words">{locale === 'en' ? "DEEP ANALYSIS" : "심층 분석 매뉴얼"}</span>
-                  <h2 className={`text-[11px] font-bold uppercase tracking-widest whitespace-normal break-words text-pretty ${theme === 'dark' ? 'text-white/80' : 'text-alpine-950/80'}`}>{t.technicalBreakdown}</h2>
+                  <h2 className="mt-1 font-serif text-2xl md:text-3xl tracking-tight whitespace-normal break-words text-pretty text-ink">{t.technicalBreakdown.replace(' ↓', '')}</h2>
                 </div>
               </div>
               <div className={`flex items-center justify-center w-8 h-8 rounded-full border transition-[background-color,border-color,transform] duration-300 shrink-0 ${
                 isBreakdownOpen 
                   ? 'rotate-180 bg-accent-gold/15 border-accent-gold/30' 
-                  : (theme === 'dark' ? 'border-white/10 hover:border-white/20' : 'border-black/10 hover:border-black/20')
+                  : ('border-ink/10 hover:border-ink/20')
               }`}>
-                <ChevronDownIcon className={`w-3.5 h-3.5 ${isBreakdownOpen ? 'text-accent-gold' : 'text-white/60'}`} />
+                <ChevronDownIcon className={`w-3.5 h-3.5 ${isBreakdownOpen ? 'text-accent-gold' : 'text-ink-3'}`} />
               </div>
             </button>
 
             {/* Always rendered (hidden when collapsed) so the full case study is in the prerendered HTML for search and AI crawlers. */}
             {(
-              <div id="breakdown-panel" className={`${isBreakdownOpen ? 'grid' : 'hidden'} p-4 sm:p-6 md:p-10 pt-0 grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20 border-t border-white/5 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 w-full min-w-0 overflow-hidden`}>
+              <div id="breakdown-panel" className={`${isBreakdownOpen ? 'grid' : 'hidden'} p-4 sm:p-6 md:p-10 pt-0 grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20 border-t border-ink/10 animate-in fade-in slide-in-from-top-2 duration-300 relative z-10 w-full min-w-0 overflow-hidden`}>
                 {/* LEFT RAIL - THE STACK / INFO */}
                 <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-24 h-fit w-full min-w-0">
                   <div className="space-y-4">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold">{t.systemStack}</span>
-                    <div className="grid grid-cols-1 gap-3 pt-2">
-                       {projectData.stack.map((st, sidx) => {
-                        const explanation = stackExplains[st]
-                          ? (locale === 'ko' ? stackExplains[st].ko : stackExplains[st].en)
-                          : (locale === 'ko' ? "프로덕션 아키텍처 지원 요소." : "Production capability supporter.");
-                        return (
-                          <div 
-                            key={sidx} 
-                            className={`p-3 rounded-lg border transition-[background-color,border-color] ${
-                              theme === 'dark' 
-                                ? 'bg-white/[0.01] border-white/5 hover:bg-white/[0.02]/80 hover:border-accent-gold/20' 
-                                : 'bg-black/[0.01] border-black/5 hover:bg-black/[0.02]/80 hover:border-accent-gold/30'
-                            }`}
-                          >
-                            <span 
-                              className={`inline-block max-w-full whitespace-normal break-words px-2 py-0.5 rounded font-mono text-[8px] uppercase font-bold tracking-wider ${
-                                theme === 'dark' ? 'bg-white/5 text-white/80 border border-white/5' : 'bg-black/5 text-alpine-950/80 border border-black/5'
-                              }`}
-                            >
-                              {st}
-                            </span>
-                            <p className={`text-[10px] leading-relaxed mt-2 select-text font-normal text-pretty break-words whitespace-normal w-full min-w-0 ${
-                              theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'
-                            }`}>
-                              {explanation}
-                            </p>
-                          </div>
-                        );
-                      })}
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-accent-gold">{t.systemStack}</span>
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {projectData.stack.map(st => (
+                        <span key={st} className={`text-[11px] font-mono px-2 py-0.5 rounded border border-ink/10 text-ink-2`}>{st}</span>
+                      ))}
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-accent-gold font-display">{t.systemScopeOverview}</span>
-                    <p className={`text-xs md:text-sm font-normal leading-relaxed max-w-prose text-pretty ${
-                      theme === 'dark' ? 'text-white/60' : 'text-alpine-950/50'
-                    }`}>
-                      {t.systemScopeBody}
-                    </p>
-                  </div>
                 </div>
 
                 {/* RIGHT RAIL - DETAILED ANALYSIS */}
@@ -1699,14 +986,12 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                   {/* PROBLEM / SOLUTION */}
                   <div className="grid md:grid-cols-2 gap-12">
                     <div className="space-y-4">
-                      <h3 className="text-xl md:text-2xl font-bold uppercase tracking-wider font-display">{t.theProblem}</h3>
+                      <h3 className="text-xl md:text-2xl font-serif tracking-tight">{t.theProblem}</h3>
                       <ul className="space-y-4">
                         {projectData.problem.map((prob, pidx) => (
                           <li key={pidx} className="flex gap-4 items-start">
                             <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0"></span>
-                            <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${
-                              theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
-                            }`}>
+                            <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 text-ink/70`}>
                               {prob}
                             </p>
                           </li>
@@ -1715,7 +1000,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                     </div>
 
                     <div className="space-y-4">
-                      <h3 className="text-xl md:text-2xl font-bold uppercase tracking-wider font-display">{t.theSolution}</h3>
+                      <h3 className="text-xl md:text-2xl font-serif tracking-tight">{t.theSolution}</h3>
                       {[projectData.solution.slice(0, SOLUTION_SHOWN), projectData.solution.slice(SOLUTION_SHOWN)].map((items, part) => {
                         if (items.length === 0) return null;
                         const list = (
@@ -1723,9 +1008,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
                             {items.map((sol, sidx) => (
                               <li key={sidx} className="flex gap-4 items-start">
                                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 flex-shrink-0"></span>
-                                <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${
-                                  theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
-                                }`}>
+                                <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 text-ink/70`}>
                                   {sol}
                                 </p>
                               </li>
@@ -1748,36 +1031,18 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
 
                   {/* PIPELINE ARCHITECTURE */}
                   <div className="space-y-6">
-                    <h3 className="text-xl md:text-3xl font-bold uppercase tracking-wider font-display border-b pb-4 text-pretty">
+                    <h3 className="text-xl md:text-3xl font-serif tracking-tight border-b pb-4 text-pretty">
                       {t.technicalPipelineMap}
                     </h3>
                     <div className="space-y-6">
-                      {/* Visual Architecture Flow Blueprint */}
-                      <ArchitectureFlowchart projectId={projectId} theme={theme} locale={locale || 'en'} />
-
-                      <div>
-                        <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4">{t.pipelineExecutionLifecycle}</h4>
-                        <ol className="space-y-4 w-full min-w-0">
-                          {projectData.architecture.lifecycle.map((lc, lidx) => (
-                            <li key={lidx} className={`flex gap-4 items-start p-4 rounded-xl relative overflow-hidden font-mono text-xs border w-full min-w-0 ${
-                              theme === 'dark' ? 'border-white/5 bg-white/[0.01]' : 'border-black/5 bg-black/[0.01]'
-                            }`}>
-                              <span className="text-accent-gold font-bold">0{lidx + 1}</span>
-                              <p className={`max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'}`}>{lc}</p>
-                            </li>
-                          ))}
-                        </ol>
-                      </div>
 
                       <div>
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4 mt-6">{t.pipelineEdgeCaseGuardrails}</h4>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full min-w-0">
                           {projectData.architecture.guardrails.map((gr, gidx) => (
-                            <div key={gidx} className={`p-4 rounded-xl border w-full min-w-0 ${
-                              theme === 'dark' ? 'border-white/5 bg-white/[0.02]' : 'border-black/5 bg-black/[0.02]'
-                            }`}>
+                            <div key={gidx} className={`p-4 rounded-xl border w-full min-w-0 border-ink/5 bg-ink/[0.02]`}>
                               <div className="text-xs font-mono font-bold uppercase tracking-wider mb-2 text-accent-gold opacity-90">{t.edgeCasePrefix} 0{gidx+1}</div>
-                              <p className={`text-xs max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/66'}`}>{gr}</p>
+                              <p className="text-xs max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 text-ink-3">{gr}</p>
                             </div>
                           ))}
                         </div>
@@ -1787,102 +1052,49 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
 
                   {/* PROMPT ENGINEERING */}
                   <div className="space-y-6">
-                    <h3 className="text-xl md:text-3xl font-bold uppercase tracking-wider font-display border-b pb-4 text-pretty">
+                    <h3 className="text-xl md:text-3xl font-serif tracking-tight border-b pb-4 text-pretty">
                       {t.promptOrchestration}
                     </h3>
                     <div className="space-y-6 font-mono font-normal text-pretty">
                       <div className="w-full min-w-0">
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.structuredInstruction}</h4>
-                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-green-400 w-full max-w-full whitespace-pre-wrap break-words md:whitespace-pre md:break-normal">
+                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[11px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-green-400 w-full max-w-full whitespace-pre-wrap break-words md:whitespace-pre md:break-normal">
                           <code>{projectData.promptEngineering.logic}</code>
                         </pre>
                       </div>
 
                       <div className="w-full min-w-0">
                         <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-3">{t.runtimeEnforcedSchema}</h4>
-                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[10px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-blue-400 w-full max-w-full whitespace-pre-wrap break-words md:whitespace-pre md:break-normal">
+                        <pre className="p-4 md:p-6 rounded-xl overflow-x-auto text-[11px] md:text-xs leading-relaxed border border-white/5 bg-black/40 text-[#a3acb9] w-full max-w-full whitespace-pre-wrap break-words md:whitespace-pre md:break-normal">
                           <code>{projectData.promptEngineering.schema}</code>
                         </pre>
                       </div>
 
-                      <div>
-                        <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-4 font-display">{t.formattingConsistency}</h4>
-                        <ul className="space-y-3 font-sans">
-                          {projectData.promptEngineering.guardrails.map((gr, gidx) => (
-                            <li key={gidx} className="flex gap-4 items-center">
-                              <div className="w-1.5 h-1.5 rounded-full bg-accent-gold"></div>
-                              <p className={`text-xs max-w-prose text-pretty ${theme === 'dark' ? 'text-white/60' : 'text-alpine-950/66'}`}>{gr}</p>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
                     </div>
                   </div>
 
-                  {/* QUANTIFIED BUSINESS IMPACT */}
-                  <div className="space-y-6">
-                    <h3 className="text-xl md:text-3xl font-bold uppercase tracking-wider font-display border-b pb-4 text-pretty">
-                      {t.productImpactScale}
-                    </h3>
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <div className="space-y-4">
-                        <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-2 font-display">{t.quantifiedValue}</h4>
-                        <ul className="space-y-3">
-                          {projectData.impact.value.map((v, idx) => (
-                            <li key={idx} className="flex gap-4 items-start">
-                              <span className="text-accent-gold font-bold font-mono">✓</span>
-                              <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${
-                                theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
-                              }`}>
-                                {v}
-                              </p>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="space-y-4">
-                        <h4 className="text-xs uppercase tracking-widest font-bold text-accent-gold mb-2 font-display">{t.enterpriseSecurity}</h4>
-                        <ul className="space-y-3">
-                          {projectData.impact.security.map((s, idx) => (
-                            <li key={idx} className="flex gap-4 items-start">
-                              <span className="w-1.5 h-1.5 rounded-full bg-accent-gold mt-2 flex-shrink-0"></span>
-                              <p className={`text-xs md:text-sm leading-relaxed max-w-prose text-pretty break-words whitespace-normal w-full min-w-0 ${
-                                theme === 'dark' ? 'text-white/70' : 'text-alpine-950/70'
-                              }`}>
-                                {s}
-                              </p>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             )}
           </div>
         </div>
 
+        </div>
+
         {/* CONCLUDE CONNECTOR */}
-        <div className={`p-8 md:p-14 rounded-2xl border text-center space-y-6 relative overflow-hidden ${
-          theme === 'dark' ? 'border-white/10 bg-white/[0.01]' : 'border-black/5 bg-white shadow-xl'
-        }`}>
-          <div className="absolute top-0 right-0 w-64 h-64 bg-accent-gold/5 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
-          <h2 className="text-2xl md:text-4xl font-medium tracking-tight font-display text-pretty">
+        <div className={`p-8 md:p-14 rounded-2xl border text-center space-y-6 relative overflow-hidden border-ink/10 bg-card`}>
+          <h2 className="text-3xl md:text-5xl tracking-tight font-serif text-pretty">
             {t.wantToSeeTitle}
           </h2>
-          <p className={`text-xs md:text-base max-w-2xl mx-auto leading-relaxed text-pretty ${
-            theme === 'dark' ? 'text-white/50' : 'text-alpine-950/65'
-          }`}>
+          <p className={`text-xs md:text-base max-w-2xl mx-auto leading-relaxed text-pretty text-ink-3`}>
             {t.wantToSeeBody}
           </p>
           <div className="pt-4">
             <a 
               href={projectData.contactUrl || "mailto:jsn.benjamin@gmail.com"} 
-              className="shiny-cta inline-block px-12 py-5 rounded-xl"
+              className="inline-block px-8 py-3 rounded-full bg-accent-fill text-[#14171d] text-[13px] font-bold hover:brightness-105 active:scale-95 transition-[filter,transform]"
             >
-              {projectData.contactUrl ? (locale === 'en' ? "Contact to Try BridgeRecruit" : "BridgeRecruit 체험 문의하기") : t.startCollaboration}
+              {projectData.contactUrl ? (locale === 'en' ? "Ask to try BridgeRecruit" : "BridgeRecruit 체험 문의") : t.startCollaboration}
             </a>
           </div>
         </div>
@@ -1894,14 +1106,14 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           const href = (id: string) => `${locale === 'ko' ? '/ko' : ''}/case/${id}`;
           return (
             <nav aria-label={locale === 'ko' ? '다른 케이스 스터디' : 'More case studies'} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {([[prev, locale === 'ko' ? '← 이전' : '← Previous', 'text-left'], [next, locale === 'ko' ? '다음 →' : 'Next →', 'sm:text-right']] as const).map(([id, label, align]) => (
+              {([[prev, `${locale === 'ko' ? '← 이전' : '← Previous'} · ${String(caseIds.indexOf(prev) + 1).padStart(2, '0')}`, 'text-left'], [next, `${String(caseIds.indexOf(next) + 1).padStart(2, '0')} · ${locale === 'ko' ? '다음 →' : 'Next →'}`, 'sm:text-right']] as const).map(([id, label, align]) => (
                 <a
                   key={label}
                   href={href(id)}
                   onClick={(e) => { e.preventDefault(); onOpenCase(id); }}
-                  className={`block p-6 rounded-2xl border transition-[border-color] ${align} ${theme === 'dark' ? 'border-white/10 hover:border-accent-gold/40' : 'border-black/10 hover:border-accent-clay/40'}`}
+                  className={`block p-6 rounded-2xl border transition-[border-color] ${align} border-ink/10 hover:border-accent-gold/40`}
                 >
-                  <span className={`block text-[10px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white/50' : 'text-alpine-950/60'}`}>{label}</span>
+                  <span className="block text-[11px] font-bold uppercase tracking-widest text-ink-3">{label}</span>
                   <span className="block mt-2 text-base md:text-lg font-medium">{studyData[id]?.title}</span>
                 </a>
               ))}
@@ -1929,7 +1141,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           
           {/* Label Banner */}
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[310] px-5 py-2.5 rounded-full bg-black/80 border border-white/10 text-xs text-white/90 text-center shadow-2xl max-w-[90%] pointer-events-none font-sans flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent-gold animate-ping"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-accent-fill animate-ping"></span>
             <span>{lightboxImage.label}</span>
           </div>
 
@@ -1937,7 +1149,7 @@ export const CaseStudyViewer: React.FC<CaseStudyViewerProps> = React.memo(({
           <div className="relative max-w-full max-h-full flex items-center justify-center cursor-zoom-out select-none p-4">
             {imageErrors[lightboxImage.url] ? (
               <div className="flex flex-col items-center justify-center p-12 text-center max-w-md bg-neutral-900/60 rounded-2xl border border-white/10 select-none animate-in fade-in duration-300">
-                <div className="w-16 h-16 rounded-full bg-neutral-950 border border-white/10 flex items-center justify-center mb-6 text-accent-gold">
+                <div className="w-16 h-16 rounded-full bg-neutral-950 border border-white/10 flex items-center justify-center mb-6 text-accent-fill">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>

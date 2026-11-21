@@ -60,19 +60,12 @@ export interface CaseStudyType {
     role?: string;
   }[];
   decisions?: ProductDecision[];
-  behindTheArchitecture?: {
-    problem: string;
-    vision: string;
-    rationale: string;
-  };
   architecture: {
-    lifecycle: string[];
     guardrails: string[];
   };
   promptEngineering: {
     logic: string;
     schema: string;
-    guardrails: string[];
   };
   impact: {
     value: string[];

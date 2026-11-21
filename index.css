@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ---- v2 ---- */
+.rise { animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+
+/* sections ease in as they scroll into view; browsers without scroll timelines just show them */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise, .reveal { animation: none; }
+}
+.rise-fast { animation: rise 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.project-modal[open] { animation: modal-in 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+.project-modal[open]::backdrop { animation: fade-in 0.3s ease-out; }
+@keyframes modal-in { from { opacity: 0; transform: translateY(16px) scale(0.98); } }
+@keyframes fade-in { from { opacity: 0; } }
+body:has(dialog[open]) { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .rise-fast, .project-modal[open], .project-modal[open]::backdrop { animation: none; } }
+p, dd, li { text-wrap: pretty; }
+body.case-open [data-page] { visibility: hidden; }

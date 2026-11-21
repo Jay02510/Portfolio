@@ -2,60 +2,78 @@ import { CaseStudyType } from '../types.ts';
 
 export const studyDataEn: Record<string, CaseStudyType> = {
   "hagwon-readiness": {
-    title: "Hagwon AI Readiness Index — Bilingual Lead-Gen Assessment",
-    tagline: "A 7-pillar, EN/KO self-assessment that scores a hagwon director's AI readiness out of 84, emails a personalized report, and routes the result into Chekki's B2B sales funnel — with GA4 attribution and a password-gated admin view behind it.",
-    meta: { role: "Product engineer", team: "Solo", status: "Live" },
+    title: "Hagwon AI Readiness Index: a bilingual lead-gen quiz",
+    tagline: "A 17-question self-assessment in English and Korean that scores an academy director's AI readiness out of 84, emails a personal report and sends the lead into Chekki's sales funnel, with GA4 attribution and a password-protected admin view.",
+    meta: {
+      "role": "Product engineer",
+      "team": "Solo",
+      "status": "Live"
+    },
     liveUrl: "https://ai-readiness.chekkiai.com",
     screenshots: [
-      { label: "Quiz Landing", url: "/screenshots/hagwon-readiness/01-landing.png", subLabel: "Bilingual Entry Point" },
-      { label: "Assessment Questions", url: "/screenshots/hagwon-readiness/02-questions.png", subLabel: "7-Pillar Question Flow" },
-      { label: "Emailed Report", url: "/screenshots/hagwon-readiness/03-email-report.png", subLabel: "Auto-Generated Personalized Report" }
+      {
+        "label": "Quiz landing",
+        "url": "/screenshots/hagwon-readiness/01-landing.png",
+        "subLabel": "Starts in English or Korean"
+      },
+      {
+        "label": "Questions",
+        "url": "/screenshots/hagwon-readiness/02-questions.png",
+        "subLabel": "17 questions across 7 areas"
+      },
+      {
+        "label": "Emailed report",
+        "url": "/screenshots/hagwon-readiness/03-email-report.png",
+        "subLabel": "A personal report, sent automatically"
+      }
     ],
     stats: [
-      { label: "Assessment Scope", value: "7 Pillars / 17 Questions" },
-      { label: "Languages", value: "EN / KO Bilingual" },
-      { label: "Lead Delivery", value: "Auto Email + Firestore Permalink" }
+      {
+        "label": "Scope",
+        "value": "7 areas, 17 questions"
+      },
+      {
+        "label": "Languages",
+        "value": "English and Korean"
+      },
+      {
+        "label": "Lead delivery",
+        "value": "Email + saved link"
+      }
     ],
     problem: [
-      "Chekki Schools' sales motion depended on a director already knowing they had an AI gap — most had no way to see it themselves before a sales call.",
-      "A lead-gen quiz with no server-side scoring or persistence would lose every result the moment a visitor closed the tab, and give the sales team nothing to follow up on.",
-      "Traffic driven at the quiz (social, blog, cold outreach) had no way to prove which channel actually produced a completed assessment versus a bounce."
+      "Chekki Schools' sales calls assumed a director already knew they had an AI gap. Most had no way to see it before the call.",
+      "A quiz that scores only in the browser loses every result when the tab closes, and gives sales nothing to follow up on.",
+      "Traffic from social posts, the blog and cold outreach couldn't show which channel led to a finished assessment."
     ],
     solution: [
-      "Built a weighted scoring engine across 7 pillars (21–84 scale) with band cutoffs and a personalized weakest-pillar callout. One pure report builder runs in the browser for instant results and again on the server, which rebuilds the report from the raw answers before anything is stored or emailed.",
-      "On submit, persisted the full rendered report snapshot to Firestore and emailed both the submitter (bilingual HTML report) and an internal notify address (lead alert) via Resend — sliding-window rate-limited per IP to block abuse.",
-      "Gave every report a permanent permalink (/results/[id]) that reads the stored snapshot back, so a director's result survives without depending on their browser's localStorage.",
-      "Wired GA4 site-wide and fired a generate_lead event with score/band on successful submit, so UTM-tagged campaign links show up as attributable conversions, not just pageviews.",
-      "Added a Basic-Auth-gated /admin route (Vercel middleware, password-only check) showing score distribution, band counts, and weakest-pillar frequency across all submissions — no separate login system to build."
+      "Weighted scoring across 7 areas (21 to 84) with score bands and a note on the weakest area. The same report builder runs in the browser for instant results and on the server, which rebuilds the report from the raw answers before anything is saved or emailed.",
+      "On submit, the report is saved to Firestore and emailed to the director, with a lead alert to the team through Resend. Submissions are rate-limited per IP.",
+      "Every report has a permanent link that reads the saved copy, so it doesn't depend on the director's browser.",
+      "GA4 fires a generate_lead event with the score and band, so UTM-tagged links show up as conversions.",
+      "A password-protected /admin page shows the score spread, band counts and the most common weak area."
     ],
     stack: ["Next.js 14 App Router", "TypeScript", "Tailwind CSS", "Firebase Admin / Firestore", "Resend", "Google Analytics 4", "Vercel Middleware"],
     decisions: [
       {
-        decision: "HTTP Basic Auth via middleware over a full login system",
-        alternativeConsidered: "Building a session-based admin login (cookie + password form + auth check on every route)",
-        why: "One person needs to see submission stats occasionally — the browser's native Basic Auth prompt does the whole job in ~15 lines of middleware, no session storage or login UI to build or secure.",
-        tradeOffAccepted: "No per-user accounts, no audit log of who viewed the dashboard, one shared password for anyone who has it."
+        "decision": "Browser Basic Auth instead of a login system",
+        "alternativeConsidered": "A session-based admin login with a form and checks on every route",
+        "why": "One person checks the stats now and then. The browser's built-in Basic Auth prompt does the job in about 15 lines of middleware, with no sessions or login screen to build and secure.",
+        "tradeOffAccepted": "No personal accounts, no record of who viewed the page, and one shared password."
       },
       {
-        decision: "Rebuild the report on the server from raw answers, reversing an earlier client-scored design",
-        alternativeConsidered: "Keeping the original design: score in the browser and POST the finished report (score, band, recommendation copy) for the server to store and email",
-        why: "The original reasoning was that gaming your own score has no payoff. An audit found the real risk wasn't the score but the text: whatever a POST contained was emailed from a Chekki address to any recipient and published at a public permalink. Moving the same pure builder to the server means the API accepts only answers and contact details.",
-        tradeOffAccepted: "Scoring now runs twice (browser for instant feedback, server for the record), so lib/report.ts must stay free of browser-only code — guarded by a small assert-based check script."
+        "decision": "Rebuild the report on the server from the raw answers",
+        "alternativeConsidered": "Keep the first design: score in the browser and send the finished report for the server to store and email",
+        "why": "I first reasoned that nobody gains from faking their own score. An audit showed the risk was the text: whatever the request contained was emailed from a Chekki address to any recipient and published at a public link. Now the API accepts only answers and contact details.",
+        "tradeOffAccepted": "Scoring runs twice, so the report builder must stay free of browser-only code. A small check script guards that."
       }
     ],
     architecture: {
-      lifecycle: [
-        "Quiz: lib/questions.ts defines the 7-pillar, 17-question bank; lib/scoring.ts weights answers into a 21–84 score, a band, and a weakest pillar; lib/report.ts turns that into the localized report.",
-        "Submit: POST /api/submit validates the email and that every question has an A–D answer, rate-limits by IP (5/hr sliding window), rebuilds the report server-side, writes it plus the raw answers to Firestore's readiness_submissions, and fires two Resend emails.",
-        "Permalink: /results/[id] reads that same Firestore doc back, rendering the identical report without recomputing anything from the visitor's answers.",
-        "Admin: /admin (Basic Auth via middleware.ts) reads every submission and groups it by stable band and pillar ids, so English and Korean submissions land in the same buckets."
-      ],
       guardrails: [
-        "The API never accepts report text: it takes answers and contact details only, so a forged request can't put its own words into a Chekki-branded email or a public permalink.",
-        "Sliding-window in-memory rate limiter (5 submissions/hour/IP) blocks scripted abuse of the free-text feedback and email fields.",
-        "User-submitted name/hagwon/feedback strings are HTML-escaped before being interpolated into the report email, closing the injection path a raw template string would leave open.",
-        "/admin is unreachable without ADMIN_PASSWORD set — the route 503s rather than silently serving submissions data if the env var is missing.",
-        "Firestore writes only happen when FIREBASE_SERVICE_ACCOUNT is present, so local/dev runs degrade to email-only instead of crashing."
+        "The API never accepts report text, only answers and contact details, so a forged request can't put its own words into a Chekki email or a public link.",
+        "A rate limit of 5 submissions per hour per IP blocks scripted abuse of the free-text fields.",
+        "Names and feedback are HTML-escaped before they go into the email.",
+        "/admin returns 503 if no admin password is set, instead of showing the data."
       ]
     },
     promptEngineering: {
@@ -69,11 +87,6 @@ function scoreAssessment(answers) {
   name: string; raw: number; maxRaw: number;
   isStrong: boolean; blurb: string | null; nextStep: string | null;
 };`,
-      guardrails: [
-        "Personalized next-step copy is looked up per answered question (nextStepByQuestion), not just per pillar, after a bug let two different weakest-pillar answers surface the same generic recommendation.",
-        "EN/KO copy pairs are fixed at the same commit as any scoring change, so a quote and its recommendation can't drift out of sync between languages (real fixes: q12 and q17 overrides).",
-        "The weakest pillar is excluded from the full pillar breakdown table in the report, so the same score never gets shown to the reader twice under two different framings."
-      ]
     },
     impact: {
       value: [
@@ -88,69 +101,86 @@ function scoreAssessment(answers) {
         "Report permalinks are marked noindex, so a director's name and scores are reachable by link but not by search."
       ]
     },
-    behindTheArchitecture: {
-      problem: "A static quiz with no backend can't produce a lead, can't survive a closed tab, and can't tell you which marketing channel is actually working.",
-      vision: "Make the assessment itself the top of the sales funnel: score it, email it, persist it, and attribute it — without building a second app to do that.",
-      rationale: "Reused the exact Firebase Admin credential and Firestore project already backing chekki-ai's sales tooling, so this quiz writes into the same data plane instead of standing up its own."
-    },
     technicalHurdles: [
       {
-        title: "Same weakest-pillar bug in two different question sets",
-        incident: "The teaching pillar's quoted answer and its recommendation could mismatch — the report would quote one weak answer but recommend fixing a different one. Fixed once for question 17, then found again on question 12.",
-        diagnosis: "The recommendation lookup was keyed by pillar, not by the specific question the visitor's weakest answer came from — any pillar spanning two distinct problems could point the recommendation at the wrong one.",
-        resolution: "Added per-question overrides keyed by the actual question ID, and audited every multi-question pillar for the same shape of mismatch instead of only patching the one that got reported."
+        "title": "The report recommended fixing the wrong answer",
+        "incident": "The report could quote one weak answer and recommend fixing a different one. I fixed it for question 17, then found it again on question 12.",
+        "diagnosis": "Recommendations were looked up by area, not by the question the weakest answer came from, so any area covering two problems could point at the wrong one.",
+        "resolution": "Added overrides keyed by question ID and checked every multi-question area for the same mismatch, instead of patching only the one that was reported."
       },
       {
-        title: "Report emails silently collapsing in Gmail",
-        incident: "The full pillar breakdown table rendered fine everywhere except Gmail, where large chunks of the report just disappeared behind a '...' toggle.",
-        diagnosis: "Gmail's clipping heuristic auto-collapses what it treats as 'quoted content' when it detects a table nested a third level deep inside another table cell.",
-        resolution: "Flattened the pillar rows to single-level markup instead of a table-in-a-cell, keeping the same visual layout without tripping Gmail's nesting-depth check."
+        "title": "Report emails collapsing in Gmail",
+        "incident": "The breakdown table showed everywhere except Gmail, which hid big parts of the report behind a \"...\" toggle.",
+        "diagnosis": "Gmail collapses what it takes for quoted content when a table sits three levels deep inside another table.",
+        "resolution": "Flattened the rows to one level of markup with the same layout."
       },
       {
-        title: "GA4 and admin code shipped locally, never reached the deploy",
-        incident: "After wiring up GA4 and the admin dashboard, Realtime showed 0 users and /admin was unreachable — Vercel's redeploy button was just rebuilding the last pushed commit, which predated the changes.",
-        diagnosis: "The changes existed only in the local working tree; nothing had actually been committed or pushed to main yet.",
-        resolution: "Committed and pushed the changes to trigger a real deploy off the new commit, instead of continuing to redeploy stale code."      },
-      {
-        title: "Admin counted every band twice, once per language",
-        incident: "The admin dashboard showed \"Digitizing\" and \"디지털 전환 중\" as two separate bands, and Korean submissions got the wrong badge colour.",
-        diagnosis: "Submissions stored the band and weakest-pillar names in the visitor's language, and the dashboard grouped on those display strings.",
-        resolution: "Gave each band a stable id stored with every new submission and grouped on band and pillar ids. Older records are matched back by their English or Korean name, so no migration was needed."
+        "title": "Admin counted every band twice",
+        "incident": "The dashboard showed \"Digitizing\" and \"디지털 전환 중\" as two bands, and Korean submissions got the wrong badge colour.",
+        "diagnosis": "Band and area names were stored in the visitor's language, and the dashboard grouped on those labels.",
+        "resolution": "Each band now has a stable ID saved with new submissions, and grouping uses the IDs. Older records are matched by their English or Korean name, so no migration was needed."
       }
     ]
   },
   vodabi: {
-    title: "VODATalk — AI Voice Sales Training & Evaluation Platform",
-    tagline: "Sales staff practise realtime voice roleplay calls with AI customers, get rubric-based scores and coaching, and managers follow team progress.",
-    meta: { role: "Sole full-stack engineer", team: "Solo engineer, building from a designer's Figma", dates: "Jul 2026 – present", status: "Built; rolling out with enterprise clients" },
+    title: "VODATalk: voice AI sales training and scoring",
+    tagline: "Sales staff practise calls with AI customers by voice, get a rubric score and coaching after each call, and managers see how the team is improving.",
+    meta: {
+      "role": "Sole full-stack engineer",
+      "team": "Solo, building from a designer's Figma",
+      "dates": "Since Jul 2026",
+      "status": "Built, rolling out with enterprise clients"
+    },
     liveUrl: "",
     screenshots: [
-      { label: "Live Call Pipeline", url: "/screenshots/vodabi/call-flow.svg", subLabel: "Browser Talks to OpenAI Realtime Over WebRTC; the Backend Issues Tokens and Stores Turns" },
-      { label: "Score, Then Coach", url: "/screenshots/vodabi/evaluation.svg", subLabel: "Strict-JSON Scoring, Then Coaching Written From the Fixed Scores" },
-      { label: "Roles & Access", url: "/screenshots/vodabi/roles.svg", subLabel: "Admins Configure, Managers Assign, Staff Practise, Candidates Take One Call" }
+      {
+        "label": "Live call",
+        "url": "/screenshots/vodabi/call-flow.svg",
+        "subLabel": "The browser talks to OpenAI Realtime over WebRTC. The backend issues tokens and stores turns."
+      },
+      {
+        "label": "Score, then coach",
+        "url": "/screenshots/vodabi/evaluation.svg",
+        "subLabel": "Scores come back as strict JSON. Coaching is written from those fixed scores."
+      },
+      {
+        "label": "Roles and access",
+        "url": "/screenshots/vodabi/roles.svg",
+        "subLabel": "Admins configure, managers assign, staff practise, candidates take one call."
+      }
     ],
     stats: [
-      { label: "Time to Production", value: "~3 Weeks", detail: "Revamp plus coaching layer" },
-      { label: "Voice Pipeline", value: "Direct WebRTC", detail: "Browser to OpenAI Realtime, no server hop" },
-      { label: "Grading", value: "Score, then explain", detail: "Feedback is written from fixed scores" }
+      {
+        "label": "Time to production",
+        "value": "~3 weeks",
+        "detail": "Revamp plus the coaching layer"
+      },
+      {
+        "label": "Voice pipeline",
+        "value": "Direct WebRTC",
+        "detail": "Browser to OpenAI Realtime, no server in the audio path"
+      },
+      {
+        "label": "Grading",
+        "value": "Score, then explain",
+        "detail": "Feedback is written from scores that are already fixed"
+      }
     ],
     problem: [
-      "Client names and data are kept confidential under NDA.",
-      "Sales teams assess calls by listening to them, which takes time and varies by listener.",
-      "Staff need a safe place to practise realistic calls, including objections, as often as they like.",
-      "Managers want to see who is training and how scores change over time."
+      "Sales teams judge calls by listening to them, which is slow and depends on who is listening.",
+      "Staff need somewhere safe to practise realistic calls, objections included, as often as they want.",
+      "Managers want to see who is training and how scores move over time.",
+      "Client names and data stay confidential under NDA."
     ],
     solution: [
-      "Realtime voice roleplay: AI customers for outbound, inbound and interview scenarios over direct WebRTC.",
-      "Rubric grading: each call is scored against the scenario's rubric, then coaching is written from those scores.",
-      "Staff training: self-practice, manager-assigned training, scores by scenario, competency growth and badges.",
-      "Manager dashboard: company and team completion rates, score status, and each staff member's reports.",
-      "Candidate tests: magic links let applicants take a scored call without creating an account.",
-      "Calls on phones: campaign links run on phones behind an admin switch per company and per link, with phone layouts for the call and report.",
-      "Pilot hardening: calls survive mic loss, silent calls and concurrent starts; candidates consent before the call, and full campaigns show a closed message.",
-      "Admin backoffice: non-engineers manage personas, scenarios, rubrics and difficulty tiers without code.",
-      "VOISOR coach: a chat assistant that answers follow-up questions about a report.",
-      "Bilingual: full Korean and English interface."
+      "Voice roleplay with AI customers for outbound, inbound and interview scenarios, over direct WebRTC.",
+      "Each call is scored against the scenario's rubric, then coaching is written from those scores.",
+      "Staff practise on their own or take training a manager assigns, and see scores by scenario, skill growth and badges.",
+      "Managers see completion and scores for the company, each team and each person.",
+      "Candidates take a scored call from a magic link, with no account, after giving consent.",
+      "Calls run on phones and recover from mic loss, silence and double starts.",
+      "Non-engineers manage personas, scenarios, rubrics and difficulty in an admin backoffice.",
+      "VOISOR, a chat coach, answers follow-up questions about a report. The whole interface is in Korean and English."
     ],
     stack: [
       "React 19",
@@ -167,51 +197,63 @@ function scoreAssessment(answers) {
       "i18next (KO / EN)"
     ],
     coreLoop: [
-      { step: "01. Pick a Scenario", role: "Staff / Candidate", detail: "Staff choose a scenario or open assigned training; candidates open a magic link." },
-      { step: "02. Live Voice Call", role: "Voice AI Persona", detail: "The browser talks directly to OpenAI Realtime over WebRTC, so replies feel natural." },
-      { step: "03. Transcript Saved", role: "Backend", detail: "Finished turns and speech pacing are logged after each turn." },
-      { step: "04. Score", role: "LLM Judge", detail: "A scoring call grades each rubric item with a strict JSON schema." },
-      { step: "05. Coach", role: "LLM Judge", detail: "A second call writes the feedback from the fixed scores." },
-      { step: "06. Track Growth", role: "Staff / Manager", detail: "Staff see growth and badges; managers see team completion and reports." }
+      {
+        "step": "01. Pick a scenario",
+        "role": "Staff / candidate",
+        "detail": "Staff pick a scenario or open assigned training. Candidates open a magic link."
+      },
+      {
+        "step": "02. Live voice call",
+        "role": "AI persona",
+        "detail": "The browser talks straight to OpenAI Realtime over WebRTC, so replies come back fast."
+      },
+      {
+        "step": "03. Transcript saved",
+        "role": "Backend",
+        "detail": "Each finished turn and its speaking pace are logged."
+      },
+      {
+        "step": "04. Score",
+        "role": "LLM judge",
+        "detail": "One call grades each rubric item against a strict JSON schema."
+      },
+      {
+        "step": "05. Coach",
+        "role": "LLM judge",
+        "detail": "A second call writes feedback from the fixed scores."
+      },
+      {
+        "step": "06. Track progress",
+        "role": "Staff / manager",
+        "detail": "Staff see growth and badges. Managers see team completion and reports."
+      }
     ],
     decisions: [
       {
-        decision: "Direct browser-to-model WebRTC",
-        alternativeConsidered: "Relaying audio through the backend",
-        why: "Keeping the server out of the audio path removes a network hop on every turn, so roleplay feels like a real call.",
-        tradeOffAccepted: "Turns are logged after they finish rather than streamed through the server."
+        "decision": "Connect the browser straight to the voice model over WebRTC",
+        "alternativeConsidered": "Relay audio through the backend",
+        "why": "Keeping the server out of the audio path removes a network hop on every turn, so the roleplay feels like a real call.",
+        "tradeOffAccepted": "Turns are logged after they finish instead of streaming through the server."
       },
       {
-        decision: "Full evaluation after the call",
-        alternativeConsidered: "Scoring every turn with an LLM during the call",
-        why: "Per-turn LLM scoring adds cost and mid-call delay. Staff get light progress cues during the call and a full report after.",
-        tradeOffAccepted: "The detailed report arrives a few seconds after the call ends."
+        "decision": "Evaluate the whole call after it ends",
+        "alternativeConsidered": "Score every turn with an LLM during the call",
+        "why": "Scoring each turn adds cost and delay mid-call. Staff get light progress cues during the call and the full report after it.",
+        "tradeOffAccepted": "The report arrives a few seconds after the call ends."
       },
       {
-        decision: "Score first, then write feedback",
-        alternativeConsidered: "One call that produces scores and feedback together",
-        why: "Writing feedback from scores that are already fixed keeps the coaching consistent with the number. Simple checks, such as whether the trainee spoke, run in code.",
-        tradeOffAccepted: "Two calls in sequence add a few seconds."
+        "decision": "Score first, then write feedback",
+        "alternativeConsidered": "One call that returns scores and feedback together",
+        "why": "Feedback written from fixed scores always agrees with the number. Simple checks, like whether the trainee spoke at all, run in code.",
+        "tradeOffAccepted": "Two calls in a row add a few seconds."
       }
     ],
-    behindTheArchitecture: {
-      problem: "Sales teams need a consistent way to practise and assess calls without a person listening to each one.",
-      vision: "Realistic voice roleplay with clear, rubric-based coaching that staff and managers trust.",
-      rationale: "Direct WebRTC for natural conversation, and a two-step GPT-4o evaluation so feedback always follows the score."
-    },
     architecture: {
-      lifecycle: [
-        "Access: staff sign in; candidates use a magic link.",
-        "Mic check: the countdown starts only once the microphone is ready.",
-        "Voice: browser connects directly to OpenAI Realtime with push-to-talk.",
-        "Evaluation: scoring call, then feedback call.",
-        "Review: staff and managers see reports, growth and team progress."
-      ],
       guardrails: [
-        "Personal data and transcripts encrypted at rest.",
-        "Role-based access for super admin, admin, manager and staff.",
-        "A clearly marked fallback report if evaluation can't complete.",
-        "Containerised deploy behind HTTPS."
+        "Personal data and transcripts are encrypted at rest.",
+        "Access is split by role: super admin, admin, manager and staff.",
+        "If evaluation can't finish, the fallback report says so plainly.",
+        "Deployed in containers behind HTTPS."
       ]
     },
     promptEngineering: {
@@ -248,11 +290,6 @@ Call B — feedback
     "required": ["rubricResults", "callFlowPhases", "keyQuotes"]
   }
 }`,
-      guardrails: [
-        "Strict Structured Outputs on both calls.",
-        "Quotes come from the real transcript by line index.",
-        "Transcript text is treated as call content, not instructions."
-      ]
     },
     impact: {
       value: [
@@ -272,70 +309,114 @@ Call B — feedback
     },
     technicalHurdles: [
       {
-        title: "Silent audio at call start",
-        incident: "Some early calls finished the countdown but captured no audio.",
-        diagnosis: "The browser asked for the microphone after the countdown, so a slow permission left the call with an empty audio track.",
-        resolution: "The countdown now waits for the microphone, then passes that stream straight into the call."
+        "title": "Silent audio at call start",
+        "incident": "Some early calls finished the countdown but recorded nothing.",
+        "diagnosis": "The browser asked for the microphone after the countdown, so a slow permission prompt left the call with an empty audio track.",
+        "resolution": "The countdown now waits for the microphone and hands that stream straight to the call."
       },
       {
-        title: "Background noise triggering replies",
-        incident: "Typing and room noise sometimes made the AI respond, using tokens.",
-        diagnosis: "Voice detection sensitivity varied across headsets and rooms.",
-        resolution: "Added push-to-talk turn control for clear turn boundaries."
+        "title": "AI dropping its role on noisy openings",
+        "incident": "A cough at the start of a call sometimes made the AI answer as a generic assistant instead of the customer.",
+        "diagnosis": "It replied to the noise before the conversation had started, so it had nothing to anchor its role to.",
+        "resolution": "The AI waits for a real greeting before its first reply, the call opens with a note on who speaks first, and on outbound calls the AI customer picks up first."
       },
       {
-        title: "AI stepping out of role on noisy openings",
-        incident: "A cough at the start of a call sometimes made the AI answer as a generic assistant instead of the customer.",
-        diagnosis: "The AI replied to the noise before any real conversation had started, so it had nothing to anchor its role.",
-        resolution: "The AI now waits for a real greeting before its first reply, the call opens with a note on who speaks first, and on outbound calls the AI customer picks up first."
+        "title": "Slow first screen on phones",
+        "incident": "On a throttled mobile Lighthouse run, the login page, which every user sees first, was far outside Google's \"good\" range.",
+        "diagnosis": "One PNG background made up most of the page weight.",
+        "resolution": "I re-encoded it as WebP at the same resolution. The page shrank to a fraction of its size and loads several times faster on phones, with no layout shift."
       },
       {
-        title: "Slow first screen on phones",
-        incident: "On a throttled mobile Lighthouse run, the login page (the first screen every user sees) was far outside the range Google rates as good.",
-        diagnosis: "A single PNG background made up most of the page's weight.",
-        resolution: "Re-encoded it as WebP at the same resolution. The page became a fraction of its former size and loaded several times faster on phones, with no layout shift."
-      },
-      {
-        title: "List responses carrying unused data",
-        incident: "A read-only API latency benchmark I wrote (no dependencies, refuses to run against production) flagged the session list as much heavier than the screen needed.",
-        diagnosis: "Each session in the list carried a large configuration field that no list screen displayed, and it made up most of the response.",
-        resolution: "Dropped the field from the list response, so lists download a fraction of the data and respond faster."
-      },
-      {
-        title: "Is the AI grader consistent?",
-        incident: "Candidates are scored by an LLM, so the same call should get the same grade every time. Nobody had checked.",
-        diagnosis: "Wrote a test that re-grades the same calls many times through the real grading code on staging. Scores were stable, but a call sitting right at a grade boundary could land on either side of it.",
-        resolution: "Reported it with options: flag near-boundary calls for human review, or grade twice and take the median. A companion benchmark timed live voice replies and replaced an unmeasured latency claim in the docs with a measured one."
+        "title": "Is the AI grader consistent?",
+        "incident": "An LLM scores candidates, so the same call should get the same grade every time. Nobody had checked.",
+        "diagnosis": "I wrote a test that re-grades the same calls many times through the real grading code on staging. Scores were stable, but a call right on a grade boundary could land on either side.",
+        "resolution": "I reported two options: send near-boundary calls to a person, or grade twice and take the median. A companion benchmark timed live voice replies and replaced a guessed latency figure in the docs with a measured one."
       }
     ]
   },
   chekki: {
-    title: "Chekki AI — AI Homework Grading & Academy Platform",
-    tagline: "AI-graded homework and teacher/parent reporting platform for Korean English academies, shipped solo across web, iOS, and Android with ground-truth answer key OCR grading and a connected staff reporting loop.",
-    meta: { role: "Founder and product engineer", team: "Solo", status: "Live on the App Store and Google Play" },
+    title: "Chekki AI: homework grading for English academies",
+    tagline: "Parents scan their child's English homework and get it graded against the teacher's answer key, with every mistake explained in Korean. Teachers get the mistakes back before class. Built solo for web, iOS and Android.",
+    meta: {
+      "role": "Founder and product engineer",
+      "team": "Solo",
+      "status": "Live on the App Store and Google Play"
+    },
     liveUrl: "https://chekki-ai.vercel.app/",
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "/video/chekki-loop.mp4",
     walkthroughPoster: "/video/chekki-loop-poster.webp",
     screenshots: [
-      { label: "Landing Page", url: "/screenshots/chekki-app/landing-hero-en.webp", subLabel: "Chekki Grades. You Praise." },
-      { label: "Pain Points Solved", url: "/screenshots/chekki-app/landing-pains-en.webp", subLabel: "Three Homework Problems Parents Name" },
-      { label: "Home", url: "/screenshots/chekki-app/ios-en-5.webp", subLabel: "Scan Homework, Practice Queue & Academy Steps" },
-      { label: "Grading", url: "/screenshots/chekki-app/ios-en-4.webp", subLabel: "Reads Their Handwriting, Suggests Praise While You Wait" },
-      { label: "Graded Worksheet", url: "/screenshots/chekki-app/store-en-1.webp", subLabel: "Answers Marked Right on the Page" },
-      { label: "What to Say", url: "/screenshots/chekki-app/store-en-2.webp", subLabel: "Every Miss Explained in Korean for the Parent" },
-      { label: "Say It", url: "/screenshots/chekki-app/store-en-3.webp", subLabel: "Hear the Answer, Then Say It Back" },
-      { label: "Review Cards", url: "/screenshots/chekki-app/store-en-5.webp", subLabel: "Mistakes Come Back as Flashcards" },
-      { label: "Past Scans", url: "/screenshots/chekki-app/store-en-6.webp", subLabel: "Reopen Any Graded Page" },
-      { label: "Teacher's Class Report", url: "/screenshots/chekki-app/store-en-7.webp", subLabel: "Written and Sent by the Korean Teacher" }
+      {
+        "label": "Landing page",
+        "url": "/screenshots/chekki-app/landing-hero-en.webp",
+        "subLabel": "Chekki grades. You praise."
+      },
+      {
+        "label": "The problem",
+        "url": "/screenshots/chekki-app/landing-pains-en.webp",
+        "subLabel": "Three homework problems parents name"
+      },
+      {
+        "label": "Home",
+        "url": "/screenshots/chekki-app/ios-en-5.webp",
+        "subLabel": "Scan homework, practice queue and academy steps"
+      },
+      {
+        "label": "Grading",
+        "url": "/screenshots/chekki-app/ios-en-4.webp",
+        "subLabel": "Reads handwriting and suggests praise while you wait"
+      },
+      {
+        "label": "Graded worksheet",
+        "url": "/screenshots/chekki-app/store-en-1.webp",
+        "subLabel": "Answers marked right on the page"
+      },
+      {
+        "label": "What to say",
+        "url": "/screenshots/chekki-app/store-en-2.webp",
+        "subLabel": "Every miss explained in Korean for the parent"
+      },
+      {
+        "label": "Say it",
+        "url": "/screenshots/chekki-app/store-en-3.webp",
+        "subLabel": "Hear the answer, then say it back"
+      },
+      {
+        "label": "Review cards",
+        "url": "/screenshots/chekki-app/store-en-5.webp",
+        "subLabel": "Mistakes come back as flashcards"
+      },
+      {
+        "label": "Past scans",
+        "url": "/screenshots/chekki-app/store-en-6.webp",
+        "subLabel": "Reopen any graded page"
+      },
+      {
+        "label": "Class report",
+        "url": "/screenshots/chekki-app/store-en-7.webp",
+        "subLabel": "Written and sent by the Korean teacher"
+      }
     ],
     stats: [
-      { label: "Role Architecture", value: "4 Distinct Roles", detail: "Parent, Foreign Teacher, Korean Staff, Director" },
-      { label: "Mistakes Caught (Eval)", value: "98–100%", detail: "105 synthetic pages, 35 of them tilted, shadowed or crossed-out; ≤2 of 226 right answers marked wrong in any run" },
-      { label: "Product Rigor", value: "26 Logged Decisions", detail: "Documented Trade-Offs & PRD/Scope Trio" }
+      {
+        "label": "Roles",
+        "value": "4",
+        "detail": "Parent, foreign teacher, Korean teacher, director"
+      },
+      {
+        "label": "Mistakes caught in evals",
+        "value": "98–100%",
+        "detail": "105 synthetic pages, 35 of them tilted, shadowed or crossed out. At most 2 of 226 right answers marked wrong in any run."
+      },
+      {
+        "label": "Decisions logged",
+        "value": "26",
+        "detail": "Each with the alternative and the trade-off"
+      }
     ],
     evals: {
-      title: "Grading eval · Gemini 3.8 Flash with the answer key",
+      title: "Grading eval: Gemini 3.8 Flash with the answer key",
       note: "Synthetic worksheet pages with handwritten answers, graded against the teacher's key. On the first 10-page set, Gemini 2.5 Flash caught 8 of 9 mistakes and 3.8 Flash caught 9 of 9, so production moved to 3.8 Flash.",
       sets: [
         { name: "Clean pages · 70 pages", runs: [{ caught: 55, mistakes: 55, wrong: 0, right: 159 }, { caught: 55, mistakes: 55, wrong: 0, right: 159 }] },
@@ -343,25 +424,18 @@ Call B — feedback
       ]
     },
     problem: [
-      "Parent-Child Home Study Friction: Korean parents who aren't fluent in English struggle to check English homework, so homework time turns into guessing.",
-      "Disconnected Feedback Loop: Student homework errors made at home vanish into backpacks without reaching the classroom, leaving foreign teachers unaware of systemic weak spots.",
-      "Bilingual Administrative Overhead: Foreign teachers and Korean staff spend hours every week drafting, translating, and aligning parent progress notes across a language barrier."
+      "Korean parents who don't read English well can't check English homework, so homework time turns into guessing.",
+      "Mistakes made at home never reach the classroom, so foreign teachers don't see what the class keeps getting wrong.",
+      "Foreign and Korean teachers spend hours a week drafting, translating and agreeing on parent notes."
     ],
     solution: [
-      "Grounded Multimodal Grading Pipeline: Worksheet grading runs against teacher-uploaded, OCR'd answer keys in Firestore rather than model guesswork, so corrections match what the teacher taught.",
-      "Human Review Before Parents: Only the Korean teacher can approve a class log, enforced in Firestore rules rather than the UI, so a foreign teacher can't self-approve.",
-      "Class-Level Korean Teacher Review: Teachers said the one-card-per-student queue was clunky on phones, so the Korean teacher now reviews a whole class-day on one screen and approves once. Each family gets the class summary plus only their child's note in the app; KakaoTalk copies are optional.",
-      "Native-Speaker Voice Rules: Korean readers said report drafts sounded machine-written, repeating the same stock praise. Shared voice rules now steer every report prompt toward specific, plain observations.",
-      "Cross-Platform Mobile Shipping: Shipped iOS & Android from one React codebase using Capacitor, Universal Links / App Links, Apple/Google/Kakao auth, and RevenueCat subscription billing.",
-      "Voice-First Class Log: One recording fills the class summary and notes on named students, applied straight into the form with one-step Undo. Turn-based rather than live speech-to-speech, which Vercel serverless functions can't hold open.",
-      "Three Security Audits: Closed 7+ authorization gaps and a login user-enumeration bug, then a final pre-pilot pass on school and admin access. Firestore rules tests now run on the emulator in CI.",
-      "Review Tools for the Korean Teacher: Rewrite, Shorter, or More detail on any summary or student note, with one-tap undo and the foreign teacher's original notes beside the draft. Drafts with no flags send in one tap, and the foreign teacher can see exactly what parents received.",
-      "Director Dashboard IA Overhaul: Merged Roster and Database views, promoted Teacher Assignment, added class picker, notification bell, and hardened invite retry logic.",
-      "Systemic Firestore Rules Remediation: Diagnosed and fixed a get()-inside-list-query bug that silently broke class and roster reads for directors and teachers.",
-      "Monolith Refactor: Split a 4,678-line multi-role TeacherPage.tsx into role-scoped hooks (useDirectorState, useFTState, useKTState) and modular shell components across 6 incremental phases with zero regressions.",
-      "Vercel 12-Function Ceiling Consolidation: Consolidated all AI grading, voice-fill, and Q&A tasks into api/analyze.ts and collapsed 4 redemption functions into api/redeem.ts with backward-compatible vercel.json rewrites.",
-      "Document Consolidation & Scope Discipline: Consolidated 9 overlapping product documents into one canonical PRD/Scope/Decisions record, cutting 5 tangential features.",
-      "Growth & Marketing Infra: PWA install for the schools portal, GA4 funnel events, and per-language prerendered landing pages with JSON-LD and hreflang tags."
+      "Grading runs against the teacher's uploaded answer key, read by OCR, instead of the model's own guess, so corrections match what was taught.",
+      "Only the Korean teacher can approve a class log. Firestore rules enforce it, so a foreign teacher can't approve their own draft.",
+      "The Korean teacher reviews a whole class-day on one screen and approves once. Each family sees the class summary and their own child's note in the app.",
+      "One voice recording fills in the class summary and notes on named students, with one-step undo.",
+      "iOS and Android from one React codebase with Capacitor, Apple, Google and Kakao sign-in, and RevenueCat billing.",
+      "Three security audits closed 7+ authorization gaps and a login enumeration bug. Firestore rules tests run in CI.",
+      "Split a 4,678-line multi-role page into role-scoped hooks over 6 releases, with no regressions."
     ],
     stack: [
       "React 19",
@@ -382,61 +456,70 @@ Call B — feedback
       "Sentry (Web + Node)"
     ],
     coreLoop: [
-      { step: "01. Teacher Uploads Answer Key", role: "Foreign Teacher", detail: "Weekly worksheet is OCR'd into a per-class curriculum document in Firestore; grading is anchored in ground truth." },
-      { step: "02. Parent Scans at Home", role: "Parent / Student", detail: "Mobile camera captures worksheet; Gemini vision grades the page against the class answer key under a strict responseSchema (~17s)." },
-      { step: "03. Instant Bilingual Result", role: "Parent App", detail: "Renders visual overlays on original image with correct answers, Korean explanation, and phonetics guidance." },
-      { step: "04. Mistakes Aggregate", role: "Telemetry Backend", detail: "Errors aggregate across class rosters into a 'what's the class struggling with' pre-lesson cohort view." },
-      { step: "05. Teacher Acts & Logs Class", role: "Foreign Teacher", detail: "Addresses class-wide gaps, then logs the lesson with one voice recording that fills the class summary and student notes." },
-      { step: "06. KT Reviews Once per Class", role: "Korean Teacher", detail: "AI drafts the Korean report; the Korean teacher edits and approves the whole class-day once, and each family sees its own report in the app." }
+      {
+        "step": "01. Teacher uploads the answer key",
+        "role": "Foreign teacher",
+        "detail": "The weekly worksheet is read by OCR into the class's curriculum, so grading has a ground truth."
+      },
+      {
+        "step": "02. Parent scans at home",
+        "role": "Parent / student",
+        "detail": "Gemini grades the photo against the class answer key under a strict response schema, in about 17 seconds."
+      },
+      {
+        "step": "03. Result in Korean",
+        "role": "Parent app",
+        "detail": "Marks on the original page, the right answers, a Korean explanation and pronunciation help."
+      },
+      {
+        "step": "04. Mistakes add up",
+        "role": "Backend",
+        "detail": "Errors roll up across the class into a view of what the class is struggling with."
+      },
+      {
+        "step": "05. Teacher teaches and logs",
+        "role": "Foreign teacher",
+        "detail": "Covers the class-wide gaps, then logs the lesson with one voice recording."
+      },
+      {
+        "step": "06. Korean teacher approves",
+        "role": "Korean teacher",
+        "detail": "AI drafts the Korean report. The Korean teacher edits and approves the class-day once, and each family sees its own report."
+      }
     ],
     decisions: [
       {
-        decision: "Decision 024: Korean Teacher Reviews Once per Class; Parents Read Their Own Report",
-        alternativeConsidered: "One review card per student, each sent through KakaoTalk separately",
-        why: "Teachers said the review side was clunky on a phone: a class of 12 meant 12 cards, 10 of them the same class summary. Two bugs sat underneath: parents had no read access to class logs, so their report section was always empty, and each approval saved one child's note as the class-wide summary.",
-        tradeOffAccepted: "Reports approved before the change have no parent-facing copy, and a student in two classes gets two reports."
+        "decision": "The Korean teacher reviews once per class, and parents read their own report",
+        "alternativeConsidered": "One review card per student, each sent through KakaoTalk",
+        "why": "Teachers said reviewing on a phone was clunky: a class of 12 meant 12 cards, 10 of them the same summary. It also exposed two bugs: parents couldn't read class logs, so their report section was always empty, and each approval saved one child's note as the class summary.",
+        "tradeOffAccepted": "Reports approved before the change have no parent copy, and a student in two classes gets two reports."
       },
       {
-        decision: "Decision 014: Turn-Based Voice-Fill over Continuous Speech-to-Speech",
-        alternativeConsidered: "Real-time speech-to-speech conversational voice agent for teachers",
-        why: "Daily log form was the biggest teacher friction point, but Vercel Serverless infrastructure could not hold persistent WebSocket connections. We scoped to record → transcribe/extract → explicit confirm ('Use this'). Lowered temperature 0.4 → 0.15 and separated per-student notes from class summary.",
-        tradeOffAccepted: "Turn-based tap-to-record interaction instead of continuous conversational agent."
+        "decision": "Record, transcribe, confirm, instead of a live voice agent",
+        "alternativeConsidered": "A real-time speech-to-speech assistant for teachers",
+        "why": "The daily log form was teachers' biggest complaint, but Vercel serverless functions can't hold a WebSocket open. Recording, extracting and asking the teacher to confirm fit the platform. Lowering the temperature from 0.4 to 0.15 and separating student notes from the class summary made the output steadier.",
+        "tradeOffAccepted": "Teachers tap to record instead of talking back and forth."
       },
       {
-        decision: "Decision 015: Rejected Unified FT Chatbot in favor of Narrow Fast Integrations",
-        alternativeConsidered: "Building an all-in-one conversational AI assistant for every foreign teacher task",
-        why: "Mapping real task friction revealed photo uploads and worksheet generation were already faster in dedicated UIs than typing into a chat. Voice only helps where typing is slower than speaking. We shipped two narrow additive tools reusing existing endpoints.",
-        tradeOffAccepted: "No general-purpose chat interface for foreign teachers."
+        "decision": "Single-use invites instead of 6-digit class codes",
+        "alternativeConsidered": "An open 6-digit join code per class",
+        "why": "Shared codes let the wrong families into rosters and risked exposing children's details to other parents. Directors now send single-use invites by email, with a code as a fallback.",
+        "tradeOffAccepted": "A director or teacher has to send each invite."
       },
       {
-        decision: "Decision 001: Deprecated Guessable 6-Digit Class Codes for Single-Use Invites",
-        alternativeConsidered: "Open 6-digit shared classroom join code",
-        why: "Shared codes caused roster pollution and potential PII leakage across different families. Replaced with director-generated single-use invites (email link with code as fallback), closing a critical security seam.",
-        tradeOffAccepted: "Requires director or teacher to initiate parent invite rather than passive join."
-      },
-      {
-        decision: "Decision 005 & 006: Cut Fake 'Parent's Lounge' and Consolidated 9 Docs into PRD/Scope/Decisions Trio",
-        alternativeConsidered: "Keeping simulated community features and loose exploratory documentation",
-        why: "An August 2026 audit found 5 tangential features including a community feed with hardcoded fake posts, which created an honesty problem. Cut all 5 features and consolidated 9 contradictory docs into a single canonical PRD/Scope/Decisions record.",
-        tradeOffAccepted: "Strict scope discipline focused purely on the 6-step core grading loop."
+        "decision": "Cut five features, including a fake community feed",
+        "alternativeConsidered": "Keep the simulated community features and loose planning docs",
+        "why": "An August 2026 audit found five side features, one of them a feed of hardcoded fake posts. That was an honesty problem. I cut all five and merged 9 conflicting docs into one PRD, scope and decisions record.",
+        "tradeOffAccepted": "The product does one loop: scan, grade, explain, report."
       }
     ],
     architecture: {
-      lifecycle: [
-        "Curriculum Ingestion: Teachers upload weekly answer keys; OCR pipeline stores ground-truth structured keys in Firestore curriculums collection.",
-        "Home Scan & Matching: Parent captures physical page; Gemini 3.8 Flash grades against the curriculum key with SHA256 image caching.",
-        "Bilingual Overlay Render: Client renders structured problem boxes, phonetic pronunciation guides, and Korean teaching scripts directly over worksheet image.",
-        "Mistake Aggregation: Errors sync to Firestore without storing raw student PII, populating teacher pre-lesson telemetry cockpit.",
-        "Human-in-the-Loop Update: Foreign teacher records the lesson by voice; AI drafts a Korean report with correct honorifics; the Korean teacher approves once per class before families see it."
-      ],
       guardrails: [
-        "Vercel 12-Function Ceiling Architecture: Consolidated all AI endpoints into api/analyze.ts and redemption routes into api/redeem.ts with URL rewrites.",
-        "Ground-Truth Anchoring: AI evaluates strictly against teacher-uploaded answer keys instead of guessing the answer itself.",
-        "Concern-Note Fact-Check: A second pass checks every needs-attention note against the teacher's words and deletes invented reasons, actions and requests; concern notes are also excluded from bulk send.",
-        "Roster-Grounded Names: The class roster goes with every voice log, so similar Korean names aren't misheard onto the wrong child.",
-        "Korean-Teacher Approval Gate: Firestore rules let only the Korean teacher approve a class log; no AI draft reaches parents without that approval.",
-        "Firestore Multi-Tenant Security Rules: Read/write permissions strictly scoped to verified school and class IDs with Admin SDK server guards.",
-        "Data Retention: Worksheet images are discarded after grading; cached analysis expires after 30 days and is never cached for enrolled students."
+        "AI grades against the teacher's answer key, never its own guess.",
+        "A second pass checks every concern note against the teacher's words and deletes anything invented. Concern notes can't be bulk-sent.",
+        "The class roster goes with every voice log, so similar Korean names aren't attached to the wrong child.",
+        "Only the Korean teacher can approve what parents see, enforced in Firestore rules.",
+        "Worksheet photos are deleted after grading. Cached results expire after 30 days and are never cached for enrolled students."
       ]
     },
     promptEngineering: {
@@ -468,11 +551,6 @@ Call B — feedback
     }
   }
 }`,
-      guardrails: [
-        "Structured JSON Schema Control: Strictly enforces type checking on legibility and student answers, eliminating raw parser breaks.",
-        "Blank-Sheet Filtering: If handwriting is undetected, forces empty student response strings and labels questions correct to avoid false error highlights.",
-        "Variable Isolation: Wraps outer parameters in strict XML boundary markers to resist target payload prompt injections."
-      ]
     },
     impact: {
       value: [
@@ -492,40 +570,28 @@ Call B — feedback
     },
     technicalHurdles: [
       {
-        title: "Slow landing pages on phones",
-        incident: "The home page took 5.95s on mobile to show its hero image (Lighthouse LCP, median of 3 runs on the live site).",
-        diagnosis: "The landing pages were drawn only in the browser, so the hero waited on JavaScript. Sentry's unused session replay (~130 KB) and the Meta Pixel also loaded before the first screen.",
-        resolution: "Prerendered the home and academy pages at build time and hydrated them, inlined the CSS the first screen needs, tree-shook Sentry, split the post-scan screens out of the app bundle, and deferred analytics and the pixel until the page settles. Mobile LCP fell to 2.53s and the performance score rose from 71 to 95."
+        "title": "Slow landing pages on phones",
+        "incident": "The home page took 5.95s to show its hero image on mobile (Lighthouse LCP, median of 3 runs on the live site).",
+        "diagnosis": "The landing pages rendered only in the browser, so the hero waited on JavaScript. Sentry's unused session replay (~130 KB) and the Meta Pixel also loaded before the first screen.",
+        "resolution": "Prerendered the home and academy pages at build time, inlined the CSS the first screen needs, trimmed Sentry, split the post-scan screens into their own bundle, and deferred analytics until the page settles. Mobile LCP fell to 2.53s and the performance score rose from 71 to 95."
       },
       {
-        title: "Vercel Hobby 12-Serverless-Function Ceiling",
-        incident: "Adding multi-role endpoints (grading, voice-fill, question-answering, four subscription redemption routes) exceeded Vercel's strict 12-function limit, threatening deployment failure.",
-        diagnosis: "Creating micro-function files for every task was unsustainable on serverless tier limits.",
-        resolution: "Consolidated all AI tasks into a unified api/analyze.ts multiplexer and combined redemption flows into api/redeem.ts, using vercel.json rewrites so shipped native mobile apps never broke."
+        "title": "Vercel's 12-function limit",
+        "incident": "New endpoints for grading, voice logs, Q&A and four subscription redemption routes pushed the project past Vercel's 12-function limit, so deploys would fail.",
+        "diagnosis": "One function file per task doesn't fit the plan's limit.",
+        "resolution": "Merged the AI tasks into one api/analyze.ts and the redemption routes into api/redeem.ts, with vercel.json rewrites so the shipped mobile apps kept working."
       },
       {
-        title: "4,678-Line Monolithic Multi-Role Component Regressions",
-        incident: "The core teacher experience was contained in a massive 4,678-line TeacherPage.tsx file where editing one role's UI frequently introduced subtle bugs in other roles.",
-        diagnosis: "Director, Foreign Teacher, and Korean Teacher state and rendering logic were tightly coupled in a single component.",
-        resolution: "Refactored the monolith into role-scoped hooks (useDirectorState, useFTState, useKTState) and modular shell components across 6 incremental shipped phases with zero functional regressions."
+        "title": "Rosters silently failing to load",
+        "incident": "Directors and teachers sometimes saw empty class rosters and student lists in production, with no error.",
+        "diagnosis": "The security rules called get() inside list queries, which fails on multi-school filters.",
+        "resolution": "Traced the access boundaries with staged test reads, rewrote the queries to match the rules, and scoped every read to a verified school and class."
       },
       {
-        title: "Systemic Firestore Rules Query Read Bottleneck",
-        incident: "Academy directors and teachers experienced silent query failures when loading class rosters and student lists in production.",
-        diagnosis: "Security rules used an anti-pattern of get() calls inside list queries, which failed on complex multi-tenant filters.",
-        resolution: "Traced access boundaries with staged diagnostic reads, refactored queries to match rule constraints, and established verified school/class scoping."
-      },
-      {
-        title: "Social Authentication & Apple Sign-In on Physical iOS",
-        incident: "Apple sign-in worked in simulator mode but failed silently on physical iOS hardware, while social signups caused a profile overwrite race condition.",
-        diagnosis: "Missing cryptographic SHA-256 nonces for physical hardware and an onAuthStateChanged observer firing before Firestore profile creation committed.",
-        resolution: "Implemented secure SHA-256 nonces, bundle ID alignment, and an isSigningUpRef lock buffer to guarantee profile write completion before observer dispatch."
-      },
-      {
-        title: "Serverless Environment Variables & Model Fallback",
-        incident: "Under peak usage in production serverless environments, private key evaluation failed occasionally under rate-limiting conditions.",
-        diagnosis: "Escaped newlines inside Vercel environment variables parsed incorrectly, while API rate-limiting occasionally broke the fallback configuration.",
-        resolution: "Implemented key-formatting helpers that normalize PEM strings, and adjusted model fallback chains to map dynamically to a stable production candidate (gemini-2.0-flash-001)."
+        "title": "Apple sign-in failing on real iPhones",
+        "incident": "Apple sign-in worked in the simulator but failed silently on real devices, and social sign-ups sometimes overwrote the new profile.",
+        "diagnosis": "Real devices need a SHA-256 nonce, which was missing, and the auth listener fired before the profile write finished.",
+        "resolution": "Added the nonce, aligned the bundle IDs, and held the auth listener until the profile was saved."
       }
     ]
   },
@@ -591,12 +657,6 @@ Call B — feedback
       }
     ],
     architecture: {
-      lifecycle: [
-        "Ingestion: Staff record observation milestones using highly targeted intake forms.",
-        "Sync: Database writes trigger updates to connected, structured multi-table Airtable sheets.",
-        "Resolution: Make.com hooks evaluate changes, orchestrating contextual updates through the AI pipeline.",
-        "Distribution: Output logs commit securely, populating progress metrics on authorized client dashboards."
-      ],
       guardrails: [
         "Lookup Locks: Guards historical performance files against class rearrangement anomalies.",
         "Double-Submission Pruning: Rejects identical student metric indices dynamically at the route target.",
@@ -616,11 +676,6 @@ Call B — feedback
   },
   required: ["studentSummary", "recommendedInterventions"]
 }`,
-      guardrails: [
-        "Structured Schema Barriers: Removes risk of format drift or instructional disclosure on final views.",
-        "Empathetic Formatting: Adapts highly clinical metrics into supportive parent-facing explanations.",
-        "Domain Restriction: Restricts output suggestions to vetted school intervention categories."
-      ]
     },
     impact: {
       value: [
@@ -633,11 +688,6 @@ Call B — feedback
         "Filters structural student records to isolate PII before sending payload files.",
         "Protects user session configurations using unique credentials hashing."
       ]
-    },
-    behindTheArchitecture: {
-      problem: "Program directors losing substantial time drafting progress notes and aligning files across separate tables manually.",
-      vision: "A unified progress mapping view linking lesson feedback and tracking CEFR benchmarks continuously on intuitive cards.",
-      rationale: "Used Recharts for clear, accessible graphs and mapped relational Airtable schemas to sustain structural data consistency."
     },
     technicalHurdles: [
       {
@@ -720,12 +770,6 @@ Call B — feedback
       }
     ],
     architecture: {
-      lifecycle: [
-        "Configuring: User inputs core course requirements, faculty availability, and room sizes.",
-        "Drafting: The engine creates a preliminary matrix incorporating structural availability bounds.",
-        "Testing: A local TypeScript validation algorithm programmatically flags schedule clashes.",
-        "Weaving: Complex overlap nodes isolate for targeted resolution before output log finalization."
-      ],
       guardrails: [
         "XSS Suppression: Sanitizes text input areas to block markdown or HTML injections.",
         "Inactivity Expiry: Implements automatic security timeouts to protect administrative active accounts.",
@@ -745,11 +789,6 @@ Call B — feedback
   },
   required: ["resolvedTimetable", "balancingAnalysis"]
 }`,
-      guardrails: [
-        "Reasoning Allocations: Grants additional execution bandwidth to analyze alternative combinations.",
-        "Schema Definition: Locks the returned outputs to structured JSON formats to reject custom text variations.",
-        "Fallback Routes: Implements structural recovery patterns if overlap constraints remain unresolved."
-      ]
     },
     impact: {
       value: [
@@ -762,11 +801,6 @@ Call B — feedback
         "Audits changes to records with detailed change metadata.",
         "Uses strict database rules to keep institutional records secure."
       ]
-    },
-    behindTheArchitecture: {
-      problem: "Traditional school scheduling requires endless physical changes to coordinate room capacities and curriculum standards.",
-      vision: "An intuitive compiler that programmatically calculates variable constraints to arrange structured master timetables.",
-      rationale: "Paired Firebase for live session tracking with tiered model endpoints, leveraging fast units for layouts and dense reasoning to solve complex clashes."
     },
     technicalHurdles: [
       {
@@ -791,52 +825,103 @@ Call B — feedback
   },
 
   "chekki-teacher": {
-    title: "Chekki Schools — Role-Scoped Academy CRM",
-    tagline: "The staff-facing side of the Chekki platform, now in final testing: separate views for directors, foreign teachers and Korean teachers, on top of the same worksheet-grading engine that powers the Chekki AI parent app.",
-    meta: { role: "Founder and product engineer", team: "Solo", status: "Final testing; two-school pilot planned" },
+    title: "Chekki Schools: an academy CRM with a view for each role",
+    tagline: "The staff side of Chekki, in final testing: separate views for directors, foreign teachers and Korean teachers, on the same grading engine as the parent app.",
+    meta: {
+      "role": "Founder and product engineer",
+      "team": "Solo",
+      "status": "Final testing, two-school pilot planned"
+    },
     liveUrl: "https://www.chekkiai.com/schools",
     screenshots: [
-      { label: "Schools Landing", url: "/screenshots/chekki-schools/01-schools-landing.webp", subLabel: "Class Notes in English, Reports in Korean" },
-      { label: "Director Dashboard", url: "/screenshots/chekki-schools/02-director-dashboard.webp", subLabel: "Today's Reports per Class" },
-      { label: "Students", url: "/screenshots/chekki-schools/03-director-students.webp", subLabel: "Director: Parent Invites & Roster" },
-      { label: "Classes", url: "/screenshots/chekki-schools/04-director-classes.webp", subLabel: "Director: 14-Day Log Streak per Class" },
-      { label: "Teachers", url: "/screenshots/chekki-schools/05-director-teachers.webp", subLabel: "Director: FT & KT Invites" },
-      { label: "Answer Key", url: "/screenshots/chekki-schools/11-ft-answer-key.webp", subLabel: "Teacher: Upload the Key, Confirm AI Guesses" },
-      { label: "Voice Class Log", url: "/screenshots/chekki-schools/06-ft-daily-log.webp", subLabel: "Foreign Teacher: Fill by Voice" },
-      { label: "Log History", url: "/screenshots/chekki-schools/07-ft-log-history.webp", subLabel: "Foreign Teacher: See What Parents Got" },
-      { label: "Class Overview", url: "/screenshots/chekki-schools/08-kt-class-overview.webp", subLabel: "Korean Teacher: Roster & Scans" },
-      { label: "Class-Day Review", url: "/screenshots/chekki-schools/09-kt-review.webp", subLabel: "Korean Teacher: Review Once, Send to Every Family" },
-      { label: "Parent Class Report", url: "/screenshots/chekki-schools/10-parent-class-report.webp", subLabel: "Parent App: Class Summary + Own Child's Note" }
+      {
+        "label": "Schools landing",
+        "url": "/screenshots/chekki-schools/01-schools-landing.webp",
+        "subLabel": "Class notes in English, reports in Korean"
+      },
+      {
+        "label": "Director dashboard",
+        "url": "/screenshots/chekki-schools/02-director-dashboard.webp",
+        "subLabel": "Today's reports per class"
+      },
+      {
+        "label": "Students",
+        "url": "/screenshots/chekki-schools/03-director-students.webp",
+        "subLabel": "Director: parent invites and roster"
+      },
+      {
+        "label": "Classes",
+        "url": "/screenshots/chekki-schools/04-director-classes.webp",
+        "subLabel": "Director: 14-day log streak per class"
+      },
+      {
+        "label": "Teachers",
+        "url": "/screenshots/chekki-schools/05-director-teachers.webp",
+        "subLabel": "Director: teacher invites"
+      },
+      {
+        "label": "Answer key",
+        "url": "/screenshots/chekki-schools/11-ft-answer-key.webp",
+        "subLabel": "Teacher: upload the key, confirm the AI's reading"
+      },
+      {
+        "label": "Voice class log",
+        "url": "/screenshots/chekki-schools/06-ft-daily-log.webp",
+        "subLabel": "Foreign teacher: fill it in by voice"
+      },
+      {
+        "label": "Log history",
+        "url": "/screenshots/chekki-schools/07-ft-log-history.webp",
+        "subLabel": "Foreign teacher: see what parents got"
+      },
+      {
+        "label": "Class overview",
+        "url": "/screenshots/chekki-schools/08-kt-class-overview.webp",
+        "subLabel": "Korean teacher: roster and scans"
+      },
+      {
+        "label": "Class-day review",
+        "url": "/screenshots/chekki-schools/09-kt-review.webp",
+        "subLabel": "Korean teacher: review once, send to every family"
+      },
+      {
+        "label": "Parent class report",
+        "url": "/screenshots/chekki-schools/10-parent-class-report.webp",
+        "subLabel": "Parent app: class summary plus their own child's note"
+      }
     ],
     stats: [
-      { label: "Status", value: "Final testing" },
-      { label: "Role-Scoped Dashboards", value: "3" },
-      { label: "Korean-Teacher Review", value: "1 per class-day" }
+      {
+        "label": "Status",
+        "value": "Final testing"
+      },
+      {
+        "label": "Role dashboards",
+        "value": "3"
+      },
+      {
+        "label": "Korean teacher reviews",
+        "value": "1 per class-day"
+      }
     ],
     problem: [
-      "Directors, foreign teachers, and Korean teachers do different jobs on the same roster, but a single shared UI forces all three to wade through screens meant for someone else's role.",
-      "Grading happens against a teacher's own answer key, not a model's best guess — without pre-seeded curriculum, class-wide mistake aggregation has nothing to aggregate against.",
-      "Korean teachers write bilingual parent updates by hand every week, translating a foreign teacher's classroom notes into KakaoTalk messages parents actually read."
+      "Directors, foreign teachers and Korean teachers do different jobs on the same roster, and one shared screen makes each of them wade through the others' work.",
+      "Grading uses the teacher's own answer key, so without the curriculum loaded in advance there is nothing to grade or group mistakes against.",
+      "Korean teachers turn the foreign teacher's notes into Korean parent updates by hand every week."
     ],
     solution: [
-      "Split the account into separate views for directors, foreign teachers and Korean teachers, reading and writing the same Firestore records under different logins.",
-      "Foreign teachers pre-seed curriculum and calibrate answer keys before class, so a worksheet scan grades against a verified key instead of the model's own reading of the page.",
-      "Foreign teachers record one voice note per class; it fills the class summary and student notes, and the Korean teacher reviews the whole class-day once before each family receives its own report.",
-      "After native Korean readers said the drafts sounded machine-written, shared voice rules steer every report prompt toward specific, plain observations.",
-      "Director onboarding: a setup to-do list for new directors, a join link per class, and owners who also teach can run their own class."
+      "Separate views for directors, foreign teachers and Korean teachers, reading and writing the same Firestore records under different logins.",
+      "Foreign teachers load the curriculum and check answer keys before class, so a scan grades against a verified key.",
+      "One voice note per class fills the summary and student notes. The Korean teacher reviews the class-day once, then each family gets its own report.",
+      "Korean readers said the drafts sounded machine-written, so shared voice rules now push every report toward specific, plain observations.",
+      "New directors get a setup checklist and a join link per class, and owners who also teach can run their own class."
     ],
     stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "Role-scoped React hooks"],
     architecture: {
-      lifecycle: [
-        "Director: invites staff, assigns teachers to classes, manages billing — the account-level layer the other two roles operate inside.",
-        "Foreign teacher: pre-seeds curriculum, calibrates the answer key, scans worksheets, sees the week's most-missed words, and logs each lesson by voice.",
-        "Korean teacher: reviews each class-day on one screen, edits the summary and student notes, and approves once; families see their own report in the app, and KakaoTalk copies are optional.",
-        "All three roles read and write the same underlying student and class records — no separate portal per role, just separate views."
-      ],
       guardrails: [
-        "Role guards on every route: a director's billing view and a teacher's grading queue are unreachable from the wrong login.",
-        "Firestore security rules scope every read to the requesting teacher's assigned classes, not the whole academy.",
-        "Grading always cross-checks the teacher's verified answer key first, so a scan can't silently drift from what was actually taught in class."
+        "Every route checks the role, so a teacher can't open a director's billing page.",
+        "Firestore rules limit every read to the teacher's own classes, not the whole academy.",
+        "Grading checks the teacher's verified answer key first."
       ]
     },
     promptEngineering: {
@@ -854,11 +939,6 @@ Call B — feedback
   },
   required: ["summaryKo", "summaryEn", "kakaoScript"]
 }`,
-      guardrails: [
-        "Structured output only: the KakaoTalk script is generated from the same schema as the report, so the two never drift out of sync.",
-        "Grading calls are separate from messaging calls — a scan never re-derives a score inside the parent-message prompt.",
-        "Every generated message is a draft a Korean teacher reviews before sending, never an auto-send."
-      ]
     },
     impact: {
       value: [
@@ -872,56 +952,75 @@ Call B — feedback
         "Three internal security audits, the last one before the pilot, with Firestore rules tests running on the emulator in CI."
       ]
     },
-    behindTheArchitecture: {
-      problem: "One shared teacher page trying to serve directors, foreign teachers, and Korean teachers had grown to 4,678 lines and every role saw every other role's UI.",
-      vision: "Split by role first, share data model underneath — three views that each load fast because they only carry their own role's state.",
-      rationale: "Firestore's per-document security rules made role scoping enforceable at the data layer, not just the component layer, so a UI bug can't leak another role's records."
-    },
     technicalHurdles: [
       {
-        title: "Splitting a 4,678-line monolith without a regression",
-        incident: "TeacherPage.tsx had grown into one file handling director, foreign-teacher, and Korean-teacher state together, making any change risky to test.",
-        diagnosis: "State for all three roles lived in one component tree, so a change meant to affect only the director view could silently touch teacher-facing behavior.",
-        resolution: "Extracted useDirectorState, useFTState, and useKTState as independent hooks, each owning only its role's data, verified against the existing behavior before cutover."
+        "title": "Parent reports that never showed up",
+        "incident": "The parent app's class report was always empty, and each approval saved one child's note as the class summary.",
+        "diagnosis": "Parents had no read access to class logs, and approval wrote one student's report into the shared log. Opening access as it was would have shown one child's note to every family.",
+        "resolution": "Approval now writes one report per student, holding the class summary and only that child's note, readable only by that child's parent."
       },
       {
-        title: "Keeping the KakaoTalk script and the parent report in sync",
-        incident: "An earlier version generated the bilingual report and the messaging script from two separate prompts, and they occasionally disagreed on the same week's summary.",
-        diagnosis: "Two independent generations of the same underlying facts will drift, especially across languages.",
-        resolution: "Moved both outputs into one structured schema response, so the KakaoTalk script is derived from the same generation as the report instead of a second call."
+        "title": "KakaoTalk script and report disagreeing",
+        "incident": "The report and the KakaoTalk message came from two prompts and sometimes summarised the same week differently.",
+        "diagnosis": "Two separate generations from the same facts drift apart, more so across languages.",
+        "resolution": "Both now come from one structured response, so the message is derived from the report."
       },
       {
-        title: "Parent reports that never showed up",
-        incident: "The parent app's class-report section was always empty, and each approval saved one child's note as the class-wide summary.",
-        diagnosis: "Firestore rules gave parents no read access to class logs, and approval wrote a student's personal report into the shared log, so opening access would have shown one child's note to every family.",
-        resolution: "Approval now writes one parent report per student, holding the class summary plus only that child's note, readable only by that child's parent."
+        "title": "Splitting a 4,678-line page safely",
+        "incident": "One file handled director, foreign-teacher and Korean-teacher state, so every change was risky.",
+        "diagnosis": "All three roles shared one component tree, so a director-only change could quietly affect teachers.",
+        "resolution": "Pulled each role into its own hook (useDirectorState, useFTState, useKTState) and checked each against the old behavior before switching over."
       }
     ]
   },
 
   "lead-enrichment": {
-    title: "B2B Lead Enrichment CRM",
-    tagline: "Naver Local Search → Gemini structured enrichment → Firebase-backed CRM for Chekki Schools academy outreach, with compliant bilingual email drafting built in.",
-    meta: { role: "Product engineer", team: "Solo", status: "Internal tool" },
+    title: "B2B lead enrichment CRM",
+    tagline: "An internal tool that finds academies on Naver, has Gemini classify and score them, saves them to a Firebase CRM and drafts a compliant bilingual outreach email for each one.",
+    meta: {
+      "role": "Product engineer",
+      "team": "Solo",
+      "status": "Internal tool"
+    },
     liveUrl: "",
     screenshots: [
-      { label: "Search & Bulk Sweep", url: "/screenshots/lead-enrichment/01-search-and-bulk-sweep.png", subLabel: "Naver Local Search plus a district × keyword combo generator for unattended batch runs" },
-      { label: "Lead Card & Email Draft", url: "/screenshots/lead-enrichment/02-lead-card-and-email-draft.png", subLabel: "Enriched profile with a bilingual, A/B subject-line email draft (fictional academy shown to protect real client data)" }
+      {
+        "label": "Search and bulk sweep",
+        "url": "/screenshots/lead-enrichment/01-search-and-bulk-sweep.png",
+        "subLabel": "Naver local search, plus district and keyword combinations for unattended batch runs"
+      },
+      {
+        "label": "Lead card and email draft",
+        "url": "/screenshots/lead-enrichment/02-lead-card-and-email-draft.png",
+        "subLabel": "An enriched profile with a bilingual draft and two subject lines (a fictional academy, to protect real data)"
+      }
     ],
     stats: [
-      { label: "Compliance Coverage", value: "100%", detail: "Every draft carries the (광고) ad label and an opt-out, added in code" },
-      { label: "Personalization", value: "1 real fact", detail: "Every draft must cite a verifiable detail about the academy" },
-      { label: "Outreach Dispatch", value: "1 click", detail: "Opens the draft in Gmail, ready to review and send" }
+      {
+        "label": "Legal notice",
+        "value": "100%",
+        "detail": "Every draft carries the (광고) label and an opt-out, added in code"
+      },
+      {
+        "label": "Personalization",
+        "value": "1 real fact",
+        "detail": "Every draft has to mention a checkable detail about the academy"
+      },
+      {
+        "label": "Sending",
+        "value": "1 click",
+        "detail": "Opens the draft in Gmail for a person to read and send"
+      }
     ],
     problem: [
-      "Naver Local Search returns unstructured directory listings with no institution-type classification, fit scoring, or stable dedupe key across repeated searches.",
-      "Early Gemini-drafted outreach emails read generic enough that every batch got exported to CSV and re-drafted in a separate Claude session running a cold-outbound copywriting skill — a manual detour repeated for every send.",
-      "Korea's 정보통신망법 (Act on Promotion of Information and Communications Network Utilization), Article 50, requires every commercial email to carry an (광고) subject prefix, sender contact, and opt-out — easy to miss if left to model discretion per send."
+      "Naver local search returns plain directory listings with no type, no fit score and no stable ID to dedupe repeat searches.",
+      "Early Gemini drafts were generic, so every batch was exported to CSV and rewritten in a separate Claude session.",
+      "Korean law (정보통신망법, Article 50) requires every commercial email to carry a (광고) prefix, sender contact and opt-out. Leaving that to the model risks missing it."
     ],
     solution: [
-      "Gemini structured output (responseSchema) classifies institution type, scores outreach priority, and derives a stable naver_id dedupe key, so the Database tab never re-enriches the same lead twice.",
-      "Ported the external skill's copywriting rules — a required personalization_hook field, spam-trigger-word bans on subject lines, dual A/B subject variants — directly into the in-app system prompt, closing the external-session workflow entirely.",
-      "A deterministic server-side applyEmailCompliance() function appends the (광고) prefix, sender contact, and opt-out line after Gemini returns a draft, so legal compliance can't drift with a prompt edit or model swap."
+      "Gemini returns structured output that sets the academy type, scores outreach priority and derives a stable Naver ID, so a lead is never enriched twice.",
+      "The copywriting rules from that separate session now live in the app's prompt: a required personalization hook, no spam words in subject lines, and two subject lines to choose from.",
+      "A server function adds the (광고) prefix, sender contact and opt-out after Gemini returns a draft, so a prompt edit or model change can't drop them."
     ],
     stack: [
       "React 19 & TypeScript",
@@ -933,44 +1032,62 @@ Call B — feedback
       "Naver Local Search API"
     ],
     coreLoop: [
-      { step: "01. District / Keyword Query", role: "Growth Lead", detail: "Enters a district + institution-type query, or a Bulk Sweep list (e.g. 강남구 영어학원, 분당구 유치원), into Search Naver Maps." },
-      { step: "02. Secure Server Proxy", role: "Express / Vercel Route", detail: "Routes the query through a server-side handler so Naver's client ID and secret never reach the browser." },
-      { step: "03. Gemini Structured Enrichment", role: "Gemini (responseSchema)", detail: "Classifies institution type, scores outreach_priority, derives a personalization_hook, and returns a stable naver_id dedupe key." },
-      { step: "04. Firestore Save & Dedupe", role: "Firestore", detail: "Checks the naver_id against existing Database-tab records before writing, so Bulk Sweep skips anything already saved." },
-      { step: "05. Bilingual Email Draft", role: "Gemini (2nd call)", detail: "Drafts a Korean/English email opened on the lead's personalization_hook, returning two A/B subject-line angles." },
-      { step: "06. Compliance Footer + 1-Click Send", role: "Outbound Rep", detail: "applyEmailCompliance() appends the (광고) prefix and opt-out, then the draft opens as a pre-filled Gmail deep link for a human read-and-send." }
+      {
+        "step": "01. Search",
+        "role": "Growth lead",
+        "detail": "Enter a district and type, or a bulk list such as 강남구 영어학원 and 분당구 유치원."
+      },
+      {
+        "step": "02. Server proxy",
+        "role": "Server route",
+        "detail": "The query goes through the server, so Naver's keys never reach the browser."
+      },
+      {
+        "step": "03. Enrich",
+        "role": "Gemini",
+        "detail": "Sets the type, scores priority, finds a personalization hook and returns a stable Naver ID."
+      },
+      {
+        "step": "04. Save and dedupe",
+        "role": "Firestore",
+        "detail": "Checks the Naver ID against saved leads before writing, so bulk runs skip duplicates."
+      },
+      {
+        "step": "05. Draft the email",
+        "role": "Gemini",
+        "detail": "Writes a Korean and English email that opens on the hook, with two subject lines."
+      },
+      {
+        "step": "06. Legal footer and send",
+        "role": "Sales rep",
+        "detail": "Code adds the (광고) prefix and opt-out, then the draft opens in Gmail for a person to read and send."
+      }
     ],
     decisions: [
       {
-        decision: "Legally-required compliance text applied as a fixed server-side footer, not left to the model",
-        alternativeConsidered: "Relying on the system prompt's instructions alone to include the (광고) prefix and opt-out on every draft",
-        why: "A prompt-only compliance requirement can silently drop after a prompt edit or model swap. Korea's 정보통신망법 Article 50 penalties make that too risky to leave to inference — a deterministic function guarantees it every time.",
-        tradeOffAccepted: "Every draft carries the same fixed footer text regardless of context — no per-lead customization of the legal boilerplate."
+        "decision": "Add the legally required text in code, not through the prompt",
+        "alternativeConsidered": "Ask the model to include the (광고) prefix and opt-out in every draft",
+        "why": "A prompt-only rule can disappear after a prompt edit or model change, and the penalties under Article 50 make that too risky. A fixed function adds it every time.",
+        "tradeOffAccepted": "Every draft has the same footer, with no per-lead wording."
       },
       {
-        decision: "Absorb the external cold-outbound skill's copywriting rules into the in-app prompt instead of keeping a separate AI session in the workflow",
-        alternativeConsidered: "Keep exporting enriched leads to CSV and drafting copy in a separate Claude session with marketing skills loaded",
-        why: "The external session's actual value was its copywriting rules — forced personalization, subject-line spam-word avoidance, a consistently named offer — not a separate tool. Porting the rules closed the quality gap without adding a workflow step.",
-        tradeOffAccepted: "The in-app prompt is now longer and needs the same care external skill files get whenever copy strategy changes."
+        "decision": "Move the copywriting rules into the app's prompt",
+        "alternativeConsidered": "Keep exporting leads to CSV and drafting in a separate Claude session",
+        "why": "What made the separate session better was its rules: forced personalization, no spam words in subject lines, a consistently named offer. Moving the rules closed the gap without an extra step.",
+        "tradeOffAccepted": "The prompt is longer and needs the same care whenever the copy strategy changes."
       },
       {
-        decision: "1-Click Gmail deep links over background SMTP send",
-        alternativeConsidered: "Automated batch sending via a transactional email API",
-        why: "Unverified bulk cold email risks domain reputation. A human rep doing a 2-second read before send catches anything the model got wrong, at the cost of one click per lead.",
-        tradeOffAccepted: "Outreach doesn't scale to fully unattended batch sends — each lead needs a manual click."
+        "decision": "One-click Gmail links instead of automatic sending",
+        "alternativeConsidered": "Batch sending through an email API",
+        "why": "Bulk cold email from an unverified sender hurts the domain's reputation. A two-second read before sending catches anything the model got wrong.",
+        "tradeOffAccepted": "Each lead needs a click, so sending never runs unattended."
       }
     ],
     architecture: {
-      lifecycle: [
-        "Ingestion: A district/keyword query, or a Bulk Sweep list, hits the Naver Local Search proxy route.",
-        "Processing: Gemini structured output classifies, scores, and derives a personalization_hook and dedupe key per lead; a second Gemini call drafts the bilingual email against that lead.",
-        "Storage: Enriched leads persist in Firestore, checked against naver_id on save to prevent duplicate outreach.",
-        "Distribution: applyEmailCompliance() appends the legally-required footer, then the draft opens as a pre-filled Gmail deep link."
-      ],
       guardrails: [
-        "API Shielding: Naver and Gemini keys live only in server-side routes (server.ts / api/*.ts) — never reach the client bundle.",
-        "Dedupe on Save: naver_id is checked against existing Firestore records before a lead is written, blocking duplicate outreach to the same institution.",
-        "Compliance Footer: (광고) prefix, sender contact, and opt-out are appended by fixed server code and verified by a standalone smoke test, not requested from the model."
+        "Naver and Gemini keys live only in server routes and never reach the browser.",
+        "The Naver ID is checked against saved leads before writing, so the same academy isn't contacted twice.",
+        "The (광고) prefix, sender contact and opt-out are added by fixed server code and covered by a smoke test."
       ]
     },
     promptEngineering: {
@@ -1003,11 +1120,6 @@ Call B — feedback
              "subject_line_kr_b", "subject_line_en_b", "subject_combined_b",
              "body_korean", "body_english", "cta_primary"]
 }`,
-      guardrails: [
-        "Required Personalization: personalization_hook is a required enrichment-schema field — sentence 1 of every draft must reference it, with a district/institution-type fallback only for pre-existing records.",
-        "Subject-Line Negative Rule: 무료/Free, exclamation strings, and ALL CAPS are explicitly banned from subject lines only — the same language is fine inside the body.",
-        "Fixed Compliance Footer: legal opt-out and sender contact text is appended after generation, not requested from the model."
-      ]
     },
     impact: {
       value: [
@@ -1021,19 +1133,6 @@ Call B — feedback
         "Compliance footer text is fixed server-side, not requested from the model, so it can't drift with a prompt edit."
       ]
     },
-    behindTheArchitecture: {
-      problem: "Sales discovery for Chekki's academy outreach was three disconnected manual steps: scrape a directory, hand-clean it, then draft copy well enough to send — with the best copy coming from a completely separate AI session.",
-      vision: "One in-app pipeline that goes from a district query to a compliant, personalized, ready-to-send bilingual draft, matching the copywriting quality the team was previously getting by hand from an external tool.",
-      rationale: "Gemini's structured output (responseSchema) was the natural fit for both enrichment and drafting, since the app's types already model a lead and a draft as strict JSON — porting the external skill's prompt rules in-house avoided standing up a second AI tool or workflow."
-    },
-    technicalHurdles: [
-      {
-        title: "The Copy-Quality Gap Was a Missing Prompt Rule, Not a Missing Feature",
-        incident: "The team kept exporting enriched leads to CSV and re-drafting emails in a separate Claude session running a cold-outbound copywriting skill, even though the in-app Gemini drafting pipeline already worked end-to-end.",
-        diagnosis: "The gap wasn't a missing capability — the external session had specific copywriting rules loaded (forced personalization, subject-line spam-word avoidance, a consistently named offer, subject A/B variants) that the in-app system prompt didn't encode, so its drafts read templated by comparison.",
-        resolution: "Ported the rules directly into the prompt file: added a required personalization_hook field to the enrichment schema, banned spam-trigger words from subject lines only, added a second A/B subject variant to the schema with a UI toggle, and renamed the diagnostic offer to match its existing CTA URL. Extended applyEmailCompliance() to cover the new B-variant subject line so the legally-required (광고) prefix couldn't be missed on either variant."
-      }
-    ]
   },
   "white-label-hub": {
     title: "Learning Diary Hub",
@@ -1096,12 +1195,6 @@ Call B — feedback
       }
     ],
     architecture: {
-      lifecycle: [
-        "Ingestion: Teachers upload physical student write-up captures and assign targeted localized pedagogical tags.",
-        "Processing: An Express backend proxy triggers Google Gemini to synthesize tags into professional, 2-sentence micro-narratives.",
-        "Storage: Saves formatted layout objects inside a relational Supabase PostgreSQL database under strict Row-Level Security parameters.",
-        "Distribution: Compiles personalized, brand-styled PDF logs with custom CDNs inside browser-side memory directly."
-      ],
       guardrails: [
         "API Sealing: Eliminates client-exposed keys by wrapping all GenAI synthesis operations in server-side process wrappers.",
         "Zero-Trust Tenant Isolation (RLS): Multi-tenant data isolation is enforced strictly at the database level, not just the UI. Implemented PostgreSQL Row Level Security (RLS) policies that bind the authenticated user's JWT session directly to the school_id foreign key. This ensures that a cross-tenant data leak via API manipulation is mathematically impossible, as the database inherently drops any SELECT or INSERT query attempting to target an unauthorized academy profile.",
@@ -1126,11 +1219,6 @@ Call B — feedback
   },
   required: ["achievementNarrative", "actionableStepDetail"]
 }`,
-      guardrails: [
-        "Word Counting Constraints: Hard limit validation safeguards the target PDF layout dimensions.",
-        "Negative Tone Blocking: Intercepts generic praises on intermediate nodes to force quantitative, instructional metrics.",
-        "CJK Font Mapping: Dynamically pairs outputs with system-loaded double-byte character standards."
-      ]
     },
     impact: {
       value: [
@@ -1145,11 +1233,6 @@ Call B — feedback
         "Filters translation tokens on outer API gates to handle standard payload standards."
       ]
     },
-    behindTheArchitecture: {
-      problem: "Traditional academy software is slow, expensive, and cannot handle bilingual Korean-English typesetting or dynamic custom white-labeled themes without crashing.",
-      vision: "Empower school administrators and foreign teachers to assemble perfectly translated progress portfolios directly in the classroom.",
-      rationale: "Combined client-side canvas compilers with secure Express proxy routes to run structured AI predictions and render beautiful PDF materials under budget with dynamic brand accents."
-    },
     technicalHurdles: [
       {
         title: "Unicode Character Rendering Blank Boxes in @react-pdf/renderer",
@@ -1160,135 +1243,164 @@ Call B — feedback
     ]
   },
   bridgerecruit: {
-    title: "BridgeRecruit — Inbox-Native Admissions CRM",
-    tagline: "An inbox-native CRM that lets international-school admissions recruiters log every touchpoint, track territory health, and draft AI-assisted follow-ups without leaving Outlook.",
-    meta: { role: "Product engineer", team: "Solo", status: "Live demo (portfolio build)" },
+    title: "BridgeRecruit: an admissions CRM inside Outlook",
+    tagline: "International-school admissions recruiters log every contact, track how each school relationship is doing and draft AI follow-ups without leaving Outlook.",
+    meta: {
+      "role": "Product engineer",
+      "team": "Solo",
+      "status": "Live demo (portfolio build)"
+    },
     liveUrl: "https://bridgerecruit-demo.vercel.app/",
     contactUrl: "mailto:jsn.benjamin@gmail.com?subject=BridgeRecruit%20Access%20Request",
     screenshots: [
       {
-        label: "Microsoft Outlook Plugin (Reading Pane)",
-        url: "/screenshots/bridgerecruit/outlook-plugin.svg",
-        subLabel: "Inbox-native taskpane: matches email sender to school profile, previews touchpoints, and logs interactions or generates AI summaries in 1 click."
+        "label": "Outlook add-in",
+        "url": "/screenshots/bridgerecruit/outlook-plugin.svg",
+        "subLabel": "Matches the sender to a school, shows recent contact, and logs it or writes a summary in one click."
       },
       {
-        label: "Institutions Directory & Filter Engine",
-        url: "/screenshots/bridgerecruit/institutions.svg",
-        subLabel: "Territory school directory across APAC, filterable by tier, health status, and country with CSV import/export capabilities."
+        "label": "Schools",
+        "url": "/screenshots/bridgerecruit/institutions.svg",
+        "subLabel": "Every school in the territory, filtered by tier, health and country, with CSV import and export."
       },
       {
-        label: "Institution Detail & Touchpoint History",
-        url: "/screenshots/bridgerecruit/institution-detail.svg",
-        subLabel: "Bangkok Prep School profile: primary counselor contacts, categorized interaction history, and open follow-up scheduling."
+        "label": "School profile",
+        "url": "/screenshots/bridgerecruit/institution-detail.svg",
+        "subLabel": "Counselor contacts, contact history by type, and open follow-ups."
       },
       {
-        label: "Recruitment Pipeline Kanban",
-        url: "/screenshots/bridgerecruit/pipeline.svg",
-        subLabel: "5-stage visual kanban moving schools from Initial Outreach through In Discussion and Visit Scheduled to Agreement / Feeder Active."
+        "label": "Pipeline",
+        "url": "/screenshots/bridgerecruit/pipeline.svg",
+        "subLabel": "Five stages, from first outreach to an active feeder agreement."
       },
       {
-        label: "Live Synced Outlook Calendar",
-        url: "/screenshots/bridgerecruit/calendar.svg",
-        subLabel: "Direct read-only sync of real Outlook calendar via Microsoft Graph On-Behalf-Of flow, tagged with institution context."
+        "label": "Calendar",
+        "url": "/screenshots/bridgerecruit/calendar.svg",
+        "subLabel": "The recruiter's real Outlook calendar, read through Microsoft Graph and tagged by school."
       },
       {
-        label: "Needs Attention — Inactivity Detection",
-        url: "/screenshots/bridgerecruit/needs-attention.svg",
-        subLabel: "Proactively identifies partner schools with 30+ days of inactivity and drafts low-pressure re-engagement emails in one click."
+        "label": "Needs attention",
+        "url": "/screenshots/bridgerecruit/needs-attention.svg",
+        "subLabel": "Schools with 30+ days of silence, with a low-pressure follow-up drafted in one click."
       },
       {
-        label: "Leadership Partnership & Activity Briefing",
-        url: "/screenshots/bridgerecruit/reports.svg",
-        subLabel: "AI-generated executive briefing synthesized from real interaction telemetry with headline metrics and watch list."
+        "label": "Leadership briefing",
+        "url": "/screenshots/bridgerecruit/reports.svg",
+        "subLabel": "An AI briefing built from the logged activity, with headline numbers and a watch list."
       },
       {
-        label: "Microsoft Graph & Calendar Permissions",
-        url: "/screenshots/bridgerecruit/settings.svg",
-        subLabel: "Separated, incremental OAuth consent scopes for basic identity verification and optional calendar synchronization."
+        "label": "Permissions",
+        "url": "/screenshots/bridgerecruit/settings.svg",
+        "subLabel": "Sign-in and calendar access are asked for separately, only when needed."
       }
     ],
     stats: [
-      { label: "OAuth Security", value: "2 OAuth Flows", detail: "Delegated Sign-in + Server-Side On-Behalf-Of Graph Exchange" },
-      { label: "API Surface", value: "19 Scoped Routes", detail: "Each scoped to the signed-in recruiter's own data" },
-      { label: "AI Workflows", value: "3 Workflows", detail: "OpenAI Structured Outputs (Follow-ups, Summaries, Reports)" },
-      { label: "Capture Velocity", value: "1 Click", detail: "From reading an email to a logged, categorized touchpoint" }
+      {
+        "label": "Sign-in",
+        "value": "2 OAuth flows",
+        "detail": "Delegated sign-in, plus a server-side on-behalf-of exchange for Graph"
+      },
+      {
+        "label": "API",
+        "value": "19 routes",
+        "detail": "Each one limited to the signed-in recruiter's own data"
+      },
+      {
+        "label": "AI workflows",
+        "value": "3",
+        "detail": "Follow-ups, summaries and reports, with OpenAI structured outputs"
+      },
+      {
+        "label": "Logging a contact",
+        "value": "1 click",
+        "detail": "From reading an email to a logged touchpoint"
+      }
     ],
     problem: [
-      "Recruiting happens in email. Tracking happens somewhere else.",
-      "An admissions recruiter covering a territory of international schools spends most of a day in Outlook — introducing a program, replying to a counselor, scheduling a campus visit.",
-      "The record of that relationship usually lives in a spreadsheet or a general-purpose CRM that requires a tab switch, a copy-paste, and a moment of remembering to actually do it. Follow-ups get set on paper and forgotten. A school that has gone quiet for six weeks doesn't surface itself. Nobody outside the recruiter's own head knows a partnership is close to finalizing.",
-      "The cost isn't a missing feature — it's the friction between where the work happens and where the record is kept. Any fix that adds a second system to check will lose to the inbox by default."
+      "Recruiters spend most of the day in Outlook, but the record of each school relationship lives in a spreadsheet or a CRM in another tab.",
+      "Follow-ups get noted and forgotten, a school that has gone quiet for six weeks doesn't surface, and nobody else knows when a partnership is close.",
+      "Any fix that adds a second system to check will lose to the inbox."
     ],
     solution: [
-      "Two Surfaces, One Source of Truth: The Outlook add-in acts as the capture surface directly inside the reading pane, matching the sender domain to an institution and offering a 1-click 'Log Touchpoint' action covering emails, in-person visits, fairs, calls, and virtual meetings.",
-      "Companion Management Dashboard: Next.js App Router dashboard handles territory management, a drag-to-advance pipeline, a live Outlook calendar view, and a leadership-facing report generator.",
-      "Single Postgres Source of Truth: Both surfaces read and write the same Postgres tables through the same authenticated API, so nothing recorded in one place is invisible in the other.",
-      "Database-Generated Relationship Health: Active / cooling / stalled status is computed once in Postgres as a generated column driven by an interaction timestamp trigger, eliminating client-side calculation discrepancy.",
-      "On-Behalf-Of Token Exchange: Client authenticates with narrow API scope; server exchanges it for a Microsoft Graph token via OAuth On-Behalf-Of flow, keeping Graph tokens completely out of browser storage.",
-      "Incremental, Separated Consent: Interactive consent is split into 3 steps (sign-in, profile access, calendar access) requested only when needed, avoiding broad up-front permission friction.",
-      "Public Demo That Cannot Leak or Cost Money: Runs against an isolated Supabase project seeded with fictional institutions, bypassing Microsoft sign-in and blocking all writes and OpenAI calls at the API layer with static mock responses."
+      "An Outlook add-in in the reading pane matches the sender's domain to a school and logs emails, visits, fairs, calls and video meetings in one click.",
+      "A Next.js dashboard for the territory: a drag-to-advance pipeline, a live Outlook calendar and a report for leadership.",
+      "Both read and write the same Postgres tables through the same API, so nothing logged in one is missing from the other.",
+      "Relationship health (active, cooling, stalled) is computed once in Postgres from the last contact date, so every screen agrees.",
+      "The public demo runs on a separate database of fictional schools, skips Microsoft sign-in, and blocks every write and OpenAI call."
     ],
     stack: [
       "Next.js / App Router",
       "Supabase / Postgres",
       "Microsoft Entra ID (MSAL)",
-      "Graph API — On-Behalf-Of",
+      "Graph API (on-behalf-of)",
       "Office.js Outlook Add-in",
       "OpenAI Structured Outputs",
       "Vercel"
     ],
     coreLoop: [
-      { step: "01. Open Email & Domain Match", role: "Outlook Add-in", detail: "Office.js reads the open email's sender domain and queries the authenticated Next.js API to match with the corresponding institution." },
-      { step: "02. One-Click Touchpoint Logging", role: "Admissions Recruiter", detail: "Recruiter logs interactions (email, campus visit, fair, phone call, virtual meeting) in one unified form without leaving the Outlook reading pane." },
-      { step: "03. Server-Side On-Behalf-Of Exchange", role: "Next.js Route Handler", detail: "Server exchanges recruiter's user token for a Microsoft Graph token via OAuth On-Behalf-Of, fetching Outlook calendar events securely." },
-      { step: "04. Trigger-Driven Health Calculation", role: "Postgres Database", detail: "Database trigger evaluates last interaction timestamp to update relationship health status (active, cooling, stalled) in a generated column." },
-      { step: "05. Kanban Territory Management", role: "Next.js Dashboard", detail: "Recruiter drags institutions across pipeline stages (Initial Outreach → Agreement / Feeder Active) and manages open follow-ups." },
-      { step: "06. Structured AI Report Generation", role: "OpenAI Structured Outputs", detail: "System generates a leadership-facing briefing with headline highlights, touchpoint telemetry, and a cooling relationship watch list." }
+      {
+        "step": "01. Open an email",
+        "role": "Outlook add-in",
+        "detail": "Reads the sender's domain and asks the API which school it belongs to."
+      },
+      {
+        "step": "02. Log it",
+        "role": "Recruiter",
+        "detail": "Logs the email, visit, fair, call or meeting in one form without leaving the reading pane."
+      },
+      {
+        "step": "03. Calendar",
+        "role": "Server",
+        "detail": "Swaps the recruiter's token for a Graph token on the server and fetches calendar events."
+      },
+      {
+        "step": "04. Health",
+        "role": "Postgres",
+        "detail": "A trigger on the last contact date updates each school's health."
+      },
+      {
+        "step": "05. Pipeline",
+        "role": "Dashboard",
+        "detail": "The recruiter drags schools through the stages and manages follow-ups."
+      },
+      {
+        "step": "06. Report",
+        "role": "OpenAI",
+        "detail": "Writes a leadership briefing with highlights, activity numbers and a list of cooling schools."
+      }
     ],
     decisions: [
       {
-        decision: "On-Behalf-Of Token Exchange over Direct Client-Side Graph Tokens",
-        alternativeConsidered: "Issuing Microsoft Graph access tokens directly to the Outlook add-in and storing them in browser localStorage",
-        why: "The add-in and dashboard sign a user in with a narrow, self-issued API scope — not a direct Microsoft Graph token. The server exchanges that token for a Graph-scoped one via OAuth's On-Behalf-Of flow before ever calling Graph. It's one extra hop, but it means Graph access tokens never sit in browser storage, and the server — not the client — controls exactly which Graph scopes get requested and when.",
-        tradeOffAccepted: "Introduces one extra server-side token exchange hop before calling Microsoft Graph."
+        "decision": "Exchange tokens on the server instead of giving Graph tokens to the browser",
+        "alternativeConsidered": "Give the add-in a Graph token and keep it in localStorage",
+        "why": "Users sign in with a narrow token for my own API. The server swaps it for a Graph token with the on-behalf-of flow before calling Graph, so Graph tokens never sit in the browser and the server decides which Graph scopes are requested.",
+        "tradeOffAccepted": "One extra server hop before each Graph call."
       },
       {
-        decision: "Incremental, Separated Consent over Broad Up-Front OAuth Permissions",
-        alternativeConsidered: "Requesting full mailbox, calendar, and profile scopes on initial user sign-in",
-        why: "Azure only allows one resource per interactive consent request, so signing in, granting profile access, and granting calendar access are three distinct steps requested only when needed — not a single broad up-front consent screen that would ask for calendar access before a recruiter has any reason to trust the app with it.",
-        tradeOffAccepted: "Requires handling separate permission states and prompt triggers across the UI as calendar features are accessed."
+        "decision": "Ask for each permission when it's needed",
+        "alternativeConsidered": "Ask for mailbox, calendar and profile access at sign-in",
+        "why": "Azure allows one resource per consent prompt, so sign-in, profile and calendar are three steps. Asking only when a feature needs it avoids requesting calendar access before the recruiter has any reason to trust the app.",
+        "tradeOffAccepted": "The UI has to handle several permission states."
       },
       {
-        decision: "Database-Generated Column for Relationship Health over Client-Side Computation",
-        alternativeConsidered: "Calculating 'active', 'cooling', or 'stalled' status dynamically in the Outlook add-in and React dashboard",
-        why: "Independent client recalculations inevitably drift or disagree due to timezone differences, cached states, or differing date math. Computing health once in Postgres via interaction timestamp triggers guarantees uniform state across every surface.",
-        tradeOffAccepted: "Adding or modifying health-status decay formulas requires database migration and trigger updates."
+        "decision": "Compute relationship health in the database",
+        "alternativeConsidered": "Compute it separately in the add-in and the dashboard",
+        "why": "Two clients doing their own date math will disagree because of time zones and caching. Computing it once in Postgres gives every screen the same answer.",
+        "tradeOffAccepted": "Changing the health rules means a migration."
       },
       {
-        decision: "Isolated Seeded Demo Mode over Read-Only Production Mirror",
-        alternativeConsidered: "Connecting the public live demo to a production database with read-only flags",
-        why: "The live demo runs against an isolated Supabase project seeded with fictional institutions, bypasses real Microsoft sign-in entirely, and blocks every write and every OpenAI call at the API layer — the report generator returns a real narrative built from the seeded stats instead of a live model call. A visitor gets the full interaction, and nothing they do can touch real data or real billing.",
-        tradeOffAccepted: "Public demo visitors cannot save persistent changes or test arbitrary school domains."
+        "decision": "A separate seeded demo instead of a read-only copy of production",
+        "alternativeConsidered": "Point the public demo at production with read-only flags",
+        "why": "The demo uses fictional schools, skips Microsoft sign-in and blocks every write and OpenAI call. The report generator builds a real summary from the seeded numbers instead of calling the model. Visitors get the full experience and can't touch real data or billing.",
+        "tradeOffAccepted": "Demo visitors can't save changes or try their own school domains."
       }
     ],
-    behindTheArchitecture: {
-      problem: "Admissions recruiters for international schools live in their inbox, but tracking happens in detached spreadsheets or bloated CRMs. The resulting friction causes missed follow-ups, silent relationship decay, and fragmented institutional memory.",
-      vision: "Put the entire CRM directly inside the Outlook email reading pane so logging a touchpoint takes one click, backed by a companion management dashboard sharing a single source of truth.",
-      rationale: "Paired Office.js add-in with a Next.js App Router and Supabase Postgres backend. Used OAuth On-Behalf-Of to secure Microsoft Graph access server-side, and computed relationship health deterministically in the database."
-    },
     architecture: {
-      lifecycle: [
-        "Inbox Trigger: Recruiter opens an email in Outlook; Office.js extracts sender domain and requests institution metadata.",
-        "OBO Auth Exchange: Next.js server receives client token and exchanges it for a Graph token via Microsoft Entra ID On-Behalf-Of flow.",
-        "Touchpoint Logging: Recruiter commits interaction details; server validates user tenancy and writes to Supabase Postgres.",
-        "Trigger-Based Health Update: Postgres database trigger computes relationship health column based on interaction timestamps.",
-        "Pipeline & AI Briefing: Dashboard synchronizes Kanban pipeline stages and invokes OpenAI Structured Outputs for leadership reports."
-      ],
       guardrails: [
-        "Tenant Isolation: Every server route strictly scopes database queries to the authenticated recruiter's user_id, preventing cross-tenant reads.",
-        "OBO Token Shielding: Microsoft Graph access tokens are exchanged and held strictly in server memory, never exposed to the client.",
-        "CSV Formula Sanitization: Strips leading =, +, -, @ characters on institution and contact export to block spreadsheet injection exploits.",
-        "Add-in HTML Escaping: All user-generated text rendered in the Office.js reading pane is sanitized against XSS injection."
+        "Every server route limits queries to the signed-in recruiter's user ID.",
+        "Graph tokens are exchanged and kept on the server, never sent to the browser.",
+        "CSV exports strip leading =, +, - and @ to block spreadsheet formula injection.",
+        "All user text shown in the add-in is escaped against XSS."
       ]
     },
     promptEngineering: {
@@ -1332,11 +1444,6 @@ Call B — feedback
   },
   "required": ["headline", "highlights", "watch_list"]
 }`,
-      guardrails: [
-        "Structured Outputs Enforcement: Strict JSON schema ensures generated executive briefs parse directly into dashboard cards without markdown syntax issues.",
-        "Hallucination Guardrails: Report summaries are strictly grounded in interaction records and calendar events present in the database.",
-        "Prompt Injection Shield: Free-form recruiter notes are encapsulated within XML delimiters before passing into the OpenAI model context."
-      ]
     },
     impact: {
       value: [
@@ -1353,92 +1460,105 @@ Call B — feedback
     },
     technicalHurdles: [
       {
-        title: "A Three-Layer OAuth Failure",
-        incident: "Sign-in broke in a way that looked like one bug and was three: an OS-level certificate trust issue, a third-party security tool silently intercepting TLS in one browser, and the Outlook add-in's dialog domain not matching its manifest's allowlist.",
-        diagnosis: "Fixing the first two without touching the third would have looked like progress and still failed at sign-in.",
-        resolution: "Isolating each layer independently, rather than guessing from the symptom, was the only way to actually close it out: verified certificate trust chains, resolved proxy interception, and aligned manifest allowlists."
+        "title": "Sign-in failing for three reasons at once",
+        "incident": "Sign-in broke in a way that looked like one bug and was three: an OS certificate trust issue, a security tool intercepting TLS in one browser, and the add-in's dialog domain missing from its manifest allowlist.",
+        "diagnosis": "Fixing the first two alone would have looked like progress and still failed at sign-in.",
+        "resolution": "Checked each layer on its own: the certificate chain, the proxy interception and the manifest allowlist."
       },
       {
-        title: "Security Audit, Not an Afterthought",
-        incident: "Supabase's row-level security policies existed but were inert, because every server route used the service-role key.",
-        diagnosis: "A deliberate pass across every route caught the real gap that left: missing application-layer user_id scoping that would have let any signed-in recruiter read or edit another recruiter's institutions — plus CSV formula-injection on export and unescaped HTML in add-in-rendered fields.",
-        resolution: "All three were fixed before anything shipped, not found by a user later: enforced strict application-layer user_id filtering across all 19 routes, sanitized CSV exports against spreadsheet injection, and escaped HTML in all add-in rendered fields."
+        "title": "Security rules that weren't doing anything",
+        "incident": "Supabase row-level security policies existed, but every server route used the service-role key, which bypasses them.",
+        "diagnosis": "A pass over every route found that any signed-in recruiter could read or edit another recruiter's schools. It also found CSV formula injection on export and unescaped HTML in the add-in.",
+        "resolution": "Fixed all three before launch: every one of the 19 routes filters by user ID, CSV exports are sanitized, and add-in fields are escaped."
       },
       {
-        title: "A Manifest That Wouldn't Refresh",
-        incident: "Outlook caches a sideloaded add-in manifest aggressively — bumping the version number alone doesn't force a refresh; a stale copy kept pointing at pre-fix domains for a full 'Could not open sign-in dialog' cycle after the actual fix had already shipped.",
-        diagnosis: "Outlook's desktop host aggressively caches sideloaded manifests independently of XML version bumps.",
-        resolution: "The only reliable fix was a version bump plus an explicit remove-and-re-add script of the manifest file, completely clearing the Office add-in cache."
+        "title": "An add-in manifest that wouldn't refresh",
+        "incident": "After the fix shipped, Outlook kept showing \"Could not open sign-in dialog\" because it still used an old manifest.",
+        "diagnosis": "Outlook desktop caches sideloaded manifests, and a version bump alone doesn't clear the cache.",
+        "resolution": "A version bump plus a script that removes and re-adds the manifest, clearing the add-in cache."
       }
     ]
   },
   "seoul-commute": {
-    title: "Seoul Commute MCP — Live Transit, Weather and Air Data for AI Assistants",
-    tagline: "A Python MCP server that gives Claude and other assistants 6 tools on Korean public data (weather, forecast, fine dust, live subway arrivals, timetable routes), deployed on Cloud Run in Seoul, with weekday commute briefings on Telegram and a 33-question eval set that checks every stop count, minute and won figure against the tool results.",
-    meta: { role: "AI engineer", team: "Solo", dates: "Nov 2026", status: "Live" },
+    title: "Seoul Commute MCP: live transit, weather and air data for AI assistants",
+    tagline: "A Python MCP server that gives Claude 6 tools on Korean public data: weather, forecast, fine dust, live subway arrivals and routes. It runs on Cloud Run in Seoul, sends weekday commute briefings on Telegram, and a 33-question eval set checks every stop count, minute and won figure against the tool results.",
+    meta: {
+      "role": "AI engineer",
+      "team": "Solo",
+      "dates": "Nov 2026",
+      "status": "Live"
+    },
     liveUrl: "https://github.com/Jay02510/seoul-commute-mcp",
     liveLabel: "View on GitHub ↗",
     screenshots: [
-      { label: "Claude.ai Connector", url: "/screenshots/seoul-commute/demo.gif", subLabel: "Hongdae to Gangnam: route, trains, weather and forecast, all from the cloud server (1.5x speed)" }
+      {
+        "label": "Claude.ai connector",
+        "url": "/screenshots/seoul-commute/demo.gif",
+        "subLabel": "Hongdae to Gangnam: route, trains, weather and forecast, all from the cloud server (1.5x speed)"
+      }
     ],
     stats: [
-      { label: "MCP Tools", value: "6 tools / 4 public APIs", detail: "KMA, AirKorea, Seoul Metro route, Seoul realtime subway" },
-      { label: "Eval Pass Rate", value: "22/30 → 28/30", detail: "After grounding fixes; 30/33 on the extended set with no graded failures (3 cases not yet graded because of model timeouts)" },
-      { label: "Tests", value: "153 offline", detail: "Recorded API fixtures, run on every push without network or keys" }
+      {
+        "label": "MCP tools",
+        "value": "6 tools, 4 APIs",
+        "detail": "KMA, AirKorea, Seoul Metro route, Seoul realtime subway"
+      },
+      {
+        "label": "Eval pass rate",
+        "value": "22/30 → 28/30",
+        "detail": "After the grounding fixes. 30/33 on the extended set with no graded failures; 3 cases ungraded because of model timeouts."
+      },
+      {
+        "label": "Tests",
+        "value": "153 offline",
+        "detail": "Recorded API fixtures, run on every push without network or keys"
+      }
     ],
     problem: [
-      "Asked how many stops it is from Hongdae to Gangnam, an assistant answers from memory, confidently and wrongly (19 stops, when the real answer is 17). Commute questions need live, local data the model doesn't have.",
-      "Korea's open data is spread across separate portals and formats: KMA forecasts use a 5 km grid instead of coordinates, AirKorea's grade fields are often blank, the route API silently returns empty results for a wrongly spelled station, and data.go.kr answers key errors in XML even when JSON was requested.",
-      "Even with tools available, a model will still fill gaps from memory or reassure the user when a data source is down. A demo that looks right once proves nothing about how often the answers are actually grounded."
+      "Asked how many stops it is from Hongdae to Gangnam, an assistant answers from memory, confidently and wrongly: 19 stops, when the answer is 17.",
+      "Korea's open data is spread across portals with different quirks. KMA forecasts use a 5 km grid, AirKorea's grade fields are often blank, and the route API returns an empty success for a misspelled station.",
+      "Even with tools, a model fills gaps from memory or reassures the user when a source is down. One demo that looks right says nothing about how often answers are grounded."
     ],
     solution: [
-      "Wrapped the four APIs in small async modules (sources/) and exposed them as 6 MCP tools: current_weather, forecast, air_quality, next_trains, route and list_districts. Station names work in Korean or English, districts in either language.",
-      "Ran the same server two ways: over stdio for Claude Desktop, and over Streamable HTTP on Cloud Run in the Seoul region (token-protected, keys in Secret Manager), so it works as a Claude.ai custom connector from any device.",
-      "Built a 33-case eval set with an automatic grader: which tools were called with which arguments, required and forbidden phrases, injected HTTP 503 outages, and a grounding check that fails any stop count, minute figure or won amount not found in a tool result.",
-      "Used the eval failures to change the product: added a route tool instead of telling the model not to guess, moved rules from server instructions into tool descriptions and tool results, and made route return minutes per ride after the model computed one itself.",
-      "Reused the data layer for a Telegram briefing (07:45 to work, 18:00 home, weekdays) run by a Cloud Run job and Cloud Scheduler, with a rule-based writer that never says 'no umbrella or mask needed' unless every check actually answered."
+      "Six MCP tools over the four APIs: current_weather, forecast, air_quality, next_trains, route and list_districts. Stations and districts work in Korean or English.",
+      "The same server runs over stdio for Claude Desktop and over HTTP on Cloud Run in Seoul, token-protected with keys in Secret Manager, so it works as a Claude.ai connector on any device.",
+      "A 33-case eval set with an automatic grader checks which tools were called and with what, required and banned phrases, injected 503 outages, and whether every number in the answer appears in a tool result.",
+      "The eval failures changed the product: a route tool instead of a \"don't guess\" rule, rules moved into tool descriptions and results, and minutes per ride returned once the model started computing them itself.",
+      "A Telegram briefing at 07:45 and 18:00 on weekdays reuses the data layer. It never says \"no umbrella needed\" unless every check actually answered."
     ],
     stack: ["Python 3.11+", "MCP Python SDK 2", "httpx (async)", "Google Cloud Run", "Cloud Scheduler", "Secret Manager", "Docker", "SQLite", "Telegram Bot API", "pytest", "Gemini / Claude (eval runner)"],
     decisions: [
       {
-        decision: "Measure grounding with an eval set instead of trusting prompt rules",
-        alternativeConsidered: "Adding stronger instructions ('never estimate stop counts') and checking a few answers by hand",
-        why: "Hand checks in Claude Desktop showed the instruction alone didn't work: the model still gave stop counts and journey times from memory. A grader that matches every number in the answer against the tool results turns 'seems fine' into a score that can go up or down after each change.",
-        tradeOffAccepted: "The grader is pattern-based, so it only checks stops, minutes and won. Other ungrounded claims (for example, which direction not to take) still need a human read."
+        "decision": "Measure grounding with an eval set instead of trusting prompt rules",
+        "alternativeConsidered": "Stronger instructions (\"never estimate stop counts\") and a few hand checks",
+        "why": "Hand checks in Claude Desktop showed the instruction alone didn't work: the model still gave stop counts and journey times from memory. A grader that matches every number against the tool results gives a score that moves with each change.",
+        "tradeOffAccepted": "The grader only checks stops, minutes and won. Other ungrounded claims, like which direction not to take, still need a person to read them."
       },
       {
-        decision: "Cloud Run in the Seoul region, after probing the APIs from there first",
-        alternativeConsidered: "Hosting on a US region or a generic PaaS, or keeping the server local-only",
-        why: "Korean government APIs may refuse overseas traffic. A one-off probe job in asia-northeast3 confirmed all four APIs answer from Google Cloud Seoul before any deploy work, and Cloud Run scales to zero, so a portfolio server costs close to nothing.",
-        tradeOffAccepted: "One instance at most, stateless JSON responses and a shared access token instead of OAuth. Simple to run, but the token appears in request logs when passed as ?key= and has to be rotated by hand."
+        "decision": "Cloud Run in Seoul, after testing the APIs from there",
+        "alternativeConsidered": "A US region or generic PaaS, or local only",
+        "why": "Korean government APIs may refuse overseas traffic. A one-off probe in asia-northeast3 confirmed all four APIs answer from Google Cloud Seoul before any deploy work, and Cloud Run scales to zero, so it costs almost nothing.",
+        "tradeOffAccepted": "One instance at most and a shared access token instead of OAuth. The token shows up in request logs when passed as ?key= and has to be rotated by hand."
       },
       {
-        decision: "Rule-based briefing writer by default, LLM writer as an option",
-        alternativeConsidered: "Letting an LLM write every Telegram briefing through the same MCP tools",
-        why: "The briefing goes out at 07:45 whether or not the free-tier model is overloaded. Rules are deterministic, testable offline and can't reassure about data that wasn't checked; the LLM writer stays available behind a flag and falls back to rules on any failure.",
-        tradeOffAccepted: "Rule-based messages are plainer and less adaptive than the LLM version."
+        "decision": "Rule-based briefings by default, LLM briefings as an option",
+        "alternativeConsidered": "An LLM writes every briefing through the same tools",
+        "why": "The briefing goes out at 07:45 whether or not the free-tier model is overloaded. Rules are predictable, testable offline and can't reassure about data nobody checked. The LLM writer sits behind a flag and falls back to rules on any failure.",
+        "tradeOffAccepted": "Rule-based messages read plainer."
       },
       {
-        decision: "Pick the route with fewest transfers unless the fastest saves more than 5 minutes",
-        alternativeConsidered: "Showing the API's fastest route as-is",
-        why: "The fastest route once meant two transfers to save two minutes, which no commuter would take. Asking for both and applying a 5-minute threshold matches how people actually ride.",
-        tradeOffAccepted: "Two route calls per briefing, and a threshold that is a judgement call rather than a measured preference."
+        "decision": "Fewest transfers, unless the fastest route saves more than 5 minutes",
+        "alternativeConsidered": "Show the API's fastest route as is",
+        "why": "The fastest route once meant two transfers to save two minutes, which no commuter would take. Asking for both and applying a 5-minute threshold matches how people ride.",
+        "tradeOffAccepted": "Two route calls per briefing, and a threshold that is a judgement call."
       }
     ],
     architecture: {
-      lifecycle: [
-        "Sources: sources/kma.py, airkorea.py, subway.py and route.py are plain async functions returning dicts. A shared HTTP helper turns data.go.kr's XML error replies into clear exceptions, and districts.py maps the 25 Seoul districts to KMA grid cells and AirKorea stations.",
-        "Server: server.py registers the 6 tools with MCPServer. Each tool catches network, key and data-shape errors and returns short, redacted text, so the model can say 'unavailable' instead of guessing.",
-        "Transport: Claude Desktop starts server.py over stdio; http_app.py serves the same tools over Streamable HTTP on Cloud Run (asia-northeast3), behind a Bearer token, with /healthz.",
-        "Briefing: a Cloud Run job reads routes from deploy/routes.json, fetches weather, forecast, air, trains and route in parallel, writes the message and sends it via the Telegram Bot API. Cloud Scheduler starts it at 07:45 and 18:00 on weekdays (Asia/Seoul).",
-        "Evals: evals/run.py connects a real model to the server over MCP, records every tool call and result, and evals/grade.py scores each answer; reports land in evals/results/."
-      ],
       guardrails: [
-        "Stop counts, journey times, transfers and fares come only from the route tool; its description says to call it even when the user asks for an estimate from memory, and its error text tells the model not to fill the gap.",
-        "Station names are fully URL-encoded and capped at 30 characters; tool errors are redacted so API keys never reach the model or the user.",
-        "The container runs as a non-root user, keys come from Secret Manager, and .gcloudignore keeps .env out of the build upload.",
-        "A 30-second cache per station keeps repeated subway questions inside the 1,000-calls-a-day limit of the Seoul API.",
-        "The eval runner stops after 3 quota errors in a row and can rerun only the failed or errored cases from a saved results file."
+        "Stop counts, journey times, transfers and fares come only from the route tool. Its error text tells the model not to fill the gap.",
+        "Station names are URL-encoded and capped at 30 characters. Tool errors are redacted so API keys never reach the model.",
+        "The container runs as a non-root user and keys come from Secret Manager.",
+        "A 30-second cache per station keeps repeated subway questions inside the Seoul API's 1,000 calls a day."
       ]
     },
     promptEngineering: {
@@ -1461,11 +1581,6 @@ NUMBER_PATTERNS = [
 def ungrounded(answer, tool_results):
     # every claimed number must appear in some tool result
     return [n for kind, n in claimed_numbers(answer) if n not in tool_results]`,
-      guardrails: [
-        "Server-level MCP instructions did not seem to reach the model in Claude Desktop, so every rule that mattered was repeated in the tool's own description and in its error text.",
-        "Outage cases inject HTTP 503 into one tool and fail the answer if it reassures anyway, for example 'no mask needed' when air quality never answered.",
-        "The grader compares station arguments as the server sees them after English-to-Korean translation, so 'Sindorim' and '신도림' count as the same call."
-      ]
     },
     impact: {
       value: [
@@ -1479,35 +1594,24 @@ def ungrounded(answer, tool_results):
         "httpx request logging was turned off after it was found writing API keys into the server log."
       ]
     },
-    behindTheArchitecture: {
-      problem: "Assistants are good at talking about a commute and bad at knowing the facts of one: which train, how many stops, whether it will rain at 9 pm in Gangnam.",
-      vision: "A small, well-tested tool server that any MCP client can use, plus the evals to prove the model actually uses it instead of improvising.",
-      rationale: "Built as a learning project for the MCP stack end to end: real Korean APIs and their quirks, a local and a hosted transport, an agent loop for the briefing, and an evaluation harness. Every step, command and gotcha is written up in the repo's BUILD_GUIDE."
-    },
     technicalHurdles: [
       {
-        title: "The model counted stops from memory, and got them wrong",
-        incident: "In early tests the model gave stop counts from memory (19 stops from Hongdae to Gangnam; the real answer is 17). A stricter instruction stopped the stop counts, but on another trip the model then invented a wrong-way transfer instead.",
-        diagnosis: "The next_trains tool only knew arrivals, so the model had no source for route facts and filled the gap. Server-level instructions also seemed not to reach it in Claude Desktop.",
-        resolution: "Added a route tool on Seoul Metro's shortest-path API, moved the 'route facts only from route' rule into tool descriptions and error text, and added a grounding check to the evals. Route questions now pass with numbers quoted from the tool."
+        "title": "The model counted stops from memory and got them wrong",
+        "incident": "Early tests gave 19 stops from Hongdae to Gangnam; the answer is 17. A stricter instruction stopped the stop counts, but on another trip the model invented a wrong-way transfer instead.",
+        "diagnosis": "next_trains only knew arrivals, so the model had no source for route facts and filled the gap. Server-level instructions also didn't seem to reach it in Claude Desktop.",
+        "resolution": "Added a route tool on Seoul Metro's shortest-path API, put the \"route facts only from route\" rule in tool descriptions and error text, and added a grounding check to the evals. Route questions now pass with numbers quoted from the tool."
       },
       {
-        title: "'Seoul Station' returned no route at all",
-        incident: "Eval case #19 (Seoul Station to Gangnam) kept failing: the route tool returned success with an empty path list.",
-        diagnosis: "The route API wants names without '역' ('강남'), except stations whose official name includes it ('서울역'). Stripping the suffix produced a name the API didn't know, and the API reports that as an empty success, not an error.",
-        resolution: "route() now retries with '역' added and raises a clear error if no name form matches. #19 passes: 11 stops, one transfer at 사당."
+        "title": "\"Seoul Station\" returned no route",
+        "incident": "Eval case 19, Seoul Station to Gangnam, kept failing: the route tool returned success with no path.",
+        "diagnosis": "The API wants names without 역 (강남), except stations whose official name includes it (서울역). Stripping the suffix produced a name it didn't know, and it reports that as an empty success.",
+        "resolution": "route() retries with 역 added and raises a clear error if no form matches. Case 19 passes: 11 stops, one transfer at 사당."
       },
       {
-        title: "Cloud server timed out while the local one worked",
-        incident: "During a demo recording every cloud tool except train arrivals failed with ConnectTimeout, and the assistant fell back to the local server.",
-        diagnosis: "All failing tools call apis.data.go.kr. A fresh instance seemed to fix it, but the next morning's briefing failed the same way in a brand-new container and worked again by 10:00: connections from Google Cloud to data.go.kr fail intermittently, sometimes for hours.",
-        resolution: "Corrected the first diagnosis in the build guide, then made connection failures retry twice with backoff (replies are never re-sent) and log the host on each retry, so the logs show whether short retries are enough or a fixed outgoing IP is needed."
-      },
-      {
-        title: "Morning briefings arrived late, or not at all",
-        incident: "The first scheduled briefing arrived at 07:50 instead of 07:45, and the job couldn't start at all while the project sat in ~/Desktop.",
-        diagnosis: "launchd can't read ~/Desktop under macOS privacy rules and doesn't wake a sleeping Mac; pmset can only schedule one wake a day, and there were now two briefings.",
-        resolution: "Moved the project to ~/Projects, then moved the briefing to a Cloud Run job started by Cloud Scheduler, with Seoul time set explicitly because the container runs in UTC."
+        "title": "The cloud server timed out while the local one worked",
+        "incident": "During a demo recording, every cloud tool except train arrivals failed with ConnectTimeout.",
+        "diagnosis": "All the failing tools call apis.data.go.kr. Connections from Google Cloud to that host fail on and off, sometimes for hours; a fresh container didn't help the next morning.",
+        "resolution": "Corrected my first diagnosis in the build guide, added two retries with backoff on connection failures (replies are never re-sent), and logged the host on each retry to show whether a fixed outgoing IP is needed."
       }
     ]
   }
@@ -1515,60 +1619,78 @@ def ungrounded(answer, tool_results):
 
 export const studyDataKo: Record<string, CaseStudyType> = {
   "hagwon-readiness": {
-    title: "학원 AI 준비도 지표 — 이중언어 리드 확보 진단",
-    tagline: "학원 원장의 AI 준비도를 84점 만점, 7개 영역으로 진단하는 한/영 이중언어 자가진단. 결과를 개인화 리포트로 이메일 발송하고 Chekki의 B2B 세일즈 퍼널로 연결하며, GA4 유입 추적과 비밀번호 보호 관리자 화면을 갖췄습니다.",
-    meta: { role: "프로덕트 엔지니어", team: "1인", status: "운영 중" },
+    title: "학원 AI 준비도 지표: 한영 리드 확보용 진단 퀴즈",
+    tagline: "학원 원장이 17개 문항(영어·한국어)에 답하면 AI 준비도를 84점 만점으로 계산하고, 개인 리포트를 메일로 보내고, 리드를 채키의 영업 흐름으로 넘깁니다. GA4로 유입 경로를 추적하고, 비밀번호로 보호된 관리자 화면이 있습니다.",
+    meta: {
+      "role": "프로덕트 엔지니어",
+      "team": "1인",
+      "status": "운영 중"
+    },
     liveUrl: "https://ai-readiness.chekkiai.com",
     screenshots: [
-      { label: "퀴즈 랜딩", url: "/screenshots/hagwon-readiness/01-landing.png", subLabel: "이중언어 진입 화면" },
-      { label: "진단 문항", url: "/screenshots/hagwon-readiness/02-questions.png", subLabel: "7개 영역 문항 흐름" },
-      { label: "이메일 리포트", url: "/screenshots/hagwon-readiness/03-email-report.png", subLabel: "자동 생성 개인화 리포트" }
+      {
+        "label": "퀴즈 시작 화면",
+        "url": "/screenshots/hagwon-readiness/01-landing.png",
+        "subLabel": "영어 또는 한국어로 시작"
+      },
+      {
+        "label": "문항",
+        "url": "/screenshots/hagwon-readiness/02-questions.png",
+        "subLabel": "7개 영역, 17개 문항"
+      },
+      {
+        "label": "메일 리포트",
+        "url": "/screenshots/hagwon-readiness/03-email-report.png",
+        "subLabel": "자동으로 발송되는 개인 리포트"
+      }
     ],
     stats: [
-      { label: "진단 범위", value: "7개 영역 / 17문항" },
-      { label: "지원 언어", value: "한/영 이중언어" },
-      { label: "리드 전달", value: "자동 이메일 + Firestore 영구 링크" }
+      {
+        "label": "진단 범위",
+        "value": "7개 영역, 17문항"
+      },
+      {
+        "label": "언어",
+        "value": "한국어·영어"
+      },
+      {
+        "label": "리드 전달",
+        "value": "메일 + 저장 링크"
+      }
     ],
     problem: [
-      "Chekki Schools의 세일즈 방식은 원장이 스스로 AI 격차를 인지하고 있어야 했지만, 대부분은 세일즈 통화 전에 이를 확인할 방법이 없었습니다.",
-      "서버 측 채점과 저장 기능이 없는 리드 확보용 퀴즈는 방문자가 탭을 닫는 순간 결과가 사라지고, 세일즈팀에 후속 조치할 근거를 전혀 남기지 못합니다.",
-      "퀴즈로 유입된 트래픽(소셜, 블로그, 콜드 아웃리치)은 어떤 채널이 실제로 완료된 진단을 만들어냈는지, 단순 이탈과 구분해 증명할 방법이 없었습니다."
+      "채키 스쿨즈의 영업 통화는 원장이 이미 AI 활용에 빈틈이 있다는 걸 안다고 가정했지만, 대부분은 통화 전에 그걸 확인할 방법이 없었습니다.",
+      "브라우저에서만 점수를 내는 퀴즈는 탭을 닫는 순간 결과가 사라지고, 영업팀이 후속 연락할 근거도 남지 않습니다.",
+      "SNS, 블로그, 콜드 아웃리치로 들어온 방문자 중 어느 채널이 실제 진단 완료로 이어졌는지 알 수 없었습니다."
     ],
     solution: [
-      "7개 영역(21~84점 척도)에 가중치를 둔 채점 엔진을 구축, 등급 구간과 개인화된 최약점 영역 코멘트를 산출. 하나의 순수 리포트 빌더가 브라우저에서 즉시 결과를 보여주고, 서버에서도 원본 답변으로 리포트를 다시 만든 뒤에만 저장·발송.",
-      "제출 시 전체 리포트 스냅샷을 Firestore에 저장하고, 제출자(이중언어 HTML 리포트)와 내부 알림 주소(리드 알림) 양쪽에 Resend로 이메일 발송 — IP당 슬라이딩 윈도우 방식으로 남용 차단.",
-      "모든 리포트에 영구 링크(/results/[id])를 부여해 저장된 스냅샷을 다시 읽어오도록 하여, 원장의 결과가 브라우저 localStorage에 의존하지 않고 유지되도록 함.",
-      "GA4를 전체 사이트에 연동하고 제출 성공 시 점수/등급을 담은 generate_lead 이벤트를 발생시켜, UTM 태그가 붙은 캠페인 링크가 단순 페이지뷰가 아닌 귀속 가능한 전환으로 집계.",
-      "Basic Auth로 보호된 /admin 라우트(Vercel 미들웨어, 비밀번호 확인만)를 추가해 전체 제출 건의 점수 분포, 등급별 건수, 최약점 영역 빈도를 확인 — 별도 로그인 시스템 구축 없이."
+      "7개 영역 가중치 점수(21~84점), 점수 구간, 가장 약한 영역 안내. 같은 리포트 생성 코드가 브라우저에서 즉시 결과를 보여주고, 서버에서도 원래 답으로 리포트를 다시 만든 뒤에 저장·발송",
+      "제출하면 리포트를 Firestore에 저장하고, Resend로 원장에게 리포트를, 팀에게 리드 알림을 발송. IP별 제출 횟수 제한",
+      "리포트마다 저장된 사본을 읽는 고유 링크가 있어, 원장의 브라우저에 의존하지 않음",
+      "제출 시 점수와 구간을 담은 GA4 generate_lead 이벤트를 보내, UTM 링크별 전환 확인",
+      "비밀번호로 보호된 /admin에서 점수 분포, 구간별 인원, 가장 흔한 약점 영역 확인"
     ],
     stack: ["Next.js 14 App Router", "TypeScript", "Tailwind CSS", "Firebase Admin / Firestore", "Resend", "Google Analytics 4", "Vercel Middleware"],
     decisions: [
       {
-        decision: "전체 로그인 시스템 대신 미들웨어 기반 HTTP Basic Auth",
-        alternativeConsidered: "세션 기반 관리자 로그인 구축(쿠키 + 비밀번호 폼 + 모든 라우트에 인증 확인)",
-        why: "제출 통계를 가끔 확인하는 사람은 한 명뿐 — 브라우저 네이티브 Basic Auth 프롬프트가 약 15줄의 미들웨어로 같은 일을 처리하며, 세션 저장이나 로그인 UI를 구축·보안할 필요가 없음.",
-        tradeOffAccepted: "개별 사용자 계정 없음, 대시보드 열람자에 대한 감사 로그 없음, 비밀번호를 아는 사람이면 누구나 공유 접근."
+        "decision": "로그인 시스템 대신 브라우저 기본 인증",
+        "alternativeConsidered": "입력 폼과 경로별 확인이 있는 세션 기반 관리자 로그인",
+        "why": "통계는 한 사람이 가끔 볼 뿐입니다. 브라우저 기본 인증 창이면 미들웨어 15줄 정도로 충분하고, 세션이나 로그인 화면을 만들고 보호할 필요가 없습니다.",
+        "tradeOffAccepted": "개인 계정도, 누가 봤는지 기록도 없고, 비밀번호 하나를 공유합니다."
       },
       {
-        decision: "초기의 클라이언트 채점 설계를 뒤집고, 서버가 원본 답변으로 리포트를 재생성",
-        alternativeConsidered: "기존 설계 유지: 브라우저에서 채점하고 완성된 리포트(점수, 등급, 추천 문구)를 POST해 서버가 저장·발송",
-        why: "처음에는 자기 점수를 조작해도 이득이 없다고 판단했습니다. 하지만 감사 결과 진짜 위험은 점수가 아니라 문구였습니다. POST에 담긴 내용이 그대로 Chekki 주소로 아무에게나 발송되고 공개 영구 링크에 게시될 수 있었습니다. 같은 순수 빌더를 서버로 옮겨, API는 답변과 연락처만 받습니다.",
-        tradeOffAccepted: "채점이 두 번 실행됨(브라우저는 즉시 피드백, 서버는 기록용). 그래서 lib/report.ts에는 브라우저 전용 코드가 없어야 하며, 작은 assert 기반 점검 스크립트로 이를 지킴."
+        "decision": "서버에서 원래 답으로 리포트를 다시 생성",
+        "alternativeConsidered": "처음 설계 유지: 브라우저에서 채점하고 완성된 리포트를 보내 서버가 저장·발송",
+        "why": "처음에는 자기 점수를 조작해도 얻을 게 없다고 생각했습니다. 점검해 보니 위험은 점수가 아니라 문장이었습니다. 요청에 담긴 내용이 채키 주소로 아무에게나 발송되고, 공개 링크에도 올라갔습니다. 이제 API는 답과 연락처만 받습니다.",
+        "tradeOffAccepted": "채점이 두 번 실행되므로, 리포트 생성 코드에 브라우저 전용 코드가 들어가면 안 됩니다. 작은 검사 스크립트로 막고 있습니다."
       }
     ],
     architecture: {
-      lifecycle: [
-        "퀴즈: lib/questions.ts가 7개 영역 17문항 뱅크를 정의하고, lib/scoring.ts가 답변에 가중치를 부여해 21~84점, 등급, 최약점 영역을 산출하며, lib/report.ts가 이를 언어별 리포트로 변환.",
-        "제출: POST /api/submit이 이메일과 모든 문항의 A~D 답변을 검증하고, IP 기준 요청 제한(시간당 5건, 슬라이딩 윈도우)을 적용하며, 서버에서 리포트를 재생성해 원본 답변과 함께 Firestore의 readiness_submissions에 기록하고 Resend 이메일 2건을 발송.",
-        "영구 링크: /results/[id]가 동일한 Firestore 문서를 다시 읽어와 방문자의 답변을 재계산하지 않고 동일한 리포트를 렌더링.",
-        "관리자: /admin(middleware.ts를 통한 Basic Auth)이 모든 제출 건을 읽어와 고정된 등급·영역 ID로 묶어, 영어와 한국어 제출이 같은 항목으로 집계."
-      ],
       guardrails: [
-        "API는 리포트 문구를 받지 않음: 답변과 연락처만 받으므로, 위조된 요청이 Chekki 명의 이메일이나 공개 영구 링크에 임의의 문구를 넣을 수 없음.",
-        "메모리 기반 슬라이딩 윈도우 요청 제한(IP당 시간당 5건)으로 자유 서술 피드백·이메일 필드에 대한 스크립트 남용을 차단.",
-        "사용자가 제출한 이름/학원명/피드백 문자열은 리포트 이메일에 삽입되기 전 HTML 이스케이프 처리하여, 원시 템플릿 문자열이 열어둘 인젝션 경로를 차단.",
-        "ADMIN_PASSWORD가 설정되지 않으면 /admin에 접근할 수 없음 — 환경 변수가 없으면 라우트가 조용히 제출 데이터를 서빙하는 대신 503 처리.",
-        "FIREBASE_SERVICE_ACCOUNT가 있을 때만 Firestore 쓰기가 발생하도록 하여, 로컬/개발 환경에서는 크래시 대신 이메일 발송만 동작하도록 저하."
+        "API는 리포트 문장을 받지 않고 답과 연락처만 받아서, 위조 요청이 채키 메일이나 공개 링크에 임의의 문장을 넣을 수 없음",
+        "IP당 시간당 5회 제출 제한으로 자유 입력란 악용 차단",
+        "이름과 의견은 메일에 넣기 전에 HTML 이스케이프 처리",
+        "관리자 비밀번호가 설정되지 않으면 /admin은 데이터 대신 503 반환"
       ]
     },
     promptEngineering: {
@@ -1582,11 +1704,6 @@ function scoreAssessment(answers) {
   name: string; raw: number; maxRaw: number;
   isStrong: boolean; blurb: string | null; nextStep: string | null;
 };`,
-      guardrails: [
-        "서로 다른 두 최약점 답변이 동일한 일반 추천을 보여주던 버그 이후, 개인화된 다음 단계 문구를 영역 단위가 아닌 답변한 문항 단위(nextStepByQuestion)로 조회.",
-        "채점 로직이 바뀌는 커밋과 동시에 한/영 문구 쌍을 함께 고정하여, 인용문과 추천 문구가 언어 간에 어긋나지 않도록 함(실제 수정 사례: q12, q17 오버라이드).",
-        "리포트의 전체 영역별 표에서 최약점 영역은 제외하여, 동일한 점수가 두 가지 다른 틀로 두 번 보여지지 않도록 함."
-      ]
     },
     impact: {
       value: [
@@ -1601,69 +1718,86 @@ function scoreAssessment(answers) {
         "리포트 영구 링크는 noindex 처리하여, 원장의 이름과 점수는 링크로만 접근 가능하고 검색에는 노출되지 않음."
       ]
     },
-    behindTheArchitecture: {
-      problem: "백엔드 없는 정적 퀴즈는 리드를 만들 수 없고, 탭을 닫으면 살아남지 못하며, 어떤 마케팅 채널이 실제로 효과가 있는지 알 수 없습니다.",
-      vision: "진단 자체를 세일즈 퍼널의 최상단으로 만든다: 채점하고, 이메일로 보내고, 저장하고, 귀속을 추적한다 — 이를 위한 별도 앱을 만들지 않고.",
-      rationale: "chekki-ai의 세일즈 도구가 이미 사용하는 Firebase Admin 인증과 Firestore 프로젝트를 그대로 재사용하여, 이 퀴즈가 별도의 데이터 계층을 세우는 대신 동일한 데이터 평면에 기록."
-    },
     technicalHurdles: [
       {
-        title: "서로 다른 두 문항 세트에서 동일한 최약점 버그 재발",
-        incident: "교육 영역의 인용된 답변과 추천 문구가 서로 어긋날 수 있었음 — 리포트가 한 약점 답변을 인용하면서 다른 답변을 고치라고 추천. 17번 문항에서 한 번 고쳤는데, 12번 문항에서 다시 발견.",
-        diagnosis: "추천 문구 조회가 영역 단위로 키가 잡혀 있었고, 방문자의 최약점 답변이 실제로 나온 특정 문항 단위가 아니었음 — 두 가지 다른 문제를 아우르는 영역이면 추천이 엉뚱한 쪽을 가리킬 수 있었음.",
-        resolution: "실제 문항 ID로 키를 잡은 문항별 오버라이드를 추가하고, 보고된 것만 패치하는 대신 여러 문항을 아우르는 모든 영역을 같은 형태의 불일치가 있는지 전수 점검."
+        "title": "엉뚱한 답을 고치라고 권하는 리포트",
+        "incident": "리포트가 약한 답 하나를 인용하고는 다른 답을 고치라고 권하는 경우가 있었습니다. 17번 문항에서 고쳤는데, 12번에서 같은 문제가 또 나왔습니다.",
+        "diagnosis": "추천 문구를 가장 약한 답이 나온 문항이 아니라 영역 기준으로 찾고 있어서, 두 가지 문제를 다루는 영역은 엉뚱한 쪽을 가리킬 수 있었습니다.",
+        "resolution": "문항 ID 기준의 예외 규칙을 추가하고, 신고된 곳만 고치지 않고 여러 문항이 있는 영역을 모두 점검했습니다."
       },
       {
-        title: "리포트 이메일이 Gmail에서 조용히 접히던 문제",
-        incident: "전체 영역별 표가 Gmail을 제외한 모든 곳에서 정상 렌더링됐지만, Gmail에서는 리포트의 상당 부분이 '...' 토글 뒤로 사라짐.",
-        diagnosis: "Gmail의 클리핑 로직은 표가 다른 표 셀 안에 3단계 이상 중첩된 것을 감지하면 이를 '인용된 콘텐츠'로 판단해 자동으로 접음.",
-        resolution: "표 안에 표를 중첩하는 대신 영역별 행을 단일 계층 마크업으로 평탄화하여, Gmail의 중첩 깊이 검사에 걸리지 않으면서 동일한 시각적 레이아웃을 유지."
+        "title": "Gmail에서 접히는 리포트 메일",
+        "incident": "점수표가 다른 메일 앱에서는 잘 보이는데, Gmail에서만 리포트 상당 부분이 '...' 아래로 숨었습니다.",
+        "diagnosis": "Gmail은 표 안에 표가 세 단계로 겹치면 인용문으로 보고 접어 버립니다.",
+        "resolution": "같은 모양을 유지하면서 한 단계짜리 마크업으로 바꿨습니다."
       },
       {
-        title: "GA4와 관리자 코드가 로컬에만 존재하고 배포에 반영되지 않음",
-        incident: "GA4와 관리자 대시보드를 연동한 뒤 Realtime에 사용자가 0명으로 표시되고 /admin에 접근할 수 없었음 — Vercel의 재배포 버튼이 변경 이전의 마지막 푸시된 커밋만 다시 빌드하고 있었음.",
-        diagnosis: "변경 사항이 로컬 워킹 트리에만 존재했고, 아직 main에 커밋되거나 푸시되지 않은 상태였음.",
-        resolution: "변경 사항을 커밋하고 푸시해 새 커밋 기준으로 실제 배포를 트리거 — 오래된 코드를 계속 재배포하는 대신."      },
-      {
-        title: "관리자 화면이 등급을 언어별로 두 번 집계",
-        incident: "관리자 대시보드에 \"Digitizing\"과 \"디지털 전환 중\"이 서로 다른 등급으로 표시되고, 한국어 제출 건에는 잘못된 배지 색상이 적용됨.",
-        diagnosis: "제출 데이터가 등급과 최약점 영역 이름을 방문자의 언어로 저장했고, 대시보드는 이 표시용 문자열로 그룹화하고 있었음.",
-        resolution: "각 등급에 고정 ID를 부여해 새 제출 건마다 저장하고, 등급·영역 ID로 그룹화. 기존 기록은 영어 또는 한국어 이름으로 다시 매칭해 마이그레이션 없이 해결."
+        "title": "관리자 화면에서 구간이 두 번 집계됨",
+        "incident": "대시보드에 'Digitizing'과 '디지털 전환 중'이 별개의 구간으로 나오고, 한국어 제출은 배지 색이 틀렸습니다.",
+        "diagnosis": "구간과 영역 이름을 방문자의 언어로 저장했고, 대시보드는 그 표시 이름으로 묶고 있었습니다.",
+        "resolution": "구간마다 고정 ID를 두어 새 제출에 함께 저장하고, ID로 묶게 했습니다. 기존 기록은 영어나 한국어 이름으로 다시 연결해서 데이터 이전이 필요 없었습니다."
       }
     ]
   },
   vodabi: {
-    title: "VODATalk(보다톡) — AI 음성 세일즈 훈련 & 평가 플랫폼",
-    tagline: "영업 직원이 AI 고객과 실시간 음성 롤플레이로 연습하고 루브릭 기반 점수와 코칭을 받으며, 매니저는 팀의 진행 상황을 확인합니다.",
-    meta: { role: "단독 풀스택 엔지니어", team: "엔지니어 1인, 디자이너 Figma 기반", dates: "2026년 7월 – 현재", status: "구축 완료, 기업 고객사에 도입 중" },
+    title: "보다톡: 음성 AI 세일즈 훈련·평가",
+    tagline: "영업 직원이 AI 고객과 음성으로 통화 연습을 하고, 통화가 끝나면 루브릭 점수와 코칭을 받습니다. 매니저는 팀이 얼마나 성장하는지 확인합니다.",
+    meta: {
+      "role": "풀스택 엔지니어 (단독)",
+      "team": "1인 개발, 디자이너의 Figma 기반",
+      "dates": "2026년 7월부터",
+      "status": "구축 완료, 기업 고객사에 도입 중"
+    },
     liveUrl: "",
     screenshots: [
-      { label: "실시간 통화 파이프라인", url: "/screenshots/vodabi/call-flow.svg", subLabel: "브라우저가 WebRTC로 OpenAI Realtime과 직접 통화하고, 백엔드는 토큰 발급과 턴 저장을 담당" },
-      { label: "채점 후 코칭", url: "/screenshots/vodabi/evaluation.svg", subLabel: "엄격한 JSON 스키마로 채점한 뒤, 확정된 점수를 바탕으로 코칭 작성" },
-      { label: "역할과 권한", url: "/screenshots/vodabi/roles.svg", subLabel: "관리자는 설정, 매니저는 배정과 추적, 직원은 연습, 지원자는 통화 1회" }
+      {
+        "label": "실시간 통화 구조",
+        "url": "/screenshots/vodabi/call-flow.svg",
+        "subLabel": "브라우저가 WebRTC로 OpenAI Realtime과 직접 연결되고, 백엔드는 토큰 발급과 대화 저장을 맡습니다."
+      },
+      {
+        "label": "채점 후 코칭",
+        "url": "/screenshots/vodabi/evaluation.svg",
+        "subLabel": "점수를 엄격한 JSON으로 먼저 확정하고, 코칭은 그 점수를 바탕으로 씁니다."
+      },
+      {
+        "label": "역할과 권한",
+        "url": "/screenshots/vodabi/roles.svg",
+        "subLabel": "관리자는 설정하고, 매니저는 배정하고, 직원은 연습하고, 지원자는 한 번 통화합니다."
+      }
     ],
     stats: [
-      { label: "프로덕션까지", value: "약 3주", detail: "플랫폼 개선 및 코칭 레이어 추가" },
-      { label: "음성 파이프라인", value: "Direct WebRTC", detail: "브라우저와 OpenAI Realtime 직접 연결, 서버 미경유" },
-      { label: "채점", value: "채점 후 설명", detail: "확정된 점수로 피드백 작성" }
+      {
+        "label": "출시까지",
+        "value": "약 3주",
+        "detail": "리뉴얼과 코칭 기능 포함"
+      },
+      {
+        "label": "음성 구조",
+        "value": "WebRTC 직접 연결",
+        "detail": "브라우저에서 OpenAI Realtime으로, 오디오가 서버를 거치지 않음"
+      },
+      {
+        "label": "채점 방식",
+        "value": "채점 후 설명",
+        "detail": "확정된 점수를 바탕으로 피드백 작성"
+      }
     ],
     problem: [
-      "고객사 이름과 데이터는 NDA에 따라 비공개입니다.",
-      "영업 통화 평가는 사람이 직접 들어야 해서 시간이 들고 평가자마다 다릅니다.",
-      "직원에게는 반론 대응을 포함한 실제 같은 통화를 원하는 만큼 연습할 곳이 필요합니다.",
-      "매니저는 누가 훈련하는지, 점수가 어떻게 변하는지 보고 싶어 합니다."
+      "영업팀은 통화를 직접 들어보고 평가해서 시간이 오래 걸리고, 듣는 사람마다 기준이 다릅니다.",
+      "직원에게는 반론 대응까지 포함한 실전 같은 통화를 원하는 만큼 연습할 곳이 필요합니다.",
+      "매니저는 누가 훈련하고 있는지, 점수가 어떻게 변하는지 알고 싶어 합니다.",
+      "고객사 이름과 데이터는 NDA에 따라 공개하지 않습니다."
     ],
     solution: [
-      "실시간 음성 롤플레이: Direct WebRTC로 아웃바운드, 인바운드, 면접 시나리오의 AI 고객과 통화.",
-      "루브릭 채점: 시나리오 루브릭으로 통화를 채점한 뒤, 그 점수를 바탕으로 코칭 작성.",
-      "직원 훈련: 자율 연습, 매니저 배정 필수훈련, 시나리오별 점수, 역량 성장, 배지.",
-      "매니저 대시보드: 회사·팀별 완료율, 점수 현황, 직원별 리포트.",
-      "지원자 테스트: 매직링크로 계정 없이 채점 통화 응시.",
-      "휴대폰 통화: 회사·링크별 관리자 스위치로 캠페인 링크를 휴대폰에서도 열고, 통화와 리포트 화면을 휴대폰에 맞춤.",
-      "파일럿 대비 안정화: 마이크 끊김, 무음 통화, 동시 시작에도 통화 유지. 지원자는 통화 전 동의하고, 정원이 찬 캠페인은 마감 안내.",
-      "어드민 백오피스: 비개발자가 코드 없이 페르소나, 시나리오, 루브릭, 난이도 관리.",
-      "VOISOR 코치: 리포트에 대한 추가 질문에 답하는 채팅 어시스턴트.",
-      "한/영 이중언어 인터페이스."
+      "아웃바운드, 인바운드, 면접 시나리오별 AI 고객과의 음성 롤플레이 (WebRTC 직접 연결)",
+      "시나리오별 루브릭으로 통화를 채점하고, 그 점수를 바탕으로 코칭 작성",
+      "자율 연습과 매니저가 배정한 훈련, 시나리오별 점수, 역량 성장, 배지",
+      "회사·팀·개인별 완료율과 점수를 한눈에 보는 매니저 대시보드",
+      "지원자는 동의 절차 후 계정 없이 매직링크로 채점 통화에 참여",
+      "휴대폰에서도 통화 가능, 마이크 끊김·무음·중복 시작에도 통화 유지",
+      "개발자가 아니어도 페르소나, 시나리오, 루브릭, 난이도를 관리하는 어드민",
+      "리포트 내용을 더 물어볼 수 있는 채팅 코치 VOISOR, 한국어·영어 전체 지원"
     ],
     stack: [
       "React 19",
@@ -1680,51 +1814,63 @@ function scoreAssessment(answers) {
       "i18next (한/영)"
     ],
     coreLoop: [
-      { step: "01. 시나리오 선택", role: "직원 / 지원자", detail: "직원은 시나리오나 배정된 훈련을 열고, 지원자는 매직링크로 들어옵니다." },
-      { step: "02. 실시간 음성 통화", role: "음성 AI 페르소나", detail: "브라우저가 WebRTC로 OpenAI Realtime과 직접 연결되어 자연스럽게 대화합니다." },
-      { step: "03. 대화록 저장", role: "백엔드", detail: "끝난 턴과 발화 속도를 턴마다 기록합니다." },
-      { step: "04. 채점", role: "LLM 평가관", detail: "엄격한 JSON 스키마로 루브릭 항목별 점수를 매깁니다." },
-      { step: "05. 코칭", role: "LLM 평가관", detail: "두 번째 호출이 확정된 점수로 피드백을 작성합니다." },
-      { step: "06. 성장 확인", role: "직원 / 매니저", detail: "직원은 성장과 배지를, 매니저는 팀 완료율과 리포트를 봅니다." }
+      {
+        "step": "01. 시나리오 선택",
+        "role": "직원 / 지원자",
+        "detail": "직원은 시나리오를 고르거나 배정된 훈련을 열고, 지원자는 매직링크로 들어옵니다."
+      },
+      {
+        "step": "02. 실시간 음성 통화",
+        "role": "AI 페르소나",
+        "detail": "브라우저가 WebRTC로 OpenAI Realtime과 직접 연결돼 응답이 빠릅니다."
+      },
+      {
+        "step": "03. 대화 저장",
+        "role": "백엔드",
+        "detail": "한 턴이 끝날 때마다 내용과 말하기 속도를 기록합니다."
+      },
+      {
+        "step": "04. 채점",
+        "role": "LLM 평가자",
+        "detail": "루브릭 항목별로 엄격한 JSON 스키마에 맞춰 채점합니다."
+      },
+      {
+        "step": "05. 코칭",
+        "role": "LLM 평가자",
+        "detail": "두 번째 호출이 확정된 점수를 바탕으로 피드백을 씁니다."
+      },
+      {
+        "step": "06. 성장 확인",
+        "role": "직원 / 매니저",
+        "detail": "직원은 성장 추이와 배지를, 매니저는 팀 완료율과 리포트를 봅니다."
+      }
     ],
     decisions: [
       {
-        decision: "브라우저-모델 Direct WebRTC",
-        alternativeConsidered: "백엔드를 거치는 오디오 중계",
-        why: "서버를 오디오 경로에서 빼면 매 턴의 네트워크 홉이 줄어 실제 통화처럼 느껴집니다.",
-        tradeOffAccepted: "턴은 서버로 스트리밍하지 않고 끝난 뒤 기록합니다."
+        "decision": "브라우저와 음성 모델을 WebRTC로 직접 연결",
+        "alternativeConsidered": "백엔드를 거쳐 오디오 중계",
+        "why": "오디오가 서버를 거치지 않으니 턴마다 네트워크 구간이 하나 줄어, 실제 통화처럼 자연스럽습니다.",
+        "tradeOffAccepted": "대화는 서버로 실시간 전달되지 않고, 턴이 끝난 뒤에 저장됩니다."
       },
       {
-        decision: "통화 후 전체 평가",
-        alternativeConsidered: "통화 중 매 턴 LLM 채점",
-        why: "턴마다 LLM 채점을 하면 비용과 통화 중 지연이 늘어납니다. 통화 중에는 가벼운 진행 표시를, 통화 후에는 전체 리포트를 제공합니다.",
-        tradeOffAccepted: "상세 리포트는 통화 종료 몇 초 후에 나옵니다."
+        "decision": "통화가 끝난 뒤 한 번에 평가",
+        "alternativeConsidered": "통화 중 매 턴마다 LLM으로 채점",
+        "why": "턴마다 채점하면 비용이 늘고 통화 중간에 지연이 생깁니다. 통화 중에는 가벼운 진행 신호만 주고, 전체 리포트는 통화 후에 줍니다.",
+        "tradeOffAccepted": "상세 리포트가 통화 종료 몇 초 뒤에 나옵니다."
       },
       {
-        decision: "먼저 채점하고, 그다음 피드백 작성",
-        alternativeConsidered: "점수와 피드백을 한 번에 만드는 호출",
-        why: "확정된 점수로 피드백을 쓰면 코칭이 점수와 일치합니다. 발화 여부 같은 간단한 점검은 코드로 계산합니다.",
-        tradeOffAccepted: "순차 호출 두 번으로 몇 초가 더 걸립니다."
+        "decision": "점수를 먼저 확정하고 피드백 작성",
+        "alternativeConsidered": "한 번의 호출로 점수와 피드백을 함께 생성",
+        "why": "확정된 점수로 피드백을 쓰면 코칭 내용이 점수와 어긋나지 않습니다. 직원이 말을 했는지 같은 단순 확인은 코드로 처리합니다.",
+        "tradeOffAccepted": "호출을 두 번 연달아 하므로 몇 초가 더 걸립니다."
       }
     ],
-    behindTheArchitecture: {
-      problem: "영업팀은 매 통화를 사람이 듣지 않고도 일관되게 연습하고 평가할 방법이 필요합니다.",
-      vision: "직원과 매니저가 신뢰할 수 있는 루브릭 기반 코칭과 실제 같은 음성 롤플레이.",
-      rationale: "자연스러운 대화를 위한 Direct WebRTC, 피드백이 점수를 따르도록 하는 2단계 GPT-4o 평가."
-    },
     architecture: {
-      lifecycle: [
-        "접속: 직원은 로그인, 지원자는 매직링크.",
-        "마이크 확인: 마이크가 준비된 뒤 카운트다운 시작.",
-        "음성: 브라우저가 Push-to-Talk으로 OpenAI Realtime과 직접 연결.",
-        "평가: 채점 호출 후 피드백 호출.",
-        "확인: 직원과 매니저가 리포트, 성장, 팀 현황 확인."
-      ],
       guardrails: [
-        "개인정보와 대화록 저장 시 암호화.",
-        "슈퍼 어드민, 어드민, 매니저, 직원 역할 기반 접근.",
-        "평가를 완료하지 못하면 명확히 표시된 대체 리포트 제공.",
-        "HTTPS 뒤 컨테이너 배포."
+        "개인정보와 대화 기록은 저장 시 암호화",
+        "최고관리자·관리자·매니저·직원 역할별 접근 권한",
+        "평가를 끝내지 못하면 대체 리포트임을 분명히 표시",
+        "HTTPS 뒤에서 컨테이너로 배포"
       ]
     },
     promptEngineering: {
@@ -1761,11 +1907,6 @@ function scoreAssessment(answers) {
     "required": ["rubricResults", "callFlowPhases", "keyQuotes"]
   }
 }`,
-      guardrails: [
-        "두 호출 모두 엄격한 Structured Outputs.",
-        "인용은 실제 대화록에서 줄 번호로 가져옴.",
-        "대화록 텍스트는 지시가 아닌 통화 내용으로 처리."
-      ]
     },
     impact: {
       value: [
@@ -1785,96 +1926,133 @@ function scoreAssessment(answers) {
     },
     technicalHurdles: [
       {
-        title: "통화 시작 시 무음",
-        incident: "초기 일부 통화가 카운트다운은 끝났지만 음성이 녹음되지 않음.",
-        diagnosis: "브라우저가 카운트다운 후에 마이크를 요청해, 권한이 늦으면 빈 오디오 트랙으로 통화가 시작됨.",
-        resolution: "카운트다운이 마이크 준비를 기다린 뒤, 그 스트림을 그대로 통화에 연결."
+        "title": "통화 시작 시 무음",
+        "incident": "초기 일부 통화에서 카운트다운은 끝났는데 소리가 전혀 녹음되지 않았습니다.",
+        "diagnosis": "카운트다운이 끝난 뒤에 마이크 권한을 요청해서, 권한 허용이 늦으면 빈 오디오 트랙으로 통화가 시작됐습니다.",
+        "resolution": "이제 마이크가 준비될 때까지 카운트다운이 기다리고, 그 스트림을 그대로 통화에 넘깁니다."
       },
       {
-        title: "주변 소음으로 인한 응답",
-        incident: "타이핑이나 주변 소리에 AI가 반응해 토큰이 쓰임.",
-        diagnosis: "음성 감지 민감도가 헤드셋과 환경마다 달랐음.",
-        resolution: "Push-to-Talk 턴 제어로 발화 경계를 명확히 함."
+        "title": "잡음 때문에 역할을 벗어나는 AI",
+        "incident": "통화 시작 때 기침 소리가 나면 AI가 고객이 아니라 일반 비서처럼 답하는 경우가 있었습니다.",
+        "diagnosis": "대화가 시작되기도 전에 잡음에 반응해서, 역할을 잡아줄 맥락이 없었습니다.",
+        "resolution": "AI는 실제 인사말을 들은 뒤에 첫 대답을 하고, 통화 시작 시 누가 먼저 말하는지 안내합니다. 아웃바운드 통화에서는 AI 고객이 먼저 전화를 받습니다."
       },
       {
-        title: "소음으로 시작된 통화에서 역할 이탈",
-        incident: "통화 시작 시 기침 소리가 나면 AI가 고객이 아닌 일반 어시스턴트처럼 응답하는 경우가 있었음.",
-        diagnosis: "실제 대화가 시작되기 전에 AI가 소음에 응답해, 역할을 잡을 맥락이 없었음.",
-        resolution: "실제 인사말이 들어온 뒤에 AI가 첫 응답을 하고, 통화 시작 시 누가 먼저 말하는지 알려주며, 아웃바운드에서는 AI 고객이 먼저 전화를 받음."
+        "title": "휴대폰에서 느린 첫 화면",
+        "incident": "모바일 Lighthouse 측정에서 모든 사용자가 처음 보는 로그인 페이지가 구글의 '좋음' 기준에 한참 못 미쳤습니다.",
+        "diagnosis": "PNG 배경 이미지 하나가 페이지 용량 대부분을 차지했습니다.",
+        "resolution": "같은 해상도의 WebP로 다시 인코딩했습니다. 용량이 크게 줄어 휴대폰에서 몇 배 빨리 뜨고, 레이아웃 흔들림도 없습니다."
       },
       {
-        title: "휴대폰에서 느린 첫 화면",
-        incident: "모바일 Lighthouse 측정(네트워크·CPU 제한)에서 모든 사용자가 처음 보는 로그인 페이지가 Google의 '양호' 기준에서 크게 벗어남.",
-        diagnosis: "PNG 배경 이미지 하나가 페이지 용량의 대부분을 차지.",
-        resolution: "같은 해상도의 WebP로 다시 인코딩. 페이지 용량이 몇 분의 일로 줄고 휴대폰 로딩이 몇 배 빨라졌으며 레이아웃 이동은 없음."
-      },
-      {
-        title: "쓰지 않는 데이터를 싣고 다니던 목록 응답",
-        incident: "직접 만든 읽기 전용 API 지연 벤치마크(외부 의존성 없음, 프로덕션 대상 실행 거부)에서 세션 목록 응답이 화면에 필요한 것보다 훨씬 무겁게 나타남.",
-        diagnosis: "목록의 각 세션에 어떤 목록 화면도 표시하지 않는 큰 설정 필드가 들어 있었고, 응답의 대부분을 차지.",
-        resolution: "목록 응답에서 해당 필드를 빼서 목록이 내려받는 데이터가 몇 분의 일로 줄고 응답도 빨라짐."
-      },
-      {
-        title: "AI 채점은 일관적인가?",
-        incident: "후보자는 LLM이 채점하므로 같은 통화는 매번 같은 등급을 받아야 하지만, 확인한 사람이 없었음.",
-        diagnosis: "같은 통화를 스테이징에서 실제 채점 코드로 여러 번 다시 채점하는 테스트를 작성. 점수는 안정적이었지만, 등급 경계에 걸친 통화는 경계 양쪽으로 갈릴 수 있었음.",
-        resolution: "개선안과 함께 보고: 경계 근처 통화는 담당자 검토 표시, 또는 두 번 채점해 중앙값 사용. 함께 만든 벤치마크로 실시간 음성 응답 시간을 재서, 문서의 측정되지 않은 지연 시간 문구를 실측값으로 교체."
+        "title": "AI 채점은 일관적인가?",
+        "incident": "지원자를 LLM이 채점하니 같은 통화는 늘 같은 점수를 받아야 하는데, 아무도 확인한 적이 없었습니다.",
+        "diagnosis": "스테이징에서 실제 채점 코드로 같은 통화를 여러 번 다시 채점하는 테스트를 만들었습니다. 점수는 안정적이었지만, 등급 경계에 걸친 통화는 어느 쪽으로든 갈 수 있었습니다.",
+        "resolution": "경계 근처 통화는 사람이 검토하거나, 두 번 채점해 중앙값을 쓰는 두 가지 방안을 보고했습니다. 함께 만든 벤치마크로 실시간 음성 응답 시간을 재서, 문서의 추정치를 측정값으로 바꿨습니다."
       }
     ]
   },
   chekki: {
-    title: "Chekki AI — AI 숙제 채점 및 학원 관리 플랫폼",
-    tagline: "교사 정답지 OCR 기반 즉각적 이중언어 AI 숙제 채점 + 학부모, 원어민 교사, 한국인 교사, 학원장을 연결하는 웹/iOS/안드로이드 통합 에듀테크 플랫폼.",
-    meta: { role: "창업자 · 프로덕트 엔지니어", team: "1인", status: "App Store · Google Play 출시" },
+    title: "채키 AI: 영어학원 숙제 채점",
+    tagline: "학부모가 아이의 영어 숙제를 찍으면 선생님의 정답지 기준으로 채점하고, 틀린 문제마다 한국어로 설명합니다. 선생님은 수업 전에 아이들이 틀린 내용을 받아봅니다. 웹, iOS, 안드로이드 모두 혼자 만들었습니다.",
+    meta: {
+      "role": "창업자, 프로덕트 엔지니어",
+      "team": "1인",
+      "status": "App Store와 Google Play 출시"
+    },
     liveUrl: "https://chekki-ai.vercel.app/",
     storeUrl: "https://urlgeni.us/chekki",
     walkthroughVideo: "/video/chekki-loop.mp4",
     walkthroughPoster: "/video/chekki-loop-poster.webp",
     screenshots: [
-      { label: "랜딩 페이지", url: "/screenshots/chekki-app/landing-hero-ko.webp", subLabel: "채점은 채키가, 칭찬은 엄마가" },
-      { label: "해결된 페인포인트", url: "/screenshots/chekki-app/landing-pains-ko.webp", subLabel: "학부모가 겪는 숙제 고민 세 가지" },
-      { label: "홈화면", url: "/screenshots/chekki-app/ios-ko-5.webp", subLabel: "숙제 스캔, 복습 카드, 학원 단계" },
-      { label: "채점 중", url: "/screenshots/chekki-app/ios-ko-4.webp", subLabel: "손글씨 인식, 기다리는 동안 칭찬 한마디" },
-      { label: "채점 결과", url: "/screenshots/chekki-app/store-ko-1.webp", subLabel: "페이지 위에 바로 표시되는 정답" },
-      { label: "아이에게 할 말", url: "/screenshots/chekki-app/store-ko-2.webp", subLabel: "틀린 문제마다 한국어 설명" },
-      { label: "따라 말하기", url: "/screenshots/chekki-app/store-ko-3.webp", subLabel: "영어 발음 듣고 따라 말하기" },
-      { label: "복습 카드", url: "/screenshots/chekki-app/store-ko-5.webp", subLabel: "틀린 문제는 카드로 복습" },
-      { label: "지난 채점", url: "/screenshots/chekki-app/store-ko-6.webp", subLabel: "지난 채점도 다시 보기" },
-      { label: "선생님 수업 리포트", url: "/screenshots/chekki-app/store-ko-7.webp", subLabel: "한국인 선생님이 작성해 보내는 리포트" }
+      {
+        "label": "랜딩 페이지",
+        "url": "/screenshots/chekki-app/landing-hero-ko.webp",
+        "subLabel": "채점은 채키가, 칭찬은 부모님이"
+      },
+      {
+        "label": "해결하는 문제",
+        "url": "/screenshots/chekki-app/landing-pains-ko.webp",
+        "subLabel": "학부모가 꼽은 숙제 고민 세 가지"
+      },
+      {
+        "label": "홈",
+        "url": "/screenshots/chekki-app/ios-ko-5.webp",
+        "subLabel": "숙제 스캔, 복습 목록, 학원 연결 단계"
+      },
+      {
+        "label": "채점 중",
+        "url": "/screenshots/chekki-app/ios-ko-4.webp",
+        "subLabel": "손글씨를 읽는 동안 칭찬할 말을 추천"
+      },
+      {
+        "label": "채점된 학습지",
+        "url": "/screenshots/chekki-app/store-ko-1.webp",
+        "subLabel": "학습지 위에 바로 정답 표시"
+      },
+      {
+        "label": "이렇게 말해 주세요",
+        "url": "/screenshots/chekki-app/store-ko-2.webp",
+        "subLabel": "틀린 문제마다 학부모용 한국어 설명"
+      },
+      {
+        "label": "따라 말하기",
+        "url": "/screenshots/chekki-app/store-ko-3.webp",
+        "subLabel": "정답을 듣고 직접 소리 내어 말하기"
+      },
+      {
+        "label": "복습 카드",
+        "url": "/screenshots/chekki-app/store-ko-5.webp",
+        "subLabel": "틀린 문제가 플래시카드로 다시 등장"
+      },
+      {
+        "label": "지난 스캔",
+        "url": "/screenshots/chekki-app/store-ko-6.webp",
+        "subLabel": "채점한 학습지를 언제든 다시 보기"
+      },
+      {
+        "label": "수업 리포트",
+        "url": "/screenshots/chekki-app/store-ko-7.webp",
+        "subLabel": "한국인 선생님이 작성하고 보내는 리포트"
+      }
     ],
     stats: [
-      { label: "역할 아키텍처", value: "4개 독립 역할", detail: "학부모, 원어민 교사, 한국인 교사, 학원장" },
-      { label: "오답 검출 (평가)", value: "98–100%", detail: "합성 페이지 105장(기울고 그림자 지고 지운 답 35장); 어느 실행에서도 정답 226개 중 오답 처리 최대 2개" },
-      { label: "프로덕트 엄밀성", value: "26개 기록된 결정", detail: "문서화된 트레이드오프 & PRD/Scope/Decisions 삼총사" }
+      {
+        "label": "사용자 역할",
+        "value": "4개",
+        "detail": "학부모, 원어민 강사, 한국인 강사, 원장"
+      },
+      {
+        "label": "평가에서 잡아낸 오답",
+        "value": "98–100%",
+        "detail": "합성 학습지 105장 (35장은 기울어지거나 그림자·취소선 포함). 어떤 회차에서도 정답 226개 중 오답 처리는 2개 이하."
+      },
+      {
+        "label": "기록한 의사결정",
+        "value": "26건",
+        "detail": "검토한 대안과 감수한 점까지 함께 기록"
+      }
     ],
     evals: {
-      title: "채점 평가 · 정답지 기준 Gemini 3.8 Flash",
-      note: "손글씨 답을 채운 합성 워크시트를 교사 정답지 기준으로 채점. 첫 10페이지 세트에서 Gemini 2.5 Flash는 오답 9개 중 8개, 3.8 Flash는 9개 모두 검출해 프로덕션을 3.8 Flash로 전환.",
+      title: "채점 평가: 정답지를 쓴 Gemini 3.8 Flash",
+      note: "손글씨 답이 적힌 합성 학습지를 선생님의 정답지와 비교해 채점했습니다. 첫 10장 세트에서 Gemini 2.5 Flash는 오답 9개 중 8개, 3.8 Flash는 9개를 모두 잡아내서 실서비스를 3.8 Flash로 바꿨습니다.",
       sets: [
         { name: "깨끗한 페이지 · 70장", runs: [{ caught: 55, mistakes: 55, wrong: 0, right: 159 }, { caught: 55, mistakes: 55, wrong: 0, right: 159 }] },
         { name: "기울고 그림자 지고 지운 답 · 35장", runs: [{ caught: 40, mistakes: 40, wrong: 1, right: 67 }, { caught: 39, mistakes: 40, wrong: 0, right: 67 }, { caught: 40, mistakes: 40, wrong: 2, right: 67 }, { caught: 40, mistakes: 40, wrong: 0, right: 67 }, { caught: 38, mistakes: 40, wrong: 0, right: 67 }] }
       ]
     },
     problem: [
-      "가정 내 숙제 지도 마찰: 비원어민 학부모가 자녀의 영어 숙제 의도와 발음을 이해하지 못해 겪는 심리적 부담 및 비효율.",
-      "단절된 피드백 루프: 가정에서 발생하는 오답과 취약점이 교실로 전달되지 못하고 가방 속에 묻혀, 원어민 교사가 맞춤 피드백을 주기 어려움.",
-      "과중한 이중언어 행정 부담: 원어민 교사의 영어 메모를 한국인 교사가 번역하고 정제하여 학부모에게 전달하는 데 매주 여러 시간 소모."
+      "영어가 익숙하지 않은 학부모는 아이의 영어 숙제를 확인할 수 없어서, 숙제 시간이 짐작으로 흘러갑니다.",
+      "집에서 틀린 문제가 교실까지 전달되지 않아, 원어민 강사는 반 전체가 반복해서 틀리는 부분을 모릅니다.",
+      "원어민 강사와 한국인 강사가 학부모 안내문을 쓰고, 번역하고, 맞추는 데 매주 몇 시간씩 씁니다."
     ],
     solution: [
-      "정답지 기반 멀티모달 채점 파이프라인: 교사가 업로드한 OCR 정답지를 Firestore에 등록하여, AI의 임의 추측이 아닌 실제 정답 기준으로 채점하여 교사가 가르친 내용과 일치하도록 함.",
-      "학부모 전달 전 사람 검토: 수업 기록 승인은 한국인 교사만 할 수 있도록 UI가 아닌 Firestore 규칙에서 강제해, 원어민 교사의 자체 승인을 차단.",
-      "반 단위 한국인 교사 검토: 학생별 카드 방식이 휴대폰에서 번거롭다는 교사 피드백에 따라, 한 반의 하루를 한 화면에서 검토하고 한 번에 승인. 각 가정은 반 요약과 자기 아이의 메모만 앱에서 받고, 카카오톡 문구는 선택 사항.",
-      "원어민 문체 규칙: 리포트 초안이 같은 칭찬을 반복해 기계가 쓴 글 같다는 한국어 원어민 독자의 지적에 따라, 모든 리포트 프롬프트에 구체적이고 담백한 관찰을 쓰도록 공통 문체 규칙 적용.",
-      "크로스 플랫폼 모바일 출시: Capacitor, Universal Links / App Links, Apple/Google/Kakao 인증, RevenueCat 구독 결제를 결합하여 단일 React 코드베이스로 iOS/Android 동시 출시.",
-      "음성 우선 수업 기록: 녹음 한 번으로 수업 요약과 학생별 메모를 채우고, 확인 카드 없이 바로 폼에 반영하며 한 단계 되돌리기를 제공. Vercel 서버리스는 실시간 음성 연결을 유지할 수 없어 턴 기반으로 설계.",
-      "3회 보안 감사: 7건 이상의 권한 취약점과 로그인 사용자 열거 버그를 해결하고, 파일럿 전 마지막 점검에서 학교·관리자 접근을 강화. Firestore 규칙 테스트를 에뮬레이터로 CI에서 실행.",
-      "한국인 교사 검토 도구: 요약과 학생별 메모마다 다시 쓰기·짧게·자세히를 제공하고, 한 번에 되돌리기와 원어민 교사의 원래 메모를 초안 옆에 표시. 문제 표시가 없는 초안은 한 번에 보내고, 원어민 교사는 학부모가 실제로 받은 내용을 확인 가능.",
-      "원장 대시보드 정보 구조(IA) 개편: 명렬표/데이터베이스 뷰를 통합하고, 교사 배정 기능을 승격하며, 학급 선택기 및 알림 벨을 추가.",
-      "시스템적 Firestore 규칙 쿼리 버그 해결: 원장 및 교사의 명렬표/학급 조회를 조용히 실패시키던 list 쿼리 내 get() 안티패턴을 진단하고 완벽 패치.",
-      "4,678줄 모놀리스 컴포넌트 리팩토링: 거대한 TeacherPage.tsx를 6단계에 걸쳐 역할별 전용 훅(useDirectorState, useFTState, useKTState)과 모듈형 셸로 분리하여 리그레션 제로 달성.",
-      "Vercel 12개 함수 한도 통합: 모든 AI 채점, 음성 추출, Q&A 작업을 api/analyze.ts로 통합하고 4개 구독 코드 사용 함수를 api/redeem.ts로 합쳐 배포된 네이티브 앱의 중단 없는 하위 호환성 보장.",
-      "9개 분산 문서 단일화 & 스코프 절제: 상충하던 기획 문서를 1개의 정통 PRD/Scope/Decisions 기록으로 단일화하고 가짜 커뮤니티 등 5개 군더더기 기능 제거.",
-      "그로스 및 마케팅 인프라: 스쿨 포털 PWA 설치, GA4 퍼널 이벤트, 언어별 프리렌더링 랜딩 페이지와 JSON-LD/hreflang."
+      "모델의 추측이 아니라 선생님이 올린 정답지(OCR)를 기준으로 채점해서, 수업 내용과 채점이 일치",
+      "수업 일지는 한국인 강사만 승인 가능. Firestore 규칙으로 강제해서 원어민 강사가 직접 승인할 수 없음",
+      "한국인 강사가 하루치 수업을 한 화면에서 검토하고 한 번에 승인. 각 가정은 앱에서 수업 요약과 자기 아이 메모만 확인",
+      "음성 녹음 한 번으로 수업 요약과 학생별 메모를 채우고, 한 번에 되돌리기 가능",
+      "React 코드베이스 하나로 iOS·안드로이드 출시 (Capacitor, Apple·Google·카카오 로그인, RevenueCat 결제)",
+      "세 차례 보안 점검으로 권한 허점 7건 이상과 로그인 계정 노출 버그 수정, Firestore 규칙 테스트를 CI에서 실행",
+      "4,678줄짜리 다중 역할 페이지를 역할별 훅으로 나눔. 6번에 걸쳐 배포했고 회귀 버그 없음"
     ],
     stack: [
       "React 19",
@@ -1895,59 +2073,70 @@ function scoreAssessment(answers) {
       "Sentry (웹 + Node 모니터링)"
     ],
     coreLoop: [
-      { step: "01. 교사 정답지 등록", role: "원어민 교사", detail: "주간 워크시트를 OCR하여 반별 Firestore 커리큘럼 문서로 저장; 채점은 교사가 등록한 정답을 기준으로 합니다." },
-      { step: "02. 가정 내 모바일 스캔", role: "학부모 / 학생", detail: "스마트폰 카메라로 워크시트를 촬영; Gemini 3.8 Flash가 학원 정답지를 기준으로 채점합니다." },
-      { step: "03. 즉각적 이중언어 결과", role: "학부모 앱", detail: "정답, 한국어 지도 스크립트, 파닉스 가이드를 원본 이미지 위 정밀 시각 오버레이로 렌더링합니다." },
-      { step: "04. 오답 텔레메트리 자동 집계", role: "백엔드 엔진", detail: "개별 스캔의 오답이 반 전체 명렬표에 집계되어 '우리 반이 가장 어려워하는 개념' 사전 뷰를 구성합니다." },
-      { step: "05. 수업 피드백 & 음성 로깅", role: "원어민 교사", detail: "수업 중 취약점을 지도하고, 녹음 한 번으로 수업 요약과 학생 메모를 기록합니다." },
-      { step: "06. 반 단위 한국인 교사 검토", role: "한국인 교사", detail: "AI가 작성한 한국어 리포트를 한국인 교사가 반의 하루 단위로 한 번에 수정·승인하고, 각 가정은 자기 리포트를 앱에서 확인합니다." }
+      {
+        "step": "01. 정답지 업로드",
+        "role": "원어민 강사",
+        "detail": "주간 학습지를 OCR로 읽어 반별 커리큘럼에 저장합니다. 채점의 기준이 됩니다."
+      },
+      {
+        "step": "02. 집에서 스캔",
+        "role": "학부모 / 학생",
+        "detail": "Gemini가 사진을 반 정답지와 비교해 엄격한 응답 스키마로 채점합니다. 약 17초 걸립니다."
+      },
+      {
+        "step": "03. 한국어로 결과 확인",
+        "role": "학부모 앱",
+        "detail": "원본 학습지 위의 표시, 정답, 한국어 설명, 발음 도움말을 보여줍니다."
+      },
+      {
+        "step": "04. 오답 집계",
+        "role": "백엔드",
+        "detail": "반 전체의 오답을 모아 아이들이 어려워하는 부분을 보여줍니다."
+      },
+      {
+        "step": "05. 수업과 일지",
+        "role": "원어민 강사",
+        "detail": "반 전체가 약한 부분을 다루고, 음성 녹음 한 번으로 수업 일지를 남깁니다."
+      },
+      {
+        "step": "06. 한국인 강사 승인",
+        "role": "한국인 강사",
+        "detail": "AI가 한국어 리포트 초안을 쓰면, 한국인 강사가 하루치를 한 번에 고쳐 승인합니다. 각 가정은 자기 리포트를 봅니다."
+      }
     ],
     decisions: [
       {
-        decision: "Decision 024: 한국인 교사는 반 단위로 한 번 검토하고, 학부모는 자기 아이의 리포트만 확인",
-        alternativeConsidered: "학생마다 검토 카드를 만들고 카카오톡으로 하나씩 전송",
-        why: "휴대폰에서 검토가 번거롭다는 교사 피드백이 있었습니다. 12명 반이면 카드 12장, 그중 10장은 같은 반 요약이었습니다. 그 아래 두 가지 버그도 있었습니다. 학부모에게 수업 기록 읽기 권한이 없어 리포트 화면이 항상 비어 있었고, 승인할 때마다 한 아이의 메모가 반 전체 요약으로 저장됐습니다.",
-        tradeOffAccepted: "변경 이전에 승인된 리포트는 학부모용 사본이 없고, 두 반에 속한 학생은 리포트를 두 개 받습니다."
+        "decision": "한국인 강사는 반별로 한 번 검토하고, 학부모는 자기 리포트를 직접 확인",
+        "alternativeConsidered": "학생마다 검토 카드를 하나씩 만들어 카카오톡으로 각각 발송",
+        "why": "휴대폰으로 검토하기 불편하다는 의견이 많았습니다. 12명 반이면 카드가 12장인데 그중 10장은 같은 수업 요약이었습니다. 이 과정에서 버그 두 개도 드러났습니다. 학부모가 수업 일지를 읽을 권한이 없어 리포트가 늘 비어 있었고, 승인할 때마다 한 아이의 메모가 반 전체 요약으로 저장됐습니다.",
+        "tradeOffAccepted": "변경 전에 승인된 리포트에는 학부모용 사본이 없고, 두 반을 듣는 학생은 리포트를 두 개 받습니다."
       },
       {
-        decision: "Decision 014: 연속 음성 대화 대신 턴 기반 음성 추출(Voice-Fill) 채택",
-        alternativeConsidered: "교사용 실시간 음성-대-음성 대화형 어시스턴트 구축",
-        why: "일일 수업 일지 작성이 교사의 가장 큰 마찰 지점이었으나, Vercel Serverless 인프라는 지속적인 WebSocket 연결을 유지할 수 없었습니다. 이에 녹음 → 전사/추출 → 명시적 확정('이 내용 사용')의 턴 기반으로 스코프를 정의하고, 온도를 0.4에서 0.15로 낮추며 학생별 메모와 반 요약을 분리했습니다.",
-        tradeOffAccepted: "연속 대화 대신 탭하여 녹음하는 턴 기반 인터랙션을 적용."
+        "decision": "실시간 음성 비서 대신 녹음, 변환, 확인 방식",
+        "alternativeConsidered": "강사용 실시간 음성 대화 비서",
+        "why": "매일 쓰는 일지 양식이 강사들의 가장 큰 불만이었지만, Vercel 서버리스 함수는 WebSocket 연결을 유지할 수 없습니다. 녹음하고, 내용을 뽑고, 강사가 확인하는 방식이 플랫폼에 맞았습니다. temperature를 0.4에서 0.15로 낮추고 학생 메모와 수업 요약을 분리하니 결과가 안정됐습니다.",
+        "tradeOffAccepted": "대화하듯 말하는 대신, 버튼을 눌러 녹음합니다."
       },
       {
-        decision: "Decision 015: 통합 FT 챗봇 기각 및 좁고 빠른 전용 도구 채택",
-        alternativeConsidered: "모든 원어민 교사 작업을 처리하는 올인원 대화형 AI 챗봇",
-        why: "실제 마찰 지점을 조사한 결과 사진 업로드나 워크시트 생성은 전용 UI가 채팅 타이핑보다 훨씬 빨랐습니다. 음성은 타이핑보다 말이 빠른 영역에만 필요하므로, 기존 엔드포인트를 재사용하는 2개의 좁고 빠른 도구로 출시했습니다.",
-        tradeOffAccepted: "원어민 교사용 범용 채팅 인터페이스를 배제함."
+        "decision": "6자리 반 코드 대신 일회용 초대",
+        "alternativeConsidered": "반마다 공개 6자리 참여 코드",
+        "why": "공유 코드로는 엉뚱한 가정이 반에 들어오고, 다른 학부모에게 아이 정보가 노출될 위험이 있었습니다. 이제 원장이 이메일로 일회용 초대를 보내고, 코드는 예비 수단으로만 씁니다.",
+        "tradeOffAccepted": "원장이나 강사가 초대를 직접 보내야 합니다."
       },
       {
-        decision: "Decision 001: 6자리 공용 클래스 코드 폐기 및 단일 1회용 초대 링크 채택",
-        alternativeConsidered: "6자리 공용 코드를 통한 오픈 교실 참가 방식",
-        why: "공용 코드는 학생 명렬표 혼선과 타 가정 PII 유출 위험이 존재했습니다. 원장/교사가 발급하는 1회용 초대 링크(이메일 링크 및 폴백 코드)로 교체하여 보안 위험을 원천 해소했습니다.",
-        tradeOffAccepted: "자율 참가 대신 학원 측에서 학부모를 초대하는 절차가 요구됨."
-      },
-      {
-        decision: "Decision 005 & 006: 가짜 '학부모 라운지' 등 군더더기 5종 제거 및 PRD/Scope/Decisions 삼총사 단일화",
-        alternativeConsidered: "시뮬레이션 커뮤니티 기능 유지 및 방대한 분산 기획 문서 유지",
-        why: "2026년 8월 감사에서 하드코딩된 가짜 게시물이 포함된 커뮤니티 피드 등 5개 잉여 기능을 발견하여 데이터 정직성을 위해 모두 정리하고, 상충하던 9개 문서를 권위 있는 PRD/Scope/Decisions 3대 문서로 통합했습니다.",
-        tradeOffAccepted: "6단계 핵심 숙제 채점 피드백 루프에만 엄격하게 집중."
+        "decision": "가짜 커뮤니티 피드를 포함해 기능 다섯 개 삭제",
+        "alternativeConsidered": "시뮬레이션용 커뮤니티 기능과 흩어진 기획 문서 유지",
+        "why": "2026년 8월 점검에서 곁가지 기능 다섯 개를 찾았는데, 그중 하나는 미리 써 둔 가짜 게시글 피드였습니다. 정직하지 않은 기능이라 다섯 개 모두 삭제하고, 서로 어긋나던 문서 9개를 PRD, 범위, 의사결정 기록 하나로 합쳤습니다.",
+        "tradeOffAccepted": "제품은 스캔, 채점, 설명, 리포트라는 한 흐름에만 집중합니다."
       }
     ],
     architecture: {
-      lifecycle: [
-        "커리큘럼 인제스천: 교사가 주간 정답지를 업로드하면 OCR 파이프라인이 Firestore curriculums 컬렉션에 정답 데이터를 구조화하여 저장합니다.",
-        "가정 내 스캔 & 매칭: 학부모가 학습지를 촬영하면 Gemini 2.5 Flash가 SHA256 이미지 캐시를 활용해 정답지와 대조 채점합니다.",
-        "이중언어 오버레이 렌더링: 클라이언트가 문제 영역 박스, 한글 발음 기호, 지도 대본을 학습지 원본 위에 직접 시각화합니다.",
-        "오답 집계: 원생 개인정보 없이 오답 패턴만 Firestore에 동기화하여 교사 사전 텔레메트리 콕핏을 구성합니다.",
-        "Human-in-the-Loop 리포트: 원어민 교사가 음성으로 수업을 기록하면 AI가 한국어 존댓말 리포트 초안을 만들고, 한국인 교사가 반 단위로 한 번 승인한 뒤 가정에 전달됩니다."
-      ],
       guardrails: [
-        "Vercel 12개 함수 한도 아키텍처: 모든 AI 작업을 api/analyze.ts로, 구독 코드 사용을 api/redeem.ts로 통합하고 URL 리라이트 적용.",
-        "정답지 앵커링: 모델의 추측 채점을 배제하고 교사 등록 정답지를 기준으로만 채점.",
-        "한국인 교사 승인 게이트: Firestore 규칙상 한국인 교사만 수업 기록을 승인할 수 있어, 승인 없는 AI 초안은 학부모에게 가지 않습니다.",
-        "Firestore 멀티 테넌트 보안 규칙: 인증된 학교 및 학급 ID로 읽기/쓰기 권한을 엄격히 제한하고 Admin SDK로 서버 검증 수행.",
-        "데이터 보관: 숙제 이미지는 채점 후 폐기하고, 분석 캐시는 30일 후 만료되며 등록 학생의 결과는 캐시하지 않습니다."
+        "AI는 자기 추측이 아니라 선생님의 정답지로만 채점",
+        "주의가 필요한 메모는 강사가 실제로 한 말과 다시 대조해 지어낸 내용을 삭제하고, 일괄 발송 대상에서 제외",
+        "음성 일지마다 반 명단을 함께 보내서, 비슷한 한국 이름을 다른 아이로 잘못 붙이지 않음",
+        "학부모에게 가는 내용은 한국인 강사만 승인 가능 (Firestore 규칙으로 강제)",
+        "학습지 사진은 채점 후 삭제. 결과 캐시는 30일 뒤 만료되고, 재원생 데이터는 캐시하지 않음"
       ]
     },
     promptEngineering: {
@@ -1979,11 +2168,6 @@ function scoreAssessment(answers) {
     }
   }
 }`,
-      guardrails: [
-        "정형화된 JSON 스키마 강제: 손글씨 가독성 식별 플래그와 아동의 구체적 답변 속성을 형변환 엄밀 통제해 뷰 안정화.",
-        "공백 워크시트 감지 가드: 손글씨가 식별되지 않는 경우 임의 오답 지정을 원천 보류하도록 공백 텍스트 필터링 수행.",
-        "매개체 격리 처리: 사용자 원본 이미지 텍스트 분석물과 가이드라인 시스템 프롬프트 간 교란을 방지하는 XML 안전 패스."
-      ]
     },
     impact: {
       value: [
@@ -2003,40 +2187,28 @@ function scoreAssessment(answers) {
     },
     technicalHurdles: [
       {
-        title: "휴대폰에서 느린 랜딩 페이지",
-        incident: "홈 페이지가 모바일에서 히어로 이미지를 표시하기까지 5.95초가 걸림(실서비스 Lighthouse LCP, 3회 중앙값).",
-        diagnosis: "랜딩 페이지를 브라우저에서만 그려서 히어로가 JavaScript를 기다렸고, 쓰지 않는 Sentry 세션 리플레이(약 130KB)와 Meta 픽셀도 첫 화면보다 먼저 로드됨.",
-        resolution: "홈과 학원 페이지를 빌드 시 사전 렌더링해 하이드레이션하고, 첫 화면에 필요한 CSS를 인라인하고, Sentry를 트리 셰이킹하고, 채점 이후 화면을 앱 번들에서 분리하고, 분석 도구와 픽셀은 페이지가 안정된 뒤 로드. 모바일 LCP 2.53초, 성능 점수 71 → 95."
+        "title": "휴대폰에서 느린 랜딩 페이지",
+        "incident": "모바일에서 홈 화면 대표 이미지가 뜨기까지 5.95초가 걸렸습니다 (실서비스 Lighthouse LCP, 3회 측정 중앙값).",
+        "diagnosis": "랜딩 페이지가 브라우저에서만 그려져서 대표 이미지가 자바스크립트를 기다렸습니다. 쓰지 않는 Sentry 세션 리플레이(약 130KB)와 Meta 픽셀도 첫 화면보다 먼저 로드됐습니다.",
+        "resolution": "홈과 학원 페이지를 빌드 시점에 미리 렌더링하고, 첫 화면에 필요한 CSS를 인라인으로 넣고, Sentry를 줄이고, 스캔 이후 화면을 별도 번들로 나누고, 분석 스크립트는 페이지가 안정된 뒤에 불러오게 했습니다. 모바일 LCP는 2.53초로 줄고 성능 점수는 71에서 95로 올랐습니다."
       },
       {
-        title: "Vercel Hobby 플랜 12개 서버리스 함수 한도 극복",
-        incident: "다역할 엔드포인트(채점, 음성 추출, Q&A, 4개 구독 코드 사용 라우트) 추가 시 Vercel의 12개 함수 한도를 초과하여 배포 실패 위기 발생.",
-        diagnosis: "개별 기능마다 독립 함수 파일을 생성하는 방식은 서버리스 티어 한계상 유지 불가능했음.",
-        resolution: "모든 AI 작업을 api/analyze.ts 멀티플렉서로 통합하고 구독 코드 사용 흐름을 api/redeem.ts로 합친 후 vercel.json 리라이트를 적용하여 이미 배포된 네이티브 모바일 앱의 중단 없이 이전."
+        "title": "Vercel 함수 12개 제한",
+        "incident": "채점, 음성 일지, 질의응답, 구독 쿠폰 경로 네 개를 추가하자 Vercel 함수 12개 제한을 넘어 배포가 막힐 상황이었습니다.",
+        "diagnosis": "작업마다 함수 파일을 하나씩 만드는 방식은 요금제 한도에 맞지 않았습니다.",
+        "resolution": "AI 작업은 api/analyze.ts 하나로, 쿠폰 경로는 api/redeem.ts로 합쳤습니다. vercel.json 리라이트로 이미 출시된 모바일 앱도 그대로 동작합니다."
       },
       {
-        title: "4,678줄 규모의 다역할 모놀리스 컴포넌트 리그레션 해결",
-        incident: "핵심 교사용 경험이 단일 4,678줄 TeacherPage.tsx 파일에 몰려 있어, 한 역할의 UI를 수정하면 다른 역할에서 미세한 버그가 발생하는 문제 지속.",
-        diagnosis: "원장, 원어민 교사, 한국인 교사의 상태 및 렌더링 로직이 하나의 컴포넌트에 강하게 결합되어 있었음.",
-        resolution: "모놀리스를 역할별 전용 훅(useDirectorState, useFTState, useKTState)과 모듈형 셸 컴포넌트로 6단계에 걸쳐 리팩토링하여 무결점 분리 완료."
+        "title": "아무 오류 없이 비는 학생 명단",
+        "incident": "실서비스에서 원장과 강사가 반 명단이나 학생 목록을 열면 오류 없이 빈 화면이 나오곤 했습니다.",
+        "diagnosis": "보안 규칙이 목록 조회 안에서 get()을 호출하고 있었고, 여러 학원을 거르는 조건에서 이 방식이 실패했습니다.",
+        "resolution": "단계별 테스트 조회로 접근 범위를 추적하고, 쿼리를 규칙에 맞게 고치고, 모든 조회를 검증된 학원과 반 단위로 제한했습니다."
       },
       {
-        title: "시스템적 Firestore 규칙 쿼리 읽기 병목 해결",
-        incident: "프로덕션 환경에서 학원장 및 교사가 학급 명렬표와 학생 목록을 로드할 때 쿼리가 조용히 실패하는 현상 발생.",
-        diagnosis: "보안 규칙 내부에서 list 쿼리 대상 get() 호출 안티패턴을 사용하여 복합 멀티 테넌트 필터링 시 실패함.",
-        resolution: "단계별 진단 읽기로 접근 경계를 추적하고, 규칙 제약에 맞게 쿼리를 리팩토링하여 검증된 학교/학급 스코프를 확립."
-      },
-      {
-        title: "소셜 인증 및 실물 iOS 기기 Apple 로그인 완결",
-        incident: "시뮬레이터에서 작동하던 Apple 로그인이 실물 기기에서 조용히 실패하고, 소셜 가입 직후 프로필 덮어쓰기 레이스 컨디션 발생.",
-        diagnosis: "실물 기기용 SHA-256 넌스 누락 및 Firestore 프로필 레코드 생성이 완료되기 전에 onAuthStateChanged가 먼저 디스패치됨.",
-        resolution: "안전한 SHA-256 넌스를 생성하고 번들 ID를 일치시켰으며, isSigningUpRef 락 버퍼를 구축하여 프로필 작성이 끝난 후 옵저버가 갱신되도록 보장."
-      },
-      {
-        title: "서버리스 환경 변수 파싱 및 모델 폴백 체인 구축",
-        incident: "프로덕션 피크 타임 시 환경 변수 내 프라이빗 키 인식 오류 및 API 속도 제한 발생.",
-        diagnosis: "Vercel 환경 변수 내 개행문자(\\\\n) 파싱 오류와 외부 API 레이트 리밋 발생 시 폴백 체인 미비.",
-        resolution: "비대칭 키 PEM 문자열 정규화 헬퍼를 작성하고, Quota Limitation 발생 시 안정적인 프로덕션 모델(gemini-2.0-flash-001)로 동적 폴백되도록 구성."
+        "title": "실제 아이폰에서만 실패하는 Apple 로그인",
+        "incident": "시뮬레이터에서는 되던 Apple 로그인이 실제 기기에서는 조용히 실패했고, 소셜 가입 시 새 프로필이 덮어써지는 경우도 있었습니다.",
+        "diagnosis": "실제 기기에 필요한 SHA-256 nonce가 빠져 있었고, 프로필 저장이 끝나기 전에 인증 리스너가 먼저 실행됐습니다.",
+        "resolution": "nonce를 추가하고 번들 ID를 맞춘 뒤, 프로필이 저장될 때까지 인증 리스너를 기다리게 했습니다."
       }
     ]
   },
@@ -2102,12 +2274,6 @@ function scoreAssessment(answers) {
       }
     ],
     architecture: {
-      lifecycle: [
-        "기록: 평가자가 일관된 관찰 체크박스 폼(Fillout)을 활용해 학원생 발달 항목과 기준치를 체크합니다.",
-        "대조: 작성 결과는 Airtable 관계형 필드로 들어가며 연도별 학적 매핑 외래 키를 자동으로 확보합니다.",
-        "해석: Make.com 비동기 웹훅이 변화 감지 즉시 연동되어 분석 단어로 변형 및 요약 처리를 전개합니다.",
-        "피드백: 전달된 가공 포맷은 Softr 포털 사용자 시그널과 동기화되어 부모 화면에 누수 없이 표시됩니다."
-      ],
       guardrails: [
         "분반 예외 통제: 원생의 이탈이나 학급 반 변경 중에도 기 산출된 과거 학급 기록이 훼손되지 않게 관계 제한 필드 탑재.",
         "중복 대칭 차단: 중복 원생 고유 식별 명칭의 대량 입력 시 동일 유저 여부를 판결해 생성 시 정화 필터링.",
@@ -2127,11 +2293,6 @@ function scoreAssessment(answers) {
   },
   required: ["studentSummary", "recommendedInterventions"]
 }`,
-      guardrails: [
-        "정형화 경계: 정형 Schema 뼈대를 고정해 의사소통 가이드 내에 원초 가이드라인 명령이나 프롬포트 흔적이 새지 않게 통제.",
-        "친근 지표 치환: 거친 임계 점수 수치 대신 보듬어 줄 수 있는 일상 표현으로 데이터 치환 표현 설계.",
-        "규칙 준수: 임의의 수식이나 파행적인 번해적 추론을 유발하지 않게 도메인 범주(White-List) 내 행동어만 허용."
-      ]
     },
     impact: {
       value: [
@@ -2144,11 +2305,6 @@ function scoreAssessment(answers) {
         "민감한 개인 식별 데이터(PII)는 인가 요청 전 사전에 도출 삭제 필터 구조 탑재.",
         "Softr 인증 단말과의 암호 정합 해싱 배지를 세워 원생 포트폴리오 노출 우려 완전 해소."
       ]
-    },
-    behindTheArchitecture: {
-      problem: "흩어진 스프레드시트와 관찰 파일을 하나씩 개별 취합하고 분류하는 행정 수동 병목.",
-      vision: "통일된 입력 구조와 관계형 데이터베이스를 통합하여 영역별 성취도를 나타내는 데이터 시각화 보강.",
-      rationale: "오류 없는 차트 렌더링에 우수한 Recharts 라이브러리를 사용하고, Airtable과의 필드 매핑으로 일관된 스키마를 보장."
     },
     technicalHurdles: [
       {
@@ -2231,12 +2387,6 @@ function scoreAssessment(answers) {
       }
     ],
     architecture: {
-      lifecycle: [
-        "설정: 운영 담당관이 온보딩 화면에서 주간 커리큘럼, 강의 정원 목록, 룸 제약값을 입력합니다.",
-        "설계: 연산 성능이 우수한 flash 모델을 경유 인계해 시간 격자 1차 Blueprint 초안을 구성합니다.",
-        "검출: 제작된 스케줄 레이아웃을 내부 순환 루프로 모니터링하여 중복 기입 및 오점 유무를 판단합니다.",
-        "조율: 정합 충돌이 극심한 클래스 지점만 집중 선별해 Pro 모델에 전달함으로써 시간표 분할 조립을 완수합니다."
-      ],
       guardrails: [
         "데이터 검수: 입력창 란에 불필요한 마크다운 기둥이나 위험 스크립트 유입 시 수시 정화.",
         "자동 잠금: 미인가 사용자 접속 노출을 방지하도록 30분 미작동 대기 시 자동 로그아웃 동작 연계.",
@@ -2256,11 +2406,6 @@ function scoreAssessment(answers) {
   },
   required: ["resolvedTimetable", "balancingAnalysis"]
 }`,
-      guardrails: [
-        "추론 깊이 보정: 여유로운 추론 토큰(Thinking Budget) 설정을 심어 모델이 다양한 시간 시간표 가중치를 넓게 탐색하게 제어.",
-        "JSON 규약 보전: 반환 타입을 임의 가변하지 않게 규격 JSON 스키마를 고정 구성.",
-        "백업 노출: 다상충으로 해답이 전무한 극한 모순 분기 시, 백업된 최선 스켈레톤 안을 복조 기동."
-      ]
     },
     impact: {
       value: [
@@ -2273,11 +2418,6 @@ function scoreAssessment(answers) {
         "스케줄 변화 원인 및 수정 이력 관리로 시간표 구조 신용 가치 백업.",
         "체계적인 파이어베이스 규칙을 도입해 학내 정보 노출을 보안 통제."
       ]
-    },
-    behindTheArchitecture: {
-      problem: "인력 배정, 시설 정원, 커리큘럼 이수 기준 등 대량의 조건들을 맞물려 설계하는 비효율성.",
-      vision: "제약 규칙을 명시적으로 기입하면, 충돌이 적은 타임라인 조합안을 연계 프로그램 논리로 빠르게 매핑하는 도구.",
-      rationale: "데이터 상태 변경에 기여하는 Firestore 기반 구조를 두고, 일반 가이드라인 배치 연산과 정밀 해결사 논리를 적절하게 역할 배분하여 작동 구현."
     },
     technicalHurdles: [
       {
@@ -2302,52 +2442,103 @@ function scoreAssessment(answers) {
   },
 
   "chekki-teacher": {
-    title: "Chekki Schools — 역할별 학원 관리 CRM",
-    tagline: "Chekki 플랫폼의 교직원용 축으로, 현재 최종 테스트 중입니다. 원장, 원어민 교사, 한국인 교사 화면이 역할별로 분리되어 있으며, 학부모용 Chekki AI 앱과 동일한 채점 엔진을 공유합니다.",
-    meta: { role: "창업자 · 프로덕트 엔지니어", team: "1인", status: "최종 테스트 중, 2개 학원 파일럿 예정" },
+    title: "채키 스쿨즈: 역할별 화면을 갖춘 학원 CRM",
+    tagline: "채키의 강사·원장용 서비스로, 최종 테스트 중입니다. 원장, 원어민 강사, 한국인 강사가 각자의 화면을 쓰고, 학부모 앱과 같은 채점 엔진 위에서 돌아갑니다.",
+    meta: {
+      "role": "창업자, 프로덕트 엔지니어",
+      "team": "1인",
+      "status": "최종 테스트 중, 학원 두 곳 시범 운영 예정"
+    },
     liveUrl: "https://www.chekkiai.com/schools",
     screenshots: [
-      { label: "Schools 랜딩", url: "/screenshots/chekki-schools/01-schools-landing-ko.webp", subLabel: "교실 기록은 영어로, 리포트는 한국어로" },
-      { label: "원장 대시보드", url: "/screenshots/chekki-schools/02-director-dashboard-ko.webp", subLabel: "반별 오늘의 리포트" },
-      { label: "학생", url: "/screenshots/chekki-schools/03-director-students-ko.webp", subLabel: "원장: 학부모 초대 및 명단" },
-      { label: "반", url: "/screenshots/chekki-schools/04-director-classes-ko.webp", subLabel: "원장: 반별 최근 14일 기록 현황" },
-      { label: "교사", url: "/screenshots/chekki-schools/05-director-teachers-ko.webp", subLabel: "원장: 원어민·한국인 교사 초대" },
-      { label: "정답지", url: "/screenshots/chekki-schools/11-ft-answer-key-ko.webp", subLabel: "교사: 정답지 올리고 AI 추정 답 확인" },
-      { label: "음성 수업 기록", url: "/screenshots/chekki-schools/06-ft-daily-log-ko.webp", subLabel: "원어민 교사: 음성으로 채우기" },
-      { label: "기록 내역", url: "/screenshots/chekki-schools/07-ft-log-history-ko.webp", subLabel: "원어민 교사: 학부모가 받은 내용 확인" },
-      { label: "반 현황", url: "/screenshots/chekki-schools/08-kt-class-overview-ko.webp", subLabel: "한국인 교사: 명단 및 스캔 현황" },
-      { label: "반 단위 검토", url: "/screenshots/chekki-schools/09-kt-review-ko.webp", subLabel: "한국인 교사: 한 번 검토, 모든 가정에 전달" },
-      { label: "학부모 반 리포트", url: "/screenshots/chekki-schools/10-parent-class-report-ko.webp", subLabel: "학부모 앱: 반 요약과 자기 아이 메모" }
+      {
+        "label": "스쿨즈 랜딩",
+        "url": "/screenshots/chekki-schools/01-schools-landing-ko.webp",
+        "subLabel": "수업 메모는 영어로, 리포트는 한국어로"
+      },
+      {
+        "label": "원장 대시보드",
+        "url": "/screenshots/chekki-schools/02-director-dashboard-ko.webp",
+        "subLabel": "반별 오늘의 리포트"
+      },
+      {
+        "label": "학생",
+        "url": "/screenshots/chekki-schools/03-director-students-ko.webp",
+        "subLabel": "원장: 학부모 초대와 명단"
+      },
+      {
+        "label": "반",
+        "url": "/screenshots/chekki-schools/04-director-classes-ko.webp",
+        "subLabel": "원장: 반별 14일 일지 작성 현황"
+      },
+      {
+        "label": "강사",
+        "url": "/screenshots/chekki-schools/05-director-teachers-ko.webp",
+        "subLabel": "원장: 강사 초대"
+      },
+      {
+        "label": "정답지",
+        "url": "/screenshots/chekki-schools/11-ft-answer-key-ko.webp",
+        "subLabel": "강사: 정답지를 올리고 AI가 읽은 내용 확인"
+      },
+      {
+        "label": "음성 수업 일지",
+        "url": "/screenshots/chekki-schools/06-ft-daily-log-ko.webp",
+        "subLabel": "원어민 강사: 말로 작성"
+      },
+      {
+        "label": "일지 기록",
+        "url": "/screenshots/chekki-schools/07-ft-log-history-ko.webp",
+        "subLabel": "원어민 강사: 학부모가 받은 내용 확인"
+      },
+      {
+        "label": "반 현황",
+        "url": "/screenshots/chekki-schools/08-kt-class-overview-ko.webp",
+        "subLabel": "한국인 강사: 명단과 스캔"
+      },
+      {
+        "label": "하루치 검토",
+        "url": "/screenshots/chekki-schools/09-kt-review-ko.webp",
+        "subLabel": "한국인 강사: 한 번 검토하고 모든 가정에 발송"
+      },
+      {
+        "label": "학부모 수업 리포트",
+        "url": "/screenshots/chekki-schools/10-parent-class-report-ko.webp",
+        "subLabel": "학부모 앱: 수업 요약과 내 아이 메모"
+      }
     ],
     stats: [
-      { label: "상태", value: "최종 테스트 중" },
-      { label: "역할별 대시보드", value: "3개" },
-      { label: "한국인 교사 검토", value: "반·날짜당 1회" }
+      {
+        "label": "상태",
+        "value": "최종 테스트"
+      },
+      {
+        "label": "역할별 대시보드",
+        "value": "3개"
+      },
+      {
+        "label": "한국인 강사 검토",
+        "value": "하루 수업당 1회"
+      }
     ],
     problem: [
-      "원장, 원어민 교사, 한국인 교사는 같은 학생 명단을 두고 서로 다른 일을 하지만, 화면이 하나로 통합돼 있으면 셋 다 자기 역할과 무관한 화면까지 헤쳐나가야 합니다.",
-      "채점은 모델의 추측이 아니라 교사 본인의 정답지를 기준으로 이뤄져야 하는데, 커리큘럼을 미리 등록해두지 않으면 학급 단위 오답 집계 자체가 성립하지 않습니다.",
-      "한국인 교사는 매주 원어민 교사의 수업 관찰 기록을 카카오톡 메시지로 손수 번역해 학부모에게 전달해야 했습니다."
+      "원장, 원어민 강사, 한국인 강사는 같은 명단으로 서로 다른 일을 하는데, 화면이 하나면 각자 남의 업무 화면까지 헤집어야 합니다.",
+      "채점은 선생님의 정답지를 기준으로 하기 때문에, 커리큘럼을 미리 넣어 두지 않으면 채점도 오답 집계도 할 수 없습니다.",
+      "한국인 강사는 원어민 강사의 메모를 학부모용 한국어 안내로 매주 손수 옮깁니다."
     ],
     solution: [
-      "계정을 원장, 원어민 교사, 한국인 교사 화면으로 나누되, 로그인만 다를 뿐 같은 Firestore 레코드를 읽고 씁니다.",
-      "원어민 교사가 수업 전 커리큘럼과 정답지를 미리 등록해두면, 워크시트 스캔이 모델의 자체 판독이 아니라 검증된 정답지를 기준으로 채점됩니다.",
-      "원어민 교사가 수업마다 음성 메모 하나를 남기면 수업 요약과 학생 메모가 채워지고, 한국인 교사가 반의 하루를 한 번에 검토한 뒤 각 가정이 자기 리포트를 받습니다.",
-      "한국어 원어민 독자들이 초안이 기계가 쓴 글 같다고 지적한 뒤, 모든 리포트 프롬프트에 구체적이고 담백한 관찰을 쓰도록 공통 문체 규칙을 적용했습니다.",
-      "원장 온보딩: 새 원장을 위한 설정 할 일 목록, 반별 참여 링크, 직접 가르치는 원장도 자기 반을 운영할 수 있습니다."
+      "원장, 원어민 강사, 한국인 강사별 화면 분리. 로그인은 다르지만 같은 Firestore 데이터를 읽고 씀",
+      "원어민 강사가 수업 전에 커리큘럼을 넣고 정답지를 확인해서, 스캔은 검증된 정답지로 채점",
+      "수업마다 음성 메모 한 번으로 요약과 학생 메모 작성. 한국인 강사가 하루치를 한 번 검토하면 각 가정에 개별 리포트 발송",
+      "한국어 원어민 독자들이 초안이 기계가 쓴 것 같다고 해서, 공통 문체 규칙으로 구체적이고 담백한 표현을 쓰게 함",
+      "신규 원장용 설정 체크리스트와 반별 참여 링크, 직접 수업하는 원장도 자기 반 운영 가능"
     ],
     stack: ["React 19", "Gemini 2.5 Pro & Flash", "Cloud Firestore", "Vercel Functions", "역할별 React 훅"],
     architecture: {
-      lifecycle: [
-        "원장: 스태프 초대, 교사-반 배정, 결제 관리를 담당하며 나머지 두 역할이 그 위에서 동작하는 계정 레벨 레이어입니다.",
-        "원어민 교사: 커리큘럼 사전 등록, 정답지 보정, 워크시트 스캔, 이번 주 가장 많이 틀린 단어 확인, 음성으로 수업 기록.",
-        "한국인 교사: 반의 하루를 한 화면에서 검토하고 요약과 학생 메모를 수정해 한 번에 승인합니다. 가정은 앱에서 자기 리포트를 보고, 카카오톡 문구는 선택 사항입니다.",
-        "세 역할 모두 같은 학생·학급 레코드를 읽고 씁니다 — 역할별 별도 포털이 아니라 별도의 뷰입니다."
-      ],
       guardrails: [
-        "모든 라우트에 역할 가드를 적용: 원장의 결제 화면이나 교사의 채점 큐는 다른 계정으로 로그인하면 접근 자체가 불가능합니다.",
-        "Firestore 보안 규칙이 모든 읽기를 요청 교사가 배정된 반으로만 제한하며, 학원 전체 데이터에는 접근할 수 없습니다.",
-        "채점은 항상 교사가 검증한 정답지를 먼저 대조하므로, 스캔이 실제 수업 내용과 조용히 어긋나는 일이 없습니다."
+        "모든 경로에서 역할을 확인해, 강사는 원장의 결제 화면을 열 수 없음",
+        "Firestore 규칙으로 모든 조회를 학원 전체가 아닌 담당 반으로 제한",
+        "채점은 강사가 검증한 정답지를 먼저 확인"
       ]
     },
     promptEngineering: {
@@ -2365,11 +2556,6 @@ function scoreAssessment(answers) {
   },
   required: ["summaryKo", "summaryEn", "kakaoScript"]
 }`,
-      guardrails: [
-        "구조화된 출력만 사용: 카카오톡 스크립트는 리포트와 동일한 스키마에서 생성되어 둘이 서로 어긋나지 않습니다.",
-        "채점 호출과 메시징 호출을 분리: 스캔이 학부모 메시지 프롬프트 안에서 점수를 다시 계산하는 일이 없습니다.",
-        "생성된 메시지는 모두 한국인 교사가 검토하는 초안이며, 자동 발송은 없습니다."
-      ]
     },
     impact: {
       value: [
@@ -2383,56 +2569,75 @@ function scoreAssessment(answers) {
         "파일럿 전 마지막 점검을 포함해 세 차례 내부 보안 감사를 진행했고, Firestore 규칙 테스트를 에뮬레이터로 CI에서 실행합니다."
       ]
     },
-    behindTheArchitecture: {
-      problem: "원장, 원어민 교사, 한국인 교사를 한 화면으로 서비스하던 교사 페이지가 4,678줄까지 불어났고, 모든 역할이 서로의 UI를 다 보게 되었습니다.",
-      vision: "역할별로 먼저 나누고 데이터 모델은 아래에서 공유한다 — 각자 자기 역할의 상태만 들고 있어 빠르게 로드되는 세 개의 화면.",
-      rationale: "Firestore의 문서 단위 보안 규칙 덕분에 역할 분리를 컴포넌트 레벨이 아니라 데이터 레벨에서 강제할 수 있어, UI 버그가 다른 역할의 레코드를 노출시킬 수 없습니다."
-    },
     technicalHurdles: [
       {
-        title: "4,678줄 모놀리스를 회귀 없이 분리하기",
-        incident: "TeacherPage.tsx가 원장·원어민 교사·한국인 교사 상태를 한 파일에서 함께 처리하도록 불어나, 어떤 변경이든 테스트하기 위험한 상태였습니다.",
-        diagnosis: "세 역할의 상태가 하나의 컴포넌트 트리에 살고 있어, 원장 화면만 바꾸려던 변경이 교사 쪽 동작에도 조용히 영향을 줄 수 있었습니다.",
-        resolution: "useDirectorState, useFTState, useKTState를 각자 자기 역할의 데이터만 소유하는 독립 훅으로 분리하고, 전환 전 기존 동작과 대조 검증했습니다."
+        "title": "학부모에게 보이지 않던 리포트",
+        "incident": "학부모 앱의 수업 리포트가 늘 비어 있었고, 승인할 때마다 한 아이의 메모가 반 전체 요약으로 저장됐습니다.",
+        "diagnosis": "학부모에게 수업 일지 읽기 권한이 없었고, 승인 과정이 학생 한 명의 리포트를 공용 일지에 써넣고 있었습니다. 그대로 권한만 열었다면 한 아이의 메모가 모든 가정에 보였을 것입니다.",
+        "resolution": "이제 승인하면 학생마다 리포트를 하나씩 만들고, 수업 요약과 그 아이의 메모만 담아 해당 학부모만 읽을 수 있게 했습니다."
       },
       {
-        title: "카카오톡 스크립트와 학부모 리포트 동기화",
-        incident: "초기 버전은 이중언어 리포트와 메시징 스크립트를 서로 다른 두 프롬프트에서 생성했고, 가끔 같은 주의 요약 내용이 서로 어긋났습니다.",
-        diagnosis: "같은 사실을 두 번 독립적으로 생성하면, 특히 언어가 다를 때 내용이 어긋나기 쉽습니다.",
-        resolution: "두 출력을 하나의 구조화된 스키마 응답으로 합쳐, 카카오톡 스크립트가 별도 호출이 아니라 리포트와 같은 생성 결과에서 파생되도록 했습니다."
+        "title": "카카오톡 문구와 리포트가 서로 다름",
+        "incident": "리포트와 카카오톡 메시지를 서로 다른 프롬프트로 만들다 보니, 같은 주를 다르게 요약하는 경우가 있었습니다.",
+        "diagnosis": "같은 사실로 두 번 따로 생성하면 내용이 어긋나고, 언어가 다르면 더 심해집니다.",
+        "resolution": "두 결과를 하나의 구조화된 응답으로 만들어, 메시지가 리포트에서 나오게 했습니다."
       },
       {
-        title: "보이지 않던 학부모 리포트",
-        incident: "학부모 앱의 수업 리포트 영역이 항상 비어 있었고, 승인할 때마다 한 아이의 메모가 반 전체 요약으로 저장됐습니다.",
-        diagnosis: "Firestore 규칙상 학부모에게 수업 기록 읽기 권한이 없었고, 승인 시 학생 개인 리포트가 공유 기록에 저장되어 권한을 열면 한 아이의 메모가 모든 가정에 보일 상황이었습니다.",
-        resolution: "승인 시 학생마다 반 요약과 그 아이의 메모만 담은 학부모 리포트를 따로 만들고, 해당 아이의 학부모만 읽을 수 있게 했습니다."
+        "title": "4,678줄짜리 페이지를 안전하게 나누기",
+        "incident": "파일 하나가 원장, 원어민 강사, 한국인 강사 상태를 모두 다뤄서, 어떤 수정이든 위험했습니다.",
+        "diagnosis": "세 역할이 컴포넌트 트리 하나를 공유해서, 원장 화면만 고쳐도 강사 화면이 몰래 바뀔 수 있었습니다.",
+        "resolution": "역할마다 훅(useDirectorState, useFTState, useKTState)으로 분리하고, 전환 전에 기존 동작과 하나씩 비교했습니다."
       }
     ]
   },
 
   "lead-enrichment": {
-    title: "B2B 리드 인리치먼트 CRM",
-    tagline: "네이버 지역 검색 → Gemini 구조화 인리치먼트 → Firebase 기반 CRM으로, Chekki Schools 학원 영업을 위한 컴플라이언스 준수 이중언어 이메일 초안까지 앱 내부에서 완결합니다.",
-    meta: { role: "프로덕트 엔지니어", team: "1인", status: "내부 도구" },
+    title: "B2B 리드 발굴 CRM",
+    tagline: "네이버에서 학원을 찾고, Gemini로 유형과 우선순위를 매겨 Firebase CRM에 저장한 뒤, 학원마다 법 규정을 지킨 한영 아웃리치 메일 초안을 만드는 내부 도구입니다.",
+    meta: {
+      "role": "프로덕트 엔지니어",
+      "team": "1인",
+      "status": "내부 도구"
+    },
     liveUrl: "",
     screenshots: [
-      { label: "검색 및 벌크 스윕", url: "/screenshots/lead-enrichment/01-search-and-bulk-sweep.png", subLabel: "네이버 지역 검색과 지역구 × 키워드 조합 생성기로 무인 배치 실행 지원" },
-      { label: "리드 카드 및 이메일 초안", url: "/screenshots/lead-enrichment/02-lead-card-and-email-draft.png", subLabel: "개인화 리포트와 A/B 제목 변형이 포함된 이중언어 이메일 초안 (실제 고객 정보 보호를 위해 가상 학원명 사용)" }
+      {
+        "label": "검색과 일괄 수집",
+        "url": "/screenshots/lead-enrichment/01-search-and-bulk-sweep.png",
+        "subLabel": "네이버 지역 검색, 구·키워드 조합으로 자동 일괄 실행"
+      },
+      {
+        "label": "리드 카드와 메일 초안",
+        "url": "/screenshots/lead-enrichment/02-lead-card-and-email-draft.png",
+        "subLabel": "정리된 학원 정보와 제목 두 가지가 있는 한영 초안 (실제 데이터 보호를 위해 가상의 학원 표시)"
+      }
     ],
     stats: [
-      { label: "컴플라이언스 적용률", value: "100%", detail: "모든 초안에 (광고) 표기와 수신거부 안내를 코드로 추가" },
-      { label: "개인화 검증", value: "사실 1개", detail: "모든 초안에 학원에 대한 검증 가능한 사실 포함" },
-      { label: "발송 방식", value: "1클릭", detail: "Gmail에서 초안을 열어 검토 후 발송" }
+      {
+        "label": "광고 표기",
+        "value": "100%",
+        "detail": "모든 초안에 코드로 (광고) 표기와 수신 거부 안내 추가"
+      },
+      {
+        "label": "개인화",
+        "value": "사실 1개",
+        "detail": "초안마다 확인 가능한 학원 정보를 하나 이상 언급"
+      },
+      {
+        "label": "발송",
+        "value": "클릭 1번",
+        "detail": "Gmail에서 초안이 열리고 사람이 읽은 뒤 발송"
+      }
     ],
     problem: [
-      "네이버 지역 검색은 업종 분류, 적합도 스코어, 반복 검색 간 안정적인 중복 제거 키 없이 비정형 디렉터리 목록만 반환합니다.",
-      "초기 Gemini 초안은 문구가 충분히 구체적이지 않아, 매 배치마다 CSV로 내보내 콜드 아웃바운드 카피라이팅 스킬을 탑재한 별도 Claude 세션에서 다시 작성해야 했습니다 — 발송마다 반복되는 수작업 우회로였습니다.",
-      "한국 정보통신망법 제50조는 모든 상업용 이메일에 (광고) 제목 표기, 발신자 연락처, 수신거부 방법을 요구합니다 — 매 발송마다 모델의 판단에만 맡기면 누락되기 쉬운 부분입니다."
+      "네이버 지역 검색은 학원 유형이나 적합도 없이 목록만 주고, 반복 검색 시 중복을 거를 고정 ID도 없습니다.",
+      "초기 Gemini 초안이 너무 평범해서, 매번 CSV로 내보내 별도의 Claude 세션에서 다시 썼습니다.",
+      "정보통신망법 제50조에 따라 영리 목적 메일에는 (광고) 표기, 발신자 연락처, 수신 거부 방법이 반드시 있어야 하는데, 모델에 맡기면 빠질 수 있습니다."
     ],
     solution: [
-      "Gemini 구조화 출력(responseSchema)이 업종을 분류하고 outreach_priority를 산정하며 안정적인 naver_id 중복 제거 키를 도출해, Database 탭에서 동일 리드가 두 번 인리치먼트되지 않도록 합니다.",
-      "외부 스킬의 카피라이팅 규칙 — 필수 personalization_hook 필드, 제목의 스팸 유발 단어 금지, A/B 제목 두 개 변형 — 을 앱 내부 시스템 프롬프트에 그대로 이식해 외부 세션 워크플로우를 완전히 없앴습니다.",
-      "결정론적 서버 측 함수 applyEmailCompliance()가 Gemini 초안 생성 이후 (광고) 표기, 발신자 연락처, 수신거부 문구를 덧붙여, 프롬프트 수정이나 모델 교체와 무관하게 법적 준수가 흔들리지 않도록 했습니다."
+      "Gemini 구조화 출력으로 학원 유형, 아웃리치 우선순위, 고정 네이버 ID를 정해 같은 리드를 두 번 처리하지 않음",
+      "별도 세션에서 쓰던 카피 규칙을 앱 프롬프트로 옮김: 개인화 문장 필수, 제목에 스팸 단어 금지, 제목 두 가지 중 선택",
+      "Gemini가 초안을 돌려준 뒤 서버 함수가 (광고) 표기, 발신자 연락처, 수신 거부 안내를 추가해, 프롬프트나 모델이 바뀌어도 빠지지 않음"
     ],
     stack: [
       "React 19 & TypeScript",
@@ -2444,49 +2649,62 @@ function scoreAssessment(answers) {
       "네이버 지역 검색 API"
     ],
     coreLoop: [
-      { step: "01. 지역구 · 키워드 쿼리", role: "그로스 리드", detail: "지역구 + 업종 쿼리, 혹은 벌크 스윕 목록(예: 강남구 영어학원, 분당구 유치원)을 Search Naver Maps에 입력합니다." },
-      { step: "02. 보안 서버 프록시", role: "Express / Vercel 라우트", detail: "쿼리를 서버 측 핸들러로 라우팅해 네이버 클라이언트 ID와 시크릿이 브라우저에 노출되지 않도록 합니다." },
-      { step: "03. Gemini 구조화 인리치먼트", role: "Gemini (responseSchema)", detail: "업종을 분류하고 outreach_priority를 산정하며 personalization_hook을 도출, 안정적인 naver_id 중복 제거 키를 반환합니다." },
-      { step: "04. Firestore 저장 및 중복 제거", role: "Firestore", detail: "기존 Database 탭 레코드와 naver_id를 대조한 뒤 저장하여, 벌크 스윕이 이미 저장된 리드는 건너뜁니다." },
-      { step: "05. 이중언어 이메일 초안", role: "Gemini (2차 호출)", detail: "리드의 personalization_hook을 시작 문장으로 삼아 한/영 이메일을 작성하고, 서로 다른 두 개의 A/B 제목 문구를 반환합니다." },
-      { step: "06. 컴플라이언스 표기 + 1클릭 발송", role: "아웃바운드 담당자", detail: "applyEmailCompliance()가 (광고) 표기와 수신거부 문구를 덧붙인 뒤, 담당자가 검토 후 발송할 수 있도록 미리 작성된 Gmail 딥링크로 초안이 열립니다." }
+      {
+        "step": "01. 검색",
+        "role": "그로스 담당",
+        "detail": "구와 학원 유형을 넣거나, 강남구 영어학원, 분당구 유치원 같은 일괄 목록을 입력합니다."
+      },
+      {
+        "step": "02. 서버 프록시",
+        "role": "서버 라우트",
+        "detail": "검색 요청이 서버를 거쳐서, 네이버 키가 브라우저에 노출되지 않습니다."
+      },
+      {
+        "step": "03. 정보 보강",
+        "role": "Gemini",
+        "detail": "유형과 우선순위를 정하고, 개인화 포인트와 고정 네이버 ID를 만듭니다."
+      },
+      {
+        "step": "04. 저장과 중복 제거",
+        "role": "Firestore",
+        "detail": "저장 전에 네이버 ID를 기존 리드와 비교해, 일괄 실행에서 중복을 건너뜁니다."
+      },
+      {
+        "step": "05. 메일 초안",
+        "role": "Gemini",
+        "detail": "개인화 포인트로 시작하는 한국어·영어 메일과 제목 두 가지를 씁니다."
+      },
+      {
+        "step": "06. 법적 문구와 발송",
+        "role": "영업 담당",
+        "detail": "코드가 (광고) 표기와 수신 거부 안내를 붙이면, Gmail에서 초안이 열려 사람이 읽고 보냅니다."
+      }
     ],
     decisions: [
       {
-        decision: "법적으로 요구되는 컴플라이언스 문구를 모델이 아닌 고정된 서버 측 후처리 함수로 적용",
-        alternativeConsidered: "시스템 프롬프트 지시문만으로 모든 초안에 (광고) 표기와 수신거부를 포함시키기",
-        why: "프롬프트에만 의존하면 프롬프트 수정이나 모델 교체 시 조용히 누락될 수 있습니다. 정보통신망법 제50조 위반 시의 제재를 감안하면 추론에만 맡기기엔 위험이 너무 큽니다 — 결정론적 함수라면 매번 보장됩니다.",
-        tradeOffAccepted: "모든 초안이 맥락과 무관하게 동일한 고정 문구의 법적 보일러플레이트를 갖게 됩니다."
+        "decision": "법적 필수 문구는 프롬프트가 아니라 코드로 추가",
+        "alternativeConsidered": "모델에게 초안마다 (광고) 표기와 수신 거부 안내를 넣도록 지시",
+        "why": "프롬프트 규칙은 프롬프트를 고치거나 모델을 바꾸면 사라질 수 있고, 제50조 위반 시 처벌을 생각하면 그 위험은 너무 큽니다. 고정 함수는 매번 확실히 넣습니다.",
+        "tradeOffAccepted": "모든 초안의 하단 문구가 같고, 리드별로 바꿀 수 없습니다."
       },
       {
-        decision: "외부 콜드 아웃바운드 스킬의 카피라이팅 규칙을 별도 AI 세션 대신 앱 내부 프롬프트에 흡수",
-        alternativeConsidered: "계속 CSV로 리드를 내보내고 마케팅 스킬이 탑재된 별도 Claude 세션에서 카피를 작성",
-        why: "외부 세션의 실질적 가치는 별도의 도구가 아니라 카피라이팅 규칙(강제 개인화, 제목의 스팸 단어 회피, 일관된 오퍼 명칭)에 있었습니다. 규칙을 이식하는 것으로 워크플로우 단계를 늘리지 않고 품질 격차를 해소했습니다.",
-        tradeOffAccepted: "앱 내부 프롬프트가 길어졌고, 카피 전략이 바뀔 때마다 외부 스킬 파일과 동일한 관리가 필요합니다."
+        "decision": "카피 규칙을 앱 프롬프트로 옮김",
+        "alternativeConsidered": "계속 CSV로 내보내 별도 Claude 세션에서 초안 작성",
+        "why": "별도 세션이 더 나았던 이유는 규칙이었습니다: 개인화 필수, 제목에 스팸 단어 금지, 일관된 제안 이름. 규칙을 옮기니 단계를 늘리지 않고도 품질 차이가 사라졌습니다.",
+        "tradeOffAccepted": "프롬프트가 길어졌고, 카피 전략이 바뀔 때마다 신경 써서 관리해야 합니다."
       },
       {
-        decision: "백그라운드 SMTP 발송 대신 1클릭 Gmail 딥링크",
-        alternativeConsidered: "트랜잭션 이메일 API를 통한 자동 배치 발송",
-        why: "미검증 대량 콜드메일은 도메인 신뢰도를 훼손할 위험이 있습니다. 발송 전 담당자가 2초간 검토하면 모델이 놓친 부분을 잡아낼 수 있으며, 대가는 리드당 클릭 한 번뿐입니다.",
-        tradeOffAccepted: "완전 무인 배치 발송으로 확장되지 않으며, 리드마다 수동 클릭이 필요합니다."
+        "decision": "자동 발송 대신 클릭 한 번으로 여는 Gmail 링크",
+        "alternativeConsidered": "메일 API로 일괄 발송",
+        "why": "인증되지 않은 발신자의 대량 콜드 메일은 도메인 평판을 떨어뜨립니다. 보내기 전 2초만 읽어도 모델의 실수를 잡을 수 있습니다.",
+        "tradeOffAccepted": "리드마다 클릭이 필요해서 완전 자동 발송은 불가능합니다."
       }
     ],
-    behindTheArchitecture: {
-      problem: "Chekki 학원 영업을 위한 세일즈 디스커버리는 디렉터리 스크래핑, 수작업 정제, 그리고 발송 가능한 수준의 카피 작성이라는 세 단계로 분리되어 있었고, 가장 좋은 카피는 완전히 별도의 AI 세션에서 나왔습니다.",
-      vision: "지역구 쿼리 한 번으로 컴플라이언스를 준수하고 개인화된, 바로 발송 가능한 이중언어 초안까지 이어지는 하나의 앱 내부 파이프라인 — 이전에 외부 도구에서 수작업으로 얻던 것과 동일한 카피 품질을 목표로 합니다.",
-      rationale: "앱의 타입 체계가 이미 리드와 초안을 엄격한 JSON으로 모델링하고 있어 Gemini 구조화 출력(responseSchema)이 인리치먼트와 초안 작성 모두에 자연스럽게 맞았고, 외부 스킬의 프롬프트 규칙을 내재화함으로써 두 번째 AI 도구나 워크플로우를 별도로 두지 않을 수 있었습니다."
-    },
     architecture: {
-      lifecycle: [
-        "수집: 지역구/키워드 쿼리 또는 벌크 스윕 목록이 네이버 지역 검색 프록시 라우트에 도달합니다.",
-        "처리: Gemini 구조화 출력이 리드별로 분류·스코어링·personalization_hook·중복 제거 키를 도출하고, 두 번째 Gemini 호출이 해당 리드에 맞춘 이중언어 이메일을 작성합니다.",
-        "저장: 인리치먼트된 리드는 Firestore에 저장되며, 저장 시 naver_id를 대조해 중복 발송을 방지합니다.",
-        "배포: applyEmailCompliance()가 법적으로 요구되는 문구를 덧붙인 뒤, 초안이 미리 작성된 Gmail 딥링크로 열립니다."
-      ],
       guardrails: [
-        "API 차폐: 네이버와 Gemini 키는 서버 측 라우트(server.ts / api/*.ts)에만 존재하며 클라이언트 번들에 노출되지 않습니다.",
-        "저장 시 중복 제거: 리드 저장 전 기존 Firestore 레코드와 naver_id를 대조해 동일 기관에 대한 중복 발송을 차단합니다.",
-        "컴플라이언스 표기: (광고) 표기, 발신자 연락처, 수신거부 문구는 고정된 서버 코드가 덧붙이며 별도 스모크 테스트로 검증합니다 — 모델에 요청하지 않습니다."
+        "네이버와 Gemini 키는 서버 라우트에만 있고 브라우저에 노출되지 않음",
+        "저장 전에 네이버 ID를 기존 리드와 비교해 같은 학원에 두 번 연락하지 않음",
+        "(광고) 표기, 발신자 연락처, 수신 거부 안내는 고정된 서버 코드가 추가하고 스모크 테스트로 확인"
       ]
     },
     promptEngineering: {
@@ -2520,11 +2738,6 @@ function scoreAssessment(answers) {
              "subject_line_kr_b", "subject_line_en_b", "subject_combined_b",
              "body_korean", "body_english", "cta_primary"]
 }`,
-      guardrails: [
-        "필수 개인화: personalization_hook은 인리치먼트 스키마의 필수 필드이며, 모든 초안의 첫 문장이 이를 참조해야 하고 기존 레코드에 한해서만 지역구/업종 대체를 허용합니다.",
-        "제목 금지 규칙: 무료/Free, 느낌표 남용, 전체 대문자는 제목에서만 명시적으로 금지되며 본문에서는 허용됩니다.",
-        "고정 컴플라이언스 표기: 법적 수신거부 및 발신자 연락처 문구는 생성 이후 덧붙여지며 모델에 요청하지 않습니다."
-      ]
     },
     impact: {
       value: [
@@ -2538,14 +2751,6 @@ function scoreAssessment(answers) {
         "컴플라이언스 표기 문구는 서버 측에 고정되어 있어 모델에 요청하지 않으며, 프롬프트 수정에 영향받지 않습니다."
       ]
     },
-    technicalHurdles: [
-      {
-        title: "카피 품질 격차의 원인은 누락된 기능이 아니라 누락된 프롬프트 규칙",
-        incident: "앱 내부 Gemini 초안 생성 파이프라인이 이미 처음부터 끝까지 작동하고 있었음에도, 팀은 계속 인리치먼트된 리드를 CSV로 내보내 콜드 아웃바운드 카피라이팅 스킬이 탑재된 별도 Claude 세션에서 이메일을 다시 작성했습니다.",
-        diagnosis: "이는 기능 누락이 아니었습니다 — 외부 세션에는 강제 개인화, 제목의 스팸 단어 회피, 일관된 오퍼 명칭, 제목 A/B 변형 같은 구체적인 카피라이팅 규칙이 탑재되어 있었고, 앱 내부 시스템 프롬프트에는 이 규칙들이 없어 상대적으로 초안이 템플릿처럼 읽혔습니다.",
-        resolution: "규칙을 프롬프트 파일에 직접 이식했습니다: 인리치먼트 스키마에 필수 personalization_hook 필드 추가, 제목에서만 스팸 유발 단어 금지, 스키마에 두 번째 A/B 제목 변형과 UI 토글 추가, 기존 CTA URL과 일치하도록 진단 오퍼 명칭 통일. applyEmailCompliance()를 새 B 변형 제목까지 커버하도록 확장해, 두 변형 어느 쪽에서도 법적으로 필수인 (광고) 표기가 누락되지 않도록 했습니다."
-      }
-    ]
   },
   "white-label-hub": {
     title: "모바일 포트폴리오 허브 (Learning Diary Hub)",
@@ -2608,12 +2813,6 @@ function scoreAssessment(answers) {
       }
     ],
     architecture: {
-      lifecycle: [
-        "업로드: 원내 강사들이 원생의 학습 활동 정지 이미지를 캡처하고 지정된 교과 프레임 워크 태그를 마운트합니다.",
-        "AI 합성: Express 프록시가 키 노출 없이 Google Gemini에 구조적 예측 명령을 던져 완벽 매너의 2문장 피드백 도출.",
-        "영속화: 컴파일된 학원별 자산 및 결과 메타데이터 객체를 Supabase의 강력한 행 레벨 보안(RLS) 내부 영역에 저장.",
-        "즉시 인쇄: 사용자 단말 브라우저 캐시에서 학원 브랜드 테마 색상과 Noto Sans KR 글꼴이 바인딩된 최종 PDF를 즉각 작성."
-      ],
       guardrails: [
         "API Key 밀폐: 상용 LLM 프라이버시 등가 자산을 철저히 서버 환경에 감춰 클라이언트 스크립트 탈취 불가 구성.",
         "제로 트러스트 장막 격리 (Zero-Trust Tenant Isolation): 다중 학원 간의 정보 격리는 프론트엔드 단이 아닌 데이터베이스 심층 레벨에서 철저히 보장됩니다. PostgreSQL 서버에 Row Level Security (RLS) 정책을 활성화하고 인가된 사용자의 JWT 세션 정보를 school_id 외래 키에 수학적으로 일체화 결착시켰습니다. 따라서 잠재적인 클라이언트 스크립트 오작동이나 주입 공격 시에도 타사 정보에 간섭하는 행위를 DB 수하 노드에서 원천 드롭해 장비 간 교차 유출을 불가능하도록 봉인했습니다.",
@@ -2638,11 +2837,6 @@ function scoreAssessment(answers) {
   },
   required: ["achievementNarrative", "actionableStepDetail"]
 }`,
-      guardrails: [
-        "글자 수 경계 가이드: 최대 45단어 제약 조건을 LLM 구조 단에 얹어 출력 디자인 틀이 깨지는 사태를 완전 방어.",
-        "무의미 구절 차단: 격려 수사어(예: 'Good job!') 사용을 차단하고 계량적, 발전적 성취 분석 형식을 유지하도록 강제.",
-        "다국어 매핑 연동: 다중 유니코드 표준 문장 부호와 한국어 조사를 부드럽게 결합시키는 사전 가이드 세팅."
-      ]
     },
     impact: {
       value: [
@@ -2657,11 +2851,6 @@ function scoreAssessment(answers) {
         "서버 파이프라인 외부 노드 접근 시 차단 필터를 통해 API Quota 오접속 및 디도스 위협 방지."
       ]
     },
-    behindTheArchitecture: {
-      problem: "한국 학원 시장의 특수성은 다국어 타이포그래피 정렬과 다중 지점별 독립적인 브랜드 색채 표출을 요구하지만, 기존 설치형 솔루션들은 비용과 호환성 면에서 높은 허들을 갖고 있었습니다.",
-      vision: "태블릿 한 대만 들고 교직원들이 번거로운 번역과 레이아웃 고민 없이, 교실 내부에서 한 번에 앨범과 리포트를 프린트하는 무복잡성 컴파일 환경.",
-      rationale: "클라이언트 PDF 인클로저 기술과 Gemini 추론 지배력을 맞물리고, 한글 유니코드의 고유 서체 정합 요건을 Express 서버 폰트 라우팅 게이트웨이로 풀어 자금이 넉넉지 않은 지점들의 초기 부담을 완전 소거했습니다."
-    },
     technicalHurdles: [
       {
         title: "@react-pdf/renderer 상의 한글 unicode 빈 상자(깨짐) 현상",
@@ -2672,135 +2861,164 @@ function scoreAssessment(answers) {
     ]
   },
   bridgerecruit: {
-    title: "BridgeRecruit — 인박스 네이티브 입학처 CRM",
-    tagline: "국제학교 입학 담당자가 아웃룩을 벗어나지 않고 모든 접점을 기록하고, 지역 관계 건전도를 추적하며, AI 기반 후속 조치를 작성할 수 있는 인박스 네이티브 CRM.",
-    meta: { role: "프로덕트 엔지니어", team: "1인", status: "라이브 데모 (포트폴리오 프로젝트)" },
+    title: "브릿지리크루트: Outlook 안에서 쓰는 입학 상담 CRM",
+    tagline: "국제학교 입학 담당자가 Outlook을 떠나지 않고 모든 연락을 기록하고, 학교별 관계 상태를 살피고, AI로 후속 메일을 씁니다.",
+    meta: {
+      "role": "프로덕트 엔지니어",
+      "team": "1인",
+      "status": "라이브 데모 (포트폴리오용)"
+    },
     liveUrl: "https://bridgerecruit-demo.vercel.app/",
     contactUrl: "mailto:jsn.benjamin@gmail.com?subject=BridgeRecruit%20Access%20Request",
     screenshots: [
       {
-        label: "마이크로소프트 아웃룩 플러그인 (본문 읽기 창)",
-        url: "/screenshots/bridgerecruit/outlook-plugin.svg",
-        subLabel: "아웃룩 본문 우측 창: 발신자 도메인을 기관과 자동 매칭하고, 최근 접점 이력을 보며 1-클릭 기록 및 AI 요약 생성을 지원합니다."
+        "label": "Outlook 애드인",
+        "url": "/screenshots/bridgerecruit/outlook-plugin.svg",
+        "subLabel": "발신자를 학교와 연결하고, 최근 연락을 보여주고, 클릭 한 번으로 기록하거나 요약을 씁니다."
       },
       {
-        label: "담당 지역 학교 디렉토리 & 필터 엔진",
-        url: "/screenshots/bridgerecruit/institutions.svg",
-        subLabel: "한국, 태국, 베트남 등 아시아태평양 관할 학교를 등급, 건전도, 국가별로 검색 및 필터링하며 CSV 가져오기/내보내기를 지원합니다."
+        "label": "학교 목록",
+        "url": "/screenshots/bridgerecruit/institutions.svg",
+        "subLabel": "담당 지역의 모든 학교를 등급, 관계 상태, 국가로 거르고 CSV로 가져오기·내보내기."
       },
       {
-        label: "학교 상세 프로필 & 상호작용 기록",
-        url: "/screenshots/bridgerecruit/institution-detail.svg",
-        subLabel: "방콕 프렙 스쿨 프로필: 수석 카운슬러 연락처, 카테고리별 상호작용 이력, 미결 후속 일정까지 한 화면에서 통합 관리합니다."
+        "label": "학교 상세",
+        "url": "/screenshots/bridgerecruit/institution-detail.svg",
+        "subLabel": "카운슬러 연락처, 유형별 연락 기록, 남은 후속 조치."
       },
       {
-        label: "입학 유치 파이프라인 칸반",
-        url: "/screenshots/bridgerecruit/pipeline.svg",
-        subLabel: "초기 접촉(Initial Outreach)부터 논의 중, 방문 예약, 협약/피더 활성화(Agreement / Feeder Active)까지 시각적으로 전진 배치합니다."
+        "label": "파이프라인",
+        "url": "/screenshots/bridgerecruit/pipeline.svg",
+        "subLabel": "첫 연락부터 협약 체결까지 5단계."
       },
       {
-        label: "실시간 연동 아웃룩 캘린더",
-        url: "/screenshots/bridgerecruit/calendar.svg",
-        subLabel: "Microsoft Graph On-Behalf-Of 흐름을 통해 실제 아웃룩 캘린더와 실시간 동기화되어 학교 맥락이 태깅된 후속 일정을 표시합니다."
+        "label": "캘린더",
+        "url": "/screenshots/bridgerecruit/calendar.svg",
+        "subLabel": "Microsoft Graph로 읽어 온 실제 Outlook 일정에 학교 정보 표시."
       },
       {
-        label: "집중 관리 (Needs Attention) — 소통 단절 감지",
-        url: "/screenshots/bridgerecruit/needs-attention.svg",
-        subLabel: "30일 이상 접점이 없는 정체/냉각 학교를 선제적으로 식별하고 부담 없는 재접촉(Re-engagement) 이메일 초안을 1클릭 생성합니다."
+        "label": "관리 필요",
+        "url": "/screenshots/bridgerecruit/needs-attention.svg",
+        "subLabel": "30일 넘게 연락이 없는 학교와, 클릭 한 번으로 만드는 부담 없는 후속 메일."
       },
       {
-        label: "리더십 파트너십 & 활동 브리핑 리포트",
-        url: "/screenshots/bridgerecruit/reports.svg",
-        subLabel: "실제 상호작용 데이터와 관계 건전도 지표를 바탕으로 핵심 메트릭과 모니터링 목록이 포함된 AI 경영진 보고서를 작성합니다."
+        "label": "경영진 브리핑",
+        "url": "/screenshots/bridgerecruit/reports.svg",
+        "subLabel": "기록된 활동으로 만든 AI 브리핑: 핵심 수치와 주의할 학교 목록."
       },
       {
-        label: "마이크로소프트 Graph & 캘린더 권한 설정",
-        url: "/screenshots/bridgerecruit/settings.svg",
-        subLabel: "기본 프로필 인증과 선택적 캘린더 동기화를 분리하여 필요한 순간에만 최소 권한을 요청하는 안전한 동의 구조를 갖춥니다."
+        "label": "권한",
+        "url": "/screenshots/bridgerecruit/settings.svg",
+        "subLabel": "로그인과 캘린더 권한은 필요할 때 따로 요청."
       }
     ],
     stats: [
-      { label: "OAuth 보안", value: "2개 OAuth 흐름", detail: "위임 로그인 + 서버 사이드 On-Behalf-Of Graph 토큰 교환" },
-      { label: "API 범위", value: "19개 스코프 라우트", detail: "로그인한 담당자 고유의 데이터로 격리된 API 엔드포인트" },
-      { label: "AI 워크플로", value: "3개 자동화 루프", detail: "OpenAI Structured Outputs 기반 팔로업 초안 및 리포트 작성" },
-      { label: "입력 소요 속도", value: "단 1회 클릭", detail: "이메일 열람 상태에서 카테고리별 접점 DB 기록까지" }
+      {
+        "label": "로그인",
+        "value": "OAuth 2가지",
+        "detail": "위임 로그인, 그리고 Graph용 서버 측 on-behalf-of 교환"
+      },
+      {
+        "label": "API",
+        "value": "라우트 19개",
+        "detail": "모두 로그인한 담당자 본인의 데이터로 제한"
+      },
+      {
+        "label": "AI 기능",
+        "value": "3가지",
+        "detail": "후속 메일, 요약, 리포트 (OpenAI 구조화 출력)"
+      },
+      {
+        "label": "연락 기록",
+        "value": "클릭 1번",
+        "detail": "메일을 읽다가 바로 기록"
+      }
     ],
     problem: [
-      "채용과 모집은 이메일에서 일어나지만, 기록과 추적은 다른 곳(스프레드시트)에서 일어납니다.",
-      "국제학교 관할 지역을 담당하는 입학 담당자는 하루의 대부분을 아웃룩에서 보냅니다 — 프로그램을 소개하고, 카운슬러에게 답장하고, 캠퍼스 방문 일정을 잡습니다.",
-      "하지만 그 관계의 기록은 대개 탭을 전환하고, 복사-붙여넣기하고, 잊지 않고 적어야 하는 스프레드시트나 일반 CRM에 남아 있습니다. 후속 조치는 메모지에 적혔다 잊혀지고, 6주 동안 조용해진 학교는 저절로 드러나지 않으며, 파트너십 체결이 임박했다는 사실도 담당자 본인 외에는 아무도 알지 못합니다.",
-      "문제의 본질은 기능의 부재가 아니라 '실제 업무가 일어나는 곳'과 '기록이 보관되는 곳' 사이의 마찰력입니다. 확인할 시스템을 하나 더 늘리는 식의 해결책은 언제나 인박스(받은편지함) 앞에서 패배합니다."
+      "입학 담당자는 하루 대부분을 Outlook에서 보내지만, 학교와의 관계 기록은 다른 탭의 스프레드시트나 CRM에 있습니다.",
+      "후속 연락은 적어 두고 잊어버리고, 6주째 조용한 학교는 눈에 띄지 않으며, 협약이 가까워져도 담당자 말고는 아무도 모릅니다.",
+      "확인할 시스템을 하나 더 늘리는 해결책은 결국 받은편지함에 집니다."
     ],
     solution: [
-      "두 개의 접점, 하나의 진실의 원천: 아웃룩 애드인은 이메일을 읽는 화면 안에 직접 위치하여 발신자 도메인을 기관과 자동 매칭하고, 이메일·방문·박람회·전화·화상 미팅을 단일 폼에서 기록하는 1-클릭 접점 캡처 레이어 역할을 합니다.",
-      "동반 관리 대시보드: Next.js App Router 대시보드는 지역 관리, 드래그 파이프라인, 실제 아웃룩 캘린더 연동 뷰, 리더십 보고서 자동 생성기를 제공합니다.",
-      "단일 Postgres 데이터 일관성: 두 접점 모두 동일한 인증 API를 통해 동일한 Postgres 테이블을 읽고 쓰므로 한 곳에서 기록된 내용이 다른 곳에서 누락되지 않습니다.",
-      "데이터베이스 트리거 기반 관계 건전도 산출: 활성(Active) / 관심 감소(Cooling) / 정체(Stalled) 상태를 클라이언트가 분리 계산하지 않고, 상호작용 타임스탬프 트리거를 통해 Postgres 생성 열(Generated Column)에서 단 한 번 계산합니다.",
-      "On-Behalf-Of (OBO) 토큰 교환: 애드인과 대시보드는 좁은 범위의 자체 API 스코프로 로그인하며, 서버가 OAuth OBO 흐름을 통해 Graph 토큰으로 교환합니다. 브라우저 스토리지에 Graph 액세스 토큰이 절대 노출되지 않습니다.",
-      "점진적 분리 동의 (Incremental Consent): Azure의 제약을 감안해 로그인, 프로필 접근, 캘린더 접근을 3단계로 분리하여 필요할 때만 요청함으로써 불필요한 초기 권한 마찰을 제거했습니다.",
-      "유출 및 과금 위험 없는 공개 데모: 허구의 교육기관 데이터로 시딩된 격리 Supabase 프로젝트에서 구동되며, 실제 MS 로그인을 우회하고 API 계층에서 모든 쓰기 및 OpenAI 호출을 정적 응답으로 차단하여 안전하게 전체 경험을 제공합니다."
+      "읽기 창 안의 Outlook 애드인이 발신자 도메인을 학교와 연결하고, 메일·방문·박람회·전화·화상 회의를 클릭 한 번으로 기록",
+      "담당 지역 관리용 Next.js 대시보드: 끌어서 옮기는 파이프라인, 실시간 Outlook 캘린더, 경영진 보고서",
+      "두 화면 모두 같은 API로 같은 Postgres 테이블을 읽고 써서, 한쪽에서 기록한 내용이 다른 쪽에서 빠지지 않음",
+      "관계 상태(활발, 식는 중, 정체)는 마지막 연락일로 Postgres에서 한 번만 계산해 모든 화면이 일치",
+      "공개 데모는 가상의 학교 데이터가 든 별도 DB로 돌아가고, Microsoft 로그인을 건너뛰며, 모든 쓰기와 OpenAI 호출을 차단"
     ],
     stack: [
       "Next.js / App Router",
       "Supabase / Postgres",
       "Microsoft Entra ID (MSAL)",
-      "Graph API — On-Behalf-Of",
+      "Graph API (on-behalf-of)",
       "Office.js Outlook Add-in",
       "OpenAI Structured Outputs",
       "Vercel"
     ],
     coreLoop: [
-      { step: "01. 수신 메일 열람 및 도메인 매칭", role: "아웃룩 애드인", detail: "Office.js가 열린 메일의 발신자 도메인을 읽고 인증된 Next.js API를 호출하여 기관 레코드와 즉각 매칭합니다." },
-      { step: "02. 원클릭 접점 기록 (Log Touchpoint)", role: "입학 담당자", detail: "아웃룩을 벗어나지 않고 이메일, 현장 방문, 유학 박람회, 전화 통화 등의 상호작용 내역을 통합 폼으로 기록합니다." },
-      { step: "03. 서버 측 On-Behalf-Of 토큰 교환", role: "Next.js 라우트 핸들러", detail: "서버가 담당자 사용자 토큰을 Microsoft Entra ID OBO 플로우를 통해 Graph 토큰으로 교환하여 캘린더 일정을 안전하게 동기화합니다." },
-      { step: "04. DB 트리거 기반 관계 건전도 갱신", role: "Postgres 데이터베이스", detail: "데이터베이스 내부 트리거가 마지막 접점 일자를 평가하여 관계 상태(Active, Cooling, Stalled)를 생성 열에 단일 산출합니다." },
-      { step: "05. 칸반 파이프라인 지역 관리", role: "Next.js 대시보드", detail: "담당자가 파이프라인 단계별로 기관을 드래그하여 진척시키고 미결 후속 조치를 한눈에 관리합니다." },
-      { step: "06. 구조화된 AI 리더십 브리핑 생성", role: "OpenAI Structured Outputs", detail: "실제 접점 텔레메트리 데이터를 바탕으로 헤드라인, 핵심 파트너십 성과, 소통 부재 학교 워치리스트를 자동 생성합니다." }
+      {
+        "step": "01. 메일 열기",
+        "role": "Outlook 애드인",
+        "detail": "발신자 도메인을 읽고 어느 학교인지 API에 묻습니다."
+      },
+      {
+        "step": "02. 기록",
+        "role": "입학 담당자",
+        "detail": "읽기 창을 떠나지 않고 메일, 방문, 박람회, 전화, 회의를 한 양식으로 기록합니다."
+      },
+      {
+        "step": "03. 캘린더",
+        "role": "서버",
+        "detail": "서버에서 담당자 토큰을 Graph 토큰으로 바꿔 일정을 가져옵니다."
+      },
+      {
+        "step": "04. 관계 상태",
+        "role": "Postgres",
+        "detail": "마지막 연락일에 걸린 트리거가 학교별 상태를 갱신합니다."
+      },
+      {
+        "step": "05. 파이프라인",
+        "role": "대시보드",
+        "detail": "담당자가 학교를 단계별로 옮기고 후속 조치를 관리합니다."
+      },
+      {
+        "step": "06. 보고서",
+        "role": "OpenAI",
+        "detail": "핵심 내용, 활동 수치, 관계가 식어 가는 학교 목록을 담은 경영진 브리핑을 씁니다."
+      }
     ],
     decisions: [
       {
-        decision: "클라이언트 직접 Graph 토큰 대신 On-Behalf-Of (OBO) 서버 토큰 교환 선택",
-        alternativeConsidered: "아웃룩 애드인 클라이언트가 직접 Microsoft Graph 액세스 토큰을 발급받아 브라우저 localStorage에 보관",
-        why: "애드인과 대시보드는 좁은 자체 API 스코프로 로그인하고, 서버가 Graph를 호출하기 직전에 OAuth OBO 플로우로 토큰을 교환합니다. 한 단계 거치게 되지만 Graph 액세스 토큰이 브라우저 스토리지에 머물지 않으며, 서버가 요청할 Graph 스코프와 시점을 철저히 통제합니다.",
-        tradeOffAccepted: "Graph API 호출 시 서버 측에서 1회의 추가적인 토큰 교환 네트워크 홉이 발생합니다."
+        "decision": "Graph 토큰을 브라우저에 주지 않고 서버에서 교환",
+        "alternativeConsidered": "애드인에 Graph 토큰을 주고 localStorage에 저장",
+        "why": "사용자는 내 API 전용의 범위가 좁은 토큰으로 로그인합니다. 서버가 Graph를 호출하기 전에 on-behalf-of 방식으로 Graph 토큰을 받아 오므로, Graph 토큰은 브라우저에 남지 않고 어떤 권한을 요청할지도 서버가 정합니다.",
+        "tradeOffAccepted": "Graph를 호출할 때마다 서버를 한 번 더 거칩니다."
       },
       {
-        decision: "포괄적 일괄 권한 요청 대신 점진적 분리 동의(Incremental Consent) 도입",
-        alternativeConsidered: "최초 사용자 로그인 시 이메일, 프로필, 캘린더 전체 권한을 한 번에 일괄 요청",
-        why: "Azure는 대화형 동의 요청당 하나의 리소스만 허용합니다. 또한 아직 서비스의 효용을 경험하지 못한 입학 담당자에게 초기부터 캘린더 전체 권한을 요구하는 것은 신뢰와 사용 전환율을 심각하게 훼손합니다.",
-        tradeOffAccepted: "UI 전반에서 캘린더 기능 진입 시점마다 권한 상태 전이와 동의 유도 분기를 관리해야 합니다."
+        "decision": "권한은 필요할 때마다 따로 요청",
+        "alternativeConsidered": "로그인할 때 메일함, 캘린더, 프로필 권한을 한꺼번에 요청",
+        "why": "Azure는 동의 창 하나에 리소스 하나만 허용해서, 로그인·프로필·캘린더가 세 단계로 나뉩니다. 기능이 필요할 때만 요청하면, 앱을 믿을 이유도 없는 상태에서 캘린더 권한부터 묻지 않아도 됩니다.",
+        "tradeOffAccepted": "화면에서 여러 권한 상태를 처리해야 합니다."
       },
       {
-        decision: "클라이언트 연산 대신 Postgres 데이터베이스 생성 열 기반 관계 건전도 산출",
-        alternativeConsidered: "아웃룩 애드인과 웹 대시보드 각 화면에서 날짜 라이브러리를 통해 동적으로 상태를 재계산",
-        why: "독립된 클라이언트들이 각자 계산할 경우 타임존 오차나 캐시 시점에 따라 상태가 불일치하게 됩니다. 상호작용 타임스탬프 트리거로 Postgres 생성 열에서 단 한 번 계산함으로써 두 화면 간 데이터 불일치를 원천 차단했습니다.",
-        tradeOffAccepted: "건전도 기준 일수나 계산 공식을 수정할 때 데이터베이스 마이그레이션과 트리거 갱신이 필요합니다."
+        "decision": "관계 상태를 데이터베이스에서 계산",
+        "alternativeConsidered": "애드인과 대시보드가 각자 계산",
+        "why": "두 클라이언트가 날짜 계산을 따로 하면 시간대나 캐시 때문에 결과가 달라집니다. Postgres에서 한 번만 계산하면 모든 화면이 같은 값을 봅니다.",
+        "tradeOffAccepted": "상태 규칙을 바꾸려면 마이그레이션이 필요합니다."
       },
       {
-        decision: "실서버 읽기 전용 미러 대신 시딩 데이터 기반 격리 데모 환경 구축",
-        alternativeConsidered: "실제 운영 데이터베이스에 읽기 전용 플래그를 설정하여 공개 데모 연동",
-        why: "공개 라이브 데모는 허구의 학교 데이터로 시딩된 독립 Supabase 프로젝트에서 작동하며, 실제 MS 로그인을 완전히 우회하고 API 레이어에서 모든 쓰기와 OpenAI 호출을 차단합니다. 방문자는 모든 인터랙션을 체험할 수 있으며 실제 데이터 유출이나 과금 위험이 0%입니다.",
-        tradeOffAccepted: "데모 사용자는 변경 사항을 영구 저장하거나 임의의 실제 학교 도메인을 테스트할 수 없습니다."
+        "decision": "운영 DB의 읽기 전용 사본 대신 별도의 데모 데이터",
+        "alternativeConsidered": "읽기 전용 설정으로 공개 데모를 운영 DB에 연결",
+        "why": "데모는 가상의 학교를 쓰고, Microsoft 로그인을 건너뛰며, 모든 쓰기와 OpenAI 호출을 막습니다. 보고서는 모델을 부르지 않고 데모 수치로 실제 요약을 만듭니다. 방문자는 모든 기능을 써 볼 수 있고, 실제 데이터나 비용에는 닿을 수 없습니다.",
+        "tradeOffAccepted": "데모 방문자는 변경 내용을 저장하거나 자기 학교 도메인을 시험할 수 없습니다."
       }
     ],
-    behindTheArchitecture: {
-      problem: "국제학교 입학 담당자들은 이메일에서 살아가지만, 관계 관리는 흩어진 시트나 무거운 범용 CRM에서 이루어져 후속 조치 누락과 소통 단절이 만성적으로 발생했습니다.",
-      vision: "이메일을 읽는 그 자리에서 클릭 한 번으로 모든 접점을 기록할 수 있도록 CRM을 아웃룩 인박스 안에 직접 내장하고, 진실의 원천을 공유하는 관리 대시보드를 구축.",
-      rationale: "Office.js 애드인과 Next.js App Router, Supabase Postgres를 연결했습니다. OAuth On-Behalf-Of로 Graph 토큰 보안을 지키고, 데이터베이스 트리거로 관계 건전도를 결정론적으로 단일 산출했습니다."
-    },
     architecture: {
-      lifecycle: [
-        "인박스 감지: 담당자가 아웃룩에서 메일을 열면 Office.js가 발신자 도메인을 추출해 기관 메타데이터를 질의합니다.",
-        "OBO 인증 교환: Next.js 서버가 클라이언트 토큰을 수신하고 Microsoft Entra ID OBO 플로우를 통해 Graph 토큰으로 안전 교환합니다.",
-        "접점 기록: 담당자가 상호작용 내역을 제출하면 서버가 사용자 테넌시를 검증한 뒤 Supabase Postgres에 기록합니다.",
-        "트리거 기반 건전도 갱신: Postgres DB 트리거가 상호작용 일자를 계산해 관계 건전도 생성 열을 즉각 갱신합니다.",
-        "파이프라인 & AI 브리핑: 대시보드가 칸반 상태를 실시간 동기화하고 OpenAI Structured Outputs를 통해 경영진 보고서를 생성합니다."
-      ],
       guardrails: [
-        "테넌트 격리: 모든 서버 API 라우트에서 DB 쿼리에 로그인한 담당자의 user_id를 강제하여 타 사용자 데이터 열람을 차단.",
-        "OBO 토큰 은폐: Microsoft Graph 액세스 토큰은 서버 메모리에서만 처리되며 브라우저 스토리지에 일절 노출되지 않음.",
-        "CSV 수식 주입 방어: 기관 및 연락처 내보내기 시 =, +, -, @ 시작 문자를 소거하여 엑셀 수식 주입 공격을 차단.",
-        "애드인 HTML 이스케이프: Office.js 읽기 창에 렌더링되는 모든 사용자 입력 텍스트를 XSS 방어 처리."
+        "모든 서버 라우트는 로그인한 담당자의 사용자 ID로 조회를 제한",
+        "Graph 토큰은 서버에서 교환하고 보관하며 브라우저에 보내지 않음",
+        "CSV 내보내기에서 맨 앞의 =, +, -, @를 지워 스프레드시트 수식 주입 차단",
+        "애드인에 표시되는 사용자 입력은 모두 XSS 방지 처리"
       ]
     },
     promptEngineering: {
@@ -2844,11 +3062,6 @@ function scoreAssessment(answers) {
   },
   "required": ["headline", "highlights", "watch_list"]
 }`,
-      guardrails: [
-        "구조화된 출력(Structured Outputs): 엄격한 JSON 스키마를 강제하여 마크다운 깨짐 없이 대시보드 카드에 안정 파싱.",
-        "환각 차단 가드레일: 보고서 요약은 데이터베이스에 실제 존재하는 상호작용 및 캘린더 일정에만 철저히 근거.",
-        "프롬프트 주입 방어: 자유 형식의 담당자 메모를 XML 경계 태그로 래핑하여 모델 지시문 오염을 방지."
-      ]
     },
     impact: {
       value: [
@@ -2865,92 +3078,105 @@ function scoreAssessment(answers) {
     },
     technicalHurdles: [
       {
-        title: "3개 계층에 걸친 복합 OAuth 인증 장애",
-        incident: "아웃룩 애드인 테스트 중 모호한 TLS 및 네트워크 오류 팝업과 함께 로그인이 반복 실패했습니다.",
-        diagnosis: "하나의 버그처럼 보였으나 실제로는 3가지 원인(OS 레벨 인증서 신뢰 체인 문제, 엔드포인트 보안 도구의 TLS 인터셉트, 애드인 대화상자 도메인과 매니페스트 허용 목록 불일치)이 복합적으로 얽혀 있었습니다.",
-        resolution: "증상에 따라 추측하지 않고 각 계층을 독립적으로 격리 해결했습니다: 로컬 인증서 신뢰 체인 재설정, 보안 프록시 예외 등록, 매니페스트 AppDomains 허용 목록 정렬."
+        "title": "세 가지 원인이 겹친 로그인 실패",
+        "incident": "로그인이 버그 하나처럼 보였지만 원인은 셋이었습니다. OS 인증서 신뢰 문제, 한 브라우저에서 TLS를 가로채던 보안 프로그램, 매니페스트 허용 목록에 없던 애드인 대화상자 도메인.",
+        "diagnosis": "앞의 두 가지만 고쳤다면 진전처럼 보여도 로그인은 계속 실패했을 것입니다.",
+        "resolution": "인증서 체인, 프록시 가로채기, 매니페스트 허용 목록을 하나씩 따로 확인하고 해결했습니다."
       },
       {
-        title: "보안 감사: Supabase Service-Role 키 RLS 무력화 및 테넌시 누락",
-        incident: "Supabase 콘솔에서는 행 레벨 보안(RLS) 정책이 활성화되어 있었으나 실제 런타임에서는 작동하지 않았습니다.",
-        diagnosis: "모든 서버 라우트가 service-role 키를 사용하여 RLS가 우회되었으며, 여러 엔드포인트에서 애플리케이션 계층 user_id 필터링이 누락되어 타 담당자 기관을 열람/수정할 수 있는 취약점이 발견되었습니다.",
-        resolution: "출시 전 19개 모든 라우트에 대해 철저한 감사를 실시하여 user_id 테넌시 필터링을 적용하고, CSV 내보내기 수식 주입 방지 및 애드인 HTML 이스케이프 처리를 전면 완료했습니다."
+        "title": "아무 역할도 못 하던 보안 규칙",
+        "incident": "Supabase 행 수준 보안 정책은 있었지만, 모든 서버 라우트가 정책을 우회하는 service-role 키를 쓰고 있었습니다.",
+        "diagnosis": "모든 라우트를 점검해 보니, 로그인한 담당자라면 누구나 다른 담당자의 학교를 읽고 고칠 수 있었습니다. CSV 내보내기의 수식 주입과 애드인의 HTML 미처리 문제도 찾았습니다.",
+        "resolution": "출시 전에 셋 다 고쳤습니다. 19개 라우트 모두 사용자 ID로 거르고, CSV 내보내기를 정리하고, 애드인 입력값을 이스케이프합니다."
       },
       {
-        title: "캐시가 갱신되지 않는 아웃룩 사이드로딩 매니페스트",
-        incident: "대화상자 URL을 수정한 뒤에도 아웃룩이 이전 엔드포인트를 계속 호출하며 'Could not open sign-in dialog' 오류를 반복 발생시켰습니다.",
-        diagnosis: "아웃룩 데스크톱 클라이언트는 사이드로딩된 매니페스트를 극도로 강하게 캐싱하며, XML 버전 번호 변경만으로는 호스트 컨테이너의 캐시가 무효화되지 않았습니다.",
-        resolution: "버전 번호 변경과 함께 매니페스트 파일을 명시적으로 제거하고 로컬 오피스 캐시를 완전히 비운 뒤 재등록하는 스크립트를 구축하여 배포 안정성을 확보했습니다."
+        "title": "새로 고쳐지지 않는 애드인 매니페스트",
+        "incident": "수정을 배포한 뒤에도 Outlook이 예전 매니페스트를 써서 '로그인 대화상자를 열 수 없음' 오류가 계속 났습니다.",
+        "diagnosis": "Outlook 데스크톱은 직접 설치한 매니페스트를 캐시하고, 버전 번호만 올려서는 캐시가 지워지지 않습니다.",
+        "resolution": "버전을 올리고, 매니페스트를 지웠다가 다시 추가하는 스크립트로 애드인 캐시를 비웠습니다."
       }
     ]
   },
   "seoul-commute": {
-    title: "Seoul Commute MCP — AI 어시스턴트를 위한 실시간 지하철·날씨·대기질 데이터",
-    tagline: "Claude 등 AI 어시스턴트에 한국 공공데이터 기반 도구 6개(현재 날씨, 예보, 미세먼지, 실시간 지하철 도착, 시간표 기반 경로)를 제공하는 Python MCP 서버. 서울 리전 Cloud Run에 배포하고, 평일 출퇴근 브리핑을 텔레그램으로 보내며, 답변 속 정거장 수·소요 시간·요금을 도구 결과와 하나하나 대조하는 33문항 평가 세트를 갖췄습니다.",
-    meta: { role: "AI 엔지니어", team: "1인", dates: "2026년 11월", status: "운영 중" },
+    title: "서울 출퇴근 MCP: AI 비서를 위한 실시간 교통·날씨·대기 데이터",
+    tagline: "Claude에게 한국 공공데이터 도구 6개(날씨, 예보, 미세먼지, 실시간 지하철 도착, 경로)를 주는 Python MCP 서버입니다. 서울 리전 Cloud Run에서 돌아가고, 평일 출퇴근 브리핑을 텔레그램으로 보냅니다. 33개 질문 평가 세트로 답에 나온 정거장 수, 소요 시간, 요금이 모두 도구 결과와 맞는지 확인합니다.",
+    meta: {
+      "role": "AI 엔지니어",
+      "team": "1인",
+      "dates": "2026년 11월",
+      "status": "운영 중"
+    },
     liveUrl: "https://github.com/Jay02510/seoul-commute-mcp",
     liveLabel: "GitHub에서 보기 ↗",
     screenshots: [
-      { label: "Claude.ai 커넥터", url: "/screenshots/seoul-commute/demo.gif", subLabel: "홍대입구에서 강남: 경로, 열차, 날씨, 예보를 모두 클라우드 서버에서 조회 (1.5배속)" }
+      {
+        "label": "Claude.ai 커넥터",
+        "url": "/screenshots/seoul-commute/demo.gif",
+        "subLabel": "홍대에서 강남까지: 경로, 열차, 날씨, 예보를 모두 클라우드 서버에서 (1.5배속)"
+      }
     ],
     stats: [
-      { label: "MCP 도구", value: "도구 6개 / 공공 API 4종", detail: "기상청, 에어코리아, 서울교통공사 경로, 서울시 실시간 지하철" },
-      { label: "평가 통과율", value: "22/30 → 28/30", detail: "근거 기반 답변 개선 후. 확장된 33문항 세트에서는 30/33, 채점된 실패 0건 (모델 응답 지연으로 아직 채점되지 않은 문항 3건)" },
-      { label: "테스트", value: "오프라인 153개", detail: "녹화한 API 응답으로 푸시할 때마다 네트워크와 키 없이 실행" }
+      {
+        "label": "MCP 도구",
+        "value": "도구 6개, API 4개",
+        "detail": "기상청, 에어코리아, 서울교통공사 경로, 서울 실시간 지하철"
+      },
+      {
+        "label": "평가 통과율",
+        "value": "22/30 → 28/30",
+        "detail": "근거 확인 개선 후. 확장 세트는 33개 중 30개 통과, 실패 없음 (3개는 모델 타임아웃으로 미채점)"
+      },
+      {
+        "label": "테스트",
+        "value": "오프라인 153개",
+        "detail": "녹화한 API 응답으로 네트워크나 키 없이 푸시마다 실행"
+      }
     ],
     problem: [
-      "홍대입구에서 강남까지 몇 정거장인지 물으면 어시스턴트는 기억에 의존해 자신 있게 틀린 답을 합니다(실제 17개를 19개로). 출퇴근 질문에는 모델이 갖고 있지 않은 실시간 지역 데이터가 필요합니다.",
-      "한국 공공데이터는 포털과 형식이 제각각입니다. 기상청 예보는 좌표 대신 5km 격자를 쓰고, 에어코리아 등급 값은 자주 비어 있으며, 경로 API는 역 이름을 잘못 쓰면 오류 없이 빈 결과를 돌려주고, data.go.kr은 JSON을 요청해도 키 오류를 XML로 답합니다.",
-      "도구가 있어도 모델은 빈 곳을 기억으로 채우거나, 데이터가 오지 않았는데도 괜찮다고 안심시킵니다. 한 번 그럴듯해 보이는 데모로는 답변이 실제로 얼마나 근거에 기반하는지 알 수 없습니다."
+      "홍대에서 강남까지 몇 정거장이냐고 물으면 AI 비서는 기억에 의존해 자신 있게 틀립니다. 정답은 17개인데 19개라고 답합니다.",
+      "한국 공공데이터는 포털마다 방식이 다릅니다. 기상청 예보는 5km 격자를 쓰고, 에어코리아 등급 값은 자주 비어 있고, 경로 API는 역 이름이 틀려도 빈 결과를 '성공'으로 돌려줍니다.",
+      "도구가 있어도 모델은 빈 곳을 기억으로 채우거나, 데이터가 끊겼는데도 괜찮다고 안심시킵니다. 데모 한 번이 맞아 보여도 실제로 얼마나 근거 있는 답인지는 알 수 없습니다."
     ],
     solution: [
-      "API 4종을 작은 비동기 모듈(sources/)로 감싸 MCP 도구 6개로 제공: current_weather, forecast, air_quality, next_trains, route, list_districts. 역 이름과 구 이름은 한국어·영어 모두 지원합니다.",
-      "같은 서버를 두 방식으로 실행: Claude Desktop용 stdio, 그리고 서울 리전 Cloud Run 위 Streamable HTTP(액세스 토큰 보호, 키는 Secret Manager). 덕분에 어느 기기에서나 Claude.ai 커스텀 커넥터로 쓸 수 있습니다.",
-      "자동 채점기가 있는 33문항 평가 세트를 구축: 어떤 도구를 어떤 인자로 호출했는지, 필수·금지 문구, HTTP 503 장애 주입, 그리고 도구 결과에 없는 정거장 수·분·원 금액이 답변에 있으면 실패 처리하는 근거 검사.",
-      "평가 실패를 근거로 제품을 바꿨습니다. 모델에게 추측하지 말라고 하는 대신 경로 도구를 추가하고, 규칙을 서버 지침에서 도구 설명과 도구 결과로 옮기고, 모델이 구간 시간을 직접 계산한 뒤에는 경로 도구가 구간별 소요 시간을 함께 돌려주게 했습니다.",
-      "같은 데이터 계층으로 텔레그램 브리핑(평일 07:45 출근, 18:00 퇴근)을 만들고, Cloud Run 잡과 Cloud Scheduler로 실행합니다. 규칙 기반 작성기는 모든 확인이 실제로 응답했을 때만 '우산·마스크 필요 없음'이라고 씁니다."
+      "API 4개를 감싼 MCP 도구 6개: current_weather, forecast, air_quality, next_trains, route, list_districts. 역과 구 이름은 한국어·영어 모두 가능",
+      "같은 서버를 Claude Desktop용 stdio와, 서울 리전 Cloud Run의 HTTP로 함께 운영. 토큰으로 보호하고 키는 Secret Manager에 보관해 어느 기기에서든 Claude.ai 커넥터로 사용",
+      "자동 채점기가 있는 33개 평가 세트: 어떤 도구를 어떤 인자로 불렀는지, 필수·금지 문구, 강제로 넣은 503 장애, 답의 모든 숫자가 도구 결과에 있는지 확인",
+      "평가 실패가 제품을 바꿈: '추측하지 말라'는 규칙 대신 경로 도구 추가, 규칙을 도구 설명과 결과로 이동, 모델이 직접 계산하기 시작한 구간별 소요 시간을 도구가 직접 반환",
+      "같은 데이터 계층으로 평일 07:45, 18:00 텔레그램 브리핑 발송. 모든 확인이 실제로 응답했을 때만 '우산 필요 없음'이라고 안내"
     ],
     stack: ["Python 3.11+", "MCP Python SDK 2", "httpx (비동기)", "Google Cloud Run", "Cloud Scheduler", "Secret Manager", "Docker", "SQLite", "Telegram Bot API", "pytest", "Gemini / Claude (평가 실행기)"],
     decisions: [
       {
-        decision: "프롬프트 규칙을 믿는 대신 평가 세트로 근거 기반 여부를 측정",
-        alternativeConsidered: "'정거장 수를 추정하지 말 것' 같은 지침을 강화하고 답변 몇 개를 직접 확인",
-        why: "Claude Desktop에서 직접 확인해 보니 지침만으로는 효과가 없었습니다. 모델은 여전히 기억으로 정거장 수와 소요 시간을 말했습니다. 답변 속 숫자를 모두 도구 결과와 대조하는 채점기가 있으면 '괜찮아 보임'이 변경할 때마다 오르내리는 점수가 됩니다.",
-        tradeOffAccepted: "채점기가 패턴 기반이라 정거장, 분, 원만 검사합니다. 그 밖의 근거 없는 주장(예: 어느 방향은 타지 말라는 말)은 여전히 사람이 읽고 판단해야 합니다."
+        "decision": "프롬프트 규칙을 믿지 않고 평가 세트로 근거를 측정",
+        "alternativeConsidered": "더 강한 지시문('정거장 수를 추정하지 말 것')과 몇 번의 수동 확인",
+        "why": "Claude Desktop에서 직접 확인해 보니 지시문만으로는 소용이 없었고, 모델은 여전히 기억으로 정거장 수와 소요 시간을 말했습니다. 답의 모든 숫자를 도구 결과와 대조하는 채점기가 있으면, 변경할 때마다 점수로 확인할 수 있습니다.",
+        "tradeOffAccepted": "채점기는 정거장 수, 분, 원만 확인합니다. 어느 방향으로 가지 말라는 식의 다른 근거 없는 주장은 여전히 사람이 읽어야 합니다."
       },
       {
-        decision: "서울 리전 Cloud Run, 단 배포 전에 그곳에서 API부터 점검",
-        alternativeConsidered: "미국 리전이나 일반 PaaS에 호스팅하거나, 서버를 로컬 전용으로 유지",
-        why: "한국 공공 API는 해외 트래픽을 거부할 수 있습니다. 배포 작업 전에 asia-northeast3에서 일회성 점검 잡을 돌려 API 4종 모두 Google Cloud 서울에서 응답함을 확인했습니다. Cloud Run은 요청이 없으면 0으로 줄어들어 포트폴리오 서버 비용이 거의 들지 않습니다.",
-        tradeOffAccepted: "인스턴스 최대 1개, 상태 없는 JSON 응답, OAuth 대신 공유 액세스 토큰. 운영은 단순하지만 ?key=로 넘기면 토큰이 요청 로그에 남아 수동으로 교체해야 합니다."
+        "decision": "서울 리전에서 API 응답을 먼저 확인한 뒤 Cloud Run 사용",
+        "alternativeConsidered": "미국 리전이나 일반 PaaS, 또는 로컬 전용",
+        "why": "한국 정부 API는 해외 트래픽을 막을 수 있습니다. 배포 전에 asia-northeast3에서 한 번 테스트해 네 API 모두 Google Cloud 서울에서 응답하는 것을 확인했고, Cloud Run은 쓰지 않을 때 0으로 줄어서 비용이 거의 들지 않습니다.",
+        "tradeOffAccepted": "인스턴스는 최대 1개이고, OAuth 대신 공유 토큰을 씁니다. ?key=로 넘기면 토큰이 요청 로그에 남고, 교체도 직접 해야 합니다."
       },
       {
-        decision: "브리핑은 기본적으로 규칙 기반 작성기, LLM 작성기는 선택 사항",
-        alternativeConsidered: "모든 텔레그램 브리핑을 같은 MCP 도구를 쓰는 LLM이 작성",
-        why: "브리핑은 무료 등급 모델이 과부하여도 07:45에 나가야 합니다. 규칙은 결정론적이고 오프라인으로 테스트할 수 있으며 확인하지 않은 데이터로 안심시킬 수 없습니다. LLM 작성기는 플래그로 켤 수 있고, 실패하면 규칙 기반으로 돌아갑니다.",
-        tradeOffAccepted: "규칙 기반 메시지는 LLM 버전보다 단조롭고 상황 대응력이 낮습니다."
+        "decision": "브리핑은 기본적으로 규칙 기반, LLM 작성은 선택",
+        "alternativeConsidered": "모든 브리핑을 LLM이 같은 도구로 작성",
+        "why": "브리핑은 무료 모델이 과부하든 아니든 07:45에 나가야 합니다. 규칙은 예측 가능하고, 오프라인으로 테스트할 수 있고, 확인하지 않은 데이터로 안심시키지 않습니다. LLM 작성기는 설정으로 켤 수 있고, 실패하면 규칙 기반으로 돌아갑니다.",
+        "tradeOffAccepted": "규칙 기반 메시지는 문장이 단조롭습니다."
       },
       {
-        decision: "가장 빠른 경로가 5분 넘게 아끼지 않으면 환승이 가장 적은 경로 선택",
-        alternativeConsidered: "API가 준 최단 시간 경로를 그대로 표시",
-        why: "최단 시간 경로가 2분을 아끼려고 두 번 환승하는 경우가 있었는데, 실제 출근길에 그렇게 타는 사람은 없습니다. 두 경로를 모두 받아 5분 기준을 적용하면 사람들이 실제로 타는 방식과 맞습니다.",
-        tradeOffAccepted: "브리핑마다 경로 호출이 두 번 필요하고, 5분 기준은 측정된 선호가 아닌 판단입니다."
+        "decision": "환승이 가장 적은 경로, 단 최단 경로가 5분 넘게 빠르면 최단 경로",
+        "alternativeConsidered": "API가 주는 최단 경로를 그대로 표시",
+        "why": "한 번은 2분 아끼려고 두 번 환승하는 경로가 나왔는데, 그런 길로 출근하는 사람은 없습니다. 두 경로를 모두 받아 5분 기준을 적용하는 편이 실제 이동 방식과 맞습니다.",
+        "tradeOffAccepted": "브리핑마다 경로를 두 번 조회하고, 5분 기준은 판단에 따른 값입니다."
       }
     ],
     architecture: {
-      lifecycle: [
-        "데이터 소스: sources/kma.py, airkorea.py, subway.py, route.py는 dict를 돌려주는 단순한 비동기 함수입니다. 공용 HTTP 헬퍼가 data.go.kr의 XML 오류 응답을 명확한 예외로 바꾸고, districts.py가 서울 25개 구를 기상청 격자와 에어코리아 측정소에 연결합니다.",
-        "서버: server.py가 MCPServer에 도구 6개를 등록합니다. 각 도구는 네트워크·키·데이터 형식 오류를 잡아 짧고 민감 정보를 지운 텍스트로 돌려주므로, 모델은 추측하지 않고 '조회 불가'라고 말할 수 있습니다.",
-        "전송 방식: Claude Desktop은 server.py를 stdio로 실행하고, http_app.py는 같은 도구를 Cloud Run(asia-northeast3)에서 Bearer 토큰 뒤의 Streamable HTTP와 /healthz로 제공합니다.",
-        "브리핑: Cloud Run 잡이 deploy/routes.json에서 경로를 읽고 날씨·예보·대기질·열차·경로를 병렬로 조회해 메시지를 작성한 뒤 Telegram Bot API로 보냅니다. Cloud Scheduler가 평일 07:45와 18:00(서울 시간)에 실행합니다.",
-        "평가: evals/run.py가 실제 모델을 MCP로 서버에 연결해 모든 도구 호출과 결과를 기록하고, evals/grade.py가 답변마다 채점해 evals/results/에 리포트를 남깁니다."
-      ],
       guardrails: [
-        "정거장 수, 소요 시간, 환승, 요금은 route 도구에서만 가져옵니다. 도구 설명은 사용자가 기억으로 대충 말해 달라고 해도 호출하라고 하고, 오류 텍스트는 빈 곳을 기억으로 채우지 말라고 모델에게 알립니다.",
-        "역 이름은 전부 URL 인코딩하고 30자로 제한하며, 도구 오류에서 민감 정보를 지워 API 키가 모델이나 사용자에게 닿지 않게 합니다.",
-        "컨테이너는 root가 아닌 사용자로 실행하고, 키는 Secret Manager에서 가져오며, .gcloudignore로 .env가 빌드 업로드에 포함되지 않게 합니다.",
-        "역별 30초 캐시로 반복되는 지하철 질문도 서울시 API의 하루 1,000회 한도 안에 머물게 합니다.",
-        "평가 실행기는 할당량 오류가 3번 연속되면 멈추고, 저장된 결과 파일에서 실패하거나 오류 난 문항만 다시 돌릴 수 있습니다."
+        "정거장 수, 소요 시간, 환승, 요금은 route 도구에서만 가져오고, 오류 문구로 모델이 빈 곳을 채우지 않게 안내",
+        "역 이름은 URL 인코딩하고 30자로 제한. 도구 오류에서 API 키를 가려 모델에 전달되지 않게 함",
+        "컨테이너는 root가 아닌 사용자로 실행하고, 키는 Secret Manager에서 가져옴",
+        "역별 30초 캐시로 반복 질문에도 서울 API 하루 1,000회 한도 안에서 운영"
       ]
     },
     promptEngineering: {
@@ -2973,11 +3199,6 @@ NUMBER_PATTERNS = [
 def ungrounded(answer, tool_results):
     # 답변의 모든 숫자는 어떤 도구 결과엔가 있어야 한다
     return [n for kind, n in claimed_numbers(answer) if n not in tool_results]`,
-      guardrails: [
-        "Claude Desktop에서는 서버 수준 MCP 지침이 모델에 전달되지 않는 것으로 보여, 중요한 규칙은 모두 해당 도구의 설명과 오류 텍스트에 다시 넣었습니다.",
-        "장애 문항은 도구 하나에 HTTP 503을 주입하고, 그런데도 모델이 안심시키면 실패 처리합니다. 예: 대기질 조회가 실패했는데 '마스크 필요 없음'이라고 답한 경우.",
-        "채점기는 영어→한국어 변환 후 서버가 보는 형태로 역 인자를 비교하므로 'Sindorim'과 '신도림'을 같은 호출로 봅니다."
-      ]
     },
     impact: {
       value: [
@@ -2991,35 +3212,24 @@ def ungrounded(answer, tool_results):
         "httpx 요청 로그가 서버 로그에 API 키를 기록하는 것을 발견한 뒤 해당 로깅을 껐습니다."
       ]
     },
-    behindTheArchitecture: {
-      problem: "어시스턴트는 출퇴근에 대해 말하는 데는 능숙하지만, 어떤 열차인지, 몇 정거장인지, 밤 9시 강남에 비가 올지 같은 사실은 모릅니다.",
-      vision: "어떤 MCP 클라이언트든 쓸 수 있는 작고 잘 테스트된 도구 서버, 그리고 모델이 즉흥적으로 답하지 않고 실제로 도구를 쓰는지 증명하는 평가.",
-      rationale: "MCP 스택 전체를 배우기 위한 프로젝트로 만들었습니다. 실제 한국 API와 그 특이점, 로컬과 호스팅 두 가지 전송 방식, 브리핑용 에이전트 루프, 평가 도구까지. 모든 단계와 명령, 주의점은 저장소의 BUILD_GUIDE에 기록했습니다."
-    },
     technicalHurdles: [
       {
-        title: "모델이 기억으로 정거장 수를 세고, 틀렸다",
-        incident: "초기 테스트에서 모델은 기억으로 정거장 수를 말했습니다(홍대입구→강남을 19개로, 실제는 17개). 지침을 강화하자 정거장 수는 멈췄지만, 다른 경로에서는 반대 방향 환승을 지어냈습니다.",
-        diagnosis: "next_trains 도구는 도착 정보만 알았기 때문에 모델에게 경로 정보의 출처가 없었고, 빈 곳을 스스로 채웠습니다. Claude Desktop에서는 서버 수준 지침도 전달되지 않는 것으로 보였습니다.",
-        resolution: "서울교통공사 최단경로 API로 route 도구를 추가하고, '경로 정보는 route에서만'이라는 규칙을 도구 설명과 오류 텍스트로 옮기고, 평가에 근거 검사를 추가했습니다. 이제 경로 질문은 도구에서 인용한 숫자로 통과합니다."
+        "title": "모델이 정거장 수를 기억으로 세다가 틀림",
+        "incident": "초기 테스트에서 홍대에서 강남까지 19정거장이라고 답했습니다 (정답은 17개). 지시문을 강화하자 정거장 수는 말하지 않았지만, 다른 경로에서는 반대 방향 환승을 지어냈습니다.",
+        "diagnosis": "next_trains 도구는 도착 정보만 알아서, 모델에게 경로 정보의 근거가 없었습니다. Claude Desktop에서는 서버 수준 지시문도 전달되지 않는 듯했습니다.",
+        "resolution": "서울교통공사 최단 경로 API로 route 도구를 추가하고, '경로 정보는 route에서만' 규칙을 도구 설명과 오류 문구에 넣고, 평가에 근거 확인을 추가했습니다. 이제 경로 질문은 도구가 준 숫자로 답해 통과합니다."
       },
       {
-        title: "'서울역'만 경로가 나오지 않았다",
-        incident: "평가 19번(서울역→강남)이 계속 실패했습니다. route 도구가 성공 응답과 함께 빈 경로 목록을 돌려줬습니다.",
-        diagnosis: "경로 API는 '역'을 뺀 이름('강남')을 원하지만, 공식 이름에 '역'이 들어간 역('서울역')은 예외입니다. 접미사를 지우자 API가 모르는 이름이 됐고, API는 이를 오류가 아닌 빈 성공으로 보고했습니다.",
-        resolution: "route()가 '역'을 붙여 다시 시도하고, 어떤 형태도 맞지 않으면 명확한 오류를 내도록 고쳤습니다. 19번은 통과: 11개 역, 사당에서 1회 환승."
+        "title": "'서울역'으로는 경로가 안 나옴",
+        "incident": "평가 19번(서울역에서 강남)이 계속 실패했습니다. route 도구가 성공을 돌려줬는데 경로가 비어 있었습니다.",
+        "diagnosis": "API는 '역'을 뺀 이름(강남)을 원하지만, 공식 이름에 '역'이 들어간 곳(서울역)은 예외입니다. 접미사를 빼니 API가 모르는 이름이 됐고, API는 이를 빈 성공으로 처리했습니다.",
+        "resolution": "route()가 '역'을 붙여 다시 시도하고, 어떤 형태로도 안 맞으면 명확한 오류를 냅니다. 19번은 이제 통과합니다: 11정거장, 사당에서 1회 환승."
       },
       {
-        title: "로컬은 되는데 클라우드 서버만 타임아웃",
-        incident: "데모 녹화 중 열차 도착을 제외한 모든 클라우드 도구가 ConnectTimeout으로 실패했고, 어시스턴트는 로컬 서버로 전환했습니다.",
-        diagnosis: "실패한 도구는 모두 apis.data.go.kr을 호출합니다. 인스턴스를 새로 띄우자 해결된 듯했지만, 다음 날 아침 브리핑이 완전히 새 컨테이너에서도 똑같이 실패했다가 10시에는 다시 정상이었습니다. Google Cloud에서 data.go.kr로의 연결이 간헐적으로, 때로는 몇 시간씩 실패하는 문제였습니다.",
-        resolution: "빌드 가이드의 첫 진단을 바로잡고, 연결 실패 시 간격을 두고 두 번 재시도하도록 했습니다(이미 받은 응답은 다시 보내지 않음). 재시도마다 호스트를 로그에 남겨, 짧은 재시도로 충분한지 고정 출구 IP가 필요한지 로그로 판단할 수 있게 했습니다."
-      },
-      {
-        title: "아침 브리핑이 늦거나 아예 오지 않았다",
-        incident: "첫 예약 브리핑이 07:45가 아닌 07:50에 도착했고, 프로젝트가 ~/Desktop에 있는 동안에는 작업이 아예 시작되지 않았습니다.",
-        diagnosis: "macOS 개인정보 보호 규칙상 launchd는 ~/Desktop을 읽을 수 없고 잠든 Mac을 깨우지도 않습니다. pmset은 하루 한 번만 깨우기를 예약할 수 있는데 브리핑은 두 번이 됐습니다.",
-        resolution: "프로젝트를 ~/Projects로 옮긴 뒤, 브리핑을 Cloud Scheduler가 실행하는 Cloud Run 잡으로 옮겼습니다. 컨테이너가 UTC로 돌기 때문에 서울 시간은 명시적으로 설정했습니다."
+        "title": "로컬은 되는데 클라우드 서버만 타임아웃",
+        "incident": "데모를 녹화하는 동안 열차 도착을 뺀 모든 클라우드 도구가 ConnectTimeout으로 실패했습니다.",
+        "diagnosis": "실패한 도구는 모두 apis.data.go.kr을 호출합니다. Google Cloud에서 이 호스트로의 연결은 간헐적으로, 때로는 몇 시간씩 실패했고, 다음 날 아침 새 컨테이너에서도 같은 일이 생겼습니다.",
+        "resolution": "빌드 가이드의 첫 진단을 바로잡고, 연결 실패 시 백오프로 두 번 재시도하게 했습니다 (응답은 다시 보내지 않음). 재시도마다 호스트를 기록해, 고정 출발 IP가 필요한지 로그로 판단할 수 있습니다."
       }
     ]
   }

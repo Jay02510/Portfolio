@@ -32,6 +32,9 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <!-- Font CSS loads without blocking first paint; system fallback shows until it arrives -->
     <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" media="print" onload="this.media='all'" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" />
     <noscript><link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" /></noscript>
     <style>
         :root {
@@ -50,6 +53,14 @@
             --accent-clay: #8c6239;
             --status-red: #f87171;
             --status-green: #4ade80;
+            /* rgb triplets so Tailwind opacity modifiers work (text-ink/60, border-ink/10) */
+            --rgb-ink: 250 249 246;
+            --rgb-ink-2: 163 172 185;
+            --rgb-ink-3: 132 142 156;
+            --rgb-canvas: 20 23 29;
+            --rgb-card: 26 30 38;
+            --rgb-inset: 16 19 25;
+            --rgb-gold: 226 184 125;
         }
         
         body.light {
@@ -66,6 +77,13 @@
             --accent-clay: #8c6239;
             --status-red: #b91c1c;
             --status-green: #15803d;
+            --rgb-ink: 20 23 29;
+            --rgb-ink-2: 75 85 99;
+            --rgb-ink-3: 107 114 128;
+            --rgb-canvas: 250 249 246;
+            --rgb-card: 255 255 255;
+            --rgb-inset: 242 241 236;
+            --rgb-gold: 138 100 36; /* darker gold: 5:1 on cream */
         }
         
         html, body {
@@ -149,10 +167,10 @@
         .shiny-cta {
             position: relative;
             overflow: hidden;
-            border-radius: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.01em;
             color: #faf9f6;
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -162,14 +180,11 @@
             align-items: center;
             justify-content: center;
             padding: 0.8rem 1.2rem;
-            font-size: 0.65rem;
         }
 
         @media (min-width: 640px) {
             .shiny-cta {
-                letter-spacing: 0.2em;
-                padding: 1rem 1.8rem;
-                font-size: 0.7rem;
+                padding: 0.8rem 1.6rem;
             }
         }
 

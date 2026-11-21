@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import FeedbackBox from './components/FeedbackBox.tsx';
-import { CompactProjectCard } from './components/CompactProjectCard.tsx';
-import { SunIcon, MoonIcon, ExternalLinkIcon, ChevronDownIcon } from './components/Icons.tsx';
+import HeroCover, { type OrbitItem } from './components/HeroCover.tsx';
+import ProjectModal from './components/ProjectModal.tsx';
+import { SunIcon, MoonIcon } from './components/Icons.tsx';
 import { track } from '@vercel/analytics';
 
 // Case studies (viewer + ~2,600 lines of data) load only when one is opened.
@@ -15,22 +16,7 @@ interface Decision {
   tradeoff: string;
 }
 
-// Muted loop that only downloads and plays while on screen; stays on its poster for reduced motion.
-function LoopVideo({ src, poster, label }: { src: string; poster?: string; label: string }) {
-  const ref = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const v = ref.current;
-    if (!v) return;
-    v.muted = true; // React leaves `muted` out of server HTML, which blocks autoplay
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.25 });
-    io.observe(v);
-    return () => io.disconnect();
-  }, []);
-  return <video ref={ref} src={src} poster={poster} muted loop playsInline preload="none" aria-label={label} className="w-full h-full object-contain" />;
-}
-
-interface FeaturedProject {
+export interface FeaturedProject {
   id: string;
   context: string;
   status: string;
@@ -72,27 +58,21 @@ interface LogEntry {
 const COPY = {
   en: {
     navWork: "Work",
-    navMore: "Side projects",
     navLog: "Build log",
     navContact: "Contact",
     localeSwitch: "한국어",
     resumeBtn: "Résumé",
-    heroTitle: "AI product engineer building for Korean teachers and parents.",
-    heroBody: "From the first teacher interview to the App Store. 10+ years in Korean English academies and six AI products built solo. Chekki AI is live on the App Store and Google Play; Chekki Schools is in final testing ahead of a pilot. At VODABI I build the frontend, backend and database of VODATalk, a voice-AI sales training platform.",
+    heroTitle: "AI product engineer. From first interview to shipped product.",
+    heroSub: "Voice AI, LLM evaluation and the apps around them, designed and built end to end.",
+    nowChip: "Now · VODATalk at VODABI",
+    orbitHint: "Drag or swipe to spin · click any project",
+    orbitHintTouch: "Swipe to spin · tap a project",
+    emailBtn: "Email me",
     ctaWork: "See the work",
     ctaResume: "Résumé",
-    caseLabel: "Case study ↗",
-    nowLabel: "Now",
-    nowBody: "VODATalk now runs on phones as well as computers, and is going into use with enterprise clients.",
-    nextLabel: "In progress, not shipped",
-    nextBody: "A RAG version of the lead-enrichment CRM, and a new textbook built on my 20-volume series that ties into Chekki.",
+    basedIn: "Open to AI PM & engineer roles · Seoul or remote",
     roleTitle: "How I work",
     workTitle: "Selected work",
-    workNote: "Two products in depth: the problem, what I built, and the calls I made along the way.",
-    ownedLabel: "What I built",
-    decisionsLabel: "Decisions and tradeoffs",
-    moreTitle: "Side projects",
-    moreNote: "Designed and built solo.",
     logTitle: "Build log",
     logToggleMore: "Show all",
     logToggleLess: "Show less",
@@ -110,27 +90,21 @@ const COPY = {
   },
   ko: {
     navWork: "주요 프로젝트",
-    navMore: "사이드 프로젝트",
     navLog: "빌드 로그",
     navContact: "연락",
     localeSwitch: "English",
     resumeBtn: "이력서",
-    heroTitle: "한국 교사와 학부모를 위한 AI 제품을 설계하고 개발하는 AI 프로덕트 엔지니어.",
-    heroBody: "첫 교사 인터뷰부터 앱 출시까지. 한국 영어 학원에서 10년 넘게 가르쳤고, AI 제품 6개를 혼자 만들었습니다. Chekki AI는 App Store와 Google Play에 출시되었고, Chekki Schools는 파일럿을 앞두고 최종 테스트 중입니다. VODABI에서는 음성 AI 영업 훈련 플랫폼 VODATalk(보다톡)의 프론트엔드, 백엔드, 데이터베이스를 만듭니다.",
+    heroTitle: "AI 프로덕트 엔지니어. 첫 인터뷰부터 출시까지.",
+    heroSub: "음성 AI, LLM 평가, 그리고 그 위의 앱까지 처음부터 끝까지 설계하고 만듭니다.",
+    nowChip: "현재 · VODABI에서 VODATalk 개발",
+    orbitHint: "드래그하거나 스와이프해서 돌리고, 프로젝트를 클릭하세요",
+    orbitHintTouch: "스와이프해서 돌리고, 프로젝트를 탭하세요",
+    emailBtn: "메일 보내기",
     ctaWork: "프로젝트 보기",
     ctaResume: "이력서",
-    caseLabel: "케이스 스터디 ↗",
-    nowLabel: "현재",
-    nowBody: "VODATalk(보다톡)은 이제 컴퓨터와 휴대폰 모두에서 통화할 수 있고, 기업 고객사에서 사용을 시작합니다.",
-    nextLabel: "진행 중 · 미출시",
-    nextBody: "리드 수집 CRM을 바탕으로 한 RAG 시스템, 그리고 20권 교재 시리즈를 바탕으로 Chekki와 연결되는 새 교재.",
+    basedIn: "AI PM·엔지니어 포지션 찾는 중 · 서울 또는 원격",
     roleTitle: "일하는 방식",
     workTitle: "주요 프로젝트",
-    workNote: "두 제품을 깊게 다룹니다. 문제, 직접 만든 부분, 그 과정에서 내린 판단.",
-    ownedLabel: "직접 만든 부분",
-    decisionsLabel: "판단과 트레이드오프",
-    moreTitle: "사이드 프로젝트",
-    moreNote: "혼자 설계하고 만들었습니다.",
     logTitle: "빌드 로그",
     logToggleMore: "전체 보기",
     logToggleLess: "접기",
@@ -150,79 +124,71 @@ const COPY = {
 
 const FACTS = {
   en: [
-    { value: "10+ years in Korean classrooms", label: "English academies since 2015: curriculum lead, author of a 20-volume textbook series, homeroom teacher." },
-    { value: "6 products built solo", label: "From discovery to release. Chekki AI is on the App Store and Google Play; Chekki Schools is in final testing." },
-    { value: "26 decisions logged", label: "Architecture and product calls written down with the alternative and the tradeoff accepted." }
+    { n: 10, suffix: "+", label: "years in Korean classrooms" },
+    { n: 6, suffix: "", label: "AI products built solo" },
+    { n: 26, suffix: "", label: "product decisions logged" }
   ],
   ko: [
-    { value: "한국 교실 10년 이상", label: "2015년부터 영어 학원에서 커리큘럼 리드, 20권 교재 시리즈 집필, 담임을 맡았습니다." },
-    { value: "제품 6개 단독 개발", label: "발견부터 출시까지. Chekki AI는 App Store와 Google Play에 출시, Chekki Schools는 최종 테스트 중." },
-    { value: "의사결정 26건 기록", label: "검토한 대안과 감수한 트레이드오프까지 함께 남긴 아키텍처·제품 판단 기록." }
+    { n: 10, suffix: "+", label: "년 한국 교실 경력" },
+    { n: 6, suffix: "", label: "개 AI 제품 단독 개발" },
+    { n: 26, suffix: "", label: "건 제품 의사결정 기록" }
   ]
+};
+
+// Short names (per locale) and small thumbnails for the cover orbit, keyed by project id.
+const FEATURED_IDS = ['vodabi', 'chekki'];
+
+const ORBIT_META: Record<string, { en: string; ko: string; thumb: string; blurb: { en: string; ko: string } }> = {
+  vodabi: { en: "VODATalk", ko: "보다톡", thumb: "/screenshots/vodabi/call-flow.svg", blurb: { en: "Voice-AI sales training and scoring", ko: "음성 AI 세일즈 훈련·평가" } },
+  chekki: { en: "Chekki AI", ko: "채키 AI", thumb: "/orbit/chekki.webp", blurb: { en: "AI homework grading for English academies", ko: "영어학원 AI 숙제 채점" } },
+  "seoul-commute": { en: "Seoul Commute MCP", ko: "서울 출퇴근 MCP", thumb: "/orbit/seoul-commute.webp", blurb: { en: "Live Seoul transit data for AI assistants", ko: "AI 비서용 서울 실시간 교통 데이터" } },
+  "chekki-english-1": { en: "Chekki English 1", ko: "채키 영어 1", thumb: "/orbit/textbook.webp", blurb: { en: "Reading workbook for ages 4–7", ko: "만 4–7세 영어 읽기 워크북" } },
+  "chekki-teacher": { en: "Chekki Schools", ko: "채키 스쿨즈", thumb: "/screenshots/chekki-schools/02-director-dashboard-720.webp", blurb: { en: "Academy CRM for directors and teachers", ko: "원장·강사용 학원 CRM" } },
+  "hagwon-readiness": { en: "AI Readiness Index", ko: "학원 AI 준비도 지표", thumb: "/orbit/hagwon-readiness.webp", blurb: { en: "AI readiness quiz for academies", ko: "학원 AI 준비도 진단 퀴즈" } },
+  bridgerecruit: { en: "BridgeRecruit", ko: "브릿지리크루트", thumb: "/screenshots/bridgerecruit/pipeline.svg", blurb: { en: "Admissions CRM inside Outlook", ko: "Outlook 안의 입학 상담 CRM" } },
+  "lead-enrichment": { en: "Lead Enrichment CRM", ko: "B2B 리드 발굴 CRM", thumb: "/orbit/lead-enrichment.webp", blurb: { en: "Finds and qualifies B2B leads", ko: "B2B 리드 발굴·정리 도구" } }
+};
+
+// The workbook has its own product page, no case study.
+const TEXTBOOK: Record<'en' | 'ko', FeaturedProject> = {
+  en: {
+    id: "chekki-english-1",
+    context: "Independent · Chekki AI",
+    status: "Live · on sale",
+    title: "Chekki English 1: a first-sentences workbook for ages 4–7",
+    proof: "Built on my 20-volume curriculum series, used by about 200 students",
+    problem: "A 72-page workbook: children listen, read a short sentence and circle the matching picture. The pictures differ by one word, so a child has to read the whole sentence. Every page has QR audio and a Korean tip for parents.",
+    owned: [],
+    decisions: [],
+    stack: ["Curriculum design", "385 QR audio tracks", "4 voices · 2 speeds", "3-question level check", "A4 PDF"],
+    image: "/orbit/textbook.webp",
+    liveUrl: "https://www.chekkiai.com/books/english-1"
+  },
+  ko: {
+    id: "chekki-english-1",
+    context: "독립 · Chekki AI",
+    status: "출시 · 판매 중",
+    title: "채키 영어 1: 만 4–7세 첫 문장 읽기 워크북",
+    proof: "약 200명이 사용한 20권 교재 시리즈를 바탕으로 제작",
+    problem: "짧은 영어 문장을 듣고, 읽고, 알맞은 그림에 동그라미 하는 72쪽 워크북. 그림이 한 단어만 달라 문장을 끝까지 읽어야 맞힐 수 있습니다. 모든 페이지에 QR 음원과 한국어 부모님 팁이 있습니다.",
+    owned: [],
+    decisions: [],
+    stack: ["커리큘럼 설계", "QR 음원 385개", "목소리 4가지 · 속도 2단계", "3문항 수준 진단", "A4 PDF"],
+    image: "/orbit/textbook.webp",
+    liveUrl: "https://www.chekkiai.com/books/english-1"
+  }
 };
 
 const ROLE_COLS = {
   en: [
-    {
-      head: "Product",
-      items: [
-        "PRD authorship and a 26-entry decision log",
-        "LLM-judge pipelines that score first and explain second",
-        "Tiered model routing: light model for drafting, reasoning model for conflict resolution",
-        "Pricing and trial windows aligned to the customer's planning cycle",
-        "Bilingual product and UX decisions, English and Korean"
-      ]
-    },
-    {
-      head: "Engineering",
-      items: [
-        "Realtime voice: direct WebRTC, ephemeral session tokens, push-to-talk and server VAD",
-        "NestJS 11 and Prisma 7 services, React 19 front ends",
-        "Server-side API proxying so keys never reach browser JS",
-        "Docker Compose, reverse proxy, AWS EC2 deploys",
-        "CI with typecheck, lint, and a Vitest suite on billing-critical paths"
-      ]
-    },
-    {
-      head: "Claim discipline",
-      items: [
-        "VODATalk is built and rolling out with enterprise clients; figures measured on the client's system stay private, so I do not quote any",
-        "Client identifiers stay sanitized under NDA",
-        "Outcomes below are tagged measured, estimated, or target — never blended",
-        "Where a number is an estimate, the method is in the case study"
-      ]
-    }
+    { head: "Product", line: "PRDs, LLM-judge evaluation and a 26-entry decision log." },
+    { head: "Engineering", line: "Realtime voice, NestJS and React services, deployed on AWS." },
+    { head: "Claim discipline", line: "Every number tagged measured, estimated or target. NDA details stay private." }
   ],
   ko: [
-    {
-      head: "프로덕트",
-      items: [
-        "PRD 작성 및 26건의 의사결정 로그",
-        "채점 후 설명하는 LLM 평가 파이프라인",
-        "모델 계층 분리: 초안은 경량 모델, 충돌 해결은 추론 모델",
-        "고객의 운영 주기에 맞춘 가격 정책과 체험 기간 설계",
-        "영어·한국어 이중언어 제품 및 UX 판단"
-      ]
-    },
-    {
-      head: "엔지니어링",
-      items: [
-        "실시간 음성: Direct WebRTC, 임시 세션 토큰, Push-to-Talk 및 서버 VAD",
-        "NestJS 11 · Prisma 7 서비스, React 19 프런트엔드",
-        "API 키가 브라우저에 노출되지 않는 서버 사이드 프록시",
-        "Docker Compose, 리버스 프록시, AWS EC2 배포",
-        "타입체크·린트 및 결제 핵심 경로 Vitest 테스트를 포함한 CI"
-      ]
-    },
-    {
-      head: "주장의 범위",
-      items: [
-        "VODATalk는 구축을 마치고 기업 고객사에서 사용을 시작합니다. 고객사 시스템에서 측정한 수치는 비공개라 인용하지 않습니다",
-        "고객사 식별 정보는 NDA에 따라 익명화합니다",
-        "아래 성과는 실측·추정·목표로 구분해 표기하며 섞지 않습니다",
-        "추정치의 산출 방법은 케이스 스터디에 적었습니다"
-      ]
-    }
+    { head: "프로덕트", line: "PRD, LLM 평가 설계, 26건의 의사결정 로그." },
+    { head: "엔지니어링", line: "실시간 음성, NestJS·React 서비스, AWS 배포." },
+    { head: "주장 원칙", line: "모든 수치는 측정·추정·목표로 구분합니다. NDA 정보는 공개하지 않습니다." }
   ]
 };
 
@@ -733,7 +699,16 @@ export default function App({ initialPath }: { initialPath?: string }) {
   const [isLogExpanded, setIsLogExpanded] = useState<boolean>(false);
   const [isResumeOpen, setIsResumeOpen] = useState<boolean>(false);
   const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(initialRoute.caseId);
-  const [expandedFeaturedId, setExpandedFeaturedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string>('vodabi');
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // Start from the visitor's saved choice, else their OS setting (after mount, so SSR stays dark)
+  useEffect(() => {
+    let saved: string | null = null;
+    try { saved = localStorage.getItem('theme'); } catch {}
+    if (saved === 'light' || saved === 'dark') setTheme(saved);
+    else if (window.matchMedia('(prefers-color-scheme: light)').matches) setTheme('light');
+  }, []);
 
   // Keep the CSS custom-property theme (index.html body.light rules) in sync with React state
   useEffect(() => {
@@ -789,6 +764,49 @@ export default function App({ initialPath }: { initialPath?: string }) {
 
   const L = COPY[locale];
 
+  // One list drives the orbit, the detail card and the project index.
+  const projects = useMemo<FeaturedProject[]>(() => [
+    ...FEATURED_PROJECTS[locale],
+    TEXTBOOK[locale],
+    ...SHIPPED_PROJECTS[locale].map(sp => ({
+      id: sp.caseStudyId,
+      context: locale === 'en' ? 'Side project' : '사이드 프로젝트',
+      status: sp.status,
+      title: sp.title,
+      problem: sp.desc,
+      proof: sp.outcome,
+      owned: [],
+      decisions: [],
+      stack: sp.stack,
+      image: ORBIT_META[sp.caseStudyId]?.thumb,
+      liveUrl: sp.liveUrl,
+      stores: sp.contactUrl ? [{ label: locale === 'en' ? 'Request access ↗' : '접근 요청 ↗', href: sp.contactUrl }] : undefined,
+    })),
+  ], [locale]);
+  const orbitItems = useMemo<OrbitItem[]>(() => projects.map(pr => ({ id: pr.id, name: ORBIT_META[pr.id][locale], blurb: ORBIT_META[pr.id].blurb[locale], thumb: ORBIT_META[pr.id].thumb })), [projects]);
+  const selected = projects.find(pr => pr.id === selectedId) ?? projects[0];
+
+  const showProject = (id: string) => {
+    setSelectedId(id);
+    setModalOpen(true);
+    track('project_open', { id });
+  };
+  const stepProject = (dir: 1 | -1) => {
+    const i = projects.indexOf(selected);
+    setSelectedId(projects[(i + dir + projects.length) % projects.length].id);
+  };
+  // ?p=<id> makes an open project shareable; dropped again when the dialog closes
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get('p');
+    if (id && ORBIT_META[id]) { setSelectedId(id); setModalOpen(true); }
+  }, []);
+  useEffect(() => {
+    if (activeCaseStudyId) return;
+    const url = pathFor(locale, null) + (modalOpen ? `?p=${selectedId}` : '');
+    if (url !== window.location.pathname + window.location.search) history.replaceState(null, '', url);
+  }, [modalOpen, selectedId, locale, activeCaseStudyId]);
+  const openCaseFromModal = (id: string) => { setModalOpen(false); openCaseStudy(id); };
+
   const displayedLog = useMemo(() => isLogExpanded ? LOG : LOG.slice(0, 3), [isLogExpanded]);
 
   const openResume = () => { setIsResumeOpen(true); track('resume_open'); };
@@ -812,11 +830,11 @@ export default function App({ initialPath }: { initialPath?: string }) {
 
   return (
     <div className={`min-h-screen font-sans transition-colors duration-200 ${
-      isDark ? 'bg-[#14171d] text-[#faf9f6]' : 'bg-[#faf9f6] text-[#14171d]'
+      'bg-canvas text-ink'
     }`}>
       {/* STICKY HEADER */}
-      <header className={`sticky top-0 z-50 border-b backdrop-blur-md transition-colors ${
-        isDark ? 'bg-[#14171d]/90 border-white/10' : 'bg-[#faf9f6]/90 border-black/10'
+      <header data-page className={`sticky top-0 z-50 border-b backdrop-blur-md transition-colors ${
+        'bg-canvas/90 border-ink/10'
       }`}>
         <div className="max-w-[1180px] mx-auto px-6 md:px-10 h-[60px] flex items-center justify-between gap-6">
           <a
@@ -831,28 +849,21 @@ export default function App({ initialPath }: { initialPath?: string }) {
             <a
               href="#work"
               onClick={scrollToSection('work')}
-              className={`transition-colors ${isDark ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
+              className="transition-colors text-ink/70 hover:text-ink"
             >
               {L.navWork}
             </a>
             <a
-              href="#more"
-              onClick={scrollToSection('more')}
-              className={`transition-colors ${isDark ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
-            >
-              {L.navMore}
-            </a>
-            <a
               href="#log"
               onClick={scrollToSection('log')}
-              className={`transition-colors ${isDark ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
+              className="transition-colors text-ink/70 hover:text-ink"
             >
               {L.navLog}
             </a>
             <a
               href="#contact"
               onClick={scrollToSection('contact')}
-              className={`transition-colors ${isDark ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
+              className="transition-colors text-ink/70 hover:text-ink"
             >
               {L.navContact}
             </a>
@@ -861,378 +872,120 @@ export default function App({ initialPath }: { initialPath?: string }) {
           <div className="flex items-center gap-2.5">
             <button
               onClick={switchLocale}
-              className={`h-[34px] px-3 rounded-lg border text-xs font-semibold tracking-wider transition-[background-color,transform] active:scale-95 ${
-                isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
+              className={`h-[34px] px-3 rounded-full border text-xs font-semibold tracking-wider transition-[background-color,transform] active:scale-95 ${
+                'border-ink/15 text-ink/80 hover:bg-ink/5'
               }`}
             >
               {L.localeSwitch}
             </button>
             <button
-              onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+              onClick={() => setTheme(t => { const n = t === 'dark' ? 'light' : 'dark'; try { localStorage.setItem('theme', n); } catch {} return n; })}
               aria-label="Toggle theme"
-              className={`relative w-[34px] h-[34px] rounded-lg border flex items-center justify-center transition-colors before:absolute before:inset-[-5px] before:content-[''] ${
-                isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
+              className={`relative w-[34px] h-[34px] rounded-full border flex items-center justify-center transition-colors before:absolute before:inset-[-5px] before:content-[''] ${
+                'border-ink/15 text-ink/80 hover:bg-ink/5'
               }`}
             >
               {isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
             </button>
-            <button
-              onClick={openResume}
-              className={`h-[34px] px-4 rounded-lg font-bold text-xs tracking-wider transition-[background-color,transform] active:scale-95 shadow-sm ${
-                isDark ? 'bg-white text-[#14171d] hover:bg-white/90' : 'bg-[#14171d] text-white hover:bg-black/90'
-              }`}
+            <a
+              href="mailto:jsn.benjamin@gmail.com"
+              onClick={() => track('email_click', { from: 'header' })}
+              className="h-[34px] px-4 rounded-full bg-accent-fill text-[#14171d] font-bold text-xs tracking-wider inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform]"
             >
-              {L.resumeBtn}
-            </button>
+              {L.emailBtn}
+            </a>
           </div>
         </div>
       </header>
 
       {/* MAIN CONTENT CONTAINER */}
-      <main id="top" className="max-w-[1180px] mx-auto px-6 md:px-10">
+      <main data-page id="top" className={`max-w-[1180px] mx-auto px-6 md:px-10`}>
 
-        {/* HERO SECTION */}
-        <section className="pt-16 md:pt-20 pb-14 grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-12 lg:gap-16 items-start">
-          <div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[4.1rem] font-display font-semibold leading-[1.06] tracking-tight text-balance">
-              {L.heroTitle}
-            </h1>
-            <p className={`mt-6 max-w-[62ch] text-base md:text-[17px] leading-relaxed font-normal text-pretty ${
-              isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
-            }`}>
-              {L.heroBody}
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a
-                href="#work"
-                onClick={scrollToSection('work')}
-                className="h-[46px] px-6 rounded-xl bg-accent-gold text-[#14171d] text-[13px] font-bold tracking-wide inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform] duration-150 shadow-sm"
-              >
-                {L.ctaWork}
-              </a>
-              <button
-                onClick={openResume}
-                className={`h-[46px] px-6 rounded-xl border text-[13px] font-bold tracking-wide active:scale-95 transition-[background-color,border-color,color,transform] duration-150 ${
-                  isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
-                }`}
-              >
-                {L.ctaResume}
-              </button>
-            </div>
-          </div>
+        {/* COVER */}
+        <HeroCover
+          title={L.heroTitle}
+          sub={L.heroSub}
+          ctaWork={L.ctaWork}
+          ctaResume={L.ctaResume}
+          nowChip={L.nowChip}
+          basedIn={L.basedIn}
+          hint={L.orbitHint}
+          hintTouch={L.orbitHintTouch}
+          paused={modalOpen}
+          items={orbitItems}
+          selectedId={selectedId}
+          onSelect={showProject}
+          onWork={scrollToSection('work')}
+          onContact={scrollToSection('contact')}
+          onResume={openResume}
+        />
 
-          <div className="flex flex-col gap-6">
-            <div className={`rounded-2xl overflow-hidden border ${
-              isDark ? 'border-white/10' : 'border-black/10'
-            }`}>
-              <img
-                src="/images/jason-benjamin.webp"
-                alt="Jason Benjamin"
-                width={410}
-                height={525}
-                fetchPriority="high"
-                className="w-full aspect-[4/5] object-cover object-top"
-              />
-            </div>
-
-            <aside className={`border rounded-2xl p-6 transition-colors ${
-              isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
-            }`}>
-              <div className="flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-[#5fd48b]">
-                <span className="w-2 h-2 rounded-full bg-[#5fd48b] animate-pulse"></span>
-                <span>{L.nowLabel}</span>
-              </div>
-              <p className={`mt-3 text-sm md:text-[15px] leading-relaxed font-medium ${
-                isDark ? 'text-[#faf9f6]' : 'text-[#14171d]'
-              }`}>
-                {L.nowBody}
-              </p>
-              <div className={`mt-5 pt-4 border-t text-[11px] font-bold tracking-widest uppercase ${
-                isDark ? 'border-white/10 text-[#848e9c]' : 'border-black/10 text-[#6b7280]'
-              }`}>
-                {L.nextLabel}
-              </div>
-              <p className={`mt-2 text-[13px] leading-relaxed ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>
-                {L.nextBody}
-              </p>
-            </aside>
-          </div>
-        </section>
-
-        {/* FACTS BAR */}
-        <section className={`border-y py-6 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 ${
-          isDark ? 'border-white/10' : 'border-black/10'
-        }`}>
+        {/* STATS */}
+        <section className="reveal border-y py-7 grid grid-cols-3 gap-4 md:gap-8 border-ink/10">
           {FACTS[locale].map((f, i) => (
-            <div key={i} className="pr-4">
-              <div className="font-display text-lg md:text-xl font-semibold tracking-tight text-accent-gold">
-                {f.value}
+            <div key={i}>
+              <div className="font-serif text-4xl md:text-6xl leading-none text-accent-gold tabular-nums">
+                {f.n}{f.suffix}
               </div>
-              <div className={`mt-1.5 text-xs md:text-[13px] leading-relaxed ${
-                isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
-              }`}>
-                {f.label}
-              </div>
+              <div className="mt-2 text-xs md:text-sm text-ink-2">{f.label}</div>
             </div>
           ))}
         </section>
 
-        {/* SELECTED WORK SECTION */}
-        <section id="work" className="pt-20 md:pt-24">
-          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-2">
-            <h2 className="text-3xl md:text-4xl font-display font-semibold tracking-tight text-balance">
-              {L.workTitle}
-            </h2>
-            <p className={`text-xs md:text-[13.5px] max-w-[46ch] ${
-              isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-            }`}>
-              {L.workNote}
-            </p>
-          </div>
-
-          <div className="space-y-8 mt-6">
-            {FEATURED_PROJECTS[locale].map((project) => (
-              <article
-                key={project.id}
-                className={`border rounded-2xl overflow-hidden transition-[background-color,border-color] ${
-                  isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
-                }`}
-              >
-                <div className={`grid grid-cols-1 ${project.image ? 'lg:grid-cols-[0.9fr_1.1fr]' : 'grid-cols-1'}`}>
-                  {project.image && (
-                    <div className={`aspect-video lg:aspect-auto h-full overflow-hidden border-b lg:border-b-0 lg:border-r relative p-8 ${
-                      isDark ? 'bg-[#101319] border-white/10' : 'bg-[#f2f1ec] border-black/10'
-                    }`}>
-                      {project.video ? (
-                        <LoopVideo src={project.video} poster={project.image} label={project.title} />
-                      ) : (
-                        <img
-                          src={project.image}
-                          srcSet={project.image.endsWith('.webp') && project.image.includes('/screenshots/') ? `${project.image.replace('.webp', '-720.webp')} 720w, ${project.image} 1440w` : undefined}
-                          sizes="(min-width: 1024px) 480px, calc(100vw - 112px)"
-                          alt={project.title}
-                          className="w-full h-full object-contain hover:scale-102 transition-transform duration-500"
-                          loading="lazy"
-                          referrerPolicy="no-referrer"
-                        />
-                      )}
-                    </div>
-                  )}
-
-                  <div className="p-6 md:p-8 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-3 flex-wrap">
-                        <span className={`text-[11px] font-bold tracking-widest uppercase ${
-                          isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-                        }`}>
-                          {project.context}
-                        </span>
-                        <span className="text-[11px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-md bg-accent-gold/15 text-accent-gold border border-accent-gold/25">
-                          {project.status}
-                        </span>
-                      </div>
-
-                      <h3 className="mt-3 text-xl md:text-2xl font-display font-medium tracking-tight leading-snug">
-                        {project.title}
-                      </h3>
-                      {project.proof && (
-                        <p className="mt-2 text-sm font-semibold text-accent-gold">{project.proof}</p>
-                      )}
-
-                      <p className={`mt-3 text-sm md:text-[14.5px] leading-relaxed ${
-                        isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
-                      }`}>
-                        {project.problem}
-                      </p>
-
-                      {/* DETAILS TOGGLE */}
-                      <button
-                        onClick={() => setExpandedFeaturedId(expandedFeaturedId === project.id ? null : project.id)}
-                        aria-expanded={expandedFeaturedId === project.id}
-                        className={`mt-6 pt-5 border-t w-full flex items-center justify-between gap-3 text-left ${
-                          isDark ? 'border-white/10' : 'border-black/10'
-                        }`}
-                      >
-                        <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                          isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-                        }`}>
-                          {locale === 'en' ? "What I built & why" : "무엇을, 왜 만들었는지"}
-                        </h4>
-                        <ChevronDownIcon className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ${
-                          expandedFeaturedId === project.id ? 'rotate-180 text-accent-gold' : (isDark ? 'text-[#848e9c]' : 'text-[#6b7280]')
-                        }`} />
-                      </button>
-
-                      {expandedFeaturedId === project.id && (
-                        <div className="animate-in fade-in slide-in-from-top-1 duration-200">
-                          {/* WHAT I BUILT */}
-                          <div className="mt-4">
-                            <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                              isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-                            }`}>
-                              {L.ownedLabel}
-                            </h4>
-                            <ul className="mt-3 space-y-2">
-                              {project.owned.map((item, idx) => (
-                                <li key={idx} className="text-xs md:text-[13.5px] leading-relaxed flex items-start gap-2.5">
-                                  <span className="text-accent-gold shrink-0">—</span>
-                                  <span className={isDark ? 'text-[#faf9f6]' : 'text-[#14171d]'}>{item}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          {/* DECISIONS & TRADEOFFS */}
-                          <div className={`mt-6 pt-5 border-t ${isDark ? 'border-white/10' : 'border-black/10'}`}>
-                            <h4 className={`text-xs font-bold tracking-widest uppercase ${
-                              isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-                            }`}>
-                              {L.decisionsLabel}
-                            </h4>
-                            <div className="mt-3 space-y-3.5">
-                              {project.decisions.map((d, idx) => (
-                                <div key={idx} className="text-xs md:text-[13px] leading-relaxed">
-                                  <div className="font-semibold text-accent-gold">{d.choice}</div>
-                                  <div className={`mt-0.5 ${isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'}`}>{d.why}</div>
-                                  <div className={`mt-0.5 italic ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>{d.tradeoff}</div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* STACK TAGS */}
-                      <div className="mt-5 flex flex-wrap gap-1.5">
-                        {project.stack.map((tech, idx) => (
-                          <span
-                            key={idx}
-                            className={`text-[11px] font-mono px-2 py-0.5 rounded border ${
-                              isDark ? 'border-white/10 text-[#a3acb9] bg-white/[0.02]' : 'border-black/10 text-[#4b5563] bg-black/[0.02]'
-                            }`}
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* ACTIONS */}
-                    <div className={`mt-6 pt-5 border-t flex flex-wrap items-center gap-3 ${isDark ? 'border-white/10' : 'border-black/10'}`}>
-                      <a
-                        href={pathFor(locale, project.id)}
-                        onClick={(e) => { e.preventDefault(); openCaseStudy(project.id); }}
-                        className={`h-[40px] px-4 rounded-lg font-bold text-xs tracking-wider inline-flex items-center transition-[background-color,transform] active:scale-95 shadow-sm ${
-                          isDark ? 'bg-white text-[#14171d] hover:bg-white/90' : 'bg-[#14171d] text-white hover:bg-black/90'
-                        }`}
-                      >
-                        {locale === 'en' ? "Read the case study ↗" : "케이스 스터디 읽기 ↗"}
-                      </a>
-
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`h-[40px] px-4 rounded-lg border text-xs font-semibold tracking-wider inline-flex items-center gap-1.5 transition-[background-color,transform] active:scale-95 ${
-                            isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
-                          }`}
-                        >
-                          <span>{locale === 'en' ? "Open live app" : "라이브 앱 열기"}</span>
-                          <ExternalLinkIcon className="w-3.5 h-3.5" />
-                        </a>
-                      )}
-
-                      {project.stores?.map((store, idx) => (
-                        <a
-                          key={idx}
-                          href={store.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`h-[40px] px-3.5 rounded-lg border text-xs font-semibold tracking-wider inline-flex items-center gap-1 transition-[background-color,color,transform] active:scale-95 ${
-                            isDark ? 'border-white/10 text-[#a3acb9] hover:text-white hover:bg-white/5' : 'border-black/10 text-[#4b5563] hover:text-black hover:bg-black/5'
-                          }`}
-                        >
-                          <span>{store.label}</span>
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ))}
+        {/* SELECTED WORK: the two lead projects; the orbit holds the rest */}
+        <section id="work" className="pt-16 md:pt-20 scroll-mt-[76px]">
+          <h2 className="text-3xl md:text-4xl font-serif tracking-tight">{L.workTitle}</h2>
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {FEATURED_IDS.map(id => {
+              const pr = projects.find(x => x.id === id)!;
+              return (
+                <button
+                  key={id}
+                  onClick={() => showProject(id)}
+                  className={`group text-left grid grid-cols-[96px_minmax(0,1fr)] sm:grid-cols-[132px_minmax(0,1fr)] gap-4 items-center p-3 pr-5 rounded-2xl border transition-[border-color,transform] duration-200 hover:border-accent-gold/50 active:scale-[0.99] ${
+                    'bg-card border-ink/10 shadow-sm'
+                  }`}
+                >
+                  <img src={ORBIT_META[id].thumb} alt="" loading="lazy" className="w-full aspect-[16/10] object-cover object-top rounded-lg bg-inset" />
+                  <span className="min-w-0">
+                    <span className="flex items-baseline justify-between gap-3">
+                      <span className="text-base md:text-lg font-semibold transition-colors group-hover:text-accent-gold">{ORBIT_META[id][locale]}</span>
+                      <span aria-hidden className="text-accent-gold transition-transform group-hover:translate-x-0.5">→</span>
+                    </span>
+                    <span className="mt-0.5 block text-[13px] leading-snug text-ink-2">{ORBIT_META[id].blurb[locale]}</span>
+                    <span className="mt-2 inline-block text-[11px] font-bold tracking-wider uppercase text-accent-gold">{pr.status}</span>
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </section>
 
         {/* HOW I WORK SECTION */}
-        <section className="pt-12 pb-4">
-          <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-balance">
+        <section className="reveal pt-16 md:pt-20">
+          <h2 className="text-3xl md:text-4xl font-serif tracking-tight">
             {L.roleTitle}
           </h2>
-          <div className={`mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t ${
-            isDark ? 'border-white/10' : 'border-black/10'
-          }`}>
-            {ROLE_COLS[locale].map((col, i) => (
-              <div key={i} className="space-y-2.5">
-                <h3 className="text-sm md:text-[15px] font-bold tracking-wide text-accent-gold">
-                  {col.head}
-                </h3>
-                <ul className="space-y-2 pt-1">
-                  {col.items.map((item, j) => (
-                    <li key={j} className={`text-xs md:text-[13.5px] leading-relaxed flex items-start gap-2.5 ${
-                      isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
-                    }`}>
-                      <span className="text-accent-gold/80 font-bold shrink-0 mt-0.5">·</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+          <dl className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-ink/10">
+            {ROLE_COLS[locale].map(col => (
+              <div key={col.head}>
+                <dt className="text-sm md:text-[15px] font-bold tracking-wide text-accent-gold">{col.head}</dt>
+                <dd className="mt-1.5 text-[13.5px] md:text-sm leading-relaxed text-ink-2">{col.line}</dd>
               </div>
             ))}
-          </div>
-        </section>
-
-        {/* ALSO SHIPPED SECTION */}
-        <section id="more" className="pt-20">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-balance">
-                {L.moreTitle}
-              </h2>
-              <p className={`mt-1 text-xs md:text-[13.5px] max-w-[58ch] ${
-                isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
-              }`}>
-                {L.moreNote}
-              </p>
-            </div>
-
-          </div>
-
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SHIPPED_PROJECTS[locale].map(p => (
-              <CompactProjectCard
-                key={p.id}
-                project={p}
-                theme={theme}
-                locale={locale}
-                caseLabel={L.caseLabel}
-                caseHref={pathFor(locale, p.caseStudyId)}
-                onOpenCaseStudy={openCaseStudy}
-              />
-            ))}
-          </div>
+          </dl>
         </section>
 
         {/* BUILD LOG SECTION */}
-        <section id="log" className="pt-20">
+        <section id="log" className="reveal pt-16 md:pt-20">
           <div className="flex items-baseline justify-between gap-4 pb-2">
-            <h2 className="text-2xl md:text-3xl font-display font-medium tracking-tight text-balance">
+            <h2 className="text-3xl md:text-4xl font-serif tracking-tight">
               {L.logTitle}
             </h2>
             <button
               onClick={() => setIsLogExpanded(!isLogExpanded)}
-              className={`h-[34px] px-3.5 rounded-lg border text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
-                isDark ? 'border-white/15 text-white/80 hover:bg-white/5' : 'border-black/15 text-black/80 hover:bg-black/5'
+              className={`h-[34px] px-3.5 rounded-full border text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
+                'border-ink/15 text-ink/80 hover:bg-ink/5'
               }`}
             >
               {isLogExpanded ? L.logToggleLess : L.logToggleMore}
@@ -1240,45 +993,37 @@ export default function App({ initialPath }: { initialPath?: string }) {
           </div>
 
           <div className={`mt-6 border-t divide-y ${
-            isDark ? 'border-white/10 divide-white/10' : 'border-black/10 divide-black/10'
+            'border-ink/10 divide-ink/10'
           }`}>
             {displayedLog.map((e, idx) => (
-              <div
-                key={idx}
-                className="py-4.5 grid grid-cols-1 sm:grid-cols-[110px_90px_1fr] gap-2 sm:gap-6 items-start"
-              >
-                <span className={`text-xs font-mono shrink-0 ${isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'}`}>
-                  {e.date}
-                </span>
-                <span className="text-[10.5px] font-bold tracking-widest uppercase text-accent-gold shrink-0">
-                  [{e.type}]
-                </span>
-                <div>
-                  <div className="text-sm md:text-[14.5px] font-semibold leading-snug">
-                    {locale === 'ko' ? e.titleKo : e.titleEn}
-                  </div>
-                  <p className={`mt-1 text-xs md:text-[13px] leading-relaxed max-w-[78ch] ${
-                    isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
-                  }`}>
-                    {locale === 'ko' ? e.descKo : e.descEn}
-                  </p>
-                </div>
+              <div key={idx} className="py-3.5 grid grid-cols-[88px_minmax(0,1fr)] sm:grid-cols-[110px_90px_minmax(0,1fr)] gap-x-4 sm:gap-x-6 items-baseline">
+                <span className="text-xs font-mono text-ink-3">{e.date}</span>
+                <span className="hidden sm:inline text-[11px] font-bold tracking-widest uppercase text-accent-gold">[{e.type}]</span>
+                <span className="text-sm md:text-[14.5px] font-medium truncate" title={locale === 'ko' ? e.descKo : e.descEn}>{locale === 'ko' ? e.titleKo : e.titleEn}</span>
               </div>
             ))}
           </div>
         </section>
 
         {/* CONTACT / HIRING SECTION */}
-        <section id="contact" className="pt-20 pb-24">
-          <div className={`border rounded-2xl p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-10 lg:gap-14 items-center ${
-            isDark ? 'bg-[#1a1e26] border-white/10' : 'bg-white border-black/10 shadow-sm'
+        <section id="contact" className="reveal pt-20 pb-6">
+          <div className={`border rounded-2xl p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[200px_1.3fr_1fr] gap-10 lg:gap-12 items-center ${
+            'bg-card border-ink/10 shadow-sm'
           }`}>
+            <img
+              src="/images/jason-benjamin.webp"
+              alt="Jason Benjamin"
+              width={410}
+              height={525}
+              loading="lazy"
+              className="w-28 lg:w-full aspect-[4/5] object-cover object-top rounded-t-full rounded-b-2xl"
+            />
             <div>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-medium tracking-tight leading-tight text-balance">
                 {L.contactTitle}
               </h2>
               <p className={`mt-4 text-sm md:text-base leading-relaxed max-w-[52ch] ${
-                isDark ? 'text-[#a3acb9]' : 'text-[#4b5563]'
+                'text-ink-2'
               }`}>
                 {L.contactBody}
               </p>
@@ -1286,7 +1031,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
                 <a
                   href="mailto:jsn.benjamin@gmail.com"
                   onClick={() => track('email_click')}
-                  className="h-[46px] px-6 rounded-xl bg-accent-gold text-[#14171d] text-xs font-bold tracking-wider inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform] shadow-sm"
+                  className="h-[46px] px-6 rounded-full bg-accent-fill text-[#14171d] text-xs font-bold tracking-wider inline-flex items-center hover:brightness-105 active:scale-95 transition-[filter,transform] shadow-sm"
                 >
                   {L.contactCta}
                 </a>
@@ -1294,16 +1039,16 @@ export default function App({ initialPath }: { initialPath?: string }) {
                   href="https://www.linkedin.com/in/jason-benjamin/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`h-[46px] px-6 rounded-xl border text-xs font-bold tracking-wider inline-flex items-center transition-[background-color,transform] active:scale-95 ${
-                    isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
+                  className={`h-[46px] px-6 rounded-full border text-xs font-bold tracking-wider inline-flex items-center transition-[background-color,transform] active:scale-95 ${
+                    'border-ink/20 text-ink hover:bg-ink/5'
                   }`}
                 >
                   {L.linkedinLabel}
                 </a>
                 <button
                   onClick={openResume}
-                  className={`h-[46px] px-6 rounded-xl border text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
-                    isDark ? 'border-white/20 text-white hover:bg-white/5' : 'border-black/20 text-black hover:bg-black/5'
+                  className={`h-[46px] px-6 rounded-full border text-xs font-bold tracking-wider transition-[background-color,transform] active:scale-95 ${
+                    'border-ink/20 text-ink hover:bg-ink/5'
                   }`}
                 >
                   {L.ctaResume}
@@ -1312,11 +1057,11 @@ export default function App({ initialPath }: { initialPath?: string }) {
             </div>
 
             <dl className={`space-y-4 pt-6 lg:pt-0 border-t lg:border-t-0 lg:border-l lg:pl-10 ${
-              isDark ? 'border-white/10' : 'border-black/10'
+              'border-ink/10'
             }`}>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
+                  'text-ink-3'
                 }`}>
                   {L.lookingLabel}
                 </dt>
@@ -1326,7 +1071,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
               </div>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
+                  'text-ink-3'
                 }`}>
                   {L.basedLabel}
                 </dt>
@@ -1336,7 +1081,7 @@ export default function App({ initialPath }: { initialPath?: string }) {
               </div>
               <div className="grid grid-cols-[100px_1fr] gap-4 items-baseline">
                 <dt className={`text-[11px] font-bold tracking-widest uppercase ${
-                  isDark ? 'text-[#848e9c]' : 'text-[#6b7280]'
+                  'text-ink-3'
                 }`}>
                   {L.langLabel}
                 </dt>
@@ -1350,11 +1095,11 @@ export default function App({ initialPath }: { initialPath?: string }) {
 
       </main>
 
-      <FeedbackBox theme={theme} />
+      <div data-page><FeedbackBox theme={theme} /></div>
 
       {/* FOOTER */}
-      <footer className={`border-t py-8 transition-colors ${
-        isDark ? 'border-white/10 text-[#848e9c]' : 'border-black/10 text-[#6b7280]'
+      <footer data-page className={`border-t py-8 transition-colors ${
+        'border-ink/10 text-ink-3'
       }`}>
         <div className="max-w-[1180px] mx-auto px-6 md:px-10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium">
           <span>© Jason Benjamin</span>
@@ -1373,6 +1118,18 @@ export default function App({ initialPath }: { initialPath?: string }) {
           />
         </Suspense>
       )}
+
+      <ProjectModal
+        project={selected}
+        name={ORBIT_META[selected.id][locale]}
+        open={modalOpen}
+        locale={locale}
+        position={`${String(projects.indexOf(selected) + 1).padStart(2, '0')} / ${String(projects.length).padStart(2, '0')}`}
+        caseHref={CASE_IDS.includes(selected.id) ? pathFor(locale, selected.id) : null}
+        onClose={() => setModalOpen(false)}
+        onStep={stepProject}
+        onOpenCase={openCaseFromModal}
+      />
 
       {activeCaseStudyId && (
         <Suspense fallback={null}>
